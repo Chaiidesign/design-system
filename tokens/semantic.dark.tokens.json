@@ -1,0 +1,231 @@
+{
+  "$description": "Semantic colour tokens, dark theme. Components reference these, never palette.*.",
+  "color": {
+    "$type": "color",
+    "bg": {
+      "page": {
+        "$value": "{palette.neutral.950}",
+        "$description": "The page background."
+      },
+      "surface": {
+        "$value": "{palette.neutral.900}",
+        "$description": "Cards, panels, grouped content."
+      },
+      "surface-raised": {
+        "$value": "{palette.neutral.800}",
+        "$description": "Inputs and surfaces that sit on top of a surface."
+      },
+      "subtle": {
+        "$value": "{palette.neutral.800}",
+        "$description": "Quiet fills: code, tags, table headers."
+      },
+      "inverse": {
+        "$value": "{palette.neutral.50}",
+        "$description": "High-contrast surfaces such as tooltips."
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "{palette.neutral.50}",
+        "$description": "Body text and headings."
+      },
+      "muted": {
+        "$value": "{palette.neutral.400}",
+        "$description": "Secondary text: hints, captions, metadata."
+      },
+      "disabled": {
+        "$value": "{palette.neutral.600}",
+        "$description": "Text in disabled controls. Exempt from contrast minimums."
+      },
+      "inverse": {
+        "$value": "{palette.neutral.950}",
+        "$description": "Text on color.bg.inverse."
+      },
+      "accent": {
+        "$value": "{palette.accent.200}",
+        "$description": "Links and accent-coloured labels."
+      },
+      "danger": {
+        "$value": "{palette.red.300}",
+        "$description": "Error messages and destructive labels."
+      },
+      "success": {
+        "$value": "{palette.green.300}",
+        "$description": "Success messages."
+      },
+      "warning": {
+        "$value": "{palette.amber.300}",
+        "$description": "Warning messages."
+      },
+      "on-accent": {
+        "$value": "{palette.neutral.950}",
+        "$description": "Text on color.action.primary.*"
+      },
+      "on-danger": {
+        "$value": "{palette.neutral.950}",
+        "$description": "Text on color.action.danger.*"
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "{palette.neutral.700}",
+        "$description": "Decorative dividers and surface outlines."
+      },
+      "strong": {
+        "$value": "{palette.neutral.400}",
+        "$description": "Borders that identify a control (inputs, secondary buttons). At least 3:1 against the background."
+      },
+      "focus": {
+        "$value": "{palette.accent.300}",
+        "$description": "Focus ring. At least 3:1 against the page."
+      },
+      "danger": {
+        "$value": "{palette.red.400}",
+        "$description": "Border of an invalid field."
+      }
+    },
+    "action": {
+      "primary": {
+        "bg": {
+          "$value": "{palette.accent.400}",
+          "$description": "Primary action fill."
+        },
+        "bg-hover": {
+          "$value": "{palette.accent.300}"
+        },
+        "bg-active": {
+          "$value": "{palette.accent.200}"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$value": "{palette.red.400}",
+          "$description": "Destructive action fill."
+        },
+        "bg-hover": {
+          "$value": "{palette.red.300}"
+        },
+        "bg-active": {
+          "$value": "{palette.red.100}"
+        }
+      },
+      "neutral": {
+        "bg-hover": {
+          "$value": "{palette.neutral.800}",
+          "$description": "Hover fill for secondary and ghost actions."
+        },
+        "bg-active": {
+          "$value": "{palette.neutral.700}"
+        }
+      },
+      "disabled": {
+        "bg": {
+          "$value": "{palette.neutral.800}",
+          "$description": "Fill of any disabled action."
+        }
+      }
+    },
+    "status": {
+      "info": {
+        "bg": {
+          "$value": "{palette.accent.900}",
+          "$description": "Background of a info message."
+        },
+        "border": {
+          "$value": "{palette.accent.700}"
+        }
+      },
+      "success": {
+        "bg": {
+          "$value": "{palette.green.900}",
+          "$description": "Background of a success message."
+        },
+        "border": {
+          "$value": "{palette.green.700}"
+        }
+      },
+      "warning": {
+        "bg": {
+          "$value": "{palette.amber.900}",
+          "$description": "Background of a warning message."
+        },
+        "border": {
+          "$value": "{palette.amber.700}"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$value": "{palette.red.900}",
+          "$description": "Background of a danger message."
+        },
+        "border": {
+          "$value": "{palette.red.700}"
+        }
+      }
+    }
+  },
+  "elevation": {
+    "$type": "shadow",
+    "raised": {
+      "$description": "Menus, popovers.",
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0,
+              0
+            ],
+            "hex": "#000000",
+            "alpha": 0.4
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0,
+              0
+            ],
+            "hex": "#000000",
+            "alpha": 0.6
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 8,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 24,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -4,
+            "unit": "px"
+          }
+        }
+      ]
+    }
+  }
+}

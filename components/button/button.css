@@ -1,0 +1,98 @@
+/* Button. Guidance: components/button/button.md
+   Uses semantic tokens only. Variant classes set three private properties; states read them. */
+.ds-button {
+  --_bg: var(--ds-color-action-primary-bg);
+  --_bg-hover: var(--ds-color-action-primary-bg-hover);
+  --_bg-active: var(--ds-color-action-primary-bg-active);
+  --_fg: var(--ds-color-text-on-accent);
+  --_border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  box-sizing: border-box;
+  min-height: var(--ds-size-control-md);
+  padding: 0 var(--ds-space-4);
+  border: var(--ds-border-width-default) solid var(--_border);
+  border-radius: var(--ds-shape-control);
+  background-color: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-md);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-font-line-height-tight);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-standard),
+    transform var(--ds-motion-duration-fast) var(--ds-motion-easing-standard);
+}
+
+.ds-button:hover { background-color: var(--_bg-hover); }
+.ds-button:active { background-color: var(--_bg-active); transform: scale(var(--ds-motion-press-scale)); }
+
+.ds-button:focus-visible {
+  outline: var(--ds-border-width-focus-ring) solid var(--ds-color-border-focus);
+  outline-offset: var(--ds-border-width-focus-offset);
+}
+
+/* Variants */
+.ds-button--secondary {
+  --_bg: var(--ds-color-bg-surface-raised);
+  --_bg-hover: var(--ds-color-action-neutral-bg-hover);
+  --_bg-active: var(--ds-color-action-neutral-bg-active);
+  --_fg: var(--ds-color-text-default);
+  --_border: var(--ds-color-border-strong);
+}
+.ds-button--ghost {
+  --_bg: transparent;
+  --_bg-hover: var(--ds-color-action-neutral-bg-hover);
+  --_bg-active: var(--ds-color-action-neutral-bg-active);
+  --_fg: var(--ds-color-text-accent);
+}
+.ds-button--danger {
+  --_bg: var(--ds-color-action-danger-bg);
+  --_bg-hover: var(--ds-color-action-danger-bg-hover);
+  --_bg-active: var(--ds-color-action-danger-bg-active);
+  --_fg: var(--ds-color-text-on-danger);
+}
+
+/* Sizes */
+.ds-button--sm { min-height: var(--ds-size-control-sm); padding: 0 var(--ds-space-3); font-size: var(--ds-font-size-sm); }
+.ds-button--lg { min-height: var(--ds-size-control-lg); padding: 0 var(--ds-space-6); font-size: var(--ds-font-size-lg); }
+
+/* Disabled. aria-disabled keeps the button focusable so the reason can be announced. */
+.ds-button:disabled,
+.ds-button[aria-disabled="true"] {
+  background-color: var(--ds-color-action-disabled-bg);
+  border-color: transparent;
+  color: var(--ds-color-text-disabled);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading. Set aria-busy="true" and aria-disabled="true"; keep the label. */
+.ds-button[aria-busy="true"]::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  border: var(--ds-border-width-focus-ring) solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: var(--ds-radius-full);
+  animation: ds-button-spin 0.8s linear infinite;
+}
+@keyframes ds-button-spin { to { transform: rotate(1turn); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button { transition: none; }
+  .ds-button:active { transform: none; }
+  .ds-button[aria-busy="true"]::before { animation-duration: 2.4s; }
+}
+
+@media (forced-colors: active) {
+  .ds-button { border-color: ButtonText; }
+  .ds-button:disabled, .ds-button[aria-disabled="true"] { border-color: GrayText; color: GrayText; }
+}
