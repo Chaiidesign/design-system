@@ -15,9 +15,9 @@ Each also names an example that breaks it.
 
 ## How the ranking works
 
-**Principles 1 to 3 are what every person is owed.** Their machine-checkable rules are LOCK rows in [budget.md](budget.md). So are the meaning and behaviour rules of principle 4. A LOCK row blocks release and is never traded for anything.
+**Principles 1 to 3 are what every person is owed.** Their machine-checkable rules are LOCK rows in [budget.md](budget.md); a rule with no row there is enforced by review. So are the meaning and behaviour rules of principle 4. A LOCK row blocks release and is never traded for anything.
 
-**If two LOCK rules conflict,** the design that breaks neither is found, or the part is not released. The lead logs the conflict under "Awaiting CEO" with both options, and other work continues. In the rare case where no design can keep both, the lower number wins until the steward rules: 1, then 2, then 3. Each ruling is added below as a worked case.
+**If two LOCK rules conflict,** the design that breaks neither is found, or the part is not released. The lead logs the conflict under "Awaiting CEO" with both options, and other work continues. In the rare case where no design can keep both, the lower number decides which design is built while the conflict waits: 1, then 2, then 3, then the LOCK rules of 4. The part stays unreleased until the steward rules. Each ruling is added below as a worked case.
 
 **Principles 4 to 7 are how the system keeps those promises at scale.** They can pull against each other in ordinary design work. When they do, the lower number shapes the design, and the decision is recorded. The order has reasons:
 
@@ -69,7 +69,7 @@ Every claim about how people behave carries a label: **[research]** supported by
 
 **Base value:** honesty. **Rams:** good design is honest; it "does not make a product more innovative, powerful or valuable than it really is".
 
-**Claims.** Extra costs, and not seeing the total early, are among the reasons people give for abandoning a purchase **[research]**: Baymard Institute's list, shown as updated 28 October 2026, reports 40% for "extra costs too high" and 12% for not being able to see or calculate the total up front, among shoppers who were not just browsing. The answers are self-reported, the page gives no sample size, and it was read through a summarising tool. See [notes/survey/checkout-evidence.md](../notes/survey/checkout-evidence.md). Showing the total earlier makes people understand it better **[assumption]**: the first pilot tests this.
+**Claims.** Extra costs, and not seeing the total early, are among the reasons people give for abandoning a purchase **[research]**: Baymard Institute's list, shown as updated 28 October 2026, reports 40% for "extra costs too high" and 12% for not being able to see or calculate the total up front, among shoppers who were not just browsing. The answers are self-reported, the page gives no sample size, and it was read through a summarising tool. See [notes/survey/checkout-evidence.md](../notes/survey/checkout-evidence.md). Showing the total earlier makes people understand it better **[assumption]**. The first pilot measures a baseline for one design; this assumption stays untested until a comparison is approved as an EXPLORE item.
 
 ## 3. The person decides, even over the system being helpful
 
@@ -118,11 +118,11 @@ A person may give the system standing permission for a named action, inside limi
 2. If that fails, build it as an EXPLORE item: in a marked folder, in the register, never released to real users. It may be shown in a pilot.
 3. When the same need appears a second time, in a separate flow, recorded in a passport, the item may be proposed for the system.
 
-The tokens and the four checkout parts are the founding set and enter directly. Each release may remove things.
+The founding set enters directly, by the lead's decision: the tokens, the four checkout parts, and any part that a work item in the CEO's work tree requires. Each release may remove things.
 
 **Evidence.** L2: an inventory script counts components, variants and tokens and measures shipped size on every cycle. L4: what was added and removed; how often each part is reused; the effort a product needs to upgrade; and, once people use the system, whether task success held after each removal.
 
-**Trigger.** An addition that did not follow the route: rejected. A part with no references in the reference pages or in registered product repositories for two releases: proposed for removal with a migration path. Usage is reported as "not measured" until usage telemetry exists.
+**Trigger.** An addition that did not follow the route: rejected. A part with no references in the reference pages or in registered product repositories for two releases (*[starting value]*): proposed for removal with a migration path. Usage is reported as "not measured" until usage telemetry, an automatic count of where each part is used in products, exists.
 
 **Breaks it.** A fifth button variant added for one screen. A tooltip that repeats the label.
 
@@ -132,7 +132,7 @@ The tokens and the four checkout parts are the founding set and enter directly. 
 
 ## 6. Built to last, even over built fast
 
-**Rule.** Each decision sits on the most durable layer that can hold it: a web standard before a library, a token before a value, a contract before an implementation. A web feature counts as a standard to build on when it has been available in every major browser for at least 30 months (the "Baseline Widely available" mark); a newer feature may only add an enhancement that the task does not depend on. Nothing in brick depends on software with a pre-release version tag or a version below 1.0, except items on a written exception list. Every breaking change, meaning a change to a token name, a component's documented markup, attributes, class names or events that forces a consumer to change, comes with a version, a notice and a way to migrate.
+**Rule.** Each decision sits on the most durable layer that can hold it: a web standard before a library, a token before a value, a contract before an implementation. A web feature counts as a standard to build on when it has been available in every major browser for at least 30 months (*[starting value]*, the threshold browser makers use for "widely available"); a newer feature may only add an enhancement that the task does not depend on. Nothing in brick depends on software with a pre-release version tag or a version below 1.0 (*[starting value]*), except items on a written exception list. Every breaking change, meaning a change to a token name, a component's documented markup, attributes, class names or events that forces a consumer to change, comes with a version, a notice and a way to migrate.
 
 **Evidence.** L1: a script fails on a pre-release dependency in brick, and on a removed or renamed public name with no alias. L2: the list of dependencies, each with the number of files that import it. L4: whether anything was rebuilt because a dependency moved.
 
@@ -144,7 +144,7 @@ The tokens and the four checkout parts are the founding set and enter directly. 
 
 ## 7. Composed, even over custom
 
-**Rule.** The system grows by combining small general parts. A part that belongs to one domain, such as a cost summary for commerce, lives in a domain layer and is built from core parts. Nothing in the core imports from a domain layer or uses a word on a domain's word list. People and agents build from the same source. The cost of maintaining the system grows more slowly than the number of products.
+**Rule.** The system grows by combining small general parts. A part that belongs to one domain, such as a cost summary for commerce, lives in a domain layer and is built from core parts. Nothing in the core layer imports from a domain layer or uses a word on that domain's word list, a file of terms that belong to the domain, such as "basket" for commerce. People and agents build from the same source. The cost of maintaining the system grows more slowly than the number of products.
 
 **Evidence.** L1: an import lint and a word-list lint on the core. L2: the benchmark's count of violations that add a one-off part. L4: maintenance cost per product, a measure proposed to the CEO and "not measured" until two products exist; and, when a second domain is built, the record of what transferred unchanged.
 
@@ -192,7 +192,7 @@ A change to principles 1 to 3 or to any LOCK row needs both the CEO and the stew
 
 ## Assumptions that need a human test
 
-1. Showing the total earlier makes people understand it better. (2)
+1. Showing the total earlier makes people understand it better. (2; needs a comparison, which the first pilot does not include)
 2. People recover from errors without help using our parts. (3)
 3. People who use assistive technology can complete the checkout task with these parts. (1)
 4. People recognise the same meaning when appearance differs between themes and densities. (4)

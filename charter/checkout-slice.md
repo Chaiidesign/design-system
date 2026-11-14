@@ -15,13 +15,13 @@ The **reference checkout page** is built in this repository from the four parts,
 3. Cost summary.
 4. Email field.
 5. Address fields: name, two lines (second optional), town, postcode; country read-only.
-6. Discount code: field plus "Apply" button, composed on the page.
+6. Discount code: a field and an "Apply code" button, composed on the page.
 7. Total restated, identical to the cost summary; commit button.
 8. After the press: confirmation or failure.
 
 ## 2. The four parts
 
-LOCK items are named in short here. The full rows and their checks are in [budget.md](budget.md), which was revised after this draft; where the wording differs, budget.md is right.
+LOCK rows are named in short here. The full rows and their checks are in [budget.md](budget.md).
 
 **Field (core)**
 - For: collecting one value.
@@ -29,15 +29,15 @@ LOCK items are named in short here. The full rows and their checks are in [budge
 - Build: empty; focused; filled; filled by browser autofill; pasted with spaces or hyphens (accepted and normalised); invalid (message names the problem and the fix); corrected (message clears once valid); read-only (shown, selectable, not editable); long label, hint, value and error (wrap, never truncate); other language, including right to left.
 - Do not build: disabled (read-only covers it); a success mark (validity is no error); loading (server checks report through feedback).
 - Failures: value missing, wrong format, or rejected by the server after submission. Each shows a message beside the field; everything typed is kept.
-- LOCK: "Errors are identified in text"; "Valid input survives an error"; "Nothing is shown by colour alone"; "never asked to re-enter information"; name, role, state and value; contrast, keyboard, focus, reflow, target size.
+- LOCK rows that apply (budget.md): errors identified in text next to the problem; valid input survives an error; nothing shown by colour alone; no re-entry of information already given; name, role, state and value; input purpose; contrast, keyboard, focus, reflow, target size.
 
 **Button (core)**
 - For: starting one action.
 - Anatomy: label (verb and object), focus indicator, busy indicator.
-- Build: enabled; focused; pressed; busy (label kept, busy announced, further presses ignored); succeeded (result shown by feedback); re-enabled after a failure; long label (wraps); other language.
+- Build: enabled; focused; pressed; busy (label changes to the progressive form and keeps any amount, such as "Paying £48.20…"; busy announced; further presses ignored); succeeded (result shown by feedback); re-enabled after a failure; long label (wraps); other language.
 - Do not build: disabled because a form is incomplete. Pressing shows the errors instead.
 - Failures: the action fails (button re-enables; feedback explains); the outcome is unknown (button does not invite a repeat; feedback says what to do).
-- LOCK: "A second press of a submit control does not submit twice"; "A control's label says what the control does"; 24 by 24 pixel minimum target (44 for primary touch controls, ADAPT); "A destructive action is never the default"; keyboard, focus, contrast.
+- LOCK rows that apply: a second press does not act twice; the label says what the control does; the consequence is stated at the control that commits; 24 by 24 pixel minimum target (44 for primary controls with a coarse pointer is ADAPT); a destructive action is never the main, first-focused or Enter-activated control; keyboard, focus, contrast.
 
 **Feedback (core)**
 - For: telling the person the real state of something.
@@ -45,18 +45,19 @@ LOCK items are named in short here. The full rows and their checks are in [budge
 - Forms: **error summary** (receives focus; one link per field error, worded exactly as the field's message); **status message** (announced without moving focus); **notice** (stays while true).
 - Build: each kind; in progress; succeeded; failed; outcome unknown (says so and how to check, without inviting a second attempt); long content; other language; reduced motion.
 - Do not build: messages that disappear on a timer.
-- LOCK: "A status shows the real state"; "Nothing is shown by colour alone"; "No invented urgency"; "Errors are identified in text"; "Motion stops or reduces"; contrast.
+- Failures: script is off (the server renders the message in the page, at the top of the main content, and the page loads with focus on it); several messages at once (listed in one summary, in page order); a result that arrives after the person has moved on (shown as a notice that stays until dismissed, and announced).
+- LOCK rows that apply: a status shows the real state; status messages announced without moving focus; nothing shown by colour alone; urgency only from real data; errors identified in text; reduced motion; contrast.
 
 **Cost summary (commerce; built only from core parts and text)**
 - For: showing the full amount and what makes it up, before the commit action.
-- Anatomy: heading; line items (name, quantity, amount); subtotal; discounts (named, minus sign and the word "discount"); delivery; taxes; other mandatory charges, each named, never a vague "fee"; total, most prominent, with currency.
+- Anatomy: heading; line items (name, quantity, amount); the items subtotal, labelled "Items"; discounts (named, minus sign and the word "discount"); delivery; taxes; other mandatory charges, each named, never a vague "fee"; total, most prominent, with currency.
 - Taxes: both "included in prices" (amount stated) and "added" (own line).
 - Charges not yet known: a line saying when it will be known, such as "Delivery: added after you enter your postcode". Meanwhile the total reads "Total so far", never "Total".
 - Currency: one per page, formatted for the page's locale, currency named; a value reads identically everywhere. A zero charge says "Free" and keeps its line.
 - A value changes after it was shown: the line says in text what it changed from and to; a status message announces it. If this happens after the commit press, the order is not placed; the person sees the new total and presses again.
 - Build: loading (old values marked as updating); all known; some unknown; value changed; discount applied; empty basket (no commit); many or long lines; other language and currency; tax included; tax added.
 - Failures: discount rejected (code kept, reason given); failed to calculate (commit blocked; feedback offers a retry); value changed after the press (above).
-- LOCK: "The full price ... is shown before the action that commits them"; "A status shows the real state"; "spends money asks for confirmation"; "No option that costs money ... is selected in advance"; "Nothing is shown by colour alone"; reflow; contrast.
+- LOCK rows that apply: the full price with every mandatory charge shown before the commit; a status shows the real state; the consequence stated at the control that commits; no optional extra that adds cost selected in advance; nothing shown by colour alone; reflow; contrast.
 - Invariant: the commit never completes while a mandatory charge is unknown or has changed since last shown.
 
 ## 3. What is deliberately left out of the slice
@@ -95,7 +96,6 @@ Targets are not set here; only after the baseline is observed.
 - **Compared:** groups by access need, device and language; later cost-summary revisions against this.
 - **Would disconfirm:** a group with lower comprehension or completion than others (principle 1); a charge on screen yet overlooked or surprising (principle 2); needing help to recover, or re-entering valid input (principle 3); nearly everyone passing or failing, so the measure cannot tell designs apart and must be revised.
 - **Cannot start until:** a steward is named; both researcher roles are filled; participants are recruited with consent and agreed compensation; the script has had a dry run.
-- **Open for the lead:** market, currency and tax mode; page visible (as drafted) or questions from memory; a late-disclosure comparison page, which would make E1 testable but shows what principle 2 calls a breach (if used: clay, never shipped, participants debriefed, steward decides).
 
 ## 6. Evidence coverage
 
@@ -108,9 +108,9 @@ Targets are not set here; only after the baseline is observed.
 
 ## 7. Claims and their labels
 
-- Unexpected extra costs are a leading reason given for abandoning a purchase **[research]**: Baymard cart abandonment list, updated 28 October 2026 (40% "extra costs too high"; 12% could not see the total up front); excludes the 42% "just browsing"; method not public.
-- A cost rising at review makes people feel misled **[research]**: Scott, Baymard, 15 July 2019; one tester quoted.
-- Showing the full total before commit improves comprehension **[assumption]**: the E1 pilot tests it.
+- Extra costs, and not seeing the total early, are among the reasons people give for abandoning a purchase **[research]**: Baymard cart abandonment list, shown as updated 28 October 2026 (40% "extra costs too high"; 12% could not see or calculate the total up front); self-reported; excludes the 42% "just browsing"; no sample size given.
+- A cost rising at the review step can make a person feel misled **[pattern]**: Scott, Baymard, 15 July 2019, reports one tester who felt "duped".
+- Showing the full total before commit improves comprehension **[assumption]**: the first pilot measures a baseline for one design. Testing this assumption needs a comparison, which would be an EXPLORE item decided by the steward.
 - Keeping valid input and explaining errors beside the field helps people recover alone; validate on leaving a field **[pattern]**: GOV.UK error message and summary; Krause, Nielsen Norman Group, 2019; Scott, Baymard, 2024. No controlled study found.
 - Visible labels, not placeholders; do not disable submit while incomplete **[pattern]**: Dutton, web.dev; Holst, Baymard, 2013 (old).
 - Mandatory charges belong in the total **[pattern]**: UK DMCC Act 2024 s.230; CMA guidance (the US FTC rule covers only tickets and lodging).

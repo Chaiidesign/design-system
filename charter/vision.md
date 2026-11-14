@@ -9,7 +9,7 @@ Item 1.1. Altitude: system. Reasons and full checks: [vision-notes.md](vision-no
 - *The promises* are the seven principles. Three are owed to every person: they can use it, are told the truth, and stay in control. Four keep those three at scale.
 - *Every surface* is **universal**: every product, platform, device, language and ability.
 - *The same promises* is **unified**: one source of truth, and no difference that nobody decided on.
-- *Whoever builds it* is **scalable**: people and AI agents build from one source, without asking inside the written ranges, so maintenance grows more slowly than the products do.
+- *Whoever builds it* is **scalable**: people and AI agents build from one source, without asking inside the written ranges until real users are affected, so maintenance grows more slowly than the products do.
 - The promises change when evidence from people shows they are wrong.
 
 ## Where the system should be

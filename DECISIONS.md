@@ -49,6 +49,8 @@ Nothing on the board is marked approved. For each conflict the rule in CLAUDE.md
 | 10 | The board says "baseline first, targets after". CLAUDE.md asks for numeric performance budgets in the charter | The budgets are set as marked starting guesses, and are reset once to measured values at Gate 3 |
 | 11 | The board says the steward picks the visual direction, or the agent picks after a day. CLAUDE.md gives visual direction to the lead | The lead makes three directions; the CEO chooses; if there is no answer within a day the lead chooses and logs it |
 | 12 | The board's first cycle measures a baseline before building. No earlier Souvenir checkout exists to observe | The baseline is the first measurement of the first version that passes Gate 3. No target is set before it |
+| 13 | CLAUDE.md gives every EXPLORE promotion to the steward. The charter's route for additions makes every new part outside the founding set an EXPLORE item first | Adding such a part is therefore the steward's decision. With no steward, the system can grow only by the founding set: the tokens, the four checkout parts, and parts a work item in the CEO's work tree requires |
+| 14 | CLAUDE.md asks the CEO first for changes to deltas. An earlier draft let the lead narrow a range | Any change to a range, wider or narrower, needs the CEO |
 
 - **To reverse:** Tell the lead which side to take on any row.
 
@@ -70,7 +72,7 @@ The survey found that the format is a report of the Design Tokens Community Grou
 ### A-08. Every number the lead chose is a starting value
 
 - **Situation:** The ranges, the EXPLORE limits, the byte budgets, the writing limits and the benchmark limits were chosen by the lead without measurement.
-- **Decision:** Each is marked "starting value" where it appears, dated 13 November 2026, with the gate at which it is reviewed. The byte budgets are reset once to measured values at Gate 3.
+- **Decision:** Each is marked "starting value" where it appears. All were chosen on 13 November 2026 and are reviewed at Gate 2, Gate 3 or the first quarterly review, as the file that holds them says. The byte budgets are reset once to measured values at Gate 3, which may mean loosening one; that reset is the one loosening the lead will make without asking.
 - **To reverse:** Replace any number; none has anything built on it yet.
 
 ### A-09. Proposed additions to the scorecard
@@ -111,6 +113,10 @@ A starting rule, with the alternative and the review trigger written in `charter
 ### D-006. The charter was rewritten after three challenge reviews
 
 Before the gate, three fresh reviewers on Fable were asked to break items 1.1 to 1.4, each with a different lens: fidelity to the brief, whether each contract can be checked and can fail, and a sceptic. Two returned "fail as drafted" and one "pass with fixes": 9 blockers, 68 major and 20 minor findings, with overlap. The five files were rewritten. The main changes: the vision was cut to one screen; conflicts among the first three principles are now settled without a person; every LOCK row names a check that can read a declared fact; every number the lead chose is marked as a starting value; and the charter no longer calls itself approved.
+
+### D-010. Gate 1, first run: fail
+
+Three fresh reviewers on Fable judged the ten criteria on 13 November. Criteria 1, 2, 3, 7 and 9 passed. Criteria 4, 5, 6, 8 and 10 failed. The record is in `gates/gate-1.md`. The causes: two deciders for adding a part; survey claims resting on files that had no review; a benchmark task written before the accent range was tightened; four research labels stronger than their sources; and terms used without a definition. All were fixed the same day and the gate was run again.
 
 ### D-007. Three arguments against the charter, kept on record
 

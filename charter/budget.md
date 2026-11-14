@@ -31,17 +31,18 @@ Every WCAG 2.2 level A and AA success criterion is LOCK. The table lists the cri
 | Requirement | Check |
 |---|---|
 | Text contrast is at least 4.5 to 1, or 3 to 1 for large text *[standard]* | A lint fails when a component uses a text and background combination that is not in the declared list. A script checks every declared pair in every theme. A scan checks rendered contrast in every component state |
-| Controls, their states and focus indicators have at least 3 to 1 contrast against what is next to them *[standard]* | The same three checks. Inactive controls are exempt in WCAG; the system avoids them |
+| Controls, their states and focus indicators have at least 3 to 1 contrast against what is next to them *[standard]* | Declared pairs include each border and indicator colour with the background beside it, so the same three checks cover them. Inactive controls are exempt in WCAG; the system avoids them |
 | Every function works with the keyboard alone, in a sensible order, with no trap | A keyboard path test per component and per reference page |
-| Keyboard focus is visible and not covered | The test asserts a focus indicator at least 2 pixels thick with 3 to 1 contrast, and that the centre of the focused element is not covered by another element |
+| Keyboard focus is visible and not covered | The test asserts a focus indicator at least 2 pixels thick (*[starting value]*) with 3 to 1 contrast, and that the centre of the focused element is not covered by another element |
 | No target is smaller than 24 by 24 pixels, with the exceptions WCAG gives, such as a link inside a sentence *[standard]* | A size assertion on every interactive element that is not inside running text |
 | Every control exposes its name, role, state and value | The automated scan, plus the audit file's manual check with a screen reader |
 | The purpose of each input that collects personal data can be read by software, so browsers can fill it in | A test asserts the autocomplete value on each such input |
 | Status messages are announced without moving focus | A test asserts the live-region role on each status message |
 | Content reflows at 320 pixels wide, and text can be enlarged to 200% | A test asserts that the page is no wider than 320 pixels and that no text is clipped, at normal and at 200% text size |
 | Text stays readable when a person increases line, paragraph, letter and word spacing | A test applies the WCAG spacing values and asserts that no text is clipped |
-| Motion stops or reduces when the person has asked for reduced motion | A test with the reduced-motion setting on asserts that no transition runs longer than 0.01 seconds |
-| Nothing is shown by colour alone | For each pair of states in a component contract, a test asserts a difference in text, icon or attribute |
+| Motion stops or reduces when the person has asked for reduced motion | A test with the reduced-motion setting on asserts that no transition runs longer than 0.01 seconds (*[starting value]*, standing for "none") |
+| Nothing is shown by colour alone | For each pair of states in a component contract, a test asserts a visible difference in text, icon or shape |
+| Parts work in a right-to-left language and with text 40% longer than the English (*[starting value]*) | A visual test with right-to-left and lengthened text asserts that nothing is clipped or overlaps, and that the order of parts is mirrored |
 | Errors are identified in text, next to the problem, with a way to fix them | A component test, and the writing check |
 | A person is not asked to re-enter information they gave earlier in the same task, except where it is essential or needed for security | A flow test asserts that every field not on the contract's security list keeps its value |
 
@@ -54,7 +55,7 @@ The design system owns the parts. It does not own a product's data. So each row 
 | Requirement | What the system checks | What the product must show in its passport |
 |---|---|---|
 | The full price, with every mandatory charge, is shown before the action that commits | The cost summary cannot be rendered without a total and a list of charges, and shows "Total so far" while any charge is marked unknown | That every charge it makes is passed in |
-| A status shows the real state | A status takes its state from a fixed set, and a test covers each | That each state is set by the real outcome, not a timer |
+| A status shows the real state | A status takes its state from a fixed set, and a test covers each. On the reference pages a flow test asserts that the status changes only after the test server answers | That each state is set by the real outcome, not a timer |
 | Urgency, scarcity and popularity come only from real data | A lint fails on quantity, deadline or popularity wording in literal text. Such text must come from a declared data field | The source of each such field |
 | No optional extra that adds cost or shares data is selected in advance | Options declare whether they add cost or share data, and a lint fails if such an option is selected by default | Nothing further |
 | A control's label says what the control does | The writing check: a verb and an object | Nothing further |
@@ -65,7 +66,7 @@ The design system owns the parts. It does not own a product's data. So each row 
 | Requirement | Check |
 |---|---|
 | Each component uses the native element or role that matches its meaning | Markup lint and the automated scan |
-| Each token is used only for its stated purpose | Each semantic token declares where it may be used (text, background, border and so on). A lint fails on use elsewhere |
+| Each token is used only for its stated purpose | Each semantic token declares where it may be used (text, background, border and so on). A lint fails on use elsewhere. A status colour used as decoration in an allowed place is judged by review |
 | One meaning has one name | A naming lint against the vocabulary file, which lists each term and its banned synonyms |
 | Components use semantic or component tokens, never primitive tokens | A lint that fails on any reference to any primitive group. It is proven by a fixture that uses each group once |
 
@@ -80,6 +81,7 @@ The design system owns the parts. It does not own a product's data. So each row 
 | Where an action can be reversed, the control to reverse it is shown | A component test |
 | The system does not act on an instruction it had to guess | A flow checklist run by the reviewer, for every flow in which the assistant acts. Judged by review, not measured |
 | No part stores a sensitive value | A lint fails on any use of browser storage in a part |
+| Under a standing permission, the system acts only inside the limits the person set, shows what it did, and lets the permission be withdrawn | A flow checklist run by the reviewer. Judged by review, not measured. No part implements standing permissions yet |
 
 ## The delta for each principle
 
@@ -97,12 +99,12 @@ The design system owns the parts. It does not own a product's data. So each row 
 
 Two cases are kept apart:
 
-- **A product choosing a value inside a range** needs no approval. The range check passes, and the choice is recorded in the product's theme file with its context and reason.
+- **A product choosing a value inside a range,** while no real user is affected, needs no approval. The range check passes, and the choice is recorded in the product's theme file with its context and reason. Once real users are affected, the steward decides, as for any change that reaches them.
 - **A change to the system's own default** inside a range is the lead's decision, after the checks and a review.
 
 A value outside its range does not enter brick. It is pulled back to the reference, or it becomes an EXPLORE item. Once the human review queue exists, it is shown there first.
 
-From Gate 1, narrowing a range is the lead's decision and widening one needs the CEO. Phase 2 sets only the numeric steps of the scales, not the ranges. Every number in this table is a *[starting value]* reviewed at Gate 2.
+From Gate 1, changing a range, wider or narrower, needs the CEO. Phase 2 sets only the numeric steps of the scales, not the ranges. Every number in this table is a *[starting value]* reviewed at Gate 2.
 
 | What may vary | Reference | Allowed range | What must still hold |
 |---|---|---|---|
@@ -113,8 +115,8 @@ From Gate 1, narrowing a range is the lead's decision and widening one needs the
 | Density | The default step | Three steps: compact, default and comfortable, multiplying the spacing scale by 0.75, 1 and 1.25 | Where the browser reports a coarse pointer, primary controls are at least 44 pixels tall. The 24 pixel floor always holds |
 | Shape | The corner-radius scale | One multiplier from 0 to 2 for the whole scale | No per-component radius |
 | Motion | The system's durations and easings | A product may shorten durations or turn motion off. No transition runs longer than 500 milliseconds | Reduced motion is honoured |
-| Layout | The component's default arrangement | Parts may stack or sit side by side as the container's width changes | Reading order and meaning do not change |
-| Tone of voice | The voice rules | As the tone table in [voice-and-tone.md](voice-and-tone.md) allows | The voice rules marked LOCK |
+| Layout | The component's default arrangement | The arrangements listed in the component's contract | A test asserts that the visual order matches the order in the markup |
+| Tone of voice | The voice rules | As the tone table in [voice-and-tone.md](voice-and-tone.md) allows. Judged by review; the range check does not cover it | The voice rules marked LOCK |
 
 Where the starting values come from: 44 pixels follows Apple's guidance of a 44 point touch area, which is a different unit, so it is a starting value and not a standard. 16 pixels for inputs avoids a browser zoom on focus on some phones **[pattern]**. The line length, line height, hue distance, density steps and 500 milliseconds are the lead's choices, informed by the craft notes in the survey, which disagree with each other.
 
@@ -130,6 +132,8 @@ Limits, all *[starting values]* taken from an idea on the board that has not bee
 - at most one new item per pilot, or per slice while no pilot is running;
 - expiry 30 days after the start, extended once at most;
 - an item whose evidence needs people does not expire while its pilot waits for a steward. It is marked "waiting".
+
+Items made by the route in principle 5 count toward these limits. This is deliberate: it caps how many unproven parts exist at once. With no steward, three waiting items stop further additions outside the founding set.
 
 At expiry the lead extends or retires the item, or proposes it for promotion. Promotion is the steward's decision. An item nobody decided on is retired.
 

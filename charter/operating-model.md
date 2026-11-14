@@ -6,9 +6,9 @@ This file says who does the work, who decides, how a change gets in, and how the
 
 ## Team model
 
-**Choice: a central core plus contributors.** This is the hybrid the CEO described: a core that maintains the system, and designers, engineers and their agents who contribute through the passport. The core does not depend on contributions arriving.
+**Choice: a central core team plus contributors.** This is the hybrid the CEO described: a core team that maintains the system, and designers, engineers and their agents who contribute through the passport. The core team does not depend on contributions arriving.
 
-Today the core is one lead agent and the subagents it recruits. There are no other contributors and no named steward. That is the current state, not the intended one.
+Today the core team is one lead agent and the subagents it recruits. There are no other contributors and no named steward. That is the current state, not the intended one.
 
 | Model | For | Against | Used here |
 |---|---|---|---|
@@ -42,7 +42,7 @@ The three models are Nathan Curtis's. He reports no case, among more than 80 sys
 
 **No standing committee of agents.** Where a decision cannot be checked by a test, the lead recruits reviewers with different lenses and asks each to try to prove the decision wrong: an accessibility specialist checking against published criteria, a writer, a performance engineer, an agent that has only the docs, a newcomer, and a sceptic.
 
-**Retiring.** A subagent ends when its brief is done. A brief template or a skill is retired when, after one revision, fewer than half of the pieces of work made with it pass review first time across three uses, or when it has not been used for a quarter. Each piece of work records the template or skill it was made with.
+**Retiring.** A subagent ends when its brief is done. A brief template or a skill is retired when, after one revision, fewer than half of the pieces of work made with it pass review first time across three uses, or when it has not been used for a quarter. These thresholds are *[starting value]*, reviewed at the first quarterly review. Each piece of work records the template or skill it was made with.
 
 **Escalation.** Work that fails review twice moves up one tier. Work at the top tier that fails twice is marked blocked and reported to the CEO.
 
@@ -55,13 +55,13 @@ One rule sits above the table, and follows the FigJam board until the CEO says o
 | Kind of change | Who may propose | Independent proof | Who decides | Who can roll it back |
 |---|---|---|---|---|
 | Clay: a prototype or experiment file | Anyone | None | Its author | Its author |
-| A product choosing a value inside an ADAPT range | The product or its agent | The range check; the entry in the theme file | The product | The product |
+| A product choosing a value inside an ADAPT range, no real users affected | The product or its agent | The range check; the entry in the theme file | The product | The product |
 | A change to the system's default inside an ADAPT range, no real users affected | Anyone | Automated checks; a reviewer | Lead | Lead |
 | A founding part, or a non-breaking change to a part, no real users affected | Anyone | Automated checks; a reviewer | Lead | Lead |
-| Adding a new part to the system | Anyone, by the route in principle 5 | A passport showing the second occurrence; checks; a reviewer | Lead | Lead |
+| A breaking change to a part or token, no real users affected | Anyone | Automated checks; a reviewer; an alias and a migration note | Lead | Lead |
 | Starting an EXPLORE item | Anyone, with a complete register entry | The register check | Lead | Its owner |
 | Extending or retiring an EXPLORE item at expiry | Its owner | The evidence collected | Lead | Lead |
-| Promoting an EXPLORE item into the system | Its owner | Evidence against its hypothesis | Steward | Steward |
+| Adding a new part to the system. Every new part outside the founding set arrives as an EXPLORE item, so this is always a promotion | Its owner | A passport showing the second occurrence; evidence against its hypothesis; checks; a reviewer | Steward | Steward |
 | Running a pilot | Lead | Gate results; passing LOCK checks; safe test data; a named rollback owner, a fallback and a stop condition written first | Steward | Steward |
 | A release to real users, or any change that reaches them | Lead | Gate results and pilot evidence | Steward | Steward |
 | Removing or retiring a part | Anyone | Usage data, an owner, a replacement, a migration window, a way back, and a check that task success held | Lead; steward if real users are affected | Whoever decided |
@@ -69,7 +69,8 @@ One rule sits above the table, and follows the FigJam board until the CEO says o
 | Adding or tightening a test or lint rule; changing a skill, brief, docs page or the work tree | Anyone | A reviewer, for tests and lint rules | Lead | Lead |
 | Loosening or removing a test or lint rule | Anyone | The reason it is wrong | CEO; with the steward if it sits behind a LOCK row. Never done to make a change pass | CEO |
 | Tightening a performance budget | Lead | A measurement | Lead | Lead |
-| Loosening a performance budget; widening a range | Lead | A measurement | CEO | CEO |
+| Loosening a performance budget | Lead | A measurement | CEO | CEO |
+| Changing an ADAPT range, wider or narrower | Lead | A measurement or evidence | CEO | CEO |
 | A change to a LOCK row or to principles 1 to 3 | Anyone | Evidence; a reviewer | CEO and steward together | CEO and steward |
 | A change to principles 4 to 7, the approvals list, the scorecard definitions, the benchmark tasks, the roles or this table | Lead | Evidence from the loops; a reviewer | CEO | CEO |
 | Passing a gate | Lead submits | The pass criteria written before the phase | The gate reviewer. The lead cannot overrule the verdict | Not applicable |
@@ -106,7 +107,7 @@ Each loop measures one thing, compares it with a desired state, and acts. An inn
 | Passes outward when | A change fails twice | A slice is ready for people, or an item shows no gain after three cycles | Evidence contradicts a principle | Not applicable |
 | Cannot tell us | Whether the checks are the right checks | Whether the charter is right for people. It measures agreement with the charter | Anything, until it runs | Anything about people, until L3 runs |
 
-**Comparing benchmark scores.** A score is five runs of each task. Violations are compared first, then completion, then tool calls. A change counts as a drop only if it is larger than the spread between the five runs.
+**Comparing benchmark scores.** A score is five runs of each task (*[starting value]*, checked against the first baseline). Violations are compared first, then completion, then tool calls. A change counts as a drop only if it is larger than the spread between the five runs.
 
 ### The human review queue
 
@@ -116,7 +117,7 @@ This is the fast human loop for one case: an item outside its range.
 - **What the reviewer sees:** the instance, the reference, the size of the difference, and one sentence of context.
 - **What the reviewer does:** like or dislike, with an optional line saying why.
 - **Who reviews:** people named by the steward.
-- **What happens:** an item with at least three votes and a majority of likes becomes a proposal to widen the range or promote the item, through the passport. Anything else is pulled back to the reference. An item with no vote after 14 days is pulled back. The item stays out of brick while it waits.
+- **What happens:** an item with at least three votes and a majority of likes becomes a proposal to widen the range or promote the item, through the passport. Anything else is pulled back to the reference. An item with no vote after 14 days is pulled back. Three votes and 14 days are *[starting value]*. The item stays out of brick while it waits.
 - **What it is not:** votes are opinions from inside the company. They are not evidence about users, and they never override a LOCK row.
 
 The queue is built in phase 4. Until it has reviewers, an out-of-range value is pulled back.

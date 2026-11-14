@@ -45,9 +45,9 @@ A check marked *needs people* cannot be met by the lead agent alone. It needs a 
 - At least three products use the system, and none contains a value that bypasses the tokens.
 - The cost of maintaining the system, per product, is lower with three products than with one. This measure is proposed in DECISIONS.md and is "not measured" until two products exist.
 - The same token source produces output for the web and for one other platform.
-- A person or agent outside the core has had a change accepted through the passport. *Needs people.*
+- A person or agent outside the core team has had a change accepted through the passport. *Needs people.*
 - The principles have been reviewed four times against evidence. *Needs people.*
-- Ecommerce parts sit in their own layer, and one other domain has its own layer on the same core.
+- Ecommerce parts sit in their own layer, and one other domain has its own layer on the same core layer.
 
 **5 years (by 13 November 2031)**
 - At least one framework, build tool or model has been replaced without changing a principle's rule or a token name.
@@ -64,4 +64,4 @@ At each quarterly review, two questions are asked of the record in DECISIONS.md:
 
 ## The strongest argument against the north star
 
-It describes agreement with rules the system wrote for itself. Every surface could keep all seven promises while people still fail at their tasks. The fifth gloss is there to answer this, but it only has force once people are involved, and today they are not.
+It describes agreement with rules the system wrote for itself. Every surface could keep all seven promises while people still fail at their tasks. The last bullet under the north star is there to answer this, but it only has force once people are involved, and today they are not.

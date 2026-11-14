@@ -30,34 +30,34 @@ This file governs every word in the interface: labels, hints, errors, statuses, 
 | Routine action | Focused on the task [assumption] | Shortest form. Verb first. | "Continue to delivery" |
 | Waiting | Unsure whether it is working [assumption] | Say what is happening. Never fake progress. | "Paying…" |
 | Success | Wants confirmation and the next step [pattern: GOV.UK confirmation pages give a reference and what happens next] | Plain fact, then what happens next. No celebration. | "Order placed. Receipt sent to sam@example.com." |
-| A mistake the person made | Frustrated if blamed [assumption] | Name the field, give the fix. No blame. | "Enter an email address with an @, like name@example.com" |
+| A mistake the person made | Frustrated if blamed [assumption] | Name the field, give the fix. No blame. | "Enter an email address with an @, like name@example.com." |
 | A failure that is our fault | Worried about money or lost work [assumption] | Own it with "we". Say what is safe and what to do. | "We couldn't reach the payment service. Your card has not been charged. Try again." |
-| Money and commitment | Wary of surprise charges [research: Baymard's list, updated 28 October 2026: 40% of shoppers who meant to buy left because extra costs were too high; method not public] | Every amount visible. Name the commitment on the button. | "Pay £48.20" |
+| Money and commitment | Wary of extra costs [pattern: inferred from Baymard's list of reasons people give for abandoning a purchase, shown as updated 28 October 2026, where 40% gave "extra costs too high"] | Every amount visible. Name the commitment on the button. | "Pay £48.20" |
 | Irreversible action | Cautious [assumption] | Slow down. State the consequence and that it cannot be undone. | "Delete saved card? This can't be undone." |
 | Machine-made or uncertain content | May trust it more than is warranted [assumption] | Say who made it and how sure it is, in words. | "Drafted by Souvenir. Check it before you send." |
 | Bad news | Disappointed [assumption] | Direct first, then the best next option. No softening that hides the fact. | "This item is out of stock. Remove it to continue." |
 
 ## Rules a reviewer can check
 
-LOCK rules block release; only the steward changes them. ADAPT rules the lead may adjust. Limits marked *starting value* were set by the lead, not by research.
+LOCK rules block release; changing one needs both the CEO and the steward. ADAPT rules the lead may adjust. Limits marked *starting value* were set by the lead, not by research.
 
 1. **Sentence case** for every string, including buttons and headings. Proper nouns keep their capitals. Messages end with a full stop; labels, hints and buttons do not. (ADAPT)
 2. **Button labels are verb plus object**: "Save address", "Pay £48.20". One-word verbs are allowed only for Cancel, Close and Done. Never "OK", "Yes", "No" or "Submit". (LOCK: a label says what the control does)
-3. **An error says what happened and what to do**, in text, next to the problem. (LOCK)
-4. **One error, one wording.** The message beside the field and in any summary is the same, word for word. [pattern: GOV.UK error summary] (LOCK)
+3. **An error says what to do, and what happened where that is not obvious**, in text, next to the problem. (LOCK; budget.md, accessibility: errors are identified in text)
+4. **One error, one wording.** The message beside the field and in any summary is the same, word for word. [pattern: GOV.UK error summary] (ADAPT)
 5. **No blame.** The subject of an error is the field or the thing, not "you" doing something wrong. (ADAPT)
-6. **Banned words**: "please", "sorry", "oops", "invalid", "valid", "error occurred", "something went wrong" (without a cause), "simply", "just", "easy", "click here". [pattern: GOV.UK error message, Apple Writing] (ADAPT)
+6. **Banned words**: "please", "sorry", "oops", "invalid", "valid", "error occurred", "something went wrong" (without a cause), "simply", "just", "easy", "click here"; and abbreviations or trade jargon a shopper would not say, such as "S&H" or "promo". [pattern: GOV.UK error message, Apple Writing] (ADAPT)
 7. **No exclamation marks.** (ADAPT)
 8. **"We" only for what Souvenir did or failed to do**, never in an error about the person's input. (ADAPT)
 9. **Numbers are digits**: "3 items". Money shows the currency and the exact amount from the locale's formatter, never rounded. Dates name the month in words; a relative date ("tomorrow") also gives the date. Formats come from the locale, never built by hand. (LOCK for money)
 10. **Plain words.** Sentences of at most 20 words (*starting value*). Aim for US grade 7 or lower [pattern: Polaris content guidance]. Judge by sentence length and word choice; readability formulas are unreliable on short strings. (ADAPT)
-11. **Length limits** (*starting values*): labels and buttons at most 4 words plus any amount; a hint one sentence; an error at most 2 sentences; any other message at most 3 sentences. Layout must not depend on these limits, because translated text is often longer [pattern]. (ADAPT)
+11. **Length limits** (*starting values*): labels and buttons at most 4 words plus any amount; a hint one sentence; an error at most 2 sentences, or 3 for a failure on our side; any other message at most 3 sentences. Layout must not depend on these limits, because translated text is often longer [pattern]. (ADAPT)
 12. **Never state what the system does not know to be true.** "Saved" appears only after the save succeeds; "not charged" only when that is confirmed; no stock or time claims without data. (LOCK)
 13. **Mark machine-made or uncertain content in text**, at the start, naming who made it ("Drafted by Souvenir", "Suggested by Souvenir"), and say what the person should check. Not by icon or colour alone. Never show a confidence figure the system has not measured. (LOCK)
 14. **Survives translation.** No idioms, puns or slang. Never join fragments into a sentence; each sentence is one string with named placeholders ("{count} items"), and plurals use the locale's plural rules, never "item(s)". (ADAPT)
 15. **Consequences before commitment.** A confirmation names the action in its title, states the consequence, and says if it cannot be undone. Its buttons repeat the action ("Cancel order" / "Keep order"). (LOCK)
 16. **One word per meaning.** Do not switch between synonyms ("delivery", "shipping") within a product. (LOCK, principle 4)
-17. **Loading and done states** reuse the button's verb: "Pay" → "Paying…" → the confirmed result. Ellipsis only on loading states. (ADAPT)
+17. **Loading and done states** reuse the button's verb and keep any amount: "Pay £48.20" → "Paying £48.20…" → the confirmed result. Ellipsis only on loading states. Rule 2 applies to the resting label. (ADAPT)
 
 ## Examples for the checkout slice
 
@@ -69,9 +69,9 @@ Amounts are illustrative. The reference page's fixtures are listed in [checkout-
 |---|---|---|---|
 | Label | Email address | E-mail: | 1 |
 | Hint | We'll send your receipt here | Please enter a valid email | 6 |
-| Error: empty | Enter your email address | This field is required | 3 |
-| Error: no @ | Enter an email address with an @, like name@example.com | Invalid email | 3, 6 |
-| Error: has a space | Remove the space from the email address | You typed a space | 5 |
+| Error: empty | Enter your email address. | This field is required | 3 |
+| Error: no @ | Enter an email address with an @, like name@example.com. | Invalid email | 3, 6 |
+| Error: has a space | Remove the space from the email address. | You typed a space | 5 |
 
 **Button**
 
@@ -80,7 +80,7 @@ Amounts are illustrative. The reference page's fixtures are listed in [checkout-
 | Label | Continue to delivery | Next step! | 2, 7 |
 | Label | Apply code | Go | 2 |
 | Label | Pay £48.20 | Submit | 2 |
-| Loading | Paying… | Please wait | 6, 17 |
+| Loading | Paying £48.20… | Please wait | 6, 17 |
 | Done | Payment received (only after the payment service confirms) | Success | 12 |
 
 **Feedback**
@@ -97,9 +97,9 @@ Amounts are illustrative. The reference page's fixtures are listed in [checkout-
 
 | Part | This | Not this | Rule |
 |---|---|---|---|
-| Line labels | Items (3) · Delivery · Discount · Total to pay | Subtotal · S&H · Promo · Grand total | 16 |
+| Line labels | Items · Discount · Delivery · Tax · Total | Sub-total · S&H · Promo · Grand total | 6, 16 |
 | Unknown delivery | Delivery: not known yet. Enter your postcode to see it. | Delivery: Free* | 12 |
-| Total | Total to pay £48.20 | Total from £44.21 | 9, 12 |
+| Total | Total £48.20, or "Total so far £44.21" while a charge is unknown | Total from £44.21 | 9, 12 |
 | Price change | Delivery changed from £3.99 to £4.99 for this address. New total £49.20. Check it before you pay. | Total updated | 12, 15 |
 
 An unknown charge may appear only before the step that commits the person to pay; a "Pay" button never shows a total that is not final. If a charge cannot be calculated, say how it will be worked out [pattern: UK DMCC Act 2024 s.230]. After a price change, the person confirms again (principle 3).
@@ -110,7 +110,7 @@ An unknown charge may appear only before the step that commits the person to pay
 |---|---|---|
 | L1 Change loop | The writing check: banned words, case, length, and an error in text beside each field | A failed check blocks the change |
 | L2 Build cycle | A reviewer with the writer viewpoint, and the strings the benchmark agent wrote | The same rule fails in two cycles: fix the example or rule that misled, keep it if the benchmark holds |
-| L3 Pilot loop | Whether people can say what happened, what they will pay and what to do next, in their own words | Anyone misreads a cost or status string: release is blocked and the string is rewritten |
+| L3 Pilot loop | Whether people can say what happened, what they will pay and what to do next, in their own words | A misreading seen in a session goes to the steward, who decides to approve, revise or retire. No pass mark is set before a baseline |
 | L4 Strategy loop | L3 evidence against the voice traits | A trait contradicted by evidence is revised (CEO) |
 
 **Human checkpoint.** No machine can test whether words sound plain, steady and respectful. Before any string reaches pilot participants or real users, a person reads every string aloud, in context, on success and failure paths, and approves or revises it. The CEO asked for an in-house writer; none is named, so the CEO holds this seat. At Gate 3 a fresh reviewer checks every string against the numbered rules, which is a check of the rules and not of how the words sound. The board's idea of trying two tones for a failed-payment message is a candidate EXPLORE item for voice.
@@ -127,6 +127,6 @@ An unknown charge may appear only before the step that commits the person to pay
 
 1. **"We" for our own failures** is kept (rule 8), against Apple's guidance, as a *[starting value]* and assumption 3.
 2. **The length and reading-level numbers** in rules 10 and 11 are *[starting values]*, reviewed at Gate 3 against the strings actually written.
-3. **LOCK and ADAPT tags** on the rules are confirmed as drafted. A LOCK-tagged rule here is the writing form of a truthful-content or safe-behaviour row in [budget.md](budget.md).
+3. **LOCK and ADAPT tags.** Each LOCK rule is the writing form of a row in [budget.md](budget.md): rules 2, 9 (money), 12 and 13 of truthful-content rows; rule 3 of the accessibility row on errors; rule 15 of the safe-behaviour row on consequences; rule 16 of the meaning row "one meaning has one name". Rule 4 was retagged ADAPT because no row requires it.
 4. **"Sorry" stays on the banned list** for now. An apology with no cause and no next step says nothing; rule 3 already requires both.
 5. **Choosing the voice is the CEO's decision** under the table in [operating-model.md](operating-model.md). This guideline is the lead's proposal until the CEO has read it.
