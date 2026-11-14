@@ -15,7 +15,7 @@ Each also names an example that breaks it.
 
 ## How the ranking works
 
-**Principles 1 to 3 are what every person is owed.** Their machine-checkable rules are LOCK rows in [budget.md](budget.md); a rule with no row there is enforced by review. So are the meaning and behaviour rules of principle 4. A LOCK row blocks release and is never traded for anything.
+**Principles 1 to 3 are what every person is owed.** Their machine-checkable rules are LOCK rows in [budget.md](budget.md); a rule with no row there is enforced by review. The meaning and behaviour rules of principle 4 are LOCK rows too. A LOCK row blocks release and is never traded for anything.
 
 **If two LOCK rules conflict,** the design that breaks neither is found, or the part is not released. The lead logs the conflict under "Awaiting CEO" with both options, and other work continues. In the rare case where no design can keep both, the lower number decides which design is built while the conflict waits: 1, then 2, then 3, then the LOCK rules of 4. The part stays unreleased until the steward rules. Each ruling is added below as a worked case.
 
@@ -25,7 +25,7 @@ Each also names an example that breaks it.
 - 5 before 6: a part nobody needs is not worth making durable.
 - 6 before 7: composing on a base that will not last multiplies the rework later.
 
-**Performance budgets** are hard checks on every change. They are not traded by rank. If a LOCK row cannot be met inside a budget, the change is blocked and the budget goes to the CEO.
+**Performance budgets** are hard checks on every change. They are not traded by rank. Nor are the other checks of principles 5 to 7 that block a change: a pre-release dependency, a renamed name with no alias, an import from a domain layer. Rank shapes a design only inside those limits. If a LOCK row cannot be met inside a budget, the change is blocked and the budget goes to the CEO.
 
 **Evidence from people is handled differently from machine checks.** A failed machine check blocks release, with no tolerance. A pilot result below the baseline, or a barrier seen in a session, goes to the steward, who decides to approve, revise or retire. No pass mark for people is set until a baseline has been measured.
 
@@ -132,11 +132,11 @@ The founding set enters directly, by the lead's decision: the tokens, the four c
 
 ## 6. Built to last, even over built fast
 
-**Rule.** Each decision sits on the most durable layer that can hold it: a web standard before a library, a token before a value, a contract before an implementation. A web feature counts as a standard to build on when it has been available in every major browser for at least 30 months (*[starting value]*, the threshold browser makers use for "widely available"); a newer feature may only add an enhancement that the task does not depend on. Nothing in brick depends on software with a pre-release version tag or a version below 1.0 (*[starting value]*), except items on a written exception list. Every breaking change, meaning a change to a token name, a component's documented markup, attributes, class names or events that forces a consumer to change, comes with a version, a notice and a way to migrate.
+**Rule.** Each decision sits on the most durable layer that can hold it: a web standard before a library, a token before a value, a contract before an implementation. A web feature counts as a standard to build on when it has been available in every major browser for at least 30 months (*[starting value]*, the threshold browser makers use for "widely available"); a newer feature may only add an enhancement that the task does not depend on. Nothing in brick depends on software with a pre-release version tag or a version below 1.0 (*[starting value]*), except items on a written exception list. Every breaking change, meaning a change to a token name, a component's documented markup, attributes, class names or events that forces a product using the system to change, comes with a version, a notice and a way to migrate.
 
-**Evidence.** L1: a script fails on a pre-release dependency in brick, and on a removed or renamed public name with no alias. L2: the list of dependencies, each with the number of files that import it. L4: whether anything was rebuilt because a dependency moved.
+**Evidence.** L1: a script fails on a pre-release dependency in brick, and on a removed or renamed public name with no alias, meaning the old name kept as a pointer to the new one. A lint checks the CSS and HTML features used against a dated list of what has been available for 30 months. L2: the list of dependencies, each with the number of files that import it. L4: whether anything was rebuilt because a dependency moved.
 
-**Trigger.** Either L1 failure: the change is blocked. A component contract that can only be met in one framework: found at review, and the decision is moved down a layer.
+**Trigger.** Any of these L1 failures: the change is blocked. A component contract that can only be met in one framework: found at review, and the decision is moved down a layer.
 
 **Breaks it.** A component whose behaviour exists only as one framework's code. A token renamed with no alias left behind.
 
@@ -146,7 +146,7 @@ The founding set enters directly, by the lead's decision: the tokens, the four c
 
 **Rule.** The system grows by combining small general parts. A part that belongs to one domain, such as a cost summary for commerce, lives in a domain layer and is built from core parts. Nothing in the core layer imports from a domain layer or uses a word on that domain's word list, a file of terms that belong to the domain, such as "basket" for commerce. People and agents build from the same source. The cost of maintaining the system grows more slowly than the number of products.
 
-**Evidence.** L1: an import lint and a word-list lint on the core. L2: the benchmark's count of violations that add a one-off part. L4: maintenance cost per product, a measure proposed to the CEO and "not measured" until two products exist; and, when a second domain is built, the record of what transferred unchanged.
+**Evidence.** L1: an import lint and a word-list lint on the core. L2: the benchmark's count of violations that add a one-off part; and a comparison of the docs for people and the docs for agents against their one source. L4: maintenance cost per product, a measure proposed to the CEO and "not measured" until two products exist; and, when a second domain is built, the record of what transferred unchanged.
 
 **Trigger.** Either L1 failure: the change is blocked. Docs for agents that differ from docs for people: regenerate from the one source.
 
@@ -170,7 +170,7 @@ The founding set enters directly, by the lead's decision: the tokens, the four c
 | Scalability | 7 |
 | Not in the brief: human agency, from the board | 3 |
 
-Rams' ten principles were used as a lens. Six are cited above. "Aesthetic" belongs to visual direction in phase 2, and "environmentally friendly" is served by the performance budgets. "Innovative" is not used. Rams' wording is quoted only where the survey checked it.
+Rams' ten principles were used as a lens. Seven are cited above. "Aesthetic" belongs to visual direction in phase 2, and "environmentally friendly" is served by the performance budgets. "Innovative" is not used. Rams' wording is quoted only where the survey checked it.
 
 ## When a principle is changed or retired
 

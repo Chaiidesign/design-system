@@ -1,6 +1,6 @@
 # Checkout slice
 
-Item 1.6, part one. Altitude: patterns and details. Drafted by Opus 5.5; decided by the lead on 13 November 2026 (section 8).
+Item 1.6, part one. Altitude: patterns and details. Drafted by Opus 5.5; decided by the lead on 13 November 2026 (section 8). Nothing described here has been built yet: the reference page, its fixtures and its test server are made in phase 3.
 
 The **commit action** places the order and would take payment; none is ever taken here.
 
@@ -27,14 +27,14 @@ LOCK rows are named in short here. The full rows and their checks are in [budget
 - For: collecting one value.
 - Anatomy: label (always visible, never a placeholder), optional hint, input, inline error message, "optional" marker. The field alone owns its inline error message.
 - Build: empty; focused; filled; filled by browser autofill; pasted with spaces or hyphens (accepted and normalised); invalid (message names the problem and the fix); corrected (message clears once valid); read-only (shown, selectable, not editable); long label, hint, value and error (wrap, never truncate); other language, including right to left.
-- Do not build: disabled (read-only covers it); a success mark (validity is no error); loading (server checks report through feedback).
+- Do not build: a disabled state (read-only covers that need); a mark that says a value is correct (a field with no error is correct); a loading state (when the server checks a value, the result is reported by the feedback part).
 - Failures: value missing, wrong format, or rejected by the server after submission. Each shows a message beside the field; everything typed is kept.
 - LOCK rows that apply (budget.md): errors identified in text next to the problem; valid input survives an error; nothing shown by colour alone; no re-entry of information already given; name, role, state and value; input purpose; contrast, keyboard, focus, reflow, target size.
 
 **Button (core)**
 - For: starting one action.
 - Anatomy: label (verb and object), focus indicator, busy indicator.
-- Build: enabled; focused; pressed; busy (label changes to the progressive form and keeps any amount, such as "Paying £48.20…"; busy announced; further presses ignored); succeeded (result shown by feedback); re-enabled after a failure; long label (wraps); other language.
+- Build: enabled; focused; pressed; busy (label changes to the progressive form and keeps any amount, such as "Paying £48.20…"; busy announced; further presses ignored); succeeded (result shown by feedback); re-enabled after a failure; commit unavailable (when the basket is empty or the total cannot be calculated, the button stays enabled, and pressing it shows a message saying why the order cannot be placed); long label (wraps); other language.
 - Do not build: disabled because a form is incomplete. Pressing shows the errors instead.
 - Failures: the action fails (button re-enables; feedback explains); the outcome is unknown (button does not invite a repeat; feedback says what to do).
 - LOCK rows that apply: a second press does not act twice; the label says what the control does; the consequence is stated at the control that commits; 24 by 24 pixel minimum target (44 for primary controls with a coarse pointer is ADAPT); a destructive action is never the main, first-focused or Enter-activated control; keyboard, focus, contrast.
@@ -118,9 +118,9 @@ Targets are not set here; only after the baseline is observed.
 
 ## 8. The lead's decisions, 13 November 2026
 
-1. **Fixtures.** The reference page has three scenario fixtures: British English with pounds and tax included in prices; American English with dollars and tax added on its own line, using the benchmark's order data; and Arabic, right to left, with pounds. Together they cover both tax modes, two currencies and a right-to-left language.
-2. **Comprehension is asked with the page visible,** as drafted. Asking from memory would test memory. This is a *[starting value]* the researcher may change before the first session, not after.
-3. **The pass rule stands:** all four questions correct. It is a *[starting value]* for the same reason.
+1. **Fixtures.** The reference page has three scenario fixtures: British English with pounds and tax included in prices; American English with dollars and tax added on its own line, using the benchmark's order data; and Arabic, right to left, with pounds. Together they cover both tax modes, two currencies and a right-to-left language. Each comes in the conditions the baseline plan needs: all charges known, a discount applied, a charge unknown, and a value that changes after it was shown.
+2. **Comprehension is asked with the page visible,** as drafted. Asking from memory would test memory more than understanding **[assumption]**. This is a *[starting value]* the researcher may change before the first session, not after.
+3. **The pass rule stands:** all four questions correct. It is a *[starting value]*: the researcher may change it before the first session, not after.
 4. **No late-disclosure comparison page is built.** It would show the breach principle 2 names. If a researcher wants one, it is an EXPLORE item and the steward decides.
 5. **Card entry stays out of the slice.** The commit returns a simulated response from a small test server in this repository, which also makes the path without script testable.
 6. **Confirmed as drafted:** the field has no disabled state, no success mark and no loading state; the commit button is never disabled because a form is incomplete; feedback has no message that disappears on a timer; the field owns its inline error and the summary repeats its words exactly.

@@ -12,7 +12,7 @@ This file answers one question: how far may anything differ from the system, and
 
 Until a check is proven, its row is enforced by review, and the scorecard reports it as "not measured", not as zero.
 
-**Where the numbers come from.** A number marked *[standard]* comes from WCAG 2.2 or another published standard. A number marked *[starting value]* was chosen by the lead on 13 November 2026 without measurement. A starting value is reviewed at the gate named beside it, and becomes firm only when a measurement supports it or a person has approved it.
+**Where the numbers come from.** A number marked *[standard]* comes from WCAG 2.2 or another published standard. A number marked *[starting value]* was chosen by the lead on 13 November 2026 without measurement. A starting value is reviewed at the gate named beside it, or at Gate 3 if none is named, and becomes firm only when a measurement supports it or a person has approved it.
 
 ## What a delta is
 
@@ -40,7 +40,7 @@ Every WCAG 2.2 level A and AA success criterion is LOCK. The table lists the cri
 | Status messages are announced without moving focus | A test asserts the live-region role on each status message |
 | Content reflows at 320 pixels wide, and text can be enlarged to 200% | A test asserts that the page is no wider than 320 pixels and that no text is clipped, at normal and at 200% text size |
 | Text stays readable when a person increases line, paragraph, letter and word spacing | A test applies the WCAG spacing values and asserts that no text is clipped |
-| Motion stops or reduces when the person has asked for reduced motion | A test with the reduced-motion setting on asserts that no transition runs longer than 0.01 seconds (*[starting value]*, standing for "none") |
+| Motion stops or reduces when the person has asked for reduced motion | A test with the reduced-motion setting on asserts that no CSS transition or animation runs longer than 0.01 seconds (*[starting value]*, standing for "none") |
 | Nothing is shown by colour alone | For each pair of states in a component contract, a test asserts a visible difference in text, icon or shape |
 | Parts work in a right-to-left language and with text 40% longer than the English (*[starting value]*) | A visual test with right-to-left and lengthened text asserts that nothing is clipped or overlaps, and that the order of parts is mirrored |
 | Errors are identified in text, next to the problem, with a way to fix them | A component test, and the writing check |
@@ -54,7 +54,7 @@ The design system owns the parts. It does not own a product's data. So each row 
 
 | Requirement | What the system checks | What the product must show in its passport |
 |---|---|---|
-| The full price, with every mandatory charge, is shown before the action that commits | The cost summary cannot be rendered without a total and a list of charges, and shows "Total so far" while any charge is marked unknown | That every charge it makes is passed in |
+| The full price, with every mandatory charge, is shown before the action that commits | The cost summary cannot be rendered without a total and a list of charges, and shows "Total so far" while any charge is marked unknown. On the reference pages a flow test asserts that the summary comes before the committing control, that the amount at the control equals the summary total, and that the amount the test server receives equals both | That every charge it makes is passed in |
 | A status shows the real state | A status takes its state from a fixed set, and a test covers each. On the reference pages a flow test asserts that the status changes only after the test server answers | That each state is set by the real outcome, not a timer |
 | Urgency, scarcity and popularity come only from real data | A lint fails on quantity, deadline or popularity wording in literal text. Such text must come from a declared data field | The source of each such field |
 | No optional extra that adds cost or shares data is selected in advance | Options declare whether they add cost or share data, and a lint fails if such an option is selected by default | Nothing further |
@@ -68,6 +68,8 @@ The design system owns the parts. It does not own a product's data. So each row 
 | Each component uses the native element or role that matches its meaning | Markup lint and the automated scan |
 | Each token is used only for its stated purpose | Each semantic token declares where it may be used (text, background, border and so on). A lint fails on use elsewhere. A status colour used as decoration in an allowed place is judged by review |
 | One meaning has one name | A naming lint against the vocabulary file, which lists each term and its banned synonyms |
+| No value in a component bypasses a token | A lint on every change, with the published allow-list described under "zero drift" |
+| There is no second version of something the system provides | The scan described under "zero drift". It catches only the cases its rules describe, and its result is reported that way |
 | Components use semantic or component tokens, never primitive tokens | A lint that fails on any reference to any primitive group. It is proven by a fixture that uses each group once |
 
 ### Safe behaviour
@@ -76,7 +78,7 @@ The design system owns the parts. It does not own a product's data. So each row 
 |---|---|
 | An action that cannot be undone, spends money or shares data states its consequence at the control that commits it. A separate confirmation is required only when the action cannot be undone and the consequence is not visible at the control | A component test on the control; a flow checklist run by the reviewer for flows the system does not own |
 | Valid input survives an error, except values that must be re-entered for security, which the contract lists | A flow test on the reference pages, with script on and with script off |
-| A second press does not act twice | A component test with script on. With script off, the contract requires the server to accept one submission per one-time key, and the reference page's test server does so |
+| A second press does not act twice | A component test with script on. With script off, the form carries a hidden value that is different on each page load, and the contract requires the server to act only once for each value. The reference page's test server does so |
 | A destructive action is never the control that takes first focus, that Enter activates, or that is styled as the main action | Markup lint, using a declared "destructive" attribute |
 | Where an action can be reversed, the control to reverse it is shown | A component test |
 | The system does not act on an instruction it had to guess | A flow checklist run by the reviewer, for every flow in which the assistant acts. Judged by review, not measured |
@@ -111,12 +113,13 @@ From Gate 1, changing a range, wider or narrower, needs the CEO. Phase 2 sets on
 | Colour theme | The default light theme | Any theme that defines every semantic colour token. Light, dark and increased-contrast are required. In increased-contrast, text is at least 7 to 1 | Every declared pair passes. The product runs the contrast check on its own theme file |
 | Accent and neutral colours | The system's scales, defined in the OKLCH colour space | The hue may change. The lightness and chroma of each step stay fixed. The accent hue stays at least 30 degrees from each status hue | Status colours (danger, warning, success, information) belong to the system and do not vary |
 | Typeface | The system's type family | A family that covers the product's languages and has figures of equal width | Text in inputs is at least 16 pixels. Body line height is 1.4 to 1.6 |
-| Line length | 60 characters | At most 75 characters. At least 45 only where the container is wide enough | Reflow at 320 pixels |
+| Line length | 60 characters | At most 75 characters. At least 45, wherever the container is wide enough to hold 45 characters at the current text size | Reflow at 320 pixels |
 | Density | The default step | Three steps: compact, default and comfortable, multiplying the spacing scale by 0.75, 1 and 1.25 | Where the browser reports a coarse pointer, primary controls are at least 44 pixels tall. The 24 pixel floor always holds |
 | Shape | The corner-radius scale | One multiplier from 0 to 2 for the whole scale | No per-component radius |
 | Motion | The system's durations and easings | A product may shorten durations or turn motion off. No transition runs longer than 500 milliseconds | Reduced motion is honoured |
 | Layout | The component's default arrangement | The arrangements listed in the component's contract | A test asserts that the visual order matches the order in the markup |
-| Tone of voice | The voice rules | As the tone table in [voice-and-tone.md](voice-and-tone.md) allows. Judged by review; the range check does not cover it | The voice rules marked LOCK |
+
+Tone of voice is not in this table. It shifts by situation, in the same way in every product, as [voice-and-tone.md](voice-and-tone.md) says.
 
 Where the starting values come from: 44 pixels follows Apple's guidance of a 44 point touch area, which is a different unit, so it is a starting value and not a standard. 16 pixels for inputs avoids a browser zoom on focus on some phones **[pattern]**. The line length, line height, hue distance, density steps and 500 milliseconds are the lead's choices, informed by the craft notes in the survey, which disagree with each other.
 
@@ -126,11 +129,11 @@ An EXPLORE item is the only way to try something the ranges or the inventory do 
 
 Every item has an entry in the register, `explore/register.md`: an owner, a hypothesis that evidence could prove wrong, a start date, an expiry date, the evidence to collect, and whether it has been extended. A check on every change fails if an entry is incomplete, if more than three items are active, or if brick imports an item.
 
-Limits, all *[starting values]* taken from an idea on the board that has not been adopted, reviewed at the first quarterly review:
+Limits. One new item per pilot comes from an idea on the board that has not been adopted; the cap of three and the 30 days are the lead's. All are *[starting values]*, reviewed at the first quarterly review:
 
 - at most three active items;
 - at most one new item per pilot, or per slice while no pilot is running;
-- expiry 30 days after the start, extended once at most;
+- expiry 30 days after the start, extended once at most, by up to 30 days;
 - an item whose evidence needs people does not expire while its pilot waits for a steward. It is marked "waiting".
 
 Items made by the route in principle 5 count toward these limits. This is deliberate: it caps how many unproven parts exist at once. With no steward, three waiting items stop further additions outside the founding set.
@@ -156,7 +159,7 @@ These apply to the web output. The byte budgets are *[starting guesses, not meas
 
 **Test profile.** The reference checkout page in this repository, loaded in Lighthouse's mobile mode: processor slowed four times, 1.6 megabits per second down, 750 kilobits per second up, 150 milliseconds of delay. The tool's version is fixed in phase 4. Each figure is the median of five runs.
 
-The 2.5 second and 0.1 thresholds are the "good" thresholds Google publishes for its Core Web Vitals, and 200 milliseconds is its "good" threshold for interaction. All of these are lab measures. They are not data from real users.
+The 2.5 second and 0.1 thresholds are the "good" thresholds Google publishes for its Core Web Vitals, and 200 milliseconds is its "good" threshold for interaction. All of these are lab measures. They are not data from real users. The profile figures and the thresholds are stated from the lead's knowledge of Lighthouse, a page-testing tool from Google, and of Google's published thresholds. They were not checked against the sources in this run, and are verified in phase 4 when the tool is installed.
 
 ## What "zero drift" means
 

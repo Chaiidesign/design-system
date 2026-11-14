@@ -10,7 +10,7 @@ It says nothing about real people: a passing page may still confuse a shopper **
 
 ## Fixed conditions
 
-- **Model:** Sonnet 5.5, identifier `claude-sonnet-5-5`. Each run records the identifier; a new one means a new baseline.
+- **Model:** Sonnet 5.5. The lead's tooling names it `claude-sonnet-5-5`. Each run records the identifier the tool reports; a new one means a new baseline.
 - **Context:** each run starts fresh; tasks do not chain.
 - **Given:** the prompt, the published docs and package, an empty folder, a shell and a browser. No network.
 - **Not given:** the system's source, past outputs, other interface libraries, human help. Any question gets: "No more information. Use the published docs."
@@ -45,7 +45,7 @@ Line totals 49.00, 18.75 and 9.75. Item subtotal **77.50**; minus the discount, 
 
 ## How items are tagged
 
-Each checklist item ends with a tag. A tag that names a table in [budget.md](budget.md) (Accessibility, Truthful content, Safe behaviour) means the item checks a LOCK row in that table, and a failure is a LOCK breach. A tag that names a principle (P2, P3, P4, P5, P6, P7) or ADAPT means the item checks that principle or range, and a failure is not a LOCK breach. The rows of the Meaning table are checked by the count of values that bypass the system, under Scoring.
+Each checklist item ends with a tag. A tag that names a table in [budget.md](budget.md) (Accessibility, Truthful content, Safe behaviour) means the item checks a LOCK row in that table, and a failure is a LOCK breach. A tag that names a principle (P2, P3, P4, P5, P6, P7) or ADAPT means the item checks that principle or range, and a failure is not a LOCK breach. The benchmark does not check the rows of the Meaning table; those are left to the lints that run on every change. The count of values that bypass the system, under Scoring, measures principle 4's rule on values.
 
 ## Task 1: build
 
@@ -63,7 +63,7 @@ Payment always succeeds in this task.
 ```
 
 - 1.1 All three item names appear in full, character for character. (P2)
-- 1.2 Line totals 49.00, 18.75 and 9.75 appear beside their items. (Truthful content)
+- 1.2 Line totals 49.00, 18.75 and 9.75 appear beside their items. (P2)
 - 1.3 The item subtotal, discount, tax, delivery and total each appear, labelled, with the expected amounts. (Truthful content)
 - 1.4 82.25 appears in the pay control's label or directly beside the control. (Safe behaviour)
 - 1.5 Every field has a visible label that stays when filled and is its accessible name. (Accessibility)
@@ -98,10 +98,10 @@ error, keep everything the person entered, and let them recover.
 Scorer sequence: (A) fill valid, enter those three values, press pay; (B) correct the three fields and press pay; (C) after the decline, press pay.
 
 - 2.1 After A, no PAYMENT ATTEMPT is logged. (P3)
-- 2.2 After A, only email, address line 1 and ZIP code show errors. (Accessibility)
+- 2.2 After A, email, address line 1 and ZIP code each show an error. (Accessibility)
 - 2.3 Each error is text beside its field saying what to enter, not only that it is wrong. (Accessibility)
 - 2.4 Each error is its field's accessible description, and the field is exposed as invalid. (Accessibility)
-- 2.5 After A, every error can be reached by keyboard, and focus has moved to the first error or to a summary of the errors. (Accessibility)
+- 2.5 After A, every error can be reached by keyboard. (Accessibility)
 - 2.6 After A, every field keeps what was typed, wrong values included. (P3)
 - 2.7 After B, no error remains. (Truthful content)
 - 2.8 After B, text says the payment did not go through and what to do next; nothing says "paid". (Truthful content)
@@ -110,6 +110,8 @@ Scorer sequence: (A) fill valid, enter those three values, press pay; (B) correc
 - 2.11 C needs no re-entry, logs a second PAYMENT ATTEMPT, then shows the order paid. (Accessibility)
 - 2.12 A to C can be done by keyboard alone. (Accessibility)
 - 2.13 The accessibility scan reports zero failures after A and after B. (Accessibility)
+- 2.14 After A, no other field shows an error. (P2)
+- 2.15 After A, focus has moved to the first error or to a summary of the errors. (P4)
 
 ## Task 3: adapt
 
@@ -148,7 +150,7 @@ The prompt gives the brand as one colour, as a brand would. How that colour beco
 
 ## Scoring
 
-**Completion:** items passed over items in the task, per run; overall, items passed over all 41.
+**Completion:** items passed over items in the task, per run; overall, items passed over all 43.
 
 **Violations,** per run, in four categories:
 
@@ -165,7 +167,7 @@ Among categories 1, 2 and 4, a defect counts once, in the first that covers it. 
 
 ## How the baseline is taken
 
-The baseline is the first complete fifteen runs after the published docs and package exist (phase 4). Until then the scorecard says "no data yet". It is retaken only when the model changes; history is kept.
+The baseline is the first complete fifteen runs after the published docs and package exist (phase 4). Until then the scorecard says "no data yet". It is retaken when the model changes or when a run limit changes; history is kept.
 
 ## The lead's decisions, 13 November 2026
 
@@ -173,5 +175,5 @@ The baseline is the first complete fifteen runs after the published docs and pac
 2. **The pay label.** The total in the pay control's label, or directly beside it, meets the safe-behaviour row. See worked case 2 in [principles.md](principles.md).
 3. **Lab timing budgets** are left out of the violation count until the lab setup is fixed in phase 4.
 4. **Scanner.** axe-core, at the version installed in phase 3, recorded with each run.
-5. **Which budgets apply.** The byte budgets in [budget.md](budget.md) apply to the agent-built page. The rule that the core tasks need no script does not apply to the simulated payment, which stands in for a server: that script is exempt by name, and item 1.13 still checks that the content is present with script off.
-6. **Task 3 was rewritten before the gate.** The first draft gave two exact accent colours and tested by swapping in black. budget.md lets a product change only the accent's hue, so the task now gives one brand colour and tests the hue.
+5. **Which budgets apply.** The byte budgets in [budget.md](budget.md) apply to the agent-built page. The rule that the core tasks need no script does not apply to the scripts that stand in for a server: the simulated payment and, in Task 2, the checking of entries when pay is pressed. Those are exempt by name, and item 1.13 still checks that the content is present with script off.
+6. **Task 3 was rewritten after the first run of Gate 1 failed criterion 6.** The first draft gave two exact accent colours and tested by swapping in black. budget.md lets a product change only the accent's hue, so the task now gives one brand colour and tests the hue. By a reviewer's calculation the two fixed colours have hues of about 195 and 302 degrees. Phase 2 must keep every status hue at least 30 degrees from both, or the task would contradict the accent range.

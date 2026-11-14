@@ -51,6 +51,8 @@ Nothing on the board is marked approved. For each conflict the rule in CLAUDE.md
 | 12 | The board's first cycle measures a baseline before building. No earlier Souvenir checkout exists to observe | The baseline is the first measurement of the first version that passes Gate 3. No target is set before it |
 | 13 | CLAUDE.md gives every EXPLORE promotion to the steward. The charter's route for additions makes every new part outside the founding set an EXPLORE item first | Adding such a part is therefore the steward's decision. With no steward, the system can grow only by the founding set: the tokens, the four checkout parts, and parts a work item in the CEO's work tree requires |
 | 14 | CLAUDE.md asks the CEO first for changes to deltas. An earlier draft let the lead narrow a range | Any change to a range, wider or narrower, needs the CEO |
+| 15 | A board note says components reference semantic tokens only. CLAUDE.md says semantic or component tokens | CLAUDE.md is followed: three layers, and components never reference primitives |
+| 16 | A board review note asks for a human checkpoint for visuals and voice. CLAUDE.md gives both to the lead | The lead proposes; the CEO chooses; a person reads every string before it reaches pilot participants or real users |
 
 - **To reverse:** Tell the lead which side to take on any row.
 
@@ -80,9 +82,21 @@ The survey found that the format is a report of the Design Tokens Community Grou
 Scorecard definitions are the CEO's. These are proposed, not added:
 
 1. counts of components, variants and tokens, and shipped size, from an inventory script (principle 5);
-2. maintenance cost per product: tokens and human hours spent on system changes per release, divided by the number of products using the system (principle 7; "not measured" until two products exist);
+2. maintenance cost per product: model tokens and human hours spent on system changes per release, divided by the number of products using the system (principle 7; "not measured" until two products exist);
 3. for each LOCK row, whether its check is named, built or proven by catching a planted breach;
 4. defects found later in work that passed review first time.
+
+### A-11. Benchmark Task 3 was rewritten to fit the accent range
+
+- **Situation:** The first draft of Task 3 gave a brand as two exact colours. The budget lets a product change only the accent's hue. The first run of Gate 1 failed on this.
+- **Decision:** The range was kept and the task rewritten: one brand colour, tested by hue. The tasks become fixed when Gate 1 passes; after that only the CEO changes them.
+- **To reverse:** Widen the accent range in `charter/budget.md` and restore two colours in the task.
+
+### A-12. Gate 1 has failed twice
+
+- **Situation:** Two runs of Gate 1 on 13 November failed (D-010, D-011). The charter's own draft rule says top-tier work that fails review twice is reported to the CEO.
+- **Decision:** Reported here. The failures were different each time and each was a list of specific edits, so the lead fixed them and asked for a third review of the three criteria still failing. If that fails, phase 1 is marked blocked and the lead continues only with work that does not depend on the charter being settled.
+- **To reverse:** Read the charter and overrule the gate either way.
 
 ### A-10. What the lead needs from the CEO
 
@@ -112,11 +126,15 @@ A starting rule, with the alternative and the review trigger written in `charter
 
 ### D-006. The charter was rewritten after three challenge reviews
 
-Before the gate, three fresh reviewers on Fable were asked to break items 1.1 to 1.4, each with a different lens: fidelity to the brief, whether each contract can be checked and can fail, and a sceptic. Two returned "fail as drafted" and one "pass with fixes": 9 blockers, 68 major and 20 minor findings, with overlap. The five files were rewritten. The main changes: the vision was cut to one screen; conflicts among the first three principles are now settled without a person; every LOCK row names a check that can read a declared fact; every number the lead chose is marked as a starting value; and the charter no longer calls itself approved.
+Before the gate, three fresh reviewers on Fable were asked to break items 1.1 to 1.4, each with a different lens: fidelity to the brief, whether each contract can be checked and can fail, and a sceptic. Two returned "fail as drafted" and one "pass with fixes": 9 blockers, 68 major and 20 minor findings, with overlap. The five files were rewritten. The main changes: the vision was cut to one screen; conflicts among the first three principles now have a rule that keeps work moving without a person, while the part in question stays unreleased until the steward rules; every LOCK row names a check that can read a declared fact; every number the lead chose is marked as a starting value; and the charter no longer calls itself approved.
 
 ### D-010. Gate 1, first run: fail
 
 Three fresh reviewers on Fable judged the ten criteria on 13 November. Criteria 1, 2, 3, 7 and 9 passed. Criteria 4, 5, 6, 8 and 10 failed. The record is in `gates/gate-1.md`. The causes: two deciders for adding a part; survey claims resting on files that had no review; a benchmark task written before the accent range was tightened; four research labels stronger than their sources; and terms used without a definition. All were fixed the same day and the gate was run again.
+
+### D-011. Gate 1, second run: fail
+
+Fresh reviewers judged all ten criteria again. Criteria 1, 2, 3, 4, 6, 7 and 9 passed. Criteria 5, 8 and 10 failed: three survey sentences said more than their files; three claims about people had no label; and about forty terms and outside names were still undefined. All were fixed the same day. The record is in `gates/gate-1.md`.
 
 ### D-007. Three arguments against the charter, kept on record
 

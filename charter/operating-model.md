@@ -12,11 +12,11 @@ Today the core team is one lead agent and the subagents it recruits. There are n
 
 | Model | For | Against | Used here |
 |---|---|---|---|
-| Solitary: one team builds for its own product | Fast; close to a real product | Fits that product and little else | No. The CEO ruled out an ecommerce-only system |
-| Centralised: a dedicated team builds for everyone | No single product's agenda; consistent | Can lose touch with real products | Yes, as the base. The slice and the pilots are there to keep it in touch |
+| Solitary: one team builds for its own product | Close to a real product | Fits that product and little else | No. The CEO ruled out an ecommerce-only system |
+| Centralised: a dedicated team builds for everyone | No single product's agenda | Can lose touch with real products | Yes, as the base. The slice and the pilots are there to keep it in touch |
 | Federated: people from product teams decide together | Broad relevance | Slow; split loyalties | As the route for contributions, never alone |
 
-The three models are Nathan Curtis's. He reports no case, among more than 80 systems, of a federated model succeeding without investment in a central team. See [notes/survey/thinkers.md](../notes/survey/thinkers.md).
+The three models, and the entries in the For and Against columns, are **[pattern]**: they come from Nathan Curtis, a consultant who writes about design system teams. He reports no case, among more than 80 systems, of a federated model succeeding without investment in a central team. See [notes/survey/thinkers.md](../notes/survey/thinkers.md).
 
 ## Roles
 
@@ -57,11 +57,11 @@ One rule sits above the table, and follows the FigJam board until the CEO says o
 | Clay: a prototype or experiment file | Anyone | None | Its author | Its author |
 | A product choosing a value inside an ADAPT range, no real users affected | The product or its agent | The range check; the entry in the theme file | The product | The product |
 | A change to the system's default inside an ADAPT range, no real users affected | Anyone | Automated checks; a reviewer | Lead | Lead |
-| A founding part, or a non-breaking change to a part, no real users affected | Anyone | Automated checks; a reviewer | Lead | Lead |
+| A founding part, or a non-breaking change to a part that adds no variant, token or option, no real users affected | Anyone | Automated checks; a reviewer | Lead | Lead |
 | A breaking change to a part or token, no real users affected | Anyone | Automated checks; a reviewer; an alias and a migration note | Lead | Lead |
 | Starting an EXPLORE item | Anyone, with a complete register entry | The register check | Lead | Its owner |
 | Extending or retiring an EXPLORE item at expiry | Its owner | The evidence collected | Lead | Lead |
-| Adding a new part to the system. Every new part outside the founding set arrives as an EXPLORE item, so this is always a promotion | Its owner | A passport showing the second occurrence; evidence against its hypothesis; checks; a reviewer | Steward | Steward |
+| Adding a new part, variant, token or option outside the founding set. Each arrives as an EXPLORE item, so this is always a promotion | Its owner | A passport showing the second occurrence; evidence against its hypothesis; checks; a reviewer | Steward | Steward |
 | Running a pilot | Lead | Gate results; passing LOCK checks; safe test data; a named rollback owner, a fallback and a stop condition written first | Steward | Steward |
 | A release to real users, or any change that reaches them | Lead | Gate results and pilot evidence | Steward | Steward |
 | Removing or retiring a part | Anyone | Usage data, an owner, a replacement, a migration window, a way back, and a check that task success held | Lead; steward if real users are affected | Whoever decided |
@@ -69,13 +69,13 @@ One rule sits above the table, and follows the FigJam board until the CEO says o
 | Adding or tightening a test or lint rule; changing a skill, brief, docs page or the work tree | Anyone | A reviewer, for tests and lint rules | Lead | Lead |
 | Loosening or removing a test or lint rule | Anyone | The reason it is wrong | CEO; with the steward if it sits behind a LOCK row. Never done to make a change pass | CEO |
 | Tightening a performance budget | Lead | A measurement | Lead | Lead |
-| Loosening a performance budget | Lead | A measurement | CEO | CEO |
+| Loosening a performance budget, other than the one reset at Gate 3 described in budget.md | Lead | A measurement | CEO | CEO |
 | Changing an ADAPT range, wider or narrower | Lead | A measurement or evidence | CEO | CEO |
 | A change to a LOCK row or to principles 1 to 3 | Anyone | Evidence; a reviewer | CEO and steward together | CEO and steward |
 | A change to principles 4 to 7, the approvals list, the scorecard definitions, the benchmark tasks, the roles or this table | Lead | Evidence from the loops; a reviewer | CEO | CEO |
 | Passing a gate | Lead submits | The pass criteria written before the phase | The gate reviewer. The lead cannot overrule the verdict | Not applicable |
 
-**When the lead is the proposer,** the proof is written by a fresh reviewer on Fable, and the decision is the reviewer's verdict. The lead may not overrule it. The lead may take a disagreement to the CEO under "Awaiting CEO".
+**When the lead is the proposer,** in a row where the table names the lead as decider, the proof is written by a fresh reviewer on Fable, and the decision is the reviewer's verdict. The lead may not overrule it. The lead may take a disagreement to the CEO under "Awaiting CEO".
 
 **What Gate 1 does and does not do.** The board has a person read the charter at Gate 1. CLAUDE.md gives the gate to a fresh reviewer. So a Gate 1 pass makes the charter the working basis for agent work, and no more. No person has approved it. The principles, the LOCK rows and the ranges stay provisional until the CEO has read them.
 
@@ -83,7 +83,7 @@ One rule sits above the table, and follows the FigJam board until the CEO says o
 
 A passport is one page that travels with a change. The author of the first part never writes the third.
 
-1. **Propose.** The need. The hypothesis. The principles it touches. What depends on it. The alternatives. Its altitude, clay or brick, and its delta class.
+1. **Propose.** The need. The hypothesis. The principles it touches. What depends on it. The alternatives. Its altitude, whether it is clay or brick, and whether it falls under LOCK, ADAPT or EXPLORE.
 2. **Prove.** Written by an independent reviewer. The test output. The accessibility, writing and performance checks. What consumers of the part must change. The label on every claim about people. The strongest argument against the change, kept even if it is approved.
 3. **Decide.** Who decided. Approve, revise or retire. The reason. The version. How to reverse it.
 
@@ -102,18 +102,18 @@ Each loop measures one thing, compares it with a desired state, and acts. An inn
 | Variable | Does this change pass its checks? | The scorecard | Do pilot participants succeed at the task? | Are the principles and ranges still right? |
 | Current state | Not running. Starts with the first token file | Review is running. The benchmark and the scans are not, until tokens and docs exist | Not running. No steward, no participants | Not running. First review due 13 February 2027 |
 | Desired state | Every check passes before a change is merged | First-pass review rate rises, benchmark holds or improves, and defects found later in work that passed first time stay low | Task success and understanding at or above the baseline | Each principle decided something, and none is contradicted by evidence |
-| Sensors | Tests, contrast, lint, payload size | Reviewer verdicts; the benchmark; the nightly scan for bypassing values and second versions; the inventory script; the usage figures the tools report | Sessions with pilot participants, measured against the baseline | L3 evidence; scorecard history; DECISIONS.md and the passports; counts of parts added and removed |
+| Sensors | Tests, contrast, lint, the size of what is shipped | Reviewer verdicts; the benchmark; the nightly scan for bypassing values and second versions; the inventory script; the spend in model tokens that the tools report | Sessions with pilot participants, measured against the baseline | L3 evidence; scorecard history; DECISIONS.md and the passports; counts of parts added and removed |
 | Actuator | Fix the change and rerun. A check is never loosened or removed to make it pass | Change the skill, brief, docs page or lint rule that caused a failure. Keep the change if the benchmark holds; revert if it drops | Approve, revise or retire | Revise a principle or a range, or schedule a release that removes things |
 | Passes outward when | A change fails twice | A slice is ready for people, or an item shows no gain after three cycles | Evidence contradicts a principle | Not applicable |
 | Cannot tell us | Whether the checks are the right checks | Whether the charter is right for people. It measures agreement with the charter | Anything, until it runs | Anything about people, until L3 runs |
 
-**Comparing benchmark scores.** A score is five runs of each task (*[starting value]*, checked against the first baseline). Violations are compared first, then completion, then tool calls. A change counts as a drop only if it is larger than the spread between the five runs.
+**Comparing benchmark scores.** A score is made of five runs of each task. Five is a *[starting value]*, to be checked against how much the runs of the first baseline differ from each other. Violations are compared first, then completion, then tool calls. A change counts as a drop only if it is larger than the spread between the five runs.
 
 ### The human review queue
 
 This is the fast human loop for one case: an item outside its range.
 
-- **What enters:** an instance a check reports as outside an ADAPT range, and an EXPLORE item at its expiry.
+- **What enters:** an instance a check reports as outside an ADAPT range. The lead may also add an EXPLORE item at its expiry, to inform the lead's own decision; the vote does not decide it.
 - **What the reviewer sees:** the instance, the reference, the size of the difference, and one sentence of context.
 - **What the reviewer does:** like or dislike, with an optional line saying why.
 - **Who reviews:** people named by the steward.

@@ -36,7 +36,7 @@ A check marked *needs people* cannot be met by the lead agent alone. It needs a 
 
 **1 quarter (by 13 February 2027)**
 - The cost summary has been tested with people against a baseline measured first, and the steward has decided to approve, revise or retire it. *Needs people.*
-- The four core parts have been used to build a second flow outside checkout, with a record of what transferred unchanged.
+- The three core parts (field, button and feedback) have been used to build a second flow outside checkout, with a record of what transferred unchanged.
 - The first review of what could be removed has been held and its result recorded, even if nothing was removed.
 - The benchmark has held or improved at every release.
 - The human review queue has received votes. *Needs people.*

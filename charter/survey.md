@@ -8,12 +8,24 @@ File names in brackets are in `notes/survey/`. Each of those files ends with a r
 
 This document lets the lead decide from the survey. Its claims rest on the twelve survey files (six systems, the token format, agent skills, craft, thinkers, libraries, checkout evidence). It mentions the board and the CEO's reading list only as pointers, never as support for a claim.
 
-All survey files were checked on 2026-11-13, mostly through a summarising fetch tool, so wording is often paraphrase [apple-hig.md and material-design-3.md used page JSON and a browser]. Each file's closing review re-checked about six claims and logged corrections. The survey files were written by Sonnet 5.5 subagents and each was reviewed by a fresh Opus 5.5 subagent; one of the twelve passed review with no corrections. This synthesis was written by Opus 5.5 without browsing, since no two survey files contradict each other on substance (see Risks).
+All survey files were checked on 2026-11-13, mostly through a summarising fetch tool, so wording is often paraphrase [apple-hig.md and material-design-3.md were read from the pages' underlying data and in a browser]. Each file's closing review re-checked about six claims and logged corrections. The survey files were written by Sonnet 5.5 subagents and each was reviewed by a fresh Opus 5.5 subagent; one of the twelve passed review with no corrections. This synthesis was written by Opus 5.5 without browsing, since no two survey files contradict each other on substance (see Risks).
 
 Labels for claims about behaviour:
 - **[R]** means supported by cited research.
 - **[P]** means inferred from established patterns.
 - **[A]** means an assumption that needs a human test.
+
+## Names used in this survey
+
+- **The six systems:** Polaris (Shopify), the GOV.UK Design System (UK government), Material Design 3 (Google), Carbon (IBM), the Atlassian Design System, and the Human Interface Guidelines (Apple). **Material Web** is Google's set of Material components for the web.
+- **Baymard Institute:** a research firm that studies online shopping usability. **Nielsen Norman Group:** a usability research and consulting firm. **web.dev:** Google's guidance site for web developers.
+- **DMCC Act:** the UK Digital Markets, Competition and Consumers Act 2024. **CMA:** the UK Competition and Markets Authority. **FTC:** the US Federal Trade Commission.
+- **Sass:** a language that compiles to CSS. **Style Dictionary** and **Terrazzo:** tools that turn token files into code. **Resolver:** the part of the token format that combines files into themes.
+- **Radix** and **React Aria:** libraries of accessible component behaviour for the React framework. **shadcn/ui:** a way of distributing components by copying their files into a project.
+- **Storybook:** a tool for building and showing components one at a time. **Playwright:** a tool that drives a browser in tests. **axe:** an automated accessibility scanner.
+- **CI:** continuous integration, the checks that run automatically on every change. **Eval:** a scored test of how well an AI agent does a task. **AGENTS.md:** a file of rules for AI agents working in a repository.
+- **Candidate Recommendation:** a late stage on the W3C's route to a standard. **Immutable channels:** published versions that are never changed after release.
+- "No reason stated" means the survey file records none, not that the source gives none.
 
 ## What the strong systems have in common
 
@@ -26,19 +38,19 @@ Labels for claims about behaviour:
 ## Where they differ, and the reason each gives
 
 - **Accessibility floor.** GOV.UK: WCAG 2.2 AA, backed by external audits. Atlassian 2.1 AA, Carbon a WCAG AA checklist, Material states no WCAG level and gives colour pairs a "minimum 3:1" contrast. Apple gives WCAG AA contrast values and also mentions APCA, a newer contrast method. Apple's reason for system colours: they adapt to Increase Contrast and dark mode. Others state no reason [govuk-design-system.md, atlassian-design-system.md, ibm-carbon.md, material-design-3.md, apple-hig.md].
-- **Token format and branding.** None publishes DTCG JSON: Sass in GOV.UK and Carbon, a code API in Atlassian, CSS properties in Material [govuk-design-system.md, ibm-carbon.md, atlassian-design-system.md, material-design-3.md]. GOV.UK says it does not support custom branding [govuk-design-system.md].
+- **Token format and branding.** The survey found no JSON token file for GOV.UK or Carbon, which use Sass; for Atlassian it recorded a code interface, and for Material CSS properties [govuk-design-system.md, ibm-carbon.md, atlassian-design-system.md, material-design-3.md]. GOV.UK says it does not support custom branding [govuk-design-system.md].
 - **"When not to use".** Carbon documents it on every component page [ibm-carbon.md]. GOV.UK pages have "When to use this component", and the survey did not confirm a separate "when not to use" section [govuk-design-system.md]. Apple and Polaris lack it (no reason stated) [apple-hig.md, shopify-polaris.md].
 - **Flexibility.** Atlassian rejects both "consistency for the sake of consistency" and "infinite flexibility" [atlassian-design-system.md]. Polaris seals components; staff call web components the future of Shopify's merchant admin [shopify-polaris.md]. Material moves features to Jetpack Compose, Android's interface toolkit, only [material-design-3.md].
 - **Versioning.** GOV.UK uses semantic versioning (semver); Carbon "aims to follow" it; Polaris immutable channels; Atlassian release phases, saying breaking changes "should be infrequent"; Apple per-page change logs. Otherwise no reason stated [govuk-design-system.md, ibm-carbon.md, shopify-polaris.md, atlassian-design-system.md, apple-hig.md].
 - **When to validate.** Apple, Atlassian, Baymard and Nielsen Norman Group: on leaving the field. Carbon: real-time "helps", otherwise on submit [apple-hig.md, atlassian-design-system.md, checkout-evidence.md, ibm-carbon.md].
 - **Error summary.** GOV.UK always shows one; Nielsen Norman Group warns against relying on it alone (no reasons stated) [govuk-design-system.md, checkout-evidence.md].
-- **Motion.** Three interface designers who write about craft disagree: Rauno Freiberg says 200 milliseconds or less, Emil Kowalski under 300, and Jakub Krehel's example runs 800; none gives evidence [craft-and-taste.md].
+- **Motion.** Three interface designers who write about craft disagree: Rauno Freiberg says 200 milliseconds or less, Emil Kowalski under 300, and Jakub Krehel's example runs 800; the survey file records no evidence for any of the three [craft-and-taste.md].
 
 ## What to adopt, adapt and avoid for Souvenir
 
 | Practice | Source | Decision | Reason | Supports |
 |---|---|---|---|---|
-| Purpose-named semantic tokens; light and dark as two contexts of one theme setting in the token format | DTCG, Material, Carbon | Adopt | Fits the required primitive, semantic and component layers | dtcg-2025-10.md, material-design-3.md, ibm-carbon.md |
+| Semantic tokens named by purpose, each with a light value and a dark value | DTCG, Material, Carbon | Adopt | Fits the required primitive, semantic and component layers | dtcg-2025-10.md, material-design-3.md, ibm-carbon.md |
 | Colour role pairs, used only in their intended pairs | Material | Adapt | Keeps contrast safe across themes. Raise Material's 3:1 minimum to WCAG 2.2 AA | material-design-3.md |
 | Component page with when to use, when not to use, research and recent changes | GOV.UK, Carbon | Adopt | Shows why each rule exists | govuk-design-system.md, ibm-carbon.md |
 | Accessibility-status tag on each component | Carbon | Adopt | States honestly what has been tested | ibm-carbon.md |
@@ -47,12 +59,12 @@ Labels for claims about behaviour:
 | Never disable the submit button | Atlassian, web.dev | Adopt | Instructions beat a dead control [P] | atlassian-design-system.md, checkout-evidence.md |
 | Short line items, business name on the total, disclose later costs | Apple Pay | Adapt | The only cost-summary guidance among the six systems. Baymard separately advises a breakdown with the total most prominent | apple-hig.md, checkout-evidence.md |
 | llms.txt index with topic files, plus MCP hosted and local; not one ~640k-character full file | Atlassian, Carbon | Adopt | Agents load only what they need | atlassian-design-system.md, ibm-carbon.md |
-| Short bold-led rules, AGENTS.md and a review command | Vercel | Adapt | Right form for agents. Drop the APCA advice and the brand copy | agent-skills.md |
+| Short rules that each start with a bold label, a rules file for agents, and a command that reviews code against the rules | Vercel | Adapt | A form agents follow well. Leave out its advice to use APCA and its own brand's writing rules | agent-skills.md |
 | Worst-case data testing | Break UI, a published agent skill | Adopt | Long, empty, non-Latin and emoji values test universality | agent-skills.md |
 | Deprecate before removing; release phases | Atlassian, GOV.UK | Adopt | Predictable for consumers [P] | atlassian-design-system.md, govuk-design-system.md |
 | Motion duration and frequency bands | Kowalski | Adapt | Testable, but we set our own ranges | craft-and-taste.md |
 | Sealed, unstyleable components | Polaris | Avoid | Blocks ADAPT | shopify-polaris.md |
-| Deprecating the old system before the new one reaches parity | Polaris, Material Web | Avoid | Developer complaints; one former engineer's account of weak adoption (anecdotes) | shopify-polaris.md, material-design-3.md |
+| Deprecating the old system before the new one reaches parity | Polaris | Avoid | One developer's forum post describes the difficulty [A] | shopify-polaris.md |
 | Leaving the decider unstated | Carbon, Atlassian, Material, Apple | Avoid | Who decides is already an open gap here | ibm-carbon.md, atlassian-design-system.md, material-design-3.md, apple-hig.md |
 | Central team first; contribution invited, not relied on | Curtis | Adopt | Curtis reports no federated-only success among 80+ systems | thinkers.md |
 | Copying visual recipes (shadow, blur, glass) | Krehel, Apple | Avoid | Visual style, not principle; we start from a clean slate | craft-and-taste.md, apple-hig.md |
@@ -70,7 +82,7 @@ Labels for claims about behaviour:
 
 **How people behave**
 - **Costs.** "Extra costs too high" was 40%, and "couldn't see total up front" 12%, among shoppers who meant to buy. The 42% who were just browsing are excluded, and no sample size is given. **[R]** A 2017 figure of 21% comes from a different survey, so 21% against 12% is not a trend. **[R, dated]** [checkout-evidence.md]
-- **New costs at review.** One tester felt "duped" by a late fee rise. 65% of 60 sites rated poor to just acceptable [checkout-evidence.md]. **[R, 2019]**
+- **New costs at review.** One tester felt "duped" by a late fee rise. In Baymard's benchmark of 60 sites, 65% had an order review step that Baymard rated poor to just acceptable [checkout-evidence.md]. **[R, 2019]**
 - **Field count.** The average checkout has 11.3 fields, while 8 usually suffice. 42% of testers typed a full name into "First Name" [checkout-evidence.md]. **[R]**
 - **Labels.** Keep labels visible rather than using placeholders: Baymard advice from 2013, with no finding recorded [checkout-evidence.md]. **[P]**
 - **Validation.** Validate when the user leaves the field. Baymard benchmarks this, and Nielsen Norman Group's guideline gives no data [checkout-evidence.md]. **[P]**
@@ -109,7 +121,7 @@ Options are grouped by layer. The lead chooses, and the choices are recorded in 
 
 ## Open questions for the lead
 
-1. Touch target floor on mobile: WCAG's 24px, or Apple's and Vercel's 44px? [checkout-evidence.md, apple-hig.md, agent-skills.md]
+1. Touch target floor on mobile: WCAG's 24px, or the 44 points Apple recommends and the 44 pixels Vercel recommends? [checkout-evidence.md, apple-hig.md, agent-skills.md]
 2. Is a React-only behaviour layer acceptable under "universal"? [behaviour-and-distribution.md]
 3. Accept UI SDK's beta churn, or only watch it? [behaviour-and-distribution.md]
 4. What browser policy covers newly available features (popover, `@scope`)? [behaviour-and-distribution.md]

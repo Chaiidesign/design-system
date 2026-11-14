@@ -75,3 +75,55 @@ Reconcile Task 3 with the accent row in budget.md before the tasks count as fixe
 - `budget.md`, ADAPT table, rows "Layout" and "Tone of voice": The file says a product's in-range choice needs no approval because "the range check passes". No script can evaluate these two ranges as written. Layout gives no enumerated arrangements or measurable bound. Tone points to a qualitative table, and voice-and-tone.md itself says no machine can test how words sound. In voice-and-tone.md the ADAPT tag also means something else: a rule the lead may adju…
 - `budget.md`, EXPLORE limits ("at most three active items", "at most one new item per pilot, or per slic: Principle 5 sends every new need that existing parts cannot meet through an EXPLORE item. The EXPLORE limits then allow one new need per slice and three in total, and an item waiting for a steward never expires. With no steward named, three waiting items would stop all additions. The limits came from a board idea about experiments; the charter does not say the effect on ordinary additions is inten…
 - `budget.md`, ADAPT section: "From Gate 1, narrowing a range is the lead's decision": CLAUDE.md lists "changes to the principles or their deltas" among the things to ask the CEO first. A range is a delta, so narrowing one is a change the charter gives to the lead. The departure is not logged in DECISIONS.md.
+
+## Run 2, 13 November 2026: fail
+
+Three new reviewers judged all ten criteria on the corrected files.
+
+| Criterion | Verdict |
+|---|---|
+| 1 | pass |
+| 2 | pass |
+| 3 | pass |
+| 4 | pass |
+| 5 | fail |
+| 6 | pass |
+| 7 | pass |
+| 8 | fail |
+| 9 | pass |
+| 10 | fail |
+
+Other findings: 10 major, 32 minor.
+
+### Criterion 5: what would make it pass
+
+Three edits to charter/survey.md:
+1. L35: delete "none gives evidence", or write "the survey file records no evidence for any of the three".
+2. L55: remove "Material Web" from Source, material-design-3.md from Supports and "one former engineer's account of weak adoption" from Reason. If the Material lesson is wanted, give it its own row named for what the file says (platforms left in maintenance mode).
+3. L29: replace "None publishes DTCG JSON" with what the files say: the survey found no JSON token file for GOV.UK or Carbon; for Atlassian and Material it recorded only the format in use.
+
+In the same edit, add one sentence to the method paragraph saying that "no reason stated" (L28, L30, L32, L34) means the survey file records none, not that the source gives none.
+
+### Criterion 8: what would make it pass
+
+Four small edits. (1) operating-model.md:13-19: label the For/Against claims (for example [pattern: Curtis, notes/survey/thinkers.md]) and remove or separately label "Fast" and "consistent", which the survey file does not record. (2) survey.md:55: replace "Developer complaints" with what shopify-polaris.md:58 records (one developer's forum post) and give the row one of the three labels ([P] or [A]) instead of "(anecdotes)". (3) checkout-slice.md:122: add [assumption] to "Asking from memory would test memory" or fold it into the labelled assumption at line 117. (4) voice-and-tone.md:35: add the base of the 40% figure ("among shoppers who were not just browsing"), as principles.md:72 has it.
+
+### Criterion 10: what would make it pass
+
+1. Add one-line README entries for: WCAG (with level A/AA), lint, range check, register check, alias, consumer, fresh-context reviewer, delta class, primitive group, fixture, test server, OKLCH (lightness, chroma, hue), coarse pointer, accessible name and description, live region, payload, and the names of the four checkout parts.
+2. In survey.md and the two claim lists, say once what each outside name is (Baymard Institute, web.dev, DMCC Act, CMA, FTC, Lighthouse, axe, Storybook, Playwright, Sass, Material Web, AGENTS.md, CI, resolver, Candidate Recommendation, and the owner of each of the six systems) or drop the name where nothing rests on it.
+3. Remove the second meanings: rename the voice rules' ADAPT tag or define it there and reconcile it with operating-model.md rows 68 and 73; say "model tokens" or "spend" for usage cost in scorecard.md, DECISIONS.md A-09 and operating-model.md:105; correct "four core parts" in vision-notes.md:39.
+4. Rewrite the ten sentences listed in the evidence.
+
+### Major findings outside the failed criteria
+
+- `operating-model.md`, Decision table line 60 ("a non-breaking change to a part": lead) against principles.md:115: Principle 5 gives one route for any addition of a "component, variant, token, option and word": existing parts, then an EXPLORE item, then a second occurrence; its own breaking example is a fifth button variant. budget.md says promotion of an EXPLORE item is the steward's decision. The table only sends a new part down that route (line 64). Adding a variant, token or option to an existing part is a…
+- `operating-model.md`, Human review queue, lines 116 and 120, against table line 63 and budget.md:138: The table and budget.md say the lead extends or retires an EXPLORE item at expiry, or proposes it for promotion. The queue says an EXPLORE item at expiry enters the queue and "anything else" than three votes with a majority of likes "is pulled back", including after 14 days with no vote. Once the queue has reviewers it is unclear whether the lead may still extend an item, or propose promotion with…
+- `budget.md`, ADAPT table, "Tone of voice" row (line 119), with voice-and-tone.md:42: The range is "as the tone table allows", but that table prescribes one tone per situation and gives no bounds on what a product may vary, so the effective range is unknown. voice-and-tone.md uses the ADAPT tag for something else ("ADAPT rules the lead may adjust"), which also conflicts with budget.md:107 and the decision table, where any change to a range needs the CEO. A product builder cannot te…
+- `budget.md`, Meaning table (lines 66-71) and "What zero drift means" (lines 163-167), against principle: Principle 4 classes meaning and behaviour as LOCK, and principles.md:18 says those rules are LOCK rows in budget.md. The two central rules, no value that bypasses a token and no second version of something the system provides, have no LOCK row. They appear only as drift counts. Principle 4's trigger says "pull it back", not "release is blocked". A builder cannot tell whether a raw value or a dupli…
+- `budget.md`, Truthful content table, first row (line 57): The named system check is that the cost summary cannot render without a total and a list of charges. No named check asserts that a page with a committing control shows the summary before it, or that the amount at the pay control equals the summary total. A reference page that omits the summary, or adds a charge after the summary, would pass this row. The status row beside it does name a flow test …
+- `principles.md`, Principle 6, Rule, Evidence and Trigger (lines 135-139): The rule that a web feature may be built on only after 30 months in every major browser, and that a newer feature may only add an enhancement, has no evidence and no trigger. The L1 scripts named cover only pre-release dependencies and renamed public names. This clause is a rule without a contract. Principle 7's "people and agents build from the same source" likewise has a trigger but no named sen…
+- `voice-and-tone.md`, line 42, "ADAPT rules the lead may adjust"; also decision 3 (line 130): This gives the lead the right to change eleven voice rules, while operating-model.md:68 gives the voice to the CEO and :73 and budget.md:107 say changing a range needs the CEO. Run 1 raised the double meaning of ADAPT here; it is unchanged. A builder or the lead could alter sentence case, banned words or length limits without asking.
+- `benchmark.md`, "How items are tagged", last sentence (line 48); Scoring category 3 (line 157): "The rows of the Meaning table are checked by the count of values that bypass the system" does not match budget.md lines 66-71. The four Meaning rows are native element or role, token used for its stated purpose, one name per meaning, and no primitive tokens in components. A count of colour literals and numbers with units checks none of them; a page that references a primitive token directly has n…
+- `benchmark.md`, Item 2.5 (line 104); also items 2.2 (line 101) and 1.2 (line 66): Item 2.5 is tagged Accessibility, so a failure counts as a LOCK breach. Its second half, "focus has moved to the first error or to a summary of the errors", is not a row in budget.md's Accessibility table and is not required by a WCAG 2.2 A or AA criterion. A page that announces its errors without moving focus can meet budget.md line 40 and still be scored as a LOCK breach. Run 1 listed 2.5 among …
+- `voice-and-tone.md`, Line 42 ("ADAPT rules the lead may adjust") against budget.md line 119, README.md line 67 : ADAPT means two things. In README and budget.md it is a difference a product may make inside a written range, and changing a range needs the CEO. Here it marks a rule the lead may change. budget.md's tone row says a product varying its tone must still hold "the voice rules marked LOCK", which implies the ADAPT-tagged rules (sentence case, banned words, no exclamation marks, length) are optional fo…

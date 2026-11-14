@@ -36,7 +36,14 @@ The charter says what the Souvenir design system is for, what it promises, how f
 - **The Design Systems Library, or the library:** a reading list on design systems that the CEO keeps. Summarised in `notes/sources/`.
 - **Digest:** five lines written each day: done, next, decisions made for the CEO, risks. The **sandbox channel** is where it would be posted; none is named yet.
 
-**Outside terms used in the survey**
+**Outside terms**
+
+- **WCAG:** the Web Content Accessibility Guidelines, the international standard for accessible web content. Version 2.2 has three levels; this system requires levels A and AA.
+- **Accessible name and description:** the text a screen reader speaks for a control, and the extra text it speaks after it. **Live region:** a part of the page whose changes a screen reader announces without the person moving to it.
+- **OKLCH:** a way of writing a colour as lightness, chroma (how strong the colour is) and hue (its angle on the colour wheel).
+- **Coarse pointer:** a finger on a touch screen, as the browser reports it. **Viewport:** the visible area of the page. **Touch emulation:** a browser test mode that behaves like a touch screen.
+- **Lighthouse:** a page-testing tool from Google. **gzip:** a common way of compressing files for transfer.
+- Names of organisations, tools and laws that appear in the survey are explained in survey.md, under "Names used in this survey".
 
 - **DTCG:** the Design Tokens Community Group, which publishes the token file format this system uses.
 - **APCA:** a newer method of measuring contrast, which is not part of WCAG 2.2.
@@ -56,7 +63,7 @@ The charter says what the Souvenir design system is for, what it promises, how f
 - **Vocabulary file:** the list of the system's terms and their banned synonyms.
 - **Declared pair:** two colours the system states may sit together: a text, border or indicator colour and the background beside it.
 - **Design source:** the design-tool file for a component, once one exists.
-- **Slice:** a thin, complete piece of a product, built end to end. The first is mobile checkout. Its **core tasks** are: reach the page, enter details, see the total, pay, see the result.
+- **Slice:** a thin, complete piece of a product, built end to end. The first is mobile checkout, with four parts: field, button, feedback and cost summary. Its **core tasks** are: reach the page, enter details, see the total, pay, see the result.
 - **Reference checkout page:** a checkout page built in this repository to test the parts. It is not a real shop.
 
 **Differences and limits**
@@ -67,6 +74,10 @@ The charter says what the Souvenir design system is for, what it promises, how f
 - **ADAPT:** a delta allowed inside a written range.
 - **EXPLORE:** a time-boxed experiment outside the ranges, listed in the **register** with an owner, a hypothesis and an expiry date.
 - **Drift:** a value that bypasses a token, a second version of something the system provides, or a difference between the design source and the code.
+- **Lint:** an automated check of source files against a rule. The **range check** is the lint that tests a theme file against the ADAPT ranges. The **register check** tests the EXPLORE register.
+- **Primitive group:** one family of primitive tokens, such as all the raw colours. **Fixture:** a small prepared input used by a test. A **scenario fixture** is one prepared order for the reference checkout page.
+- **Test server:** a small program in this repository that answers the reference checkout page as a shop's server would. It takes no payment.
+- **Alias:** an old name kept as a pointer to its new name.
 - **Writing check:** an automated check of interface text against the numbered rules in voice-and-tone.md.
 - **Nightly scan:** a scheduled run that counts drift.
 
@@ -74,6 +85,8 @@ The charter says what the Souvenir design system is for, what it promises, how f
 
 - **Lead:** the lead agent, which owns the system and reports to the CEO.
 - **Subagent:** another agent the lead recruits for one task. A **brief** is the written task it is given. A **skill** is a short written procedure for a recurring task.
+- **Fresh-context reviewer:** a subagent that starts with no memory of the work it reviews.
+- **Model tokens:** the units in which an AI model's usage is counted. Not the same thing as a design token.
 - **Tier:** a model's level of capability: Sonnet or Haiku, then Opus, then Fable.
 - **Steward:** the accountable person who decides pilots, releases to real users and EXPLORE promotions.
 - **Real user:** a person using a Souvenir product for their own purposes. **Pilot participant:** a person recruited to try something, who knows it is a test. **Pilot:** a session or set of sessions with pilot participants.
