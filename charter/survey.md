@@ -2,11 +2,11 @@
 
 Altitude: system and patterns. Status: draft until Gate 1. Gathered by Sonnet 5.5, each file checked by Opus 5.5, synthesised by Opus 5.5. Date: 2026-11-13.
 
-File names in brackets are in `notes/survey/` unless they start with `sources/`, which means `notes/sources/`.
+File names in brackets are in `notes/survey/`. Each of those files ends with a review section.
 
 ## Purpose and method
 
-This document lets the lead decide from the survey. It draws on the twelve survey files (six systems, DTCG 2025.10, agent skills, craft, thinkers, libraries, checkout evidence), the three source summaries in `sources/`, and the Why and Constraints sections of CLAUDE.md.
+This document lets the lead decide from the survey. Its claims rest on the twelve survey files (six systems, the token format, agent skills, craft, thinkers, libraries, checkout evidence). It mentions the board and the CEO's reading list only as pointers, never as support for a claim.
 
 All survey files were checked on 2026-11-13, mostly through a summarising fetch tool, so wording is often paraphrase [apple-hig.md and material-design-3.md used page JSON and a browser]. Each file's closing review re-checked about six claims and logged corrections. The survey files were written by Sonnet 5.5 subagents and each was reviewed by a fresh Opus 5.5 subagent; one of the twelve passed review with no corrections. This synthesis was written by Opus 5.5 without browsing, since no two survey files contradict each other on substance (see Risks).
 
