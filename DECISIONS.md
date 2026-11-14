@@ -108,6 +108,18 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 - **Decision:** The choice is the CEO's. If there is no answer by 14 November 2026, 18:30, the lead chooses Ledger and logs it.
 - **To reverse:** Choose another direction before the token values are made (item 2.3). After that, a change costs the token values but not the architecture.
 
+### A-14. The lead now runs on Sonnet 5.5, not Fable 5.2
+
+- **Situation:** On 13 November the CEO said the Fable limit had been reached and the work must continue on a cheaper model, and set the session to `claude-sonnet-5-5`. CLAUDE.md routes vision, principles, visual direction, architecture, naming, arbitration and gate reviews to the lead on Fable.
+- **Decision:** The lead continues on Sonnet 5.5 and follows the CEO's instruction. To keep the rule's intent, each decision that much depends on and that no test can check (token architecture, naming grammar, the visual direction) is put to the advisor tool, a stronger reviewer, before it is written, and is logged as made on Sonnet. Gate reviews are still done by fresh reviewers; their tier is whatever the CEO's limit allows and is recorded with the verdict.
+- **To reverse:** Switch the session back to Fable. Decisions logged as made on Sonnet can then be re-read.
+
+### A-15. The archived 0.1.0 is not deleted
+
+- **Situation:** The CEO said the old build may be deleted if needed, to clear the confusion it caused.
+- **Decision:** Not deleted. The confusion did not come from the tag. It came from the old AGENTS.md being passed to subagents while the conversation that wrote it was still open (A-01). That session has now ended: the new session's instruction files no longer list AGENTS.md. Deleting the tag would remove the record and fix nothing. Deleting is also the one step here that cannot be undone, and CLAUDE.md says a deletion needs the CEO's approval for something the lead did not create.
+- **To reverse:** Tell the lead in a plain sentence to delete `v0.1.0-archive`, and it will.
+
 ### A-10. What the lead needs from the CEO
 
 In order of how much they unblock: a named steward; a first read of the charter, especially the seven principles and the LOCK rows; a channel for digests; a choice among the three visual directions when they exist; and, for the first pilot, a researcher and participants.
