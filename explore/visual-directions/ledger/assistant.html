@@ -1,0 +1,286 @@
+<!-- Clay. Visual direction Ledger on an assistant screen. Disposable. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger: assistant (clay)</title>
+<script>(function(){var t=new URLSearchParams(location.search).get("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)})()</script>
+<style>
+/* Ledger: ink on paper. Every raw value lives in the :root blocks.
+   Same :root blocks as ledger/index.html. No property was added for this screen. */
+:root{
+  color-scheme:light;
+  --accent-h:285; /* change only this number to re-brand */
+  --color-surface:oklch(98.5% .004 90);
+  --color-text:oklch(21% .02 270);
+  --color-text-soft:oklch(46% .02 270);
+  --color-rule:oklch(84% .006 90);
+  --color-accent:oklch(45% .16 var(--accent-h));
+  --color-danger:oklch(50% .18 27);
+  --color-warning:oklch(52% .105 75);
+  --color-success:oklch(47% .11 150);
+  --color-info:oklch(48% .11 240);
+  --font-text:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-title:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --font-size-1:1rem;
+  --font-size-2:1.25rem;
+  --font-size-3:2.25rem;
+  --line-text:1.5;
+  --line-title:1.2;
+  --weight-strong:600;
+  --space-1:.25rem;
+  --space-2:.5rem;
+  --space-3:.75rem;
+  --space-4:1rem;
+  --space-5:1.5rem;
+  --space-6:3rem;
+  --stroke-1:1px;
+  --stroke-2:2px;
+  --stroke-3:3px;
+  --size-control:3rem;
+  --size-mark:1.5rem;
+  --size-short:10rem;
+  --size-measure:34rem;
+  --radius:0;
+  --motion-turn:.8s;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    color-scheme:dark;
+    --color-surface:oklch(19% .015 270);
+    --color-text:oklch(94% .006 90);
+    --color-text-soft:oklch(74% .01 90);
+    --color-rule:oklch(38% .015 270);
+    --color-accent:oklch(80% .1 var(--accent-h));
+    --color-danger:oklch(76% .13 27);
+    --color-warning:oklch(82% .12 75);
+    --color-success:oklch(80% .13 150);
+    --color-info:oklch(78% .1 240);
+  }
+}
+:root[data-theme=dark]{
+  color-scheme:dark;
+  --color-surface:oklch(19% .015 270);
+  --color-text:oklch(94% .006 90);
+  --color-text-soft:oklch(74% .01 90);
+  --color-rule:oklch(38% .015 270);
+  --color-accent:oklch(80% .1 var(--accent-h));
+  --color-danger:oklch(76% .13 27);
+  --color-warning:oklch(82% .12 75);
+  --color-success:oklch(80% .13 150);
+  --color-info:oklch(78% .1 240);
+}
+
+/* Page: one column, a heavy rule at the head like a statement */
+*,::before,::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  margin:0;
+  padding:var(--space-6) var(--space-5);
+  background:var(--color-surface);
+  color:var(--color-text);
+  font:var(--font-size-1)/var(--line-text) var(--font-text);
+  font-variant-numeric:tabular-nums lining-nums;
+  overflow-wrap:anywhere;
+}
+main{
+  max-inline-size:var(--size-measure);
+  margin-inline:auto;
+  padding-block-start:var(--space-4);
+  border-block-start:var(--stroke-3) solid;
+}
+h1,h2,h3,h4,p,ul,ol,dl,dd,blockquote{margin:0}
+ul,ol{padding:0;list-style-type:""}
+
+/* Type: three sizes. Serif roman for titles, serif italic for sub-heads, sans for the work */
+h1{font-family:var(--font-title);font-weight:400;line-height:var(--line-title);font-size:var(--font-size-3)}
+:focus-visible{outline:var(--stroke-3) solid var(--color-text);outline-offset:var(--stroke-2)}
+
+/* Fields: plain square outlines, no fill */
+label{display:block;font-weight:var(--weight-strong)}
+button,textarea{
+  border-radius:var(--radius);
+  background:none;
+  color:inherit;
+  font:inherit;
+}
+button{min-block-size:var(--size-control)}
+textarea{
+  display:block;
+  inline-size:100%;
+  min-block-size:calc(var(--size-control)*2);
+  margin-block:var(--space-2) var(--space-4);
+  padding:var(--space-3);
+  border:var(--stroke-1) solid var(--color-text-soft);
+  appearance:none;
+  resize:vertical;
+}
+
+/* Buttons: an outline for ordinary actions, the accent for the one that commits, bare underlined text for the quiet way out */
+button{
+  padding:0 var(--space-5);
+  border:var(--stroke-1) solid;
+  font-weight:var(--weight-strong);
+  cursor:pointer;
+}
+.commit{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--space-2);
+  inline-size:100%;
+  border-color:var(--color-accent);
+  background:var(--color-accent);
+  color:var(--color-surface);
+}
+button:hover{
+  border-color:var(--color-text);
+  background:var(--color-text);
+  color:var(--color-surface);
+}
+.plain{
+  border-color:transparent;
+  text-decoration:underline;
+  text-decoration-thickness:var(--stroke-2);
+  text-underline-offset:var(--stroke-3);
+}
+
+/* Marginal notes: a rule down the leading edge, a mark for the kind, then the message */
+.note{--color-kind:var(--color-info)}
+.bad{--color-kind:var(--color-danger)}
+.warn{--color-kind:var(--color-warning)}
+.note{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  column-gap:var(--space-2);
+  padding-inline-start:var(--space-3);
+  border-inline-start:var(--stroke-2) solid var(--color-kind);
+}
+.note>:not(.mark){grid-column:2}
+.mark{
+  flex:none;
+  inline-size:var(--size-mark);
+  block-size:var(--size-mark);
+  fill:none;
+  stroke:currentColor;
+  stroke-width:var(--stroke-2);
+  stroke-linecap:square;
+  color:var(--color-kind,currentColor);
+}
+.sprite{position:absolute}
+@keyframes turn{to{transform:rotate(1turn)}}
+@media (prefers-reduced-motion:no-preference){
+  .working .mark{animation:turn var(--motion-turn) linear infinite}
+}
+
+/* Turns (the thread): a hairline between turns, no bubbles. The person's words are set apart by
+   face, size and indent, never by colour. Souvenir's turns are the sans text, flush left. */
+.turns{margin-block-start:var(--space-5)}
+.turns>li{
+  padding-block:var(--space-5);
+  border-block-end:var(--stroke-1) solid var(--color-rule);
+}
+.turns>li:last-child{padding-block-end:0;border-block-end:0}
+.turns>li>*+*{margin-block-start:var(--space-4)}
+[data-turn=person]{
+  padding-inline-start:var(--space-5);
+  font:italic var(--font-size-2)/var(--line-title) var(--font-title);
+}
+
+/* The proposal: an ink rule opens it, the fields run as ruled rows, the draft sits behind a rule */
+.card{
+  padding-block:var(--space-3) var(--space-5);
+  border-block:var(--stroke-1) solid;
+}
+.card>*+*{margin-block-start:var(--space-4)}
+.entry div{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:var(--space-5);
+  padding-block:var(--space-3);
+  border-block-end:var(--stroke-1) solid var(--color-rule);
+}
+.entry dt{color:var(--color-text-soft)}
+.entry dd{text-align:end}
+.draft{
+  padding-inline-start:var(--space-3);
+  border-inline-start:var(--stroke-2) solid var(--color-text-soft);
+}
+.actions{display:flex;flex-wrap:wrap;gap:var(--space-3)}
+
+/* Composer: an ink rule opens it like a section, the field is the same square outline */
+.composer{
+  margin-block-start:var(--space-6);
+  padding-block-start:var(--space-3);
+  border-block-start:var(--stroke-1) solid;
+}
+.send{display:block;margin-inline-start:auto}
+.suggestions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--space-3);
+  margin-block-start:var(--space-5);
+}
+.suggestions button{border-color:var(--color-text-soft);font-weight:inherit}
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="mark-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.5v4.5M12 8v.01"/></symbol>
+  <symbol id="mark-warn" viewBox="0 0 24 24"><path d="M12 4.5l8.5 15h-17zM12 10.5v3.5M12 16.5v.01"/></symbol>
+  <symbol id="mark-bad" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="mark-busy" viewBox="0 0 24 24"><path d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5"/></symbol>
+</svg>
+<main>
+  <h1>Today</h1>
+
+  <ol class="turns">
+    <li data-turn="assistant" aria-label="Souvenir">
+      <p role="alert" class="note bad"><svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-bad"/></svg>We couldn't reach your calendar. Nothing was changed. Try again.</p>
+    </li>
+
+    <li data-turn="person" aria-label="You">
+      <p>Move my 3pm with Priya to Thursday and tell her why.</p>
+    </li>
+
+    <li data-turn="assistant" aria-label="Souvenir">
+      <p role="status" class="note working"><svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-busy"/></svg>Checking both calendars…</p>
+      <p>Thursday at 3pm is free for both of you. Here is the change I will make:</p>
+
+      <section aria-label="Proposed change" class="card">
+        <dl class="entry">
+          <div><dt>Event</dt><dd>Planning with Priya</dd></div>
+          <div><dt>From</dt><dd>Wednesday, 3:00 pm</dd></div>
+          <div><dt>To</dt><dd>Thursday, 3:00 pm</dd></div>
+        </dl>
+        <blockquote aria-label="Drafted message" class="draft">
+          <p>Hi Priya, I need to move our planning session to Thursday at 3pm because of a clash on Wednesday. Does that work?</p>
+        </blockquote>
+        <p class="note warn"><svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-warn"/></svg>Drafted by Souvenir. Check it before you send.</p>
+        <div class="actions">
+          <button type="button" class="commit">Move event and send message</button>
+          <button type="button">Edit message</button>
+          <button type="button" class="plain">Cancel</button>
+        </div>
+      </section>
+
+      <p role="status" class="note"><svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-info"/></svg>Souvenir has not changed anything yet.</p>
+    </li>
+  </ol>
+
+  <form action="#" method="post" class="composer">
+    <label for="message">Message Souvenir</label>
+    <textarea id="message" name="message" rows="3"></textarea>
+    <button type="submit" class="send">Send message</button>
+  </form>
+
+  <ul aria-label="Suggestions" class="suggestions">
+    <li><button type="button">Show my week</button></li>
+    <li><button type="button">Draft a reply</button></li>
+    <li><button type="button">Find a free hour</button></li>
+  </ul>
+</main>
+</body>
+</html>

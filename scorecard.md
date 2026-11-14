@@ -28,6 +28,7 @@ The tools report model tokens per run, not per model tier, so a split by tier is
 | Gate 1, run 2: 3 Fable reviewers | 3 | 692,746 |
 | Gate 1, run 3: 3 Fable reviewers | 3 | 571,280 |
 | Visual directions: 3 Fable builders | 3 | 688,903 |
+| Assistant screen: 1 Sonnet builder | 1 | 205,406 |
 
 The lead's own tokens are not reported to it and are not included. These figures are copied from the tool's run reports; the reviewers' returned verdicts are saved in `gates/`.
 

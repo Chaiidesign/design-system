@@ -1,10 +1,16 @@
 // Clay. Confirms that each visual direction shows the same text, in the same order, as the shared content.
-// Usage: node explore/visual-directions/_shared/compare-text.mjs
+// Usage: node explore/visual-directions/_shared/compare-text.mjs [page-file] [shared-file]
+//   page-file    the file to read in each direction's folder. Default: index.html
+//   shared-file  the shared content in _shared/. Default: content.html
+// Checkout screen:   node explore/visual-directions/_shared/compare-text.mjs
+// Assistant screen:  node explore/visual-directions/_shared/compare-text.mjs assistant.html assistant-content.html
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const pageFile = process.argv[2] ?? 'index.html';
+const sharedFile = process.argv[3] ?? 'content.html';
 
 function visibleText(html) {
   const main = html.match(/<main[\s\S]*<\/main>/i);
@@ -18,15 +24,19 @@ function visibleText(html) {
     .trim();
 }
 
-const reference = visibleText(readFileSync(join(root, '_shared', 'content.html'), 'utf8'));
+const sharedPath = join(root, '_shared', sharedFile);
+if (!existsSync(sharedPath)) { console.log(`No shared file at _shared/${sharedFile}`); process.exit(1); }
+const reference = visibleText(readFileSync(sharedPath, 'utf8'));
+if (reference === null) { console.log(`_shared/${sharedFile} has no <main>`); process.exit(1); }
 let failed = 0;
 const dirs = readdirSync(root, { withFileTypes: true })
   .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
   .map((d) => d.name).sort();
 
+console.log(`Comparing <direction>/${pageFile} with _shared/${sharedFile}`);
 for (const name of dirs) {
-  const file = join(root, name, 'index.html');
-  if (!existsSync(file)) { console.log(`${name}: no index.html`); failed++; continue; }
+  const file = join(root, name, pageFile);
+  if (!existsSync(file)) { console.log(`${name}: no ${pageFile}`); failed++; continue; }
   const text = visibleText(readFileSync(file, 'utf8'));
   if (text === reference) { console.log(`${name}: same text as the shared content (${reference.length} characters)`); continue; }
   failed++;

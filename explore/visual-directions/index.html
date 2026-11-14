@@ -8,6 +8,7 @@
   :root { color-scheme: light dark; font: 16px/1.5 system-ui, sans-serif; }
   body { margin: 0; padding: 16px; }
   h1 { font-size: 1.25rem; margin: 0 0 4px; }
+  h2 { font-size: 1.125rem; margin: 16px 0 8px; }
   p { margin: 0 0 16px; max-width: 70ch; }
   nav a { margin-right: 16px; }
   .row { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 16px; }
@@ -23,13 +24,20 @@
   <a href="index.html">Follow this device</a>
 </nav>
 <div class="row" id="row"></div>
+<h2>The same three on an assistant screen</h2>
+<div class="row" id="row-assistant"></div>
 <script>
   const theme = new URLSearchParams(location.search).get('theme');
   const q = theme ? '?theme=' + theme : '';
-  for (const [slug, name] of [['ledger', 'Ledger'], ['instrument', 'Instrument'], ['signal', 'Signal']]) {
-    const f = document.createElement('figure');
-    f.innerHTML = `<figcaption>${name} · <a href="${slug}/index.html${q}">open alone</a> · <a href="${slug}/rationale.md">rationale</a></figcaption><iframe title="${name}" src="${slug}/index.html${q}"></iframe>`;
-    document.getElementById('row').append(f);
+  const directions = [['ledger', 'Ledger'], ['instrument', 'Instrument'], ['signal', 'Signal']];
+  function fill(rowId, page, suffix) {
+    for (const [slug, name] of directions) {
+      const f = document.createElement('figure');
+      f.innerHTML = `<figcaption>${name} · <a href="${slug}/${page}${q}">open alone</a> · <a href="${slug}/rationale.md">rationale</a></figcaption><iframe title="${name}${suffix}" src="${slug}/${page}${q}"></iframe>`;
+      document.getElementById(rowId).append(f);
+    }
   }
+  fill('row', 'index.html', '');
+  fill('row-assistant', 'assistant.html', ': assistant');
 </script>
 </html>

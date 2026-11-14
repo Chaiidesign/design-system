@@ -1,0 +1,55 @@
+<!-- Clay. The shared content for the three visual directions on an assistant screen (work item 2.1, second screen).
+     Every direction uses this text, in this order, with these elements, ids and attributes.
+     A direction may add class attributes, wrapper elements and decorative inline SVG (aria-hidden="true").
+     It may not change, add or remove visible text, or change element types, ids or ARIA attributes.
+     The data-turn attributes say who is speaking. Directions style them; nothing visible says it in words,
+     so each direction must show the speaker by something other than colour alone. -->
+<main>
+  <h1>Today</h1>
+
+  <ol>
+    <li data-turn="assistant" aria-label="Souvenir">
+      <p role="alert">We couldn't reach your calendar. Nothing was changed. Try again.</p>
+    </li>
+
+    <li data-turn="person" aria-label="You">
+      <p>Move my 3pm with Priya to Thursday and tell her why.</p>
+    </li>
+
+    <li data-turn="assistant" aria-label="Souvenir">
+      <p role="status">Checking both calendars…</p>
+      <p>Thursday at 3pm is free for both of you. Here is the change I will make:</p>
+
+      <section aria-label="Proposed change">
+        <dl>
+          <div><dt>Event</dt><dd>Planning with Priya</dd></div>
+          <div><dt>From</dt><dd>Wednesday, 3:00 pm</dd></div>
+          <div><dt>To</dt><dd>Thursday, 3:00 pm</dd></div>
+        </dl>
+        <blockquote aria-label="Drafted message">
+          <p>Hi Priya, I need to move our planning session to Thursday at 3pm because of a clash on Wednesday. Does that work?</p>
+        </blockquote>
+        <p>Drafted by Souvenir. Check it before you send.</p>
+        <div>
+          <button type="button">Move event and send message</button>
+          <button type="button">Edit message</button>
+          <button type="button">Cancel</button>
+        </div>
+      </section>
+
+      <p role="status">Souvenir has not changed anything yet.</p>
+    </li>
+  </ol>
+
+  <form action="#" method="post">
+    <label for="message">Message Souvenir</label>
+    <textarea id="message" name="message" rows="3"></textarea>
+    <button type="submit">Send message</button>
+  </form>
+
+  <ul aria-label="Suggestions">
+    <li><button type="button">Show my week</button></li>
+    <li><button type="button">Draft a reply</button></li>
+    <li><button type="button">Find a free hour</button></li>
+  </ul>
+</main>

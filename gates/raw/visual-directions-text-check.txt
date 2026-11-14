@@ -1,4 +1,10 @@
+Comparing <direction>/index.html with _shared/content.html
 instrument: same text as the shared content (1166 characters)
 ledger: same text as the shared content (1166 characters)
 signal: same text as the shared content (1166 characters)
+All 3 directions show the same text in the same order
+Comparing <direction>/assistant.html with _shared/assistant-content.html
+instrument: same text as the shared content (614 characters)
+ledger: same text as the shared content (614 characters)
+signal: same text as the shared content (614 characters)
 All 3 directions show the same text in the same order

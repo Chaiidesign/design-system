@@ -1,0 +1,192 @@
+<!-- Clay. Visual direction Instrument on an assistant screen. Disposable. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instrument: assistant (clay)</title>
+<link rel="icon" href="data:,">
+<script>var t=new URLSearchParams(location.search).get("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t</script>
+<style>
+/* The body (ground, surface, key, edge, text) changes with the theme.
+   The solid parts (accent, status, display) are the same in both.
+   Same :root blocks as instrument/index.html. No property was added for this screen. */
+:root{
+color-scheme:light;
+--accent-h:265;
+--color-ground:oklch(.905 .008 85);
+--color-surface:oklch(.972 .005 85);
+--color-key:oklch(.845 .01 85);
+--color-edge:oklch(.53 .012 85);
+--color-text:oklch(.24 .012 85);
+--color-text-soft:oklch(.44 .012 85);
+--color-accent:oklch(.55 .19 var(--accent-h));
+--color-accent-strong:oklch(.525 .19 var(--accent-h));
+--color-display:oklch(.29 .035 var(--accent-h));
+--color-on-solid:oklch(1 0 0);
+--color-danger:oklch(.57 .19 27);
+--color-warning:oklch(.585 .125 70);
+--color-success:oklch(.565 .135 150);
+--color-info:oklch(.565 .09 220);
+--font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--font-size-body:1rem;
+--font-size-heading:1.25rem;
+--font-size-title:1.75rem;
+--font-size-reading:2.25rem;
+--line-body:1.5;
+--line-tight:1.2;
+--weight-strong:600;
+--space-1:.25rem;
+--space-2:.5rem;
+--space-3:.75rem;
+--space-4:1rem;
+--space-5:1.25rem;
+--space-6:2.5rem;
+--radius-control:.75rem;
+--radius-panel:1.25rem;
+--size-control:3rem;
+--size-control-lg:3.5rem;
+--size-mark:1.5rem;
+--size-field-min:6rem;
+--size-column:32rem;
+--border-width:2px;
+--focus-width:3px;
+--press-depth:2px;
+--motion:120ms;
+--motion-loop:800ms
+}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme=light]){
+color-scheme:dark;
+--color-ground:oklch(.155 .006 85);
+--color-surface:oklch(.205 .006 85);
+--color-key:oklch(.295 .008 85);
+--color-edge:oklch(.62 .01 85);
+--color-text:oklch(.94 .006 85);
+--color-text-soft:oklch(.74 .008 85)
+}
+}
+:root[data-theme=dark]{
+color-scheme:dark;
+--color-ground:oklch(.155 .006 85);
+--color-surface:oklch(.205 .006 85);
+--color-key:oklch(.295 .008 85);
+--color-edge:oklch(.62 .01 85);
+--color-text:oklch(.94 .006 85);
+--color-text-soft:oklch(.74 .008 85)
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--color-ground);color:var(--color-text);font:var(--font-size-body)/var(--line-body) var(--font);overflow-wrap:break-word;-webkit-text-size-adjust:100%}
+h1,p,ul,ol,dl,dd,blockquote{margin:0}
+ul,ol{padding:0;list-style:none}
+h1,label,button{font-weight:var(--weight-strong)}
+h1{font-size:var(--font-size-title);line-height:var(--line-tight)}
+svg{display:block;width:var(--size-mark);height:var(--size-mark);fill:none;stroke:currentColor;stroke-width:var(--border-width);stroke-linecap:round;stroke-linejoin:round}
+
+/* Layout: one column; parts that hold controls or a record sit on raised panels, shown by tone alone.
+   Souvenir's own words are not boxed: they sit directly on the ground. */
+main,form,.turns,.turn,.panel,.field{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-4)}
+main{max-width:var(--size-column);margin:auto;padding:var(--space-5) var(--space-4) var(--space-6)}
+.panel{padding:var(--space-5);background:var(--color-surface);border-radius:var(--radius-panel)}
+.turns{gap:var(--space-5)}
+
+/* Fields: wells cut into the panel, showing the ground, with a clear edge */
+.field{gap:var(--space-1)}
+.hint{color:var(--color-text-soft)}
+textarea{display:block;width:100%;min-height:var(--size-field-min);margin-top:var(--space-1);padding:var(--space-3);border:var(--border-width) solid var(--color-edge);border-radius:var(--radius-control);background:var(--color-ground);color:inherit;font:inherit;resize:vertical}
+input:hover,button:hover,textarea:hover{border-color:var(--color-text)}
+.row{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+
+/* Keys: solid, bounded, and they move when pressed. The plain key is a key with nothing drawn but its words */
+button{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-height:var(--size-control);padding:var(--space-1) var(--space-4);border:var(--border-width) solid var(--color-edge);border-radius:var(--radius-control);background:var(--color-key);color:var(--color-text);font:inherit;font-weight:var(--weight-strong);font-variant-numeric:tabular-nums;cursor:pointer}
+button:active{transform:translateY(var(--press-depth))}
+.primary{width:100%;min-height:var(--size-control-lg);border-color:var(--color-accent);background:var(--color-accent);color:var(--color-on-solid);font-size:var(--font-size-heading)}
+.primary:hover,.primary:active{border-color:var(--color-accent-strong);background:var(--color-accent-strong)}
+.plain{border-color:transparent;background:none;text-decoration:underline;text-decoration-thickness:var(--border-width);text-underline-offset:var(--space-1)}
+:focus-visible{outline:var(--focus-width) solid var(--color-accent);outline-offset:var(--border-width)}
+
+/* The proposal: a record on a panel. Rows are divided by the ground showing through.
+   The draft is a read-only value, so it takes the read-only look: a dashed edge, nothing filled. */
+.fields{font-variant-numeric:tabular-nums}
+.fields div{display:flex;align-items:baseline;column-gap:var(--space-4);padding-block:var(--space-3);border-top:var(--border-width) solid var(--color-ground)}
+.fields dt{flex:1;color:var(--color-text-soft)}
+.fields dd{min-width:0;text-align:end}
+.well{padding:var(--space-3);border:var(--border-width) dashed var(--color-edge);border-radius:var(--radius-control)}
+.stamp{display:flex;align-items:flex-start;gap:var(--space-2)}
+.stamp svg{flex:none}
+.actions{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.actions>:not(.primary){flex:1 1 auto}
+.send{justify-self:end}
+
+/* The person's words: a raised plate set to the end of the line, one corner squared off */
+.turn[data-turn=person]{justify-items:end}
+.said{max-width:85%;padding:var(--space-3) var(--space-4);background:var(--color-surface);border-radius:var(--radius-panel);border-end-end-radius:var(--radius-control)}
+
+/* Feedback: a neutral plate with a solid tab that carries the colour and the mark */
+.msg{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:var(--space-3);align-items:center;padding-block:var(--space-4);padding-inline-end:var(--space-4);overflow:hidden;background:var(--color-surface);border-radius:var(--radius-control)}
+.mark{align-self:stretch;margin-block:calc(var(--space-4)*-1);padding:var(--space-4) var(--space-3);color:var(--color-on-solid)}
+.info .mark{background:var(--color-info)}
+.danger .mark{background:var(--color-danger)}
+
+@media (prefers-reduced-motion:no-preference){
+input,button,textarea{transition:border-color var(--motion),background-color var(--motion),transform var(--motion)}
+.working svg{animation:spin var(--motion-loop) linear infinite}
+}
+@keyframes spin{to{transform:rotate(1turn)}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Today</h1>
+
+  <ol class="turns">
+    <li data-turn="assistant" aria-label="Souvenir" class="turn">
+      <p role="alert" class="msg danger"><span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3ZM9 9l6 6M15 9l-6 6"/></svg></span>We couldn't reach your calendar. Nothing was changed. Try again.</p>
+    </li>
+
+    <li data-turn="person" aria-label="You" class="turn">
+      <p class="said">Move my 3pm with Priya to Thursday and tell her why.</p>
+    </li>
+
+    <li data-turn="assistant" aria-label="Souvenir" class="turn">
+      <p role="status" class="msg info working"><span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9"/></svg></span>Checking both calendars…</p>
+      <p>Thursday at 3pm is free for both of you. Here is the change I will make:</p>
+
+      <section aria-label="Proposed change" class="panel">
+        <dl class="fields">
+          <div><dt>Event</dt><dd>Planning with Priya</dd></div>
+          <div><dt>From</dt><dd>Wednesday, 3:00 pm</dd></div>
+          <div><dt>To</dt><dd>Thursday, 3:00 pm</dd></div>
+        </dl>
+        <blockquote aria-label="Drafted message" class="well">
+          <p>Hi Priya, I need to move our planning session to Thursday at 3pm because of a clash on Wednesday. Does that work?</p>
+        </blockquote>
+        <p class="hint stamp"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20l1-4L16.5 4.5l3 3L8 19ZM14 7l3 3"/></svg>Drafted by Souvenir. Check it before you send.</p>
+        <div class="actions">
+          <button type="button" class="primary">Move event and send message</button>
+          <button type="button">Edit message</button>
+          <button type="button" class="plain">Cancel</button>
+        </div>
+      </section>
+
+      <p role="status" class="msg info"><span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>Souvenir has not changed anything yet.</p>
+    </li>
+  </ol>
+
+  <form action="#" method="post" class="panel">
+    <div class="field">
+      <label for="message">Message Souvenir</label>
+      <textarea id="message" name="message" rows="3"></textarea>
+    </div>
+    <button type="submit" class="send">Send message</button>
+  </form>
+
+  <ul aria-label="Suggestions" class="row">
+    <li><button type="button">Show my week</button></li>
+    <li><button type="button">Draft a reply</button></li>
+    <li><button type="button">Find a free hour</button></li>
+  </ul>
+</main>
+</body>
+</html>
