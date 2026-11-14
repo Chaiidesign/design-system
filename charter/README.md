@@ -29,6 +29,8 @@ The charter says what the Souvenir design system is for, what it promises, how f
 - **The brief:** the CEO's raw notes, in `notes/ceo-brief.md`.
 - **The board:** a FigJam whiteboard holding a proposed process model for this system. Nothing on it is marked approved. Summarised in `notes/sources/`.
 - **Rams:** Dieter Rams, the industrial designer, whose ten principles of good design the CEO asked us to use as a lens.
+- **Base values:** the six values in the brief: universality, unity, scalability, honesty, longevity, and removing the unnecessary.
+- **Work tree:** the list of work items the CEO set in the kickoff message of 13 November 2026. PROGRESS.md records it. A work item the lead adds later does not enlarge the founding set.
 - **PROGRESS.md:** the list of work items and their status. An **item** such as 1.2 is one line of it. A **phase** is a group of items; there are five.
 - **DECISIONS.md:** the log of decisions. Its "Awaiting CEO" section holds decisions the lead made without an answer.
 - **The approvals list:** the six actions in CLAUDE.md that need the CEO's approval first.
@@ -54,7 +56,7 @@ The charter says what the Souvenir design system is for, what it promises, how f
 **The system's material**
 
 - **Token:** a named design decision, such as a colour or a spacing step, stored once and used everywhere. A **primitive token** holds a raw value. A **semantic token** names a purpose and points to a primitive. A **component token** names one part of one component and points to a semantic token.
-- **Component, or part:** a reusable piece of interface, such as a button. The **founding set** is the tokens, the four checkout parts, and any part that a work item in the CEO's work tree requires.
+- **Component, or part:** a reusable piece of interface, such as a button. The **founding set** is the tokens, the four checkout parts, and any part that a work item in the work tree requires.
 - **Pattern:** a reusable arrangement of components that solves a named task.
 - **Component contract:** what a component promises: its markup, states, behaviour, accessible name and the tokens it uses. A **principle contract** is a principle written as a rule, evidence and a trigger.
 - **Component status:** the record of which kinds of accessibility evidence a component has.
@@ -74,6 +76,7 @@ The charter says what the Souvenir design system is for, what it promises, how f
 - **ADAPT:** a delta allowed inside a written range.
 - **EXPLORE:** a time-boxed experiment outside the ranges, listed in the **register** with an owner, a hypothesis and an expiry date.
 - **Drift:** a value that bypasses a token, a second version of something the system provides, or a difference between the design source and the code.
+- **Density:** how tightly an interface is spaced: compact, default or comfortable. **Tool call:** one action an agent takes with a tool, such as reading a file.
 - **Lint:** an automated check of source files against a rule. The **range check** is the lint that tests a theme file against the ADAPT ranges. The **register check** tests the EXPLORE register.
 - **Primitive group:** one family of primitive tokens, such as all the raw colours. **Fixture:** a small prepared input used by a test. A **scenario fixture** is one prepared order for the reference checkout page.
 - **Test server:** a small program in this repository that answers the reference checkout page as a shop's server would. It takes no payment.

@@ -118,11 +118,11 @@ A person may give the system standing permission for a named action, inside limi
 2. If that fails, build it as an EXPLORE item: in a marked folder, in the register, never released to real users. It may be shown in a pilot.
 3. When the same need appears a second time, in a separate flow, recorded in a passport, the item may be proposed for the system.
 
-The founding set enters directly, by the lead's decision: the tokens, the four checkout parts, and any part that a work item in the CEO's work tree requires. Each release may remove things.
+The founding set enters directly, by the lead's decision: the tokens, the four checkout parts, and any part that a work item in the work tree requires. Each release may remove things.
 
 **Evidence.** L2: an inventory script counts components, variants and tokens and measures shipped size on every cycle. L4: what was added and removed; how often each part is reused; the effort a product needs to upgrade; and, once people use the system, whether task success held after each removal.
 
-**Trigger.** An addition that did not follow the route: rejected. A part with no references in the reference pages or in registered product repositories for two releases (*[starting value]*): proposed for removal with a migration path. Usage is reported as "not measured" until usage telemetry, an automatic count of where each part is used in products, exists.
+**Trigger.** An addition that did not follow the route: rejected. A part with no references in the reference pages, or in the product repositories that run the drift command, for two releases (*[starting value]*): proposed for removal with a migration path. Usage is reported as "not measured" until usage telemetry, an automatic count of where each part is used in products, exists.
 
 **Breaks it.** A fifth button variant added for one screen. A tooltip that repeats the label.
 
@@ -132,7 +132,7 @@ The founding set enters directly, by the lead's decision: the tokens, the four c
 
 ## 6. Built to last, even over built fast
 
-**Rule.** Each decision sits on the most durable layer that can hold it: a web standard before a library, a token before a value, a contract before an implementation. A web feature counts as a standard to build on when it has been available in every major browser for at least 30 months (*[starting value]*, the threshold browser makers use for "widely available"); a newer feature may only add an enhancement that the task does not depend on. Nothing in brick depends on software with a pre-release version tag or a version below 1.0 (*[starting value]*), except items on a written exception list. Every breaking change, meaning a change to a token name, a component's documented markup, attributes, class names or events that forces a product using the system to change, comes with a version, a notice and a way to migrate.
+**Rule.** Each decision sits on the most durable layer that can hold it: a web standard before a library, a token before a value, a contract before an implementation. A web feature counts as a standard to build on when it has been available in every major browser for at least 30 months (*[starting value]*, the threshold browser makers use for "widely available", stated from the lead's knowledge and not checked in this run); a newer feature may only add an enhancement that the task does not depend on. Nothing in brick depends on software with a pre-release version tag or a version below 1.0 (*[starting value]*), except items on a written exception list. Every breaking change, meaning a change to a token name, a component's documented markup, attributes, class names or events that forces a product using the system to change, comes with a version, a notice and a way to migrate.
 
 **Evidence.** L1: a script fails on a pre-release dependency in brick, and on a removed or renamed public name with no alias, meaning the old name kept as a pointer to the new one. A lint checks the CSS and HTML features used against a dated list of what has been available for 30 months. L2: the list of dependencies, each with the number of files that import it. L4: whether anything was rebuilt because a dependency moved.
 

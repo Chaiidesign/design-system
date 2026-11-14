@@ -8,7 +8,7 @@ File names in brackets are in `notes/survey/`. Each of those files ends with a r
 
 This document lets the lead decide from the survey. Its claims rest on the twelve survey files (six systems, the token format, agent skills, craft, thinkers, libraries, checkout evidence). It mentions the board and the CEO's reading list only as pointers, never as support for a claim.
 
-All survey files were checked on 2026-11-13, mostly through a summarising fetch tool, so wording is often paraphrase [apple-hig.md and material-design-3.md were read from the pages' underlying data and in a browser]. Each file's closing review re-checked about six claims and logged corrections. The survey files were written by Sonnet 5.5 subagents and each was reviewed by a fresh Opus 5.5 subagent; one of the twelve passed review with no corrections. This synthesis was written by Opus 5.5 without browsing, since no two survey files contradict each other on substance (see Risks).
+All survey files were checked on 2026-11-13, mostly through a summarising fetch tool, so wording is often paraphrase (two files, apple-hig.md and material-design-3.md, were read from the pages' underlying data and in a browser). Each file's closing review re-checked about six claims and logged corrections. The survey files were written by Sonnet 5.5 subagents and each was reviewed by a fresh Opus 5.5 subagent; one of the twelve passed review with no corrections. This synthesis was written by Opus 5.5 without browsing, since no two survey files contradict each other on substance (see Risks).
 
 Labels for claims about behaviour:
 - **[R]** means supported by cited research.
@@ -17,22 +17,23 @@ Labels for claims about behaviour:
 
 ## Names used in this survey
 
-- **The six systems:** Polaris (Shopify), the GOV.UK Design System (UK government), Material Design 3 (Google), Carbon (IBM), the Atlassian Design System, and the Human Interface Guidelines (Apple). **Material Web** is Google's set of Material components for the web.
+- **The six systems:** Polaris (Shopify), the GOV.UK Design System (UK government), Material Design 3 (Google), Carbon (IBM), the Atlassian Design System, and the Human Interface Guidelines (Apple).
 - **Baymard Institute:** a research firm that studies online shopping usability. **Nielsen Norman Group:** a usability research and consulting firm. **web.dev:** Google's guidance site for web developers.
 - **DMCC Act:** the UK Digital Markets, Competition and Consumers Act 2024. **CMA:** the UK Competition and Markets Authority. **FTC:** the US Federal Trade Commission.
 - **Sass:** a language that compiles to CSS. **Style Dictionary** and **Terrazzo:** tools that turn token files into code. **Resolver:** the part of the token format that combines files into themes.
 - **Radix** and **React Aria:** libraries of accessible component behaviour for the React framework. **shadcn/ui:** a way of distributing components by copying their files into a project.
 - **Storybook:** a tool for building and showing components one at a time. **Playwright:** a tool that drives a browser in tests. **axe:** an automated accessibility scanner.
 - **CI:** continuous integration, the checks that run automatically on every change. **Eval:** a scored test of how well an AI agent does a task. **AGENTS.md:** a file of rules for AI agents working in a repository.
-- **Candidate Recommendation:** a late stage on the W3C's route to a standard. **Immutable channels:** published versions that are never changed after release.
+- **Candidate Recommendation:** a late stage on the W3C's route to a standard. **Immutable channels:** published versions that are not changed after release, except for critical security fixes. **Increase Contrast:** an Apple accessibility setting.
 - **Vercel:** a web hosting company that publishes guidelines for building interfaces. **Primer:** GitHub's design system. **Nathan Curtis:** a consultant who writes about design system teams. **Jetpack Compose:** Android's interface toolkit.
 - "No reason stated" means the survey file records none, not that the source gives none.
+- The descriptions in this list are general background written by the lead. They are not survey findings.
 
 ## What the strong systems have in common
 
-- **Purpose names.** Five of the six name colours by purpose, not value; Apple does it through platform colour APIs, not tokens [ibm-carbon.md, atlassian-design-system.md, material-design-3.md, govuk-design-system.md, apple-hig.md].
+- **Purpose names.** Carbon, Atlassian, Material and GOV.UK name colours by purpose, not value; Apple does the same through its platform's colour interfaces, not tokens [ibm-carbon.md, atlassian-design-system.md, material-design-3.md, govuk-design-system.md, apple-hig.md]. For Polaris the survey recorded purpose names only in its older React system [shopify-polaris.md].
 - **One name, per-theme values** for light and dark [atlassian-design-system.md, ibm-carbon.md, material-design-3.md, apple-hig.md].
-- **Errors say how to fix it** [apple-hig.md, ibm-carbon.md, atlassian-design-system.md, shopify-polaris.md, govuk-design-system.md]. Apple adds "avoid blame" [apple-hig.md]; GOV.UK and Polaris reject "invalid" [govuk-design-system.md, shopify-polaris.md]. [P]
+- **Errors say how to fix it** [apple-hig.md, ibm-carbon.md, atlassian-design-system.md, shopify-polaris.md, govuk-design-system.md, checkout-evidence.md]. Apple adds "avoid blame" [apple-hig.md]; GOV.UK and Polaris reject "invalid" [govuk-design-system.md, shopify-polaris.md]. [P]
 - **Sentence-case verb button labels** [atlassian-design-system.md, ibm-carbon.md, shopify-polaris.md]. Apple asks for a verb and one capitalisation style per element type [apple-hig.md]. [P]
 - **Automated plus manual accessibility testing,** wherever testing is described [govuk-design-system.md, ibm-carbon.md, atlassian-design-system.md].
 
@@ -41,9 +42,9 @@ Labels for claims about behaviour:
 - **Accessibility floor.** GOV.UK: WCAG 2.2 AA, backed by external audits. Atlassian 2.1 AA, Carbon a WCAG AA checklist, Material states no WCAG level and gives colour pairs a "minimum 3:1" contrast. Apple gives WCAG AA contrast values and also mentions APCA, a newer contrast method. Apple's reason for system colours: they adapt to Increase Contrast and dark mode. Others state no reason [govuk-design-system.md, atlassian-design-system.md, ibm-carbon.md, material-design-3.md, apple-hig.md].
 - **Token format and branding.** The survey found no JSON token file for GOV.UK or Carbon, which use Sass; for Atlassian it recorded a code interface, and for Material CSS properties [govuk-design-system.md, ibm-carbon.md, atlassian-design-system.md, material-design-3.md]. GOV.UK says it does not support custom branding [govuk-design-system.md].
 - **"When not to use".** Carbon documents it on every component page [ibm-carbon.md]. GOV.UK pages have "When to use this component", and the survey did not confirm a separate "when not to use" section [govuk-design-system.md]. Apple and Polaris lack it (no reason stated) [apple-hig.md, shopify-polaris.md].
-- **Flexibility.** Atlassian rejects both "consistency for the sake of consistency" and "infinite flexibility" [atlassian-design-system.md]. Polaris seals components; staff call web components the future of Shopify's merchant admin [shopify-polaris.md]. Material moves features to Jetpack Compose, Android's interface toolkit, only [material-design-3.md].
+- **Flexibility.** Atlassian rejects both "consistency for the sake of consistency" and "infinite flexibility" [atlassian-design-system.md]. Polaris seals components; a Shopify staff member, replying on a forum, called web components "the future of the admin", meaning Shopify's merchant admin [shopify-polaris.md]. Material adds some new features only to Jetpack Compose, Android's interface toolkit, and not to its other platforms [material-design-3.md].
 - **Versioning.** GOV.UK uses semantic versioning (semver); Carbon "aims to follow" it; Polaris immutable channels; Atlassian release phases, saying breaking changes "should be infrequent"; Apple per-page change logs. Otherwise no reason stated [govuk-design-system.md, ibm-carbon.md, shopify-polaris.md, atlassian-design-system.md, apple-hig.md].
-- **When to validate.** Apple, Atlassian, Baymard and Nielsen Norman Group: on leaving the field. Carbon: real-time "helps", otherwise on submit [apple-hig.md, atlassian-design-system.md, checkout-evidence.md, ibm-carbon.md].
+- **When to validate.** Apple (for email), Atlassian, Baymard and Nielsen Norman Group: on leaving the field. Carbon: real-time "helps", otherwise on submit [apple-hig.md, atlassian-design-system.md, checkout-evidence.md, ibm-carbon.md].
 - **Error summary.** GOV.UK always shows one; Nielsen Norman Group warns against relying on it alone (no reasons stated) [govuk-design-system.md, checkout-evidence.md].
 - **Motion.** Three interface designers who write about craft disagree: Rauno Freiberg says 200 milliseconds or less, Emil Kowalski under 300, and Jakub Krehel's example runs 800; the survey file records no evidence for any of the three [craft-and-taste.md].
 
@@ -58,12 +59,12 @@ Labels for claims about behaviour:
 | Same wording in the error message and the error summary; banned words | GOV.UK | Adopt | Specific and public | govuk-design-system.md |
 | Error text replaces helper text; a message that dismisses itself also appears inline | Material | Adopt | No layout shift; message not lost [P] | material-design-3.md |
 | Never disable the submit button | Atlassian, web.dev | Adopt | Instructions beat a dead control [P] | atlassian-design-system.md, checkout-evidence.md |
-| Short line items, business name on the total, disclose later costs | Apple Pay | Adapt | The only cost-summary guidance among the six systems. Baymard separately advises a breakdown with the total most prominent | apple-hig.md, checkout-evidence.md |
+| Short line items, business name on the total, disclose later costs | Apple Pay | Adapt | The only cost-summary guidance the survey found among the six systems, on the pages it read. Baymard separately advises a breakdown with the total most prominent | apple-hig.md, checkout-evidence.md |
 | llms.txt index with topic files, plus MCP hosted and local; not one ~640k-character full file | Atlassian, Carbon | Adopt | Agents load only what they need | atlassian-design-system.md, ibm-carbon.md |
-| Short rules that each start with a bold label, a rules file for agents, and a command that reviews code against the rules | Vercel | Adapt | A form agents follow well. Leave out its advice to use APCA and its own brand's writing rules | agent-skills.md |
+| Short rules that each start with a bold label, a rules file for agents, and a command that reviews code against the rules | Vercel | Adapt | A short form an agent can read; whether agents follow it better is untested. Leave out its advice to use APCA and its own brand's writing rules | agent-skills.md |
 | Worst-case data testing | Break UI, a published agent skill | Adopt | Long, empty, non-Latin and emoji values test universality | agent-skills.md |
-| Deprecate before removing; release phases | Atlassian, GOV.UK | Adopt | Predictable for consumers [P] | atlassian-design-system.md, govuk-design-system.md |
-| Motion duration and frequency bands | Kowalski | Adapt | Testable, but we set our own ranges | craft-and-taste.md |
+| Deprecate before removing; named stages a part passes through from early access to removal | Atlassian, GOV.UK | Adopt | Predictable for the products that use the system [P] | atlassian-design-system.md, govuk-design-system.md |
+| Motion duration ranges, set by how often a person sees the motion | Kowalski | Adapt | Testable, but we set our own ranges | craft-and-taste.md |
 | Sealed, unstyleable components | Polaris | Avoid | Blocks ADAPT | shopify-polaris.md |
 | Deprecating the old system before the new one reaches parity | Polaris | Avoid | One developer's forum post describes the difficulty [A] | shopify-polaris.md |
 | Leaving the decider unstated | Carbon, Atlassian, Material, Apple | Avoid | Who decides is already an open gap here | ibm-carbon.md, atlassian-design-system.md, material-design-3.md, apple-hig.md |
@@ -72,7 +73,7 @@ Labels for claims about behaviour:
 
 ## What the systems give AI agents today, and what is still missing everywhere
 
-**Today:** Atlassian has llms.txt with topic files and an MCP server; its skill is staff-only [atlassian-design-system.md]. Carbon has a hosted MCP server, llms.txt, and named install locations for AGENTS.md and skills [ibm-carbon.md]. Polaris has an early-access local MCP server and Markdown pages [shopify-polaris.md]. Material has only Google's Design MCP (colour, icons, fonts) and a migration skill [material-design-3.md]. Apple and GOV.UK have nothing official [apple-hig.md, govuk-design-system.md].
+**Today:** Atlassian has llms.txt with topic files and an MCP server; its skill is staff-only [atlassian-design-system.md]. Carbon has a hosted MCP server, llms.txt, and named install locations for AGENTS.md and skills [ibm-carbon.md]. Polaris has an early-access local MCP server and Markdown pages [shopify-polaris.md]. Material has only Google's Design MCP (colour, icons, fonts) and a migration skill [material-design-3.md]. The survey found nothing official for Apple or GOV.UK [apple-hig.md, govuk-design-system.md].
 
 **Still missing.** These hold across the six systems, on the pages the survey read:
 - **No published method to test that an agent followed the system.** Atlassian reports eval gains without describing a method [atlassian-design-system.md].
@@ -83,7 +84,7 @@ Labels for claims about behaviour:
 
 **How people behave**
 - **Costs.** "Extra costs too high" was 40%, and "couldn't see total up front" 12%, among shoppers who meant to buy. The 42% who were just browsing are excluded, and no sample size is given. **[R]** A 2017 figure of 21% comes from a different survey, so 21% against 12% is not a trend. **[R, dated]** [checkout-evidence.md]
-- **New costs at review.** One tester felt "duped" by a late fee rise. In Baymard's benchmark of 60 sites, 65% had an order review step that Baymard rated poor to just acceptable [checkout-evidence.md]. **[R, 2019]**
+- **New costs at review.** One tester felt "duped" by a late fee rise [checkout-evidence.md]. **[P]** In Baymard's benchmark of 60 sites, 65% had an order review step that Baymard rated poor to just acceptable [checkout-evidence.md]. **[R, 2019]**
 - **Field count.** The average checkout has 11.3 fields, while 8 usually suffice. 42% of testers typed a full name into "First Name" [checkout-evidence.md]. **[R]**
 - **Labels.** Keep labels visible rather than using placeholders: Baymard advice from 2013, with no finding recorded [checkout-evidence.md]. **[P]**
 - **Validation.** Validate when the user leaves the field. Baymard benchmarks this, and Nielsen Norman Group's guideline gives no data [checkout-evidence.md]. **[P]**
@@ -95,7 +96,7 @@ Labels for claims about behaviour:
 **Regulation (legal facts, not behaviour)** [checkout-evidence.md]
 - **UK:** DMCC s.230 (in force 6 April 2025) and CMA guidance put unavoidable charges in the total.
 - **US:** the FTC fees rule covers only live-event tickets and short-term lodging.
-- **EU:** Article 6(1)(e) text unconfirmed; the Digital Fairness Act is a proposal.
+- **EU:** the Consumer Rights Directive (2011/83/EU) is reported to require the total price in Article 6(1)(e), but the survey could not open the text to confirm it. The Digital Fairness Act is a proposed EU law, not yet in force.
 
 **Standards.** WCAG 2.2: 1.3.5, 1.4.3, 1.4.11, 2.4.7, 2.4.11, 2.5.8, 3.3.1 to 3.3.3, 3.3.7, 3.3.8, 4.1.3; paraphrased in the survey, so quote W3C for wording [checkout-evidence.md].
 
@@ -131,5 +132,5 @@ Options are grouped by layer. The lead chooses, and the choices are recorded in 
 7. Always show an error summary, as GOV.UK does? [govuk-design-system.md, checkout-evidence.md]
 8. Who defines and measures "checkout comprehension" before the first pilot? (A question the board leaves open.)
 9. Who is the steward, and who owns the first two experiments? (A question the board leaves open.)
-10. How is agent compliance tested beyond the benchmark? No surveyed system publishes a method [atlassian-design-system.md].
+10. How is agent compliance tested beyond the benchmark? The survey found none published.
 11. Survey Primer's deprecation practice before Gate 2?

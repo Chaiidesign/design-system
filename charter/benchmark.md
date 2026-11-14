@@ -17,7 +17,8 @@ It says nothing about real people: a passing page may still confuse a shopper **
 - **Limit:** 80 tool calls or 30 minutes, whichever comes first. Whatever exists at the limit is scored item by item. Reaching the limit does not by itself fail any item.
 - **Runs:** five per task. Identical runs differ, so one run cannot separate a change from chance.
 - **Tool call:** each invocation logged, failed and parallel ones included.
-- **Viewing:** served locally; checks use a 375 by 812 pixel viewport unless stated.
+- **Viewing:** served locally; checks use a 375 by 812 pixel viewport unless stated (*[starting value]*).
+- **Scorer:** a script, for every item a script can decide. For the rest, two fresh-context reviewer agents score each run independently.
 - **"Fill valid":** the scorer types the valid customer values below into the matching fields.
 
 Five runs, 80 tool calls and 30 minutes are *[starting values]*, checked against the spread of the first baseline.
@@ -71,7 +72,7 @@ Payment always succeeds in this task.
 - 1.7 The accessibility scan reports zero failures on load. (Accessibility)
 - 1.8 By keyboard alone, every field and the pay control are reached in visual order with visible focus, and pay works after "fill valid". (Accessibility)
 - 1.9 At 320 pixels nothing scrolls sideways; at 200% text nothing clips or overlaps. (Accessibility)
-- 1.10 "Fill valid", then press pay twice within 100 milliseconds: the console shows exactly one PAYMENT ATTEMPT. (Safe behaviour)
+- 1.10 "Fill valid", then press pay twice within 100 milliseconds (*[starting value]*): the console shows exactly one PAYMENT ATTEMPT. (Safe behaviour)
 - 1.11 During the wait, text says payment is in progress, exposed as a status message; "paid" appears only afterwards. (Truthful content)
 - 1.12 No optional extra that adds cost or shares data is selected on load. (Truthful content)
 - 1.13 With script off, all items, amounts, labels and fields are present. (P6)
@@ -105,7 +106,7 @@ Scorer sequence: (A) fill valid, enter those three values, press pay; (B) correc
 - 2.6 After A, every field keeps what was typed, wrong values included. (P3)
 - 2.7 After B, no error remains. (Truthful content)
 - 2.8 After B, text says the payment did not go through and what to do next; nothing says "paid". (Truthful content)
-- 2.9 The decline message is exposed as a status or alert, or receives focus. (Accessibility)
+- 2.9 The decline message is in a live region, or receives focus. (Accessibility)
 - 2.10 After B, every field keeps its value and the total still reads 82.25. (Safe behaviour)
 - 2.11 C needs no re-entry, logs a second PAYMENT ATTEMPT, then shows the order paid. (Accessibility)
 - 2.12 A to C can be done by keyboard alone. (Accessibility)
@@ -135,7 +136,7 @@ The prompt gives the brand as one colour, as a brand would. How that colour beco
 
 - 3.1 "Brightwater Goods" is shown, and the brand is set in exactly one place in the agent's files, in the form the docs describe. (P4)
 - 3.2 The count of values that bypass the system (see Scoring) is zero. (P4)
-- 3.3 In light mode, the pay control's colour has the hue of the brand colour, within 10 degrees in OKLCH. (ADAPT)
+- 3.3 In light mode, the pay control's colour has the hue of the brand colour, within 10 degrees in OKLCH (*[starting value]*). (ADAPT)
 - 3.4 When the scorer resets the brand to a purple (#6B3FA0) in that one place, the pay control's hue follows and the error and success colours do not change. (P4)
 - 3.5 Light mode: the accessibility scan, including contrast, reports zero failures. (Accessibility)
 - 3.6 With the dark preference set, the background is darker than the body text. (P4)
@@ -176,4 +177,4 @@ The baseline is the first complete fifteen runs after the published docs and pac
 3. **Lab timing budgets** are left out of the violation count until the lab setup is fixed in phase 4.
 4. **Scanner.** axe-core, at the version installed in phase 3, recorded with each run.
 5. **Which budgets apply.** The byte budgets in [budget.md](budget.md) apply to the agent-built page. The rule that the core tasks need no script does not apply to the scripts that stand in for a server: the simulated payment and, in Task 2, the checking of entries when pay is pressed. Those are exempt by name, and item 1.13 still checks that the content is present with script off.
-6. **Task 3 was rewritten after the first run of Gate 1 failed criterion 6.** The first draft gave two exact accent colours and tested by swapping in black. budget.md lets a product change only the accent's hue, so the task now gives one brand colour and tests the hue. By a reviewer's calculation the two fixed colours have hues of about 195 and 302 degrees. Phase 2 must keep every status hue at least 30 degrees from both, or the task would contradict the accent range.
+6. **Task 3 was rewritten after the first run of Gate 1 failed criterion 6.** The first draft gave two exact accent colours and tested by swapping in black. budget.md lets a product change only the accent's hue, so the task now gives one brand colour and tests the hue. By two reviewers' calculations, the brand colour #0F6E6E and the scorer's purple #6B3FA0 have hues of about 195 and 302 degrees. Phase 2 must keep every status hue at least 30 degrees from both, or the task would contradict the accent range.

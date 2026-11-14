@@ -1,0 +1,180 @@
+[
+ {
+  "criterion": 5,
+  "verdict": "fail",
+  "evidence": "Criterion as written (PROGRESS.md:24): \"Survey. Every claim points to a reviewed file in notes/survey/. There is an adopt, adapt, avoid table.\"\n\nI read charter/survey.md and all twelve files in notes/survey/ in full. Each survey file ends with a review section dated 2026-11-13.\n\nRun 2's three defects: all fixed.\n1. Old L35, now survey.md:48: reads \"the survey file records no evidence for any of the three\". Matches craft-and-taste.md:7, 18, 24, 50.\n2. Old L55, now survey.md:68: Source is Polaris only, Supports is shopify-polaris.md only, Reason is \"One developer's forum post describes the difficulty [A]\". Matches shopify-polaris.md:58. Material Web and the former-engineer account are gone from the row.\n3. Old L29, now survey.md:42: \"The survey found no JSON token file for GOV.UK or Carbon, which use Sass; for Atlassian it recorded a code interface, and for Material CSS properties\". Matches govuk-design-system.md:9, ibm-carbon.md:15, atlassian-design-system.md:18, material-design-3.md:14.\nThe \"No reason stated\" sentence was added at survey.md:29 (in the names list, not the method paragraph, but it is there and clear).\n\nAdopt, adapt, avoid table: exists, survey.md:52-71, 18 rows, each with a Supports cell naming files in notes/survey/.\n\nFiles outside notes/survey/: no claim cites one. README.md (L92) and DECISIONS.md (L104) are pointers. survey.md:121 (\"The CEO's reading list recommends it for versioning and deprecation\") and :132-133 (\"A question the board leaves open\") are statements about those documents, worded as pointers; I checked both against notes/sources/ and they are accurate (design-systems-library.md:99-101; figjam-board.md:129-133).\n\nClaims checked against the cited file (21, across every section):\nSupported, wording no stronger than the file:\n- L11 \"one of the twelve passed review with no corrections\": only craft-and-taste.md:54 has none; the other eleven log corrections.\n- L34 one name, per-theme values: atlassian:17, carbon:12, material:12, apple:14.\n- L36 sentence-case verb labels, Apple verb and capitalisation: atlassian:46, carbon:31, polaris:41, apple:29.\n- L41 accessibility floor: govuk:26, atlassian:38, carbon:26, material:31-32, apple:14 and 25.\n- L43 \"when not to use\": carbon:18, govuk:16, apple:19, polaris:25.\n- L45 versioning: govuk:22, carbon:23, polaris:31, atlassian:29, apple:22.\n- L47 error summary: govuk:48, checkout-evidence:21-22.\n- L55 colour role pairs and 3:1: material:32, 58, 63.\n- L59 error text replaces helper text; inline twin: material:46-47.\n- L70 Curtis, 80+ systems: thinkers.md:14.\n- L86 \"duped\", 60 sites, 65%: checkout-evidence:11.\n- L96-98 regulation: checkout-evidence:26-30.\n- L106 token build: behaviour-and-distribution:58-59, dtcg:42-43, 51.\n- L109 axe 57%, GOV.UK 30%: behaviour-and-distribution:54, govuk:27.\n- L111 \"deprecate in a minor, remove in the next major\": shopify-polaris.md:29 (old Polaris policy); immutable channels: polaris:31.\n- L116-117 format status and version facts: dtcg:6-7, 41-42, 52; behaviour-and-distribution:60.\n- L125 touch targets: checkout-evidence:39, apple:19 and 25, agent-skills:17.\n\nNot met (the places that make the criterion fail):\nA. survey.md:63, Reason cell: \"A form agents follow well\". The cited file, agent-skills.md:22, says only \"It is the closest match in form (short rules, agent-readable)\". \"Agent-readable\" is not \"agents follow well\". This is an unlabelled claim about how agents behave that is not in the file; survey.md:78 itself says no system publishes a method to test that an agent followed the system.\nB. survey.md:61, Reason cell: \"The only cost-summary guidance among the six systems\". The row cites apple-hig.md and checkout-evidence.md, neither of which says anything about the other five systems. The files that do bear on it say \"could not find\" on partial reads: atlassian-design-system.md:64 (only about 200,000 of 545,000 characters read), material-design-3.md:48 (\"I did not search the full component list\"), ibm-carbon.md:44 (a \"Buy\" page exists and could not be opened). Stated as fact, the claim is stronger than the files. This is the same kind of defect run 2 named at old L29. (Run 1's reviewer suggested this wording; the partial-coverage notes in the three files are why I read it differently. survey.md:77 already hedges the same point correctly, \"on the pages the survey read\".)\n\nTwo milder cases of the same kind are listed under other findings (L75, L134).",
+  "whatWouldMakeItPass": "Two edits to charter/survey.md:\n1. L63, Reason: replace \"A form agents follow well\" with what agent-skills.md:22 says, for example \"The closest match in form: short rules an agent can read\". If the behavioural claim is wanted, label it [A].\n2. L61, Reason: replace \"The only cost-summary guidance among the six systems\" with \"The only cost-summary guidance the survey found among the six systems\", and either add the five other system files to the Supports cell or point to the \"Still missing\" list at L79.\n\nIn the same edit, to remove the same kind of wording elsewhere: L75 \"Apple and GOV.UK have nothing official\" to \"the survey found nothing official for Apple or GOV.UK\"; L134 \"No surveyed system publishes a method\" to \"The survey found none published\".",
+  "otherFindings": [
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L75, \"Apple and GOV.UK have nothing official\"",
+    "problem": "The files say \"Nothing official that I found\" (govuk-design-system.md:33) and \"could not find\" (apple-hig.md:33). The synthesis states the absence as fact.",
+    "suggestedFix": "Write \"the survey found nothing official for Apple or GOV.UK\"."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L134, open question 10: \"No surveyed system publishes a method [atlassian-design-system.md]\"",
+    "problem": "Only the Atlassian file bears on this (line 55). The other five files are silent on eval methods. L77-78 hedges the same claim (\"on the pages the survey read\"); L134 does not.",
+    "suggestedFix": "Write \"The survey found none published\" or refer back to the \"Still missing\" list."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L44, \"staff call web components the future of Shopify's merchant admin\"",
+    "problem": "shopify-polaris.md:58 records one staff member's forum reply, and the quote is \"the future of the admin\". \"Staff call\" reads as a company position.",
+    "suggestedFix": "Write \"a Shopify staff member, replying on a forum, called web components 'the future of the admin'\"."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L27, \"Immutable channels: published versions that are never changed after release\"",
+    "problem": "shopify-polaris.md:31 says stable releases are immutable \"except for critical security fixes\".",
+    "suggestedFix": "Add \"except for critical security fixes\"."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L35, GOV.UK cited for \"Errors say how to fix it\"",
+    "problem": "govuk-design-system.md:47 records templates and banned words but not the phrase. The explicit statement for GOV.UK (\"say what went wrong and how to fix it\") is in checkout-evidence.md:22, which is not cited on this line.",
+    "suggestedFix": "Add checkout-evidence.md to the citation on L35."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L46, \"Apple ... on leaving the field\"",
+    "problem": "apple-hig.md:37 records this for email only (\"validate email when people switch to another field\"; passwords and usernames are treated differently).",
+    "suggestedFix": "Write \"Apple (for email)\"."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L33, \"Five of the six name colours by purpose ... Apple does it through platform colour APIs\"",
+    "problem": "It is unclear whether Apple is one of the five. Five files are cited, including Apple and excluding Polaris, so the sixth system is never named. shopify-polaris.md:16 records role-based colour names for the old React system only.",
+    "suggestedFix": "Name the five and say what the survey found for Polaris."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L20, definition of \"Material Web\"",
+    "problem": "The term is defined but no longer used anywhere in survey.md after the run 2 edit to the Polaris row.",
+    "suggestedFix": "Delete the definition."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "L20-28, \"Names used in this survey\"",
+    "problem": "The definitions carry no file reference, and several are not in any survey file (Primer as GitHub's design system, Curtis as \"a consultant\", Baymard as \"a research firm\", Vercel as \"a web hosting company\", the meaning of Candidate Recommendation). I treated them as background definitions added for the reader test, not survey claims, so they did not count against the criterion.",
+    "suggestedFix": "Add one line saying the definitions are general background and not survey findings."
+   }
+  ]
+ },
+ {
+  "criterion": 10,
+  "verdict": "fail",
+  "evidence": "Criterion as written (PROGRESS.md, Phase 1): \"Reader test. A reader who has seen none of the work can follow the charter. Every special term is defined where it first appears or in charter/README.md.\"\n\nI read all ten charter files in README order. Sentence 1 is met: the charter can be followed end to end. Sentence 2 is not met: a short list of special terms is still undefined, one of them load-bearing. This is a narrow fail.\n\nRUN 2 ITEMS\n- Item 1 (README entries): all present (README.md:41-45, 77-80, 88; four parts named at :66) or the term no longer appears (\"delta class\", \"payload\"), except \"consumer\". It has no entry and is still used at operating-model.md:87 and survey.md:65.\n- Item 2 (outside names): fixed. survey.md:18-29 \"Names used in this survey\" covers every name listed; Lighthouse is at README.md:45.\n- Item 3 (second meanings): fixed. The voice tag is now \"house rule\" (voice-and-tone.md:42); \"model tokens\" is used in README.md:89, operating-model.md:105, scorecard.md and DECISIONS.md A-09; vision-notes.md:39 says \"three core parts\".\n- Item 4 (ten sentences): cannot be confirmed. gates/gate-1.md records only \"what would make it pass\", not the ten sentences, so I judged every sentence afresh.\n\nSPECIAL TERMS WITH NO DEFINITION (first appearance or README)\n1. \"work tree\" / \"the CEO's work tree\": README.md:57 (inside the definition of \"founding set\"), principles.md:121, operating-model.md:69. README calls PROGRESS.md \"the list of work items\" and never ties the two names together. It matters: the founding set is what the lead may add without the steward, and :69 lets the lead change \"the work tree\".\n2. \"consumers\": operating-model.md:87, survey.md:65. In a checkout charter, survey.md:65 \"Predictable for consumers [P]\" can also be read as shoppers.\n3. \"registered product repositories\" (principles.md:125) and \"once they register\" (budget.md:172): nothing says where or how. README.md:75 defines \"register\" only as the EXPLORE list, so this is a second meaning.\n4. \"the mental models in CLAUDE.md\": operating-model.md:39. Required in every brief, never named.\n5. \"base values\": README.md:9. First listed only at principles.md:163-170.\n6. Outside names not in the survey's names section: \"release phases\" (survey.md:45, :65), \"Increase Contrast\" (:41), \"frequency bands\" (:66), \"Article 6(1)(e)\" with no law named (:98; notes/survey/checkout-evidence.md:29 says it is the EU Consumer Rights Directive), \"Apple Writing\" (voice-and-tone.md:49).\n7. Accessibility terms beyond general literacy: \"switch users\" (checkout-slice.md:94); \"exposed as a status or alert\" (benchmark.md:108; README defines only \"live region\").\n8. Defined later than first use, not in README: \"densities\" (principles.md:111, defined budget.md:117); \"tool calls\" (operating-model.md:110, defined benchmark.md:19). Not decisive.\n\nSENTENCES I COULD NOT FOLLOW OR COULD READ TWO WAYS\n- budget.md:132 \"One new item per pilot comes from an idea on the board that has not been adopted\": a rule about where each pilot's item comes from, or the origin of the limit.\n- benchmark.md:179 \"the two fixed colours have hues of about 195 and 302 degrees\": the first draft's two accent colours (previous sentence), or the current #0F6E6E and #6B3FA0.\n- checkout-slice.md:87 \"remarks on a cost unexpectedly\": remarks without prompting, or remarks that the cost was unexpected.\n- operating-model.md:84 \"The author of the first part never writes the third\": \"part\" is README's word for a component; here it means a passport section.\n- operating-model.md:116 with :120: an EXPLORE item added at expiry is one \"the vote does not decide\", yet \"Anything else is pulled back to the reference\" and \"promote the item\" read as applying to it.\n- survey.md:98 \"EU: Article 6(1)(e) text unconfirmed\": cannot be followed.\n- survey.md:11: square brackets, defined at :5 as file citations, hold an exception statement here.\n- survey.md:44 \"Material moves features to Jetpack Compose, Android's interface toolkit, only\": unclear what \"only\" limits.\n- vision-notes.md:27 \"Every conflict and every unfilled placeholder\": conflict between what, placeholder in what, is not said.\n- voice-and-tone.md:46 (rule 3) \"what happened where that is not obvious\" and :112 \"keep it if the benchmark holds\" (\"it\" could be the fix or the rule).\n\nTAKEN TOGETHER\nA fresh reader can follow the charter. The same reader still meets special terms with no definition: items 1 to 4 and 6 are project names or outside names that a product team would need a glossary for. Item 1 sits inside the glossary itself and decides who may add parts. Item 2 was named in run 2 and not fixed. The second sentence says \"every\", so it is not met as written.",
+  "whatWouldMakeItPass": "About ten small edits; no restructuring.\n1. README.md: add a \"Work tree\" entry. Say whether it is PROGRESS.md as the CEO's kickoff set it or PROGRESS.md as the lead may later edit it. Make README.md:57, principles.md:121 and operating-model.md:69 use that one meaning.\n2. README.md:9: list the six base values, or add a \"Base values\" entry.\n3. operating-model.md:87 and survey.md:65: replace \"consumers\" with \"products that use the part\" / \"products that use the system\", or add a README entry.\n4. principles.md:125 and budget.md:172: say what registering a product repository means, or reword so it cannot be confused with the EXPLORE register (for example \"product repositories that run the drift command\").\n5. operating-model.md:39: name the mental models in one clause, or add a README entry pointing to the \"Mental models\" section of CLAUDE.md with a one-line summary.\n6. survey.md \"Names used in this survey\": add \"release phases\" and \"Increase Contrast\". At :66 replace \"frequency bands\" with plain words. At :98 name the law (notes/survey/checkout-evidence.md:29 records it as the EU Consumer Rights Directive 2011/83/EU) and call the Digital Fairness Act a proposed EU law. Gloss or drop \"Apple Writing\" at voice-and-tone.md:49.\n7. Gloss \"switch users\" at checkout-slice.md:94. At benchmark.md:108 say \"exposed as a live region\" or explain \"status or alert\".\n8. Rewrite the sentences listed in the evidence: budget.md:132; benchmark.md:179 (name the two colours); checkout-slice.md:87; operating-model.md:84 (say \"section\"); operating-model.md:116 and :120 (say what happens to an EXPLORE item in the queue); survey.md:11, :44 and :98; vision-notes.md:27; voice-and-tone.md:46 and :112.\nOptional: define \"density\" and \"tool call\" in README, since both are used before the file that defines them.",
+  "otherFindings": [
+   {
+    "severity": "major",
+    "file": "charter/operating-model.md",
+    "where": "line 69, with charter/README.md:57 and charter/principles.md:121",
+    "problem": "The founding set includes \"any part that a work item in the CEO's work tree requires\" and enters by the lead's decision. Line 69 lets the lead change \"the work tree\". If the work tree is PROGRESS.md as the lead may edit it, the lead can add a work item that requires a new part and so enlarge the founding set without the steward. That contradicts DECISIONS.md A-04 row 13, which says the system grows only by the founding set while no steward is named.",
+    "suggestedFix": "Fix the founding set to the work items the CEO set at kickoff (dated), or say that a work item added by the lead does not enlarge the founding set."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/checkout-slice.md",
+    "where": "line 95 against line 121",
+    "problem": "Decision 1 says each fixture comes in \"the conditions the baseline plan needs\" and lists four, including \"a charge unknown\". The baseline plan at line 95 lists three and omits it.",
+    "suggestedFix": "Add \"a charge unknown\" to the Material line of the baseline plan, or drop it from decision 1."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "line 86 against charter/checkout-slice.md:112",
+    "problem": "The one tester who felt \"duped\" is covered by the label [R, 2019] in survey.md and labelled [pattern] in checkout-slice.md. The survey sentence puts two different facts (one tester; a 60-site benchmark) under one label.",
+    "suggestedFix": "Give the two facts separate labels in survey.md:86 and make the first agree with checkout-slice.md:112."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/benchmark.md",
+    "where": "lines 21, 98, 139, 166 (\"the scorer\", \"two scorers\")",
+    "problem": "The file never says who or what a scorer is (a person, a script or an agent), or how many score each run, although line 166 depends on two scorers disagreeing.",
+    "suggestedFix": "Add one line under Fixed conditions saying who scores and how many scorers each run has."
+   },
+   {
+    "severity": "minor",
+    "file": "gates/gate-1.md",
+    "where": "Run 2, Criterion 10, item 4 (\"Rewrite the ten sentences listed in the evidence\")",
+    "problem": "The record keeps only \"what would make it pass\". The ten sentences are not in the repository, so no later reviewer can confirm they were rewritten. The same holds for run 1's six sentences.",
+    "suggestedFix": "Record each reviewer's evidence in the gate file, not only the remedy."
+   }
+  ]
+ },
+ {
+  "criterion": 8,
+  "verdict": "fail",
+  "evidence": "Criterion as written: \"Honesty. Every claim about how people behave is labelled as supported by cited research, inferred from established patterns, or an assumption that needs a human test. No result is invented. Targets come after baselines.\"\n\nIt fails on one place only: scorecard.md:13, the Opus-tier first-pass review rate. The labelling and targets parts of the criterion are met.\n\n**Why scorecard.md:13 fails \"No result is invented\"**\n- The cell says \"0 of 7 after the gate\" and gives as its source: \"The gate reviewers then found errors in all seven Opus files, including one of the three source summaries.\"\n- That sentence contradicts itself. The seven Opus files are the three source summaries, survey.md, checkout-slice.md, benchmark.md and voice-and-tone.md. If only one of the three summaries had an error found, the gate found errors in five files, not seven.\n- The repository shows five. gates/gate-1.md records findings against survey.md, checkout-slice.md, benchmark.md and voice-and-tone.md. notes/sources/2026-11-13-figjam-board.md:7 carries a note that a gate reviewer corrected it.\n- Nothing records an error in the library or notebook summaries. Neither file has a correction note, and both were last modified at 16:40 to 16:43, before the gates/ folder was created at 17:21.\n- The baseline \"4 of 7 (by the lead's first review)\" has no record anywhere in the repository; nothing says which four passed.\n- So \"0 of 7\" does not follow from the evidence the cell cites and cannot be shown from the repository. The scorecard's own header says \"Nothing here is estimated\", and principles.md:64 says \"every scorecard number names the run it came from\".\n- The error runs against the lead (it reports a worse rate), but it is still a stated result that the record does not support.\n\n**Run 1 defects: all five fixed**\n- voice-and-tone.md:113 now sends a misreading to the steward and says \"No pass mark is set before a baseline\".\n- checkout-slice.md:112 is labelled [pattern] and reports one tester.\n- voice-and-tone.md:35 is [pattern], inferred from Baymard, with the figure restated.\n- checkout-slice.md:111 no longer says \"Unexpected\".\n- survey.md:88 (labels) is [P], matching checkout-slice.md:115.\n\n**Run 2 defects: all four fixed**\n- operating-model.md:19 labels the For and Against entries [pattern: Curtis, thinkers.md]; \"Fast\" and \"consistent\" are gone.\n- survey.md:68 reads \"One developer's forum post describes the difficulty [A]\".\n- checkout-slice.md:122 carries [assumption].\n- voice-and-tone.md:35 gives the base \"shoppers who were not just browsing\".\n\n**Label sweep: no unlabelled claim about how people behave**\n- vision-notes.md:7 and :12 are labelled.\n- principles.md:58, :72, :95, :111, :131 and :157 are labelled, and :193-202 collects the assumptions.\n- voice-and-tone.md:30-38 labels every tone-table cell; :47, :49, :53, :54 and :105 are labelled.\n- survey.md:85-93 labels every bullet; :35, :36, :59, :60 and :65 are labelled.\n- budget.md:49 and :124, benchmark.md:9, and checkout-slice.md:111-117 and :122 are labelled.\n- vision.md, README.md and the rest of benchmark.md contain no claim about people.\n\n**Research labels match their survey files**\n- The 40% and 12% Baymard figures, the 42% exclusion, no sample size and the 28 October 2026 date match checkout-evidence.md:6. The 2017 figure of 21% matches :7.\n- The \"duped\" tester and the 65% of 60 sites match checkout-evidence.md:11. The 11.3 fields, 8 and 42% match :15.\n- Green start buttons match govuk-design-system.md:17.\n- Cited pattern sources also match: Curtis (thinkers.md:13-14), GOV.UK confirmation pages (govuk-design-system.md:42), Polaris grade 7 (shopify-polaris.md:40), Apple on \"we\" (apple-hig.md:29), and the 30% and 57% scan shares (govuk-design-system.md:27, behaviour-and-distribution.md:54).\n\n**Targets and baselines**\n- No target for people or for the benchmark is set before a baseline. The statements are relative: operating-model.md:104, vision-notes.md:41, checkout-slice.md:91 and :127, benchmark.md:170.\n- The performance budgets are marked as unmeasured starting guesses (budget.md:145, :162).\n\n**Other checks that held**\n- scorecard.md:12, \"1 of 12\": only craft-and-taste.md has a review with no corrections.\n- DECISIONS.md A-01's search claim: a search of notes/ and charter/ for the stale remarks finds none.\n- benchmark.md:179: I computed the OKLCH hues as 194.9 and 301.7 degrees, matching \"about 195 and 302\".",
+  "whatWouldMakeItPass": "One edit to scorecard.md:13, so the Opus-tier row says only what a record shows.\n\n1. Name the seven Opus files. Say which four the lead's first review passed, and put that record in DECISIONS.md or the scorecard source cell.\n2. Give the current figure that follows from recorded findings. The repository shows gate-reviewer errors in five files: survey.md, checkout-slice.md, benchmark.md, voice-and-tone.md and the FigJam summary.\n   - If no error was found in the library and notebook summaries, the figure is not 0 of 7. Replace \"found errors in all seven Opus files\" with the true count.\n   - If errors were found in those two summaries as well, drop \"including one of the three source summaries\", record the findings in gates/gate-1.md, and correct or annotate the two files.\n3. If the lead's first review cannot be reconstructed, write \"not recorded\" for the baseline instead of \"4 of 7\".\n\nNothing else needs to change for criterion 8.",
+  "otherFindings": [
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "line 63, Reason cell for the Vercel row: \"A form agents follow well\"",
+    "problem": "This states agent behaviour as fact with no measurement. The survey file says only that the format is \"the closest match in form (short rules, agent-readable)\" (notes/survey/agent-skills.md, Vercel section, Recommendation). It is about agents, not people, so the labelling rule does not strictly cover it, but it is stronger than its source.",
+    "suggestedFix": "Write \"A short, agent-readable form; whether agents follow it better is untested\"."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/operating-model.md",
+    "where": "line 15, For cell \"Close to a real product\", with line 19",
+    "problem": "Line 19 says every For and Against entry comes from Curtis. notes/survey/thinkers.md:13 records no benefit for the solitary model, only \"one team builds for its own product, so priorities fit others poorly\". The entry is the lead's inference from the definition.",
+    "suggestedFix": "Leave the cell empty, or mark it as the lead's inference in line 19."
+   },
+   {
+    "severity": "minor",
+    "file": "scorecard.md",
+    "where": "lines 21-30 (model-token figures); also DECISIONS.md D-006 (\"9 blockers, 68 major and 20 minor findings\")",
+    "problem": "These figures have no record in the repository: no usage report and no challenge-review output are saved. They can be neither confirmed nor refuted from the files.",
+    "suggestedFix": "Save the tool usage reports and the three challenge reviews under gates/ or a logs folder, and point the scorecard source column at them."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/budget.md",
+    "where": "line 172: \"The counts cover this repository's reference pages now\"; line 130: \"Every item has an entry in the register, explore/register.md\"",
+    "problem": "No reference page, count, command or register file exists. The status paragraph at line 7 covers checks, but \"now\" and the unqualified file path read as if these exist. Line 7 does say \"once that file exists\" for checks/status.md.",
+    "suggestedFix": "Write \"will cover this repository's reference pages first\" and \"explore/register.md, created with the first item\"."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/principles.md",
+    "where": "line 135: \"the threshold browser makers use for 'widely available'\"; also voice-and-tone.md:53 (\"readability formulas are unreliable on short strings\") and benchmark.md:18 (\"Identical runs differ\")",
+    "problem": "These are outside facts stated from the lead's knowledge with no survey file behind them and no note saying so. budget.md:162 does flag its unverified Lighthouse figures in this way. None is a claim about people.",
+    "suggestedFix": "Add \"stated from the lead's knowledge, not checked in this run\" to each, or cite a reviewed survey file."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/README.md",
+    "where": "line 10 and DECISIONS.md A-08: \"Each is marked where it appears\"",
+    "problem": "Most numbers are now marked, but some numbers the lead chose are not: benchmark.md item 1.10 (100 milliseconds), item 3.3 (10 degrees), the 375 by 812 viewport at line 20, and operating-model.md:100 (\"At least one a quarter\").",
+    "suggestedFix": "Mark those four, or change the sentence to \"every limit and range\"."
+   },
+   {
+    "severity": "minor",
+    "file": "PROGRESS.md",
+    "where": "lines 33-40, Phase 1 table",
+    "problem": "Every row says \"awaiting Gate 1\", and the Gate 1 row does not mention the two failed runs or link gates/gate-1.md. A reader of PROGRESS.md alone would not learn that the gate has failed twice.",
+    "suggestedFix": "In the Gate 1 row write \"run 1 fail, run 2 fail, run 3 in progress; record in gates/gate-1.md\"."
+   },
+   {
+    "severity": "minor",
+    "file": "digests/2026-11-13.md",
+    "where": "line 3 (\"Six, under 'Awaiting CEO'\") and line 5 (\"The scorecard has no numbers yet\")",
+    "problem": "This file is outside the criterion's list, but it is the report the CEO reads. DECISIONS.md has twelve entries under \"Awaiting CEO\" (A-01 to A-12), and the scorecard now holds review rates and spend.",
+    "suggestedFix": "Update both lines to match DECISIONS.md and scorecard.md."
+   }
+  ]
+ }
+]

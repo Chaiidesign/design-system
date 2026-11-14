@@ -1,0 +1,370 @@
+[
+ {
+  "criteria": [
+   {
+    "number": 5,
+    "verdict": "fail",
+    "evidence": "Criterion: \"Every claim points to a reviewed file in notes/survey/. There is an adopt, adapt, avoid table.\"\n\nMet: the table exists (charter/survey.md lines 39-58). All twelve files in notes/survey/ end with a \"Review 2026-11-13\" section.\n\nNot met, for two reasons.\n\n(a) Some claims point outside notes/survey/ to files with no review. survey.md lines 65, 67, 68, 80, 81, 103, 109, 120, 121 and 123 cite notes/sources/2026-11-13-design-systems-library.md or notes/sources/2026-11-13-figjam-board.md. Neither file has a review section. Line 68 (Gloaguen et al.) is labelled [R] and rests only on the library summary, whose line 10 says \"I opened no external links\"; the paper itself was never read.\n\n(b) Of twelve claims I checked against the files they cite, eight are supported and four are not, or only in part.\nSupported: line 22 (errors say how to fix; Apple \"avoid blame\"; GOV.UK and Polaris reject \"invalid\"); line 28 (accessibility floors of the five systems); line 47 (never disable submit: atlassian line 61, checkout-evidence line 16); line 57 (Curtis, 80+ systems: thinkers.md line 14); line 73 (Baymard 40%, 12%, 42% excluded, 21% from a 2017 survey); line 84 (DMCC s.230 in force 6 April 2025); line 97 (axe 57%, GOV.UK 30%); line 105 (Style Dictionary version \"not shown\" in one file, v5.8.0 in another).\nNot supported: line 48 gives the reason \"The only guidance on cost summaries found\" for Apple Pay, but checkout-evidence.md line 11 records Baymard guidance on the same thing (show a breakdown with the total most prominent). Line 67 says \"The library flags the gap\" on chat and AI-native interfaces; the cited file lists it under the summariser's own heading \"Gaps: what it does not cover\" (lines 127-136), so the library does not flag it, and no survey file checked the six systems for it.\nPartly supported: line 23 cites apple-hig.md for sentence-case button labels, but that file says only \"Pick a capitalisation style per element type\" and to use a verb. Line 30 says GOV.UK documents \"when not to use\"; the section list the survey observed (govuk-design-system.md line 16) has only \"When to use this component\", and \"When not to use\" appears only in that file's \"For Souvenir\" line.",
+    "whatWouldMakeItPass": "1. Correct survey.md lines 23, 30, 48 and 67 so each says only what its cited file says (drop Apple from the sentence-case claim; say Apple Pay is the only cost-summary guidance among the six systems; say the summariser, not the library, noted the chat gap; support or soften the GOV.UK \"when not to use\" claim).\n2. For every claim that now cites notes/sources/: either add a reviewed file in notes/survey/ that supports it, or remove the claim. Cross-references to the board's H1/E1 and H2/E2 can stay if worded as pointers, not claims.\n3. Relabel the Gloaguen claim (line 68) from [R] until someone has read the paper and a reviewed survey file records it."
+   },
+   {
+    "number": 6,
+    "verdict": "fail",
+    "evidence": "Criterion: \"The four parts are inventoried with their states and failure states. 'Checkout comprehension' is defined before any target is set. The three benchmark tasks are written, fixed, and can be run by a Sonnet or Haiku agent that has only the published docs.\"\n\nMet:\n- Parts. Field, Button and Cost summary each have a Build line and a Failures line (checkout-slice.md lines 29-31, 37-39, 57-58). Feedback lists its states, including \"failed\" and \"outcome unknown\" (line 46), but has no Failures line; I count this as met and list the gap under other findings.\n- Comprehension. Section 4 (lines 70-86) is operational: four fixed questions, a scoring rule for each, a pass rule, two independent scorers. It comes before section 5, which says \"Targets are not set here\". Neither checkout-slice.md nor benchmark.md sets a target.\n- Order arithmetic, recomputed: 49.00 + 18.75 + 9.75 = 77.50; minus 5.00 = 72.50; 8% of 72.50 = 5.80 exactly; plus 3.95 = 82.25. Checklist items: 14 + 13 + 13 = 40.\n- The prompts contain no token names, class names or file paths. \"Cost summary\" and \"compact density\" are plain words that are also system names.\n\nNot met: Task 3 cannot be done from docs that obey budget.md as it now stands. budget.md line 110 lets a product change only the accent hue: \"The hue may change. The lightness and chroma of each step stay fixed.\" Task 3 (benchmark.md lines 108-112) gives the brand as two full colour values, #0F6E6E and #5FC4C4, tells the agent to add them \"only as the published docs describe; each colour value may appear once, there\", and item 3.1 requires each value to appear once in the agent's files. Item 3.3 has the scorer change the light accent to #000000, which has no hue and a different lightness and chroma (computed in OKLCH: L 0, C 0), so the scorer's own step sets a value the range forbids. The two brand values share a hue (about 195 degrees) but differ in lightness and chroma (0.49/0.08 and 0.76/0.09), so a hue-only system cannot render them as given. An agent with only the docs meets a prompt that conflicts with the docs. Because the tasks were declared fixed on 13 November and widening a range needs the CEO, the lead cannot settle this without an \"Awaiting CEO\" entry. This is a stale reference: budget.md was revised after the task was drafted.",
+    "whatWouldMakeItPass": "Reconcile Task 3 with the accent row in budget.md before the tasks count as fixed. Either (a) restate the brand in terms the range allows and replace item 3.1's literal count and item 3.3's #000000 swap with checks that work when only the hue varies, or (b) propose a wider accent range to the CEO. Log the choice under \"Awaiting CEO\", since both the tasks and the range are the CEO's. In the same pass, fix the other benchmark contradictions listed under other findings (items 1.4 and 1.12, the LOCK tags, the script budget) and write the Task 2 and Task 3 prompts out in full."
+   },
+   {
+    "number": 7,
+    "verdict": "pass",
+    "evidence": "Criterion: \"Says what Souvenir sounds like, what it steers away from, and how tone shifts by situation. Its rules can be checked in review. It has examples for the four checkout parts.\"\n\n- Sounds like: the voice table, four traits each with a \"this, not that\" pair (voice-and-tone.md lines 9-14).\n- Steers away from: seven named habits with an example each (lines 18-24).\n- Tone by situation: nine situations, each with the shift and an example string (lines 28-38).\n- Checkable rules: seventeen numbered rules (lines 44-60), each tagged LOCK or ADAPT. Most are yes-or-no tests: rule 2 fails \"Submit\"; rule 6 fails \"Invalid email\"; rule 7 fails \"Yay! You did it!\"; rule 11 fails an error of three sentences. Every rejected string in the example tables cites a rule number, so a reviewer can fail a string by number.\n- Examples: Field (lines 66-74), Button (76-84), Feedback (86-94), Cost summary (96-103).\n\nThe criterion is met as written. Several of the file's own model strings fail its own rules, and three statements contradict budget.md, principles.md or checkout-slice.md. These are listed as major findings; they do not stop a reviewer applying the rules.",
+    "whatWouldMakeItPass": "Already passes. The major findings against voice-and-tone.md should be fixed before the writing check is built from this file."
+   }
+  ],
+  "otherFindings": [
+   {
+    "severity": "major",
+    "file": "charter/benchmark.md",
+    "where": "Item 1.4 (line 64) and decision 3 (line 155)",
+    "problem": "Item 1.4 requires the pay control's label to contain 82.25. budget.md's safe-behaviour row asks only that the consequence is stated \"at the control\", and principles.md worked case 2 allows \"in its own label or directly beside it\". checkout-slice.md section 1 item 7 puts the total beside the button. A page that follows the docs can fail 1.4 and be counted as a LOCK breach that budget.md does not define.",
+    "suggestedFix": "Accept the total in the label or directly beside the control, or ask the CEO to tighten the row and worked case 2 to \"in the label\"."
+   },
+   {
+    "severity": "major",
+    "file": "charter/benchmark.md",
+    "where": "Item 1.12 (line 72)",
+    "problem": "\"No option is selected on load\" is wider than the budget.md row (\"No optional extra that adds cost or shares data is selected in advance\") and contradicts principles.md worked case 3, which selects the cheapest of several required priced options.",
+    "suggestedFix": "Reword 1.12 to the row: no optional extra that adds cost or shares data is selected on load."
+   },
+   {
+    "severity": "major",
+    "file": "charter/benchmark.md",
+    "where": "Scoring category 3 (line 138), decision 8 (line 160); items 1.1, 2.1, 2.5, 2.6, 3.10",
+    "problem": "A failed item tagged to a LOCK table counts as a LOCK breach, but several tagged items match no row in budget.md: 1.1 (item names in full), 2.1 (no attempt logged on invalid input), 2.5 (focus leaves the pay control), 2.6 (wrong values kept; the row covers valid input), 3.10 (44 pixels, which budget.md line 113 and DECISIONS D-008 call an ADAPT starting value, not LOCK). The scorecard would report LOCK breaches the budget does not define. Category 3 also names three LOCK tables; budget.md now has four (Meaning is missing).",
+    "suggestedFix": "Tag each item to one named budget.md row, or to a principle if no row fits, and count only the first kind as LOCK breaches. Add the Meaning table or say why it is left out."
+   },
+   {
+    "severity": "major",
+    "file": "charter/benchmark.md",
+    "where": "Decisions 6 and 7 (lines 158-159), against budget.md line 144",
+    "problem": "Decision 7 applies budget.md's script budgets to the agent-built page. One of them is \"JavaScript needed to read the page and complete the core tasks: None\", and paying is a core task (README line 50). The prompts require the payment to be simulated in the browser, so every run exceeds that budget unless it is exempt, and the file does not say. The reference page uses a test server (checkout-slice.md decision 5); the benchmark agent is given none.",
+    "suggestedFix": "State which budget rows apply to benchmark pages and exempt the simulated-payment script by name, or give the agent the same test server as the reference page."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/benchmark.md",
+    "where": "Task 2 and Task 3 prompts (lines 79, 107); line 17; Scoring category 1 (line 136)",
+    "problem": "Tasks 2 and 3 are assembled by rule (\"without its last two lines\"), which depends on how Task 1 is line-wrapped. Task 2 keeps \"then show that the order is paid\" directly before \"The first payment attempt ... is declined\". \"no page fails every item\" reads two ways. The exempt list in category 1 differs from budget.md's allow-list (breakpoint widths are missing) and does not mention oklch() although budget.md defines the scales in OKLCH.",
+    "suggestedFix": "Write each prompt out in full. Reword line 17 to \"if no page exists, every item fails\". Use one allow-list, kept in budget.md and referenced here."
+   },
+   {
+    "severity": "major",
+    "file": "charter/checkout-slice.md",
+    "where": "LOCK lines of the four parts (lines 32, 40, 48, 59); disclaimer at line 24",
+    "problem": "Four quoted LOCK names no longer match budget.md: \"A second press of a submit control does not submit twice\", \"A destructive action is never the default\", \"No invented urgency\", \"No option that costs money ... is selected in advance\". A fifth, \"spends money asks for confirmation\", states a requirement that budget.md line 76 and worked case 2 removed. The file says budget.md wins where wording differs, but a builder reading the Cost summary would add a confirmation step.",
+    "suggestedFix": "Replace the quotes with the current budget.md wording and delete the disclaimer."
+   },
+   {
+    "severity": "major",
+    "file": "charter/checkout-slice.md",
+    "where": "Section 1 item 6 (line 18) and Button build states (line 37)",
+    "problem": "Two conflicts with voice-and-tone.md. (1) The discount button is labelled \"Apply\"; rule 2 allows a one-word label only for Cancel, Close and Done, and the voice example is \"Apply code\". (2) The busy state says \"label kept\"; rule 17 and the Button example change \"Pay\" to \"Paying\u2026\", which also drops the amount and is not verb plus object as budget.md's label check requires.",
+    "suggestedFix": "Use \"Apply code\". Decide once whether a busy button keeps its label or changes it, and make the slice, rule 17 and the budget.md label check agree."
+   },
+   {
+    "severity": "major",
+    "file": "charter/checkout-slice.md",
+    "where": "Feedback (lines 42-48)",
+    "problem": "Feedback is the only part with no Failures line. It does not say what feedback does when script is off, although budget.md requires the core tasks to work without script and status messages to be announced without moving focus.",
+    "suggestedFix": "Add a Failures line: script off (message rendered by the server and how it is reached), several messages at once, and a result that arrives after the person has moved on."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/checkout-slice.md",
+    "where": "Section 5 Material (line 94) against section 8 decision 1 (line 121); answer key (line 83)",
+    "problem": "Two different sets of three fixtures: by charge situation in section 5, by language and currency in section 8. Neither covers the \"some unknown\" state. The American fixture uses the benchmark's data, which needs state and phone fields that section 1 item 5 does not list. The answer key does not say whether tax included in prices counts as a charge the person must name.",
+    "suggestedFix": "One fixture table giving locale, tax mode, charge situation and fields for each fixture. Say how included tax is scored in Q2."
+   },
+   {
+    "severity": "major",
+    "file": "charter/voice-and-tone.md",
+    "where": "Rules 1, 3 and 11 (lines 44, 46, 54) against the examples (lines 33-34, 72-74, 91)",
+    "problem": "Model strings fail the file's own rules. Rule 1: messages end with a full stop, yet the three field errors and the tone-table error have none. Rule 3: an error says what happened and what to do, yet \"Enter your email address\" says only what to do. Rule 11: an error is at most 2 sentences, yet \"We couldn't reach the payment service. Your card has not been charged. Try again.\" is 3. A writing check built from the rules would reject the examples.",
+    "suggestedFix": "Decide each case and change the rule or the example: say whether a field error takes a full stop; reword rule 3 to \"says what to do, and what happened where that is not obvious\"; allow 3 sentences for a failure on our side or shorten the example."
+   },
+   {
+    "severity": "major",
+    "file": "charter/voice-and-tone.md",
+    "where": "Line 42 and decision 3 (line 130)",
+    "problem": "\"LOCK rules block release; only the steward changes them\" contradicts budget.md line 23 and principles.md line 183, which need both the CEO and the steward. Decision 3 says each LOCK-tagged rule is the writing form of a truthful-content or safe-behaviour row; rules 3 and 16 belong to the Accessibility and Meaning tables, and rules 4 and 9 (money) have no row in budget.md at all.",
+    "suggestedFix": "Say \"changing a LOCK rule needs both the CEO and the steward\". Name the budget.md row for each LOCK rule; where there is none, add the row to budget.md with its check or retag the rule ADAPT."
+   },
+   {
+    "severity": "major",
+    "file": "charter/voice-and-tone.md",
+    "where": "L3 row of \"How this guideline improves\" (line 113)",
+    "problem": "\"Anyone misreads a cost or status string: release is blocked\" contradicts principles.md lines 30 and 66 and the L3 actuator in operating-model.md: a session finding goes to the steward, who decides, and \"No pass mark for people is set until a baseline has been measured\". It is in effect a pass mark of zero misreadings set before any baseline, which also bears on criterion 8.",
+    "suggestedFix": "Change the trigger to \"goes to the steward, who decides to approve, revise or retire\"."
+   },
+   {
+    "severity": "major",
+    "file": "charter/voice-and-tone.md",
+    "where": "Cost summary examples (lines 100, 102)",
+    "problem": "\"Subtotal\" sits in the \"Not this\" column, but checkout-slice.md line 52 lists a subtotal and benchmark item 1.3 requires a labelled subtotal. The total is \"Total to pay\" here and \"Total\" or \"Total so far\" in checkout-slice.md line 54 and budget.md line 56, which breaks rule 16 inside the charter. Rule 16 as written cannot fail \"Subtotal \u00b7 S&H \u00b7 Promo \u00b7 Grand total\" on its own.",
+    "suggestedFix": "Pick one set of line names for the cost summary and use it in all three files. Cite a rule that actually fails the rejected string, or add abbreviations and jargon to a numbered rule."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/voice-and-tone.md",
+    "where": "Tone table, \"Money and commitment\" (line 35); Field example (line 70)",
+    "problem": "The Baymard figure is reworded as \"40% of shoppers who meant to buy left because extra costs were too high\". The survey file gives 40% as a reason cited for abandoning, with those just browsing excluded; it is not a share of all intending shoppers. Separately, \"E-mail:\" is cited to rule 1, which bans neither a trailing colon nor that spelling, and the jargon in the steer-away list (\"CVV\", \"S&H\") is covered by no numbered rule.",
+    "suggestedFix": "Reword to \"40% of those who abandoned, not counting people just browsing, gave extra costs as a reason\". Add \"no trailing colon\" and \"no abbreviations or jargon\" to a numbered rule."
+   },
+   {
+    "severity": "minor",
+    "file": "notes/survey/ibm-carbon.md, notes/survey/apple-hig.md, notes/survey/shopify-polaris.md",
+    "where": "ibm-carbon.md line 18; apple-hig.md line 51; shopify-polaris.md line 64",
+    "problem": "Three remarks still refer to rules or a format that do not exist in a clean slate: \"similar in spirit to Souvenir's own format\", \"map directly to our content rule\", \"match our own rules\". DECISIONS.md A-01 says a search of notes/ found none.",
+    "suggestedFix": "Delete the three remarks and correct A-01 to say what was found and when."
+   },
+   {
+    "severity": "minor",
+    "file": "charter/survey.md",
+    "where": "Lines 35, 55, 86; notes/survey/craft-and-taste.md line 54",
+    "problem": "Small overstatements. \"none gives evidence\" (motion) is not stated in craft-and-taste.md. Material Web is cited for \"deprecating before parity\", but the file records only a former engineer's remark on weak adoption. The EU Digital Fairness Act is called \"a proposal\" as fact while checkout-evidence.md marks it not verified. The craft-and-taste review says \"six claims checked\" without naming them, although its method note says the Rauno and Krehel pages could not be read a second time.",
+    "suggestedFix": "Soften the three statements to match the files. Have the craft-and-taste review name the six claims it checked."
+   }
+  ],
+  "summary": "Criterion 5 fails, criterion 6 fails, criterion 7 passes.\n\nCriterion 5 (survey): the adopt, adapt, avoid table exists and all twelve survey files carry a review. Ten places in survey.md cite the two unreviewed summaries in notes/sources/, including one claim labelled as research whose paper nobody read. Of twelve claims I checked, eight are supported, two are not (\"the only guidance on cost summaries found\"; \"the library flags the gap\") and two only in part.\n\nCriterion 6 (checkout slice and benchmark): the inventory, the comprehension definition and the absence of targets hold, and the order arithmetic is right (77.50, 72.50, 5.80, 82.25; 40 items). It fails on Task 3: the task gives the brand as full colour values and the scorer swaps in #000000, but budget.md now lets a product change only the accent hue. An agent with only the docs would face a prompt that conflicts with the docs. Fixing it needs an \"Awaiting CEO\" entry. Four further contradictions between the checklists and budget.md or principles.md are listed as major findings.\n\nCriterion 7 (voice and tone): met as written. A reviewer can fail a string by rule number, and all four parts have examples. Six major findings should be fixed before the writing check is built, four against voice-and-tone.md and two against checkout-slice.md: model strings that fail rules 1, 3 and 11; a wrong statement of who may change a LOCK rule; a release-blocking trigger for people that contradicts principles.md; cost-summary labels that disagree across three files; an \"Apply\" button and a busy-button label that conflict with rules 2 and 17.\n\nAll paths are under /Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/. I ran no git commands, did not read the archive tag and wrote no files."
+ },
+ {
+  "criteria": [
+   {
+    "number": 8,
+    "verdict": "fail",
+    "evidence": "Criterion: \"Every claim about how people behave is labelled as supported by cited research, inferred from established patterns, or an assumption that needs a human test. No result is invented. Targets come after baselines.\"\n\nTwo of the three clauses are not met. Paths are relative to the repo root.\n\n**Targets come after baselines: not met in one place.**\n- charter/voice-and-tone.md:113 (L3 row): \"Anyone misreads a cost or status string: release is blocked and the string is rewritten.\" This is a pass mark of zero misreadings for people, set before any baseline.\n- It contradicts charter/principles.md:30: \"No pass mark for people is set until a baseline has been measured\", and evidence from people \"goes to the steward\".\n- Elsewhere the clause holds. checkout-slice.md:90 sets no targets, benchmark.md sets none, and the byte budgets are marked as starting guesses and logged in DECISIONS.md A-04 row 10.\n\n**Labels: every claim about users carries a label, but four [research] labels are stronger than the survey file they rest on (notes/survey/checkout-evidence.md).**\n- charter/checkout-slice.md:112: \"A cost rising at review makes people feel misled [research] ... one tester quoted.\" The source (line 11) records one tester feeling \"duped\". A general claim about people is not supported by it. survey.md:74 words the same evidence correctly.\n- charter/voice-and-tone.md:35: \"Wary of surprise charges [research: ... 40% of shoppers who meant to buy left because extra costs were too high]\". The source (line 6) is a list of reasons given for abandoning: \"Extra costs too high\" 40%. It measures neither wariness nor surprise. The sentence also turns a share of stated reasons into a share of shoppers who left. principles.md:72 states the same figure carefully.\n- charter/checkout-slice.md:111: \"Unexpected extra costs\". The source says \"too high\", not unexpected.\n- charter/survey.md:76: visible labels marked \"[R, 2013, dated]\". The source (line 14) is advice with no finding recorded, and checkout-slice.md:115 labels the same source [pattern].\n\n**No result is invented: met, as far as the repository can show.**\n- scorecard.md \"1 of 12\" matches the review sections in notes/survey/ (only craft-and-taste.md says \"no corrections\").\n- The agent counts add up (28 and 6), and every unbuilt measure says \"no data yet\".\n- The Opus and Fable first-pass figures and the token totals rest on session output that is not saved in the repository, so I could not check them (see other findings).\n\nThe [research] claim in principles.md:72 and the [pattern] claims in principles.md:95, budget.md:48 and voice-and-tone.md match their survey files.",
+    "whatWouldMakeItPass": "1. voice-and-tone.md:113: replace the automatic block with the rule in principles.md:30 (a misreading goes to the steward; no pass mark until a baseline exists).\n2. checkout-slice.md:112: either report it as one tester's reaction or relabel it [pattern].\n3. voice-and-tone.md:35: relabel as [pattern], inferred from Baymard's abandonment reasons, and restate the figure as principles.md:72 does.\n4. checkout-slice.md:111: drop \"Unexpected\" or use the source's wording.\n5. survey.md:76: change [R] to [P] so it agrees with checkout-slice.md:115."
+   },
+   {
+    "number": 9,
+    "verdict": "pass",
+    "evidence": "Criterion: \"Every conflict between the FigJam board and CLAUDE.md is logged under 'Awaiting CEO'.\"\n\n- The board summary (notes/sources/2026-11-13-figjam-board.md:139-148) lists eight conflicts. All eight are in DECISIONS.md A-04 rows 1 to 8, which sits under \"Awaiting CEO\".\n- I read the \"what we are proposing\" text in notes/ceo-brief.md:464-598 against CLAUDE.md. It yields four more conflicts, and all four are logged as rows 9 to 12:\n  - Gate 1 read by the steward (brief:472) is row 9.\n  - \"Baseline first, targets after observation\" against the numeric budgets (brief:596) is row 10.\n  - \"Steward picks one, or agent picks after a day\" (brief:475) is row 11.\n  - Baseline before the build (brief:357, 571) is row 12.\n- Human agency from the board's tagline is logged separately as A-07, and the booking benchmark as A-05.\n\n**The stated rule was applied.**\n- Rows 1, 6, 9 and 11 follow the board where real users or LOCK rows are touched: the steward decides anything reaching real users, transfer needs evidence per part, LOCK rows stay provisional until the CEO reads them, and the CEO picks the visual direction.\n- Rows 2, 7 and 8 keep CLAUDE.md where neither real users nor a LOCK is touched.\n- operating-model.md:53 and :79 carry rows 1 and 9 into the charter.\n\nTwo small differences are not logged. I do not count either as a clear conflict; both are in other findings: the board's wording on which tokens components may reference, and the board's human checkpoint for voice.",
+    "whatWouldMakeItPass": "Already passes. To close the two residual differences, add a row to A-04 for the token-reference wording (brief:580 against CLAUDE.md:26) and name voice alongside visual direction in row 11."
+   },
+   {
+    "number": 10,
+    "verdict": "fail",
+    "evidence": "Criterion: \"A reader who has seen none of the work can follow the charter. Every special term is defined where it first appears or in charter/README.md.\"\n\nI read the charter in README order. The second sentence is not met. Paths are relative to the repo root.\n\n**Special terms never defined in the charter or README.**\n- E1, E2, H1/E1, H2/E2 (the board's experiments and hypotheses): survey.md:80, 81, 120, 121; checkout-slice.md:93, 98, 113; PROGRESS.md:84.\n- \"The library\" (the Design Systems Library): survey.md:65, 67, 68, 109.\n- DTCG: survey.md:9, 29, 41, 104. It is expanded only in DECISIONS.md A-06.\n- APCA: survey.md:28, 50, 107.\n- MCP and llms.txt: survey.md:49, 62, 98.\n- \"Resolver modifier\" (survey.md:41), \"Compose\" (:31), \"the admin\" (:31), NN/g (:33), semver (:32), UI SDK and Break UI (:51, :95).\n- Rauno, Kowalski and Krehel, named with no identification: survey.md:35.\n- \"A domain's word list\": principles.md:147. It is not the vocabulary file.\n- \"Usage telemetry\": principles.md:125.\n\n**Terms used before their definition, and absent from README.**\n- \"Human review queue\": used at vision-notes.md:42 and budget.md:103, defined only at operating-model.md:111.\n- \"Real user\", \"pilot participant\" and \"pilot\": README:70 only points to operating-model.md. The terms are used from vision.md:22 onward, and budget.md:123 depends on the difference between them.\n\n**One term with two meanings.**\n- \"Core\" is the team at operating-model.md:9 and vision-notes.md:48, and the layer at README:45 and vision-notes.md:50.\n- \"Baseline\" is a measurement in README:76 and a browser-support mark at principles.md:135.\n\n**Sentences I could not follow.**\n- vision-notes.md:67: \"The fifth gloss is there to answer this\". \"Gloss\" is used nowhere else; the reader must guess it means the fifth bullet under the north star.\n- principles.md:20: two LOCK rules conflict, so \"the part is not released\", yet \"the lower number wins until the steward rules\". It does not say what winning means for a part that is not released.\n- benchmark.md:17: \"no page fails every item\" reads two ways.\n- survey.md:28: \"Material no level with 'minimum 3:1' pairs, Apple WCAG AA values plus APCA.\"\n- operating-model.md:61 against :64: a new part that came through EXPLORE has two different deciders.\n- voice-and-tone.md:42: \"only the steward changes them\" disagrees with the three other files.\n\nThe rest reads clearly. README defines about fifty terms, and vision.md, budget.md and benchmark.md explain most technical measures in plain words.",
+    "whatWouldMakeItPass": "1. Add to the README terms: E1 and E2 (with H1 and H2), the Design Systems Library, DTCG, APCA, MCP, llms.txt, human review queue, usage telemetry and domain word list.\n2. Put the one-line definitions of real user, pilot participant and pilot in README instead of a pointer.\n3. In survey.md, expand or drop NN/g, semver, Compose, \"resolver modifier\" and \"the admin\", and say who Rauno Freiberg, Emil Kowalski and Jakub Krehel are.\n4. Use \"core team\" and \"core layer\" as two distinct terms.\n5. Rewrite the six sentences listed in the evidence."
+   }
+  ],
+  "otherFindings": [
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/README.md",
+    "where": "README.md:10; also DECISIONS.md A-08 and D-006",
+    "problem": "All three say every number the lead chose is marked as a starting value, dated, and reviewed at a named gate. Several are not marked: operating-model.md:45 (fewer than half, three uses, a quarter), :109 (five runs), :119 (three votes, 14 days); budget.md:36 (2-pixel focus indicator), :43 (0.01 seconds); principles.md:125 (two releases). A builder would read an unmarked number as firm. The \"fewer than half pass first time\" rule also ignores the recorded first-pass rates of 1 of 12 and 0 of 5.",
+    "suggestedFix": "Mark each of those numbers as a starting value with its review point, or change the three sentences to say which files are covered."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/principles.md",
+    "where": "principles.md:72 and :195; checkout-slice.md:113",
+    "problem": "Both files say the first (E1) pilot tests whether showing the total earlier improves understanding. checkout-slice.md:98 says a late-disclosure comparison page is what \"would make E1 testable\", and decision 4 (:124) says that page is not built. As planned, the pilot measures a baseline for one design and cannot test \"earlier is better\".",
+    "suggestedFix": "Say the first pilot measures a baseline only, and that the assumption stays untested until a comparison is approved as an EXPLORE item."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/operating-model.md",
+    "where": "operating-model.md:61 against :64; principles.md:117-119",
+    "problem": "Principle 5 routes every new part through an EXPLORE item. The decision table gives \"Adding a new part to the system\" to the lead and \"Promoting an EXPLORE item into the system\" to the steward. The same change has two deciders, and CLAUDE.md:34 gives EXPLORE promotion to the steward.",
+    "suggestedFix": "Merge the two rows, or state which applies when a new part comes from an EXPLORE item."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/checkout-slice.md",
+    "where": "checkout-slice.md:32, 40, 48, 59",
+    "problem": "The LOCK lists put in quotation marks rows that do not exist in budget.md, such as \"spends money asks for confirmation\" and \"A destructive action is never the default\". The first contradicts budget.md:76 and worked case 2, which require a separate confirmation only when the consequence is not visible at the control. Line 24 warns that budget.md wins, but a builder reading the cost summary entry would add a confirmation step.",
+    "suggestedFix": "Replace the quoted shorthand with the current row wording from budget.md, or with row references and no quotation marks."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/voice-and-tone.md",
+    "where": "voice-and-tone.md:42",
+    "problem": "\"LOCK rules block release; only the steward changes them. ADAPT rules the lead may adjust.\" budget.md:23, principles.md:183 and operating-model.md:73 say a LOCK change needs the CEO and the steward together, and budget.md:105 says widening a range needs the CEO.",
+    "suggestedFix": "Use the wording in budget.md:23 and :105."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scorecard.md",
+    "where": "scorecard.md:13, 14, 25, 26; DECISIONS.md D-006",
+    "problem": "The Opus rate (5 of 7), the Fable rate (0 of 5), the two token totals and D-006's counts (9 blockers, 68 major, 20 minor) rest on session output that is not saved in the repository. I could not check them. Only the Sonnet rate (1 of 12) can be confirmed from files.",
+    "suggestedFix": "Save each reviewer's verdict and the usage report as files and link them from the scorecard's source column."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+    "where": "DECISIONS.md A-01 (line 12-13)",
+    "problem": "A-01 says three survey files and the synthesis carried stale remarks and four files were corrected. lessons/2026-11-13-stale-instructions-reach-subagents.md says two survey files, and digests/2026-11-13.md says two subagents. The record disagrees with itself. A search of notes/ and charter/ for those remarks found none, as A-01 claims.",
+    "suggestedFix": "Settle the count and make the three files agree."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+    "where": "DECISIONS.md A-04; notes/ceo-brief.md:580; CLAUDE.md:26",
+    "problem": "The board says \"Components reference semantic tokens only\". CLAUDE.md says \"semantic or component tokens only\". budget.md:70 follows CLAUDE.md and the row is a LOCK. The difference is not logged. I read it as loose wording on the board, since the board also names a component layer, so I did not count it against criterion 9. The board's human checkpoint for voice (brief:347-349) is also followed in the charter but not named in row 11.",
+    "suggestedFix": "Add a row for the token wording and add voice to row 11."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-13-figjam-board.md",
+    "where": "2026-11-13-figjam-board.md:7",
+    "problem": "The summary says the text copy in notes/ceo-brief.md omits \"what we are proposing\". The brief contains that section at lines 464 to 598.",
+    "suggestedFix": "Correct the sentence."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/principles.md",
+    "where": "principles.md:173",
+    "problem": "\"Six are cited above.\" Seven of Rams' ten are cited, because principle 1 cites two (useful, understandable). Six plus the three named as unused leaves one unaccounted for.",
+    "suggestedFix": "Change \"Six\" to \"Seven\"."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/budget.md",
+    "where": "budget.md:153-155 and :165; principles.md:135",
+    "problem": "Three sets of facts have no file in notes/ behind them: the Lighthouse mobile profile, Google's \"good\" thresholds, and the 30-month meaning of \"Baseline Widely available\". They agree with what I know, but I did not check them online. Separately, budget.md:165 says the drift counts \"cover this repository's reference pages now\"; no reference page exists and nothing is counted.",
+    "suggestedFix": "Add a short survey note with the three sources, and change \"now\" to \"once they exist\"."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/voice-and-tone.md",
+    "where": "voice-and-tone.md:49 (rule 6)",
+    "problem": "The banned-word list is attributed to \"GOV.UK error message, Apple Writing\". The survey notes support \"please\", \"sorry\", \"valid\" and \"invalid\" (govuk-design-system.md:47). They do not mention \"simply\", \"just\", \"easy\" or \"click here\", and apple-hig.md:61 records that Apple calls interjections like \"oops\" typically unnecessary, not banned.",
+    "suggestedFix": "Attribute only the four GOV.UK words to the source and mark the rest as the lead's choice."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/operating-model.md",
+    "where": "operating-model.md:15-17; survey.md:55",
+    "problem": "Claims about how teams and developers behave carry a source but none of the three labels: the for and against columns of the team-model table, and \"Developer complaints ... weak adoption (anecdotes)\". I read criterion 8 as covering users, following CLAUDE.md:88, so this did not decide the verdict.",
+    "suggestedFix": "Label them, or state in README that the labels apply to claims about users only."
+   }
+  ],
+  "summary": "Gate 1 review of criteria 8, 9 and 10: criterion 9 passes; criteria 8 and 10 fail as written. I checked every file in charter/, plus DECISIONS.md, PROGRESS.md and scorecard.md, against the survey notes, the board summary and the board text in notes/ceo-brief.md. I wrote no files and ran no git commands.\n\n**Criterion 8 (honesty): fail.**\n- voice-and-tone.md:113 blocks release if anyone misreads a string. That is a pass mark for people set before a baseline, and it contradicts principles.md:30.\n- Four [research] labels are stronger than their survey source: checkout-slice.md:111 and :112, voice-and-tone.md:35 and survey.md:76.\n- I found no invented result. The Sonnet first-pass rate (1 of 12) is confirmed by the survey files; the Opus and Fable rates and the token totals cannot be checked from the repository.\n\n**Criterion 9 (conflicts): pass.**\n- All eight conflicts in the board summary are logged in DECISIONS.md A-04, with four more from the \"what we are proposing\" section.\n- Each is settled by the stated rule: the board is followed where real users or LOCK rows are touched.\n- Two small differences are unlogged and are listed as minor findings.\n\n**Criterion 10 (reader test): fail.**\n- E1, E2, H1 and H2, \"the library\", DTCG, APCA, MCP and several other terms in survey.md and checkout-slice.md are never defined.\n- \"Human review queue\", \"real user\", \"pilot participant\" and \"pilot\" are used before their definitions, and README has only a pointer for the last three.\n- Six sentences could not be followed; they are listed in the evidence.\n\n**Other findings: four major, nine minor.** The major ones:\n- README.md:10, A-08 and D-006 say every number the lead chose is marked as a starting value; several in operating-model.md, budget.md and principles.md are not.\n- The charter says the first pilot tests \"earlier disclosure improves understanding\", but its own decision removes the comparison needed to test it.\n- The decision table gives a new part two different deciders.\n- checkout-slice.md quotes LOCK rows that do not match budget.md, one of them in substance.\n\nThe D-006 rewrite fixed the earlier pattern of checks written as if they existed in principles.md and budget.md. It did not reach the three Opus-drafted files, where most of the criterion 8 and 10 failures sit."
+ },
+ {
+  "criteria": [
+   {
+    "number": 1,
+    "verdict": "pass",
+    "evidence": "Criterion: \"States what the system is for and where it stands in 1 week, 1 quarter, 1 year and 5 years. Every horizon has at least one check an outsider could observe. It fits on one screen, meaning at most 300 words in vision.md.\"\n\nSize: `wc -w charter/vision.md` gives 293, table pipes included. Under 300.\n\nPurpose: the north star (line 7), \"Every surface keeps the same promises, whoever builds it\", with five glosses tying it to universal, unified and scalable. vision-notes.md adds \"Why this is needed now\" and \"What the system is not\".\n\nHorizons (table, lines 19-25), each with a state and one check:\n- 1 week: \"The four checkout parts pass their tests, and a less capable agent has built a checkout page from the docs alone\". Observable from test output and the build record.\n- 1 quarter: \"The cost summary has been tested with people against a baseline\", marked as needing a steward and participants. Observable from the pilot record.\n- 1 year: \"Three products use it, none bypasses the tokens, and maintenance cost per product has fallen\". The first two parts are countable. The third rests on a measure that is only proposed (DECISIONS.md A-09), and vision-notes.md says so.\n- 5 years: \"A framework, build tool or model has been replaced without changing a principle's rule or a token name\". Observable from the repository history.\n\nThe dates in vision-notes.md (14 Nov 2026, 20 Nov 2026, 13 Feb 2027, 13 Nov 2027, 13 Nov 2031) are correct counted from 13 November 2026. The file states \"None of these has been met\".",
+    "whatWouldMakeItPass": "Already passes."
+   },
+   {
+    "number": 2,
+    "verdict": "pass",
+    "evidence": "Criterion: \"Five to seven contracts, ranked. Each has an 'A even over B' label, a rule, the evidence that shows it is kept, and the trigger that makes us act. Each can be failed by a concrete example. The six base values (universality, unity, scalability, honesty, longevity, removing the unnecessary) are all covered. The ranking settles every conflict between two principles.\"\n\nStructure (charter/principles.md): seven principles numbered 1 to 7. Every one has an \"even over\" heading, a Rule, an Evidence paragraph naming the loop, a Trigger and a \"Breaks it\" paragraph with concrete examples. I checked all seven. The coverage table maps universality to 1, honesty to 2, unity to 4, removing the unnecessary to 5, longevity to 6 and scalability to 7; principle 3 is declared as outside the brief and logged as A-07.\n\nRanking, tested on seven concrete conflicts:\n1. 1 against 2: a basket hold with a real countdown (truthful urgency) against the WCAG rule that time limits can be extended. Settled: find the design that keeps both or do not release; if none exists, 1 wins until the steward rules.\n2. 1 against 3: stopping a double payment by disabling the pay button against keyboard focus and exposed state. Settled the same way; budget.md already names a design that keeps both (one-time key, no inactive controls).\n3. 2 against 3: a standing permission to reorder against \"the full price is shown before the action that commits\". Settled: 2 wins, so nothing is bought without the price shown, and the conflict is logged.\n4. Performance budget: three required themes plus accessibility styles exceed the 12 kilobyte CSS budget. Settled: \"the change is blocked and the budget goes to the CEO\"; budgets \"are not traded by rank\".\n5. 4 against 5: a product wants its own button variant. Settled: 4 shapes the design, and principle 4's trigger sends the need through the route in 5.\n6. 5 against 6: removing an unused alias against keeping it for durability. Settled: 5 shapes it; 6's version, notice and migration still apply.\n7. 3 against 5: confirmation steps against less. Settled by worked case 2.\n\nEvery test gets a determinate winner. Two wording problems in the ranking text are listed under other findings (what \"wins\" means for release, and whether guessed byte budgets block before Gate 3). Neither leaves a pair without an answer.",
+    "whatWouldMakeItPass": "Already passes."
+   },
+   {
+    "number": 3,
+    "verdict": "pass",
+    "evidence": "Criterion: \"Every LOCK item names the check that detects a breach. Every ADAPT item has a reference and a stated range. EXPLORE has an owner, a hypothesis, an expiry and a cap. The numeric performance budgets are stated.\"\n\nLOCK (charter/budget.md): all 31 rows name a check, and the remaining WCAG criteria name a per-component audit file. No check exists yet, and the file says so. Could each named check detect its breach?\n- Accessibility (14 rows): yes for text contrast, keyboard, focus visible and not covered, target size, name and role (scan plus manual), autocomplete, status role, reflow and 200% text, text spacing, reduced motion, errors in text, and re-entry within a flow. Doubtful for non-text contrast: \"the same three checks\" are defined on text and background pairs. Partial for \"nothing by colour alone\": the test accepts an attribute difference, which is not visible.\n- Truthful content (6 rows): the system half detects structural breaches (no total, pre-selected paid option, literal scarcity text, label without verb and object, missing marker). It cannot detect false data; that half is a product declaration in the passport, which the file states openly.\n- Meaning (4 rows): yes for all four as the rows define them.\n- Safe behaviour (7 rows): yes. The \"guessed instruction\" row is a reviewer checklist, stated as \"judged by review, not measured\". The second-press row names no test for script off.\n\nADAPT (9 rows): every row has a reference and a stated range. Could a script evaluate the range?\n- Yes: colour theme (token presence, 7 to 1), accent and neutral (fixed lightness and chroma, 30 degree hue distance), typeface (glyph coverage, equal-width figures, 16 pixels, line height 1.4 to 1.6), density (0.75, 1, 1.25), shape (0 to 2), motion (500 milliseconds).\n- Mostly: line length. The 75 character maximum is checkable; \"wide enough\" for the 45 minimum is not defined.\n- No, as written: layout (\"may stack or sit side by side\", no enumerated options) and tone (the range is a qualitative table in voice-and-tone.md).\n\nEXPLORE: owner, falsifiable hypothesis, expiry (30 days, one extension) and cap (three active, one new per pilot or slice) are all stated, with a register check.\n\nPerformance budgets: ten numeric rows and a fixed test profile. The Lighthouse mobile figures and the Core Web Vitals thresholds quoted are correct.\n\nThe weak checks and the two unevaluable ranges are listed under other findings. They do not remove a named check or a stated range, so the criterion is met as written.",
+    "whatWouldMakeItPass": "Already passes."
+   },
+   {
+    "number": 4,
+    "verdict": "fail",
+    "evidence": "Criterion: \"A team model is chosen, with the alternatives and why they lost. A decision-rights table says who proposes, proves, decides and rolls back each kind of change. The passport is defined. Each of the four loops has its variable, current state, desired state, sensor, actuator, owner and cadence. The human like/dislike queue is defined.\"\n\nMet (charter/operating-model.md):\n- Team model: central core plus contributors, with solitary, centralised and federated compared and reasons given. The Curtis claim matches notes/survey/thinkers.md.\n- Passport: defined in three parts.\n- Loops: L1 to L4 each have cadence (Runs), Owner, Variable, Current state, Desired state, Sensors and Actuator. All 28 cells are filled.\n- Queue: what enters, what the reviewer sees and does, who reviews, what happens, and what it is not.\n- Table: all 19 rows have a proposer, a proof, a decider and a rollback owner. The lead-as-proposer case is covered (line 77): a fresh Fable reviewer writes the proof and its verdict is the decision.\n\nNot met: \"says who ... decides ... each kind of change\".\n1. Adding a new part has two deciders. Row 5: \"Adding a new part to the system | Anyone, by the route in principle 5 | A passport showing the second occurrence ... | Lead\". Row 8: \"Promoting an EXPLORE item into the system | ... | Steward\". The route in principle 5 makes every new part an EXPLORE item first (step 2) and then proposes \"the item\" for the system (step 3). budget.md says \"Promotion is the steward's decision\". So the same change is the lead's under one row and the steward's under another. CLAUDE.md gives \"any EXPLORE promotion\" to the steward, and the difference is not logged under \"Awaiting CEO\".\n2. A breaking change has no row. Row 4 covers \"a non-breaking change to a part, no real users affected\". Principle 6 defines breaking changes (token name, markup, attributes, class names, events), but no row says who decides one before real users exist.\n3. Narrowing an ADAPT range has no row. budget.md gives it to the lead; the table has only \"widening a range\" (CEO).",
+    "whatWouldMakeItPass": "Three edits to the table in charter/operating-model.md. (1) Make rows 5 and 8 agree: either say a new part arriving by the principle 5 route is an EXPLORE promotion decided by the steward, as CLAUDE.md has it, or define how the two differ and log the departure under \"Awaiting CEO\". (2) Add a row for a breaking change to a part or token when no real users are affected. (3) Add a row for narrowing a range, with a decider consistent with CLAUDE.md's \"ask me first\" for changes to deltas, or log it under \"Awaiting CEO\"."
+   }
+  ],
+  "otherFindings": [
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/budget.md",
+    "where": "ADAPT section, first bullet (\"A product choosing a value inside a range needs no approval\"); also charter/vision.md line 12 (\"without asking inside the written ranges\") and operating-model.md table row 2",
+    "problem": "operating-model.md puts one rule above the table: any change that reaches real users is the steward's decision, \"including a change inside an ADAPT range\". budget.md, vision.md and table row 2 state the product's freedom with no such limit. A product builder reading budget.md alone would ship an in-range choice to real users without the steward.",
+    "suggestedFix": "Add \"when no real user is affected\" to the budget.md bullet and to row 2, and qualify the vision gloss, or state that in-range product choices are exempt from the rule and log that under \"Awaiting CEO\"."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/principles.md",
+    "where": "\"How the ranking works\", paragraphs 1 and 2 (lines 18-20)",
+    "problem": "Three sentences give different outcomes for two LOCK rules that cannot both be kept: a LOCK row \"is never traded for anything\"; \"the part is not released\"; and \"the lower number wins until the steward rules\". A builder could read \"wins\" as permission to release with the higher-numbered LOCK row broken.",
+    "suggestedFix": "Say that \"wins\" decides only which design is built while the conflict waits, and that the part stays unreleased until the steward rules. Extend \"1, then 2, then 3\" to cover principle 4's LOCK rules."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/budget.md",
+    "where": "LOCK tables: \"Nothing is shown by colour alone\"; \"Controls, their states and focus indicators have at least 3 to 1 contrast\"; \"A status shows the real state\"; \"Each token is used only for its stated purpose\"",
+    "problem": "Four checks would miss the breach they are named for. (1) The colour-alone test passes on a difference in \"attribute\", so principle 1's own example, an error shown only as a red border, passes once aria-invalid is set. (2) Non-text contrast uses \"the same three checks\", which are defined on text and background pairs (README: declared pair). (3) Nothing tests that a status follows the real outcome, even on the reference page with its test server. (4) The purpose lint checks where a token is used (text, background, border), so principle 4's example, the danger colour used as decoration, is not caught.",
+    "suggestedFix": "Limit the colour-alone test to a visible difference in text, icon or shape. Extend declared pairs to border and indicator pairs. Add a reference-page flow test that a status changes only after the server answers. Say that decorative misuse of a status token is found by review, or declare a meaning per token and lint on it."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/principles.md",
+    "where": "Principle 1 Rule (right-to-left, longer-word languages); principle 3 standing-permission paragraph; principle 6 30-month rule; against budget.md LOCK tables",
+    "problem": "principles.md says the machine-checkable rules of principles 1 to 3 \"are LOCK rows in budget.md\". Right-to-left and long translated text have a visual test named in principle 1 but no row in budget.md, so a builder cannot tell whether a failure blocks release. The standing-permission duties (act only inside limits, show what was done, allow withdrawal) have no evidence, check or row. The 30-month browser rule in principle 6 names no check.",
+    "suggestedFix": "Add LOCK rows for right-to-left and long-text rendering and for standing permissions, each with a check, or state in principles.md that these clauses are enforced by review only."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/budget.md",
+    "where": "ADAPT table, rows \"Layout\" and \"Tone of voice\"",
+    "problem": "The file says a product's in-range choice needs no approval because \"the range check passes\". No script can evaluate these two ranges as written. Layout gives no enumerated arrangements or measurable bound. Tone points to a qualitative table, and voice-and-tone.md itself says no machine can test how words sound. In voice-and-tone.md the ADAPT tag also means something else: a rule the lead may adjust.",
+    "suggestedFix": "For layout, have each contract list its allowed arrangements and test visual order against document order. For tone, either name the numbered rules a product may vary and their limits, or say tone is judged by review and is not covered by the range check."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/budget.md",
+    "where": "EXPLORE limits (\"at most three active items\", \"at most one new item per pilot, or per slice\"), read with principles.md principle 5, route step 2",
+    "problem": "Principle 5 sends every new need that existing parts cannot meet through an EXPLORE item. The EXPLORE limits then allow one new need per slice and three in total, and an item waiting for a steward never expires. With no steward named, three waiting items would stop all additions. The limits came from a board idea about experiments; the charter does not say the effect on ordinary additions is intended.",
+    "suggestedFix": "State whether route items count toward the EXPLORE limits. If they do, say so as a deliberate choice; if not, give them a separate register section and limit."
+   },
+   {
+    "severity": "major",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/budget.md",
+    "where": "ADAPT section: \"From Gate 1, narrowing a range is the lead's decision\"",
+    "problem": "CLAUDE.md lists \"changes to the principles or their deltas\" among the things to ask the CEO first. A range is a delta, so narrowing one is a change the charter gives to the lead. The departure is not logged in DECISIONS.md.",
+    "suggestedFix": "Give narrowing to the CEO, or log the lead's right to narrow under \"Awaiting CEO\" with the reason."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/operating-model.md",
+    "where": "Decision table, \"Independent proof\" column; the paragraph \"When the lead is the proposer\"; retiring rules; human review queue",
+    "problem": "(1) Several rows name the proof but not who produces it (\"The evidence collected\", \"A measurement\", \"The reason it is wrong\"). (2) The lead-as-proposer rule is unconditional, so read literally it requires a Fable reviewer for the lead's own clay and brief edits, where the rows ask for no proof. (3) The numbers the lead chose here (three votes, 14 days, half across three uses, a quarter unused) are not marked as starting values, though README.md and DECISIONS.md A-08 say every such number is. The same applies in budget.md to the 2 pixel focus indicator, 0.01 seconds, the 200 millisecond blocking time and the five runs. (4) An EXPLORE item at expiry is decided by the lead in the table and by votes in the queue.",
+    "suggestedFix": "Name the actor in each proof cell. Limit the lead-as-proposer rule to rows that require proof. Mark the numbers. Say which of the two expiry routes applies once the queue exists."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/principles.md",
+    "where": "Coverage section: \"Six are cited above\"; \"Performance budgets are hard checks on every change\"",
+    "problem": "(1) Seven of Rams' principles are cited, not six: principle 1 cites both \"useful\" and \"understandable\", which notes/survey/thinkers.md lists as separate headings. Six plus the three named as unused makes nine, not ten. (2) The byte budgets are unmeasured guesses reset at Gate 3 (budget.md), yet this file makes them hard blocks from the first change. It does not say whether a guess that is exceeded before Gate 3 blocks the work and goes to the CEO.",
+    "suggestedFix": "Change \"Six\" to \"Seven\". Add one sentence on how the byte budgets are enforced before the Gate 3 reset."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/vision-notes.md",
+    "where": "1 quarter horizon: \"The four core parts have been used to build a second flow outside checkout\"",
+    "problem": "The cost summary is a commerce part that lives in a domain layer (principle 7), not a core part. README.md calls the four \"the four checkout parts\". \"Four core parts\" invites a builder to place the cost summary in the core.",
+    "suggestedFix": "Write \"the three core parts (field, button, feedback)\" or \"the checkout parts that are core\"."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/voice-and-tone.md",
+    "where": "Line 42 (\"only the steward changes them\") and line 130; rules 4 and 9",
+    "problem": "This file says only the steward changes LOCK rules; operating-model.md and principles.md say the CEO and steward together. It also says each LOCK-tagged rule is the writing form of a budget.md row, but rule 4 (one error, one wording) and rule 9 (money format) have no matching row. Outside my four criteria; noted because it touches decision rights and the LOCK list.",
+    "suggestedFix": "Align line 42 with the decision table. Add the two rows to budget.md or retag the two rules."
+   },
+   {
+    "severity": "minor",
+    "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/charter/budget.md",
+    "where": "EXPLORE section: \"A check on every change fails if an entry is incomplete, if more than three items are active, or if brick imports an item\"; \"The delta for each principle\" rows 6 and 7",
+    "problem": "(1) The register check does not fail when an item is past its expiry date, so the expiry depends on someone remembering. (2) Principles 6 and 7 have zero-delta rules that block a change, which fits README.md's definition of LOCK, but principles.md lists only principles 1 to 3 and part of 4 as LOCK. It is unclear whether changing those rules needs the CEO alone or the CEO and steward.",
+    "suggestedFix": "Add \"or if an item is past its expiry and not marked waiting\" to the check. State whether the zero-delta rules of principles 6 and 7 are LOCK rows."
+   }
+  ],
+  "summary": "Criteria 1, 2 and 3 pass; criterion 4 fails on the decision table only.\n\n- **Criterion 1 (vision):** passes. `vision.md` is 293 words by `wc -w`, states the purpose, and gives each of the four horizons an observable check.\n- **Criterion 2 (principles):** passes. Seven ranked contracts each have a label, rule, evidence, trigger and breaking example, and all six base values are covered. The ranking gave a determinate winner in seven tested conflicts, including three pairs inside principles 1 to 3 and one against a performance budget.\n- **Criterion 3 (budget):** passes. Every LOCK row names a check, every ADAPT row has a reference and a range, EXPLORE has its four attributes, and the numeric budgets are stated.\n- **Criterion 4 (operating model):** fails. The team model, passport, four loops (all seven attributes each) and review queue are met, and the lead-as-proposer case is covered. The table does not say who decides three kinds of change:\n  - Adding a new part is the lead's decision in row 5 and the steward's in row 8, because the principle 5 route makes every new part an EXPLORE promotion.\n  - A breaking change with no real users affected has no row.\n  - Narrowing a range has no row.\n\n  All three are small edits to the table in `charter/operating-model.md`.\n\nSeven major findings sit outside the verdicts:\n- `budget.md` and `vision.md` say a product's in-range choice needs no approval, against the rule that the steward decides anything reaching real users.\n- The ranking text gives three different outcomes when two LOCK rules cannot both be kept.\n- Four LOCK checks would miss their breach as worded; the colour-alone test passes the charter's own red-border example.\n- Three rule clauses (right-to-left and long text, standing permissions, the 30-month browser rule) have no LOCK row or check.\n- The Layout and Tone ADAPT ranges cannot be evaluated by a script.\n- The EXPLORE limits, combined with the principle 5 route, allow one new need per slice.\n- `budget.md` lets the lead narrow a range, which CLAUDE.md reserves for the CEO, and this is not logged.\n\nFive minor findings cover wording and unmarked numbers.\n\nI ran no git commands, wrote no files and did not read the archive tag. I checked source claims against `notes/` where the charter cites them; the Lighthouse and Core Web Vitals figures are not in `notes/` and I confirmed them from general knowledge only."
+ }
+]

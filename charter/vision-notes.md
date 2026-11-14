@@ -24,7 +24,7 @@ A check marked *needs people* cannot be met by the lead agent alone. It needs a 
 
 **1 day (by 14 November 2026)**
 - Every charter file has had a fresh-context review, and the verdict is in the repository.
-- Every conflict and every unfilled placeholder is logged under "Awaiting CEO".
+- Every conflict between the board and CLAUDE.md, and every blank the CEO left in CLAUDE.md, is logged under "Awaiting CEO".
 - Nothing has reached a real user.
 
 **1 week (by 20 November 2026)**

@@ -127,3 +127,54 @@ Four small edits. (1) operating-model.md:13-19: label the For/Against claims (fo
 - `benchmark.md`, "How items are tagged", last sentence (line 48); Scoring category 3 (line 157): "The rows of the Meaning table are checked by the count of values that bypass the system" does not match budget.md lines 66-71. The four Meaning rows are native element or role, token used for its stated purpose, one name per meaning, and no primitive tokens in components. A count of colour literals and numbers with units checks none of them; a page that references a primitive token directly has n…
 - `benchmark.md`, Item 2.5 (line 104); also items 2.2 (line 101) and 1.2 (line 66): Item 2.5 is tagged Accessibility, so a failure counts as a LOCK breach. Its second half, "focus has moved to the first error or to a summary of the errors", is not a row in budget.md's Accessibility table and is not required by a WCAG 2.2 A or AA criterion. A page that announces its errors without moving focus can meet budget.md line 40 and still be scored as a LOCK breach. Run 1 listed 2.5 among …
 - `voice-and-tone.md`, Line 42 ("ADAPT rules the lead may adjust") against budget.md line 119, README.md line 67 : ADAPT means two things. In README and budget.md it is a difference a product may make inside a written range, and changing a range needs the CEO. Here it marks a rule the lead may change. budget.md's tone row says a product varying its tone must still hold "the voice rules marked LOCK", which implies the ADAPT-tagged rules (sentence case, banned words, no exclamation marks, length) are optional fo…
+
+## Run 3, 13 November 2026: fail
+
+Three new reviewers judged only the criteria that failed in run 2.
+
+| Criterion | Verdict |
+|---|---|
+| 5 | fail |
+| 8 | fail |
+| 10 | fail |
+
+### Criterion 5: what would make it pass
+
+Two edits to charter/survey.md:
+1. L63, Reason: replace "A form agents follow well" with what agent-skills.md:22 says, for example "The closest match in form: short rules an agent can read". If the behavioural claim is wanted, label it [A].
+2. L61, Reason: replace "The only cost-summary guidance among the six systems" with "The only cost-summary guidance the survey found among the six systems", and either add the five other system files to the Supports cell or point to the "Still missing" list at L79.
+
+In the same edit, to remove the same kind of wording elsewhere: L75 "Apple and GOV.UK have nothing official" to "the survey found nothing official for Apple or GOV.UK"; L134 "No surveyed system publishes a method" to "The survey found none published".
+
+### Criterion 8: what would make it pass
+
+One edit to scorecard.md:13, so the Opus-tier row says only what a record shows.
+
+1. Name the seven Opus files. Say which four the lead's first review passed, and put that record in DECISIONS.md or the scorecard source cell.
+2. Give the current figure that follows from recorded findings. The repository shows gate-reviewer errors in five files: survey.md, checkout-slice.md, benchmark.md, voice-and-tone.md and the FigJam summary.
+   - If no error was found in the library and notebook summaries, the figure is not 0 of 7. Replace "found errors in all seven Opus files" with the true count.
+   - If errors were found in those two summaries as well, drop "including one of the three source summaries", record the findings in gates/gate-1.md, and correct or annotate the two files.
+3. If the lead's first review cannot be reconstructed, write "not recorded" for the baseline instead of "4 of 7".
+
+Nothing else needs to change for criterion 8.
+
+### Criterion 10: what would make it pass
+
+About ten small edits; no restructuring.
+1. README.md: add a "Work tree" entry. Say whether it is PROGRESS.md as the CEO's kickoff set it or PROGRESS.md as the lead may later edit it. Make README.md:57, principles.md:121 and operating-model.md:69 use that one meaning.
+2. README.md:9: list the six base values, or add a "Base values" entry.
+3. operating-model.md:87 and survey.md:65: replace "consumers" with "products that use the part" / "products that use the system", or add a README entry.
+4. principles.md:125 and budget.md:172: say what registering a product repository means, or reword so it cannot be confused with the EXPLORE register (for example "product repositories that run the drift command").
+5. operating-model.md:39: name the mental models in one clause, or add a README entry pointing to the "Mental models" section of CLAUDE.md with a one-line summary.
+6. survey.md "Names used in this survey": add "release phases" and "Increase Contrast". At :66 replace "frequency bands" with plain words. At :98 name the law (notes/survey/checkout-evidence.md:29 records it as the EU Consumer Rights Directive 2011/83/EU) and call the Digital Fairness Act a proposed EU law. Gloss or drop "Apple Writing" at voice-and-tone.md:49.
+7. Gloss "switch users" at checkout-slice.md:94. At benchmark.md:108 say "exposed as a live region" or explain "status or alert".
+8. Rewrite the sentences listed in the evidence: budget.md:132; benchmark.md:179 (name the two colours); checkout-slice.md:87; operating-model.md:84 (say "section"); operating-model.md:116 and :120 (say what happens to an EXPLORE item in the queue); survey.md:11, :44 and :98; vision-notes.md:27; voice-and-tone.md:46 and :112.
+Optional: define "density" and "tool call" in README, since both are used before the file that defines them.
+
+## Where Gate 1 stands
+
+Gate 1 has not passed. After three runs, criteria 1, 2, 3, 4, 6, 7 and 9 have each passed once (run 2) and criteria 5, 8 and 10 have failed every time, on a shorter and different list each time. The points named in run 3 were corrected on 13 November, and those corrections have not been judged by a reviewer.
+
+The lead recorded the gate as blocked and reported it to the CEO (DECISIONS.md A-12), as it had said it would after a third failure.
+
+The full text each reviewer returned, including the evidence for every verdict, is in `gates/raw/`, one JSON file per run, with the three challenge reviews that preceded the gate.

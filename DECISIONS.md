@@ -92,11 +92,13 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 - **Decision:** The range was kept and the task rewritten: one brand colour, tested by hue. The tasks become fixed when Gate 1 passes; after that only the CEO changes them.
 - **To reverse:** Widen the accent range in `charter/budget.md` and restore two colours in the task.
 
-### A-12. Gate 1 has failed twice
+### A-12. Gate 1 has not passed after three runs, and is blocked
 
-- **Situation:** Two runs of Gate 1 on 13 November failed (D-010, D-011). The charter's own draft rule says top-tier work that fails review twice is reported to the CEO.
-- **Decision:** Reported here. The failures were different each time and each was a list of specific edits, so the lead fixed them and asked for a third review of the three criteria still failing. If that fails, phase 1 is marked blocked and the lead continues only with work that does not depend on the charter being settled.
-- **To reverse:** Read the charter and overrule the gate either way.
+- **Situation:** Gate 1 ran three times on 13 November. Criteria 1, 2, 3, 4, 6, 7 and 9 passed in run 2. Criteria 5 (survey), 8 (honesty) and 10 (reader test) failed all three runs, each time on a shorter, different list: by run 3, two survey sentences, one scorecard row, and about a dozen undefined terms and unclear sentences. The run 3 points were corrected and have not been re-judged. The record is in `gates/gate-1.md`.
+- **Why it keeps failing:** the lead wrote those three criteria with the word "every" and no limit on what counts. A fresh reviewer can always find one more term or one more sentence. The work improved each run; the criteria cannot be met with certainty. Rewriting a criterion to make it pass is not something the lead may do.
+- **Decision:** Gate 1 is recorded as blocked, not passed. Items 1.1 to 1.4, 1.6 and 1.7 are marked done on the strength of the criteria that passed. Item 1.5 is marked blocked. The lead moves on to phase 2, starting with the three visual directions, which are disposable prototypes. Nothing in phase 2 rests on the three failing criteria: they concern the survey's wording, one scorecard row and the glossary.
+- **What the CEO can do:** read the charter and pass or fail it yourself, which is what the board intended for Gate 1; or ask for a fourth run; or rewrite criteria 5, 8 and 10 so that a bounded check can decide them.
+- **To reverse:** Tell the lead to stop phase 2 until the gate passes.
 
 ### A-10. What the lead needs from the CEO
 
@@ -135,6 +137,10 @@ Three fresh reviewers on Fable judged the ten criteria on 13 November. Criteria 
 ### D-011. Gate 1, second run: fail
 
 Fresh reviewers judged all ten criteria again. Criteria 1, 2, 3, 4, 6, 7 and 9 passed. Criteria 5, 8 and 10 failed: three survey sentences said more than their files; three claims about people had no label; and about forty terms and outside names were still undefined. All were fixed the same day. The record is in `gates/gate-1.md`.
+
+### D-012. Gate 1, third run: fail; gate recorded as blocked
+
+Criteria 5, 8 and 10 failed again on new, smaller points. See A-12 and `gates/gate-1.md`. From phase 2 on, each pass criterion is written so that a script, a count or a stated sample can decide it (lesson of 13 November, "criteria that say every").
 
 ### D-007. Three arguments against the charter, kept on record
 

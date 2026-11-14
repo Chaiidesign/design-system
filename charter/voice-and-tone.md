@@ -43,10 +43,10 @@ All 17 rules bind every product. A rule tagged LOCK blocks release, and changing
 
 1. **Sentence case** for every string, including buttons and headings. Proper nouns keep their capitals. Messages end with a full stop; labels, hints and buttons do not. (house rule)
 2. **Button labels are verb plus object**: "Save address", "Pay £48.20". One-word verbs are allowed only for Cancel, Close and Done. Never "OK", "Yes", "No" or "Submit". (LOCK: a label says what the control does)
-3. **An error says what to do, and what happened where that is not obvious**, in text, next to the problem. (LOCK; budget.md, accessibility: errors are identified in text)
+3. **An error says what to do. If the cause is not obvious from that, it also says what happened**, in text, next to the problem. (LOCK; budget.md, accessibility: errors are identified in text)
 4. **One error, one wording.** The message beside the field and in any summary is the same, word for word. [pattern: GOV.UK error summary] (house rule)
 5. **No blame.** The subject of an error is the field or the thing, not "you" doing something wrong. (house rule)
-6. **Banned words**: "please", "sorry", "oops", "invalid", "valid", "error occurred", "something went wrong" (without a cause), "simply", "just", "easy", "click here"; and abbreviations or trade jargon a shopper would not say, such as "S&H" or "promo". [pattern: GOV.UK error message, Apple Writing] (house rule)
+6. **Banned words**: "please", "sorry", "oops", "invalid", "valid", "error occurred", "something went wrong" (without a cause), "simply", "just", "easy", "click here"; and abbreviations or trade jargon a shopper would not say, such as "S&H" or "promo". [pattern: GOV.UK's error message guidance and Apple's writing guidance] (house rule)
 7. **No exclamation marks.** (house rule)
 8. **"We" only for what Souvenir did or failed to do**, never in an error about the person's input. (house rule)
 9. **Numbers are digits**: "3 items". Money shows the currency and the exact amount from the locale's formatter, never rounded. Dates name the month in words; a relative date ("tomorrow") also gives the date. Formats come from the locale, never built by hand. (LOCK for money)
@@ -109,7 +109,7 @@ An unknown charge may appear only before the step that commits the person to pay
 | Loop ([operating-model.md](operating-model.md)) | What is observed | What triggers a change |
 |---|---|---|
 | L1 Change loop | The writing check: banned words, case, length, and an error in text beside each field | A failed check blocks the change |
-| L2 Build cycle | A reviewer with the writer viewpoint, and the strings the benchmark agent wrote | The same rule fails in two cycles: fix the example or rule that misled, keep it if the benchmark holds |
+| L2 Build cycle | A reviewer with the writer viewpoint, and the strings the benchmark agent wrote | The same rule fails in two cycles: fix the example or the rule that misled, and keep that fix if the benchmark holds |
 | L3 Pilot loop | Whether people can say what happened, what they will pay and what to do next, in their own words | A misreading seen in a session goes to the steward, who decides to approve, revise or retire. No pass mark is set before a baseline |
 | L4 Strategy loop | L3 evidence against the voice traits | A trait contradicted by evidence is revised (CEO) |
 

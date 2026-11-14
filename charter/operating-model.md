@@ -12,7 +12,7 @@ Today the core team is one lead agent and the subagents it recruits. There are n
 
 | Model | For | Against | Used here |
 |---|---|---|---|
-| Solitary: one team builds for its own product | Close to a real product | Fits that product and little else | No. The CEO ruled out an ecommerce-only system |
+| Solitary: one team builds for its own product | Close to a real product (the lead's inference; Curtis names no benefit) | Fits that product and little else | No. The CEO ruled out an ecommerce-only system |
 | Centralised: a dedicated team builds for everyone | No single product's agenda | Can lose touch with real products | Yes, as the base. The slice and the pilots are there to keep it in touch |
 | Federated: people from product teams decide together | Broad relevance | Slow; split loyalties | As the route for contributions, never alone |
 
@@ -36,7 +36,7 @@ The three models, and the entries in the For and Against columns, are **[pattern
 
 **Recruit** when the work is independent and can run in parallel, when an independent review is needed, or when a checklist can verify the work and a less capable model can do it. Do small work directly.
 
-**Every brief states** the objective, the output format, the tools and sources, what is not the subagent's job, the done-criteria, the altitude, whether the output is clay or brick, the mental models in CLAUDE.md, and any earlier decision on the same question.
+**Every brief states** the objective, the output format, the tools and sources, what is not the subagent's job, the done-criteria, the altitude, whether the output is clay or brick, the six mental models in CLAUDE.md (altitude; clay or brick; diverge then converge; boundaries and invariants; the five materials of design; craft), and any earlier decision on the same question.
 
 **Subagents do not recruit subagents.** This is a starting rule, meant to keep cost and responsibility in one place. The alternative, one level of delegation with a spending cap and a log entry per recruit, was set aside for now because the lead has no data on what delegation costs. The rule is reviewed at the first quarterly review, or sooner if work waits on the lead for briefs.
 
@@ -81,10 +81,10 @@ One rule sits above the table, and follows the FigJam board until the CEO says o
 
 ## The passport
 
-A passport is one page that travels with a change. The author of the first part never writes the third.
+A passport is one page that travels with a change. It has three sections, and the author of the first never writes the third.
 
 1. **Propose.** The need. The hypothesis. The principles it touches. What depends on it. The alternatives. Its altitude, whether it is clay or brick, and whether it falls under LOCK, ADAPT or EXPLORE.
-2. **Prove.** Written by an independent reviewer. The test output. The accessibility, writing and performance checks. What consumers of the part must change. The label on every claim about people. The strongest argument against the change, kept even if it is approved.
+2. **Prove.** Written by an independent reviewer. The test output. The accessibility, writing and performance checks. What products that use the part must change. The label on every claim about people. The strongest argument against the change, kept even if it is approved.
 3. **Decide.** Who decided. Approve, revise or retire. The reason. The version. How to reverse it.
 
 A passport helps a reviewer; it does not replace one. If the proof cannot be verified, the change is not approved.
@@ -97,7 +97,7 @@ Each loop measures one thing, compares it with a desired state, and acts. An inn
 
 | | L1 Change loop | L2 Build cycle | L3 Pilot loop | L4 Strategy loop |
 |---|---|---|---|---|
-| Runs | On every change | On every work item, and nightly | On every pilot. At least one a quarter once a steward is named | Every quarter |
+| Runs | On every change | On every work item, and nightly | On every pilot. At least one a quarter once a steward is named (*[starting value]*) | Every quarter |
 | Owner | Builder agents | Lead | Steward | CEO and steward |
 | Variable | Does this change pass its checks? | The scorecard | Do pilot participants succeed at the task? | Are the principles and ranges still right? |
 | Current state | Not running. Starts with the first token file | Review is running. The benchmark and the scans are not, until tokens and docs exist | Not running. No steward, no participants | Not running. First review due 13 February 2027 |
@@ -113,7 +113,7 @@ Each loop measures one thing, compares it with a desired state, and acts. An inn
 
 This is the fast human loop for one case: an item outside its range.
 
-- **What enters:** an instance a check reports as outside an ADAPT range. The lead may also add an EXPLORE item at its expiry, to inform the lead's own decision; the vote does not decide it.
+- **What enters:** an instance a check reports as outside an ADAPT range. The lead may also show an EXPLORE item at its expiry, to inform the lead's own decision. For such an item the vote is advice only: the rules below do not apply to it, and the lead extends it, retires it or proposes it for promotion.
 - **What the reviewer sees:** the instance, the reference, the size of the difference, and one sentence of context.
 - **What the reviewer does:** like or dislike, with an optional line saying why.
 - **Who reviews:** people named by the steward.

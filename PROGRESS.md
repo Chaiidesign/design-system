@@ -30,14 +30,14 @@ Pass criteria for Gate 1 (written before the phase started; the reviewer is a fr
 
 | Item | Owner | Status | Evidence |
 |---|---|---|---|
-| 1.1 Vision for 1 day, 1 week, 1 quarter, 1 year, 5 years | Fable | in progress | charter/vision.md; rewritten after challenge review (D-006); awaiting Gate 1 |
-| 1.2 Five to seven principle contracts, ranked | Fable | in progress | charter/principles.md; rewritten after challenge review; awaiting Gate 1 |
-| 1.3 LOCK / ADAPT / EXPLORE budget | Fable | in progress | charter/budget.md; rewritten after challenge review; awaiting Gate 1 |
-| 1.4 Operating model, passport, the four nested loops | Fable | in progress | charter/operating-model.md; rewritten after challenge review; awaiting Gate 1 |
-| 1.5 Survey of public systems | Sonnet gathers, Opus reviews and synthesises | in progress | notes/survey/ (12 files, each with an Opus review section); charter/survey.md; awaiting Gate 1 |
-| 1.6 Checkout slice inventory and baseline plan; the three benchmark tasks | Opus drafts, Fable decides | in progress | charter/checkout-slice.md; charter/benchmark.md; decided 13 November; awaiting Gate 1 |
-| 1.7 Voice and tone starting guideline | Opus drafts, Fable approves | in progress | charter/voice-and-tone.md; approved with changes 13 November; awaiting Gate 1 |
-| Gate 1: fresh Fable reviewer; charter posted | Fable reviewer | in progress | No channel is named, so the charter is committed here instead of posted (DECISIONS.md A-02) |
+| 1.1 Vision for 1 day, 1 week, 1 quarter, 1 year, 5 years | Fable | done | charter/vision.md, vision-notes.md. Criterion 1 passed in Gate 1 runs 1 and 2 (gates/gate-1.md). Edited since; edits not re-judged |
+| 1.2 Five to seven principle contracts, ranked | Fable | done | charter/principles.md. Criterion 2 passed in Gate 1 runs 1 and 2. Edited since; edits not re-judged |
+| 1.3 LOCK / ADAPT / EXPLORE budget | Fable | done | charter/budget.md. Criterion 3 passed in Gate 1 runs 1 and 2. Edited since; edits not re-judged |
+| 1.4 Operating model, passport, the four nested loops | Fable | done | charter/operating-model.md. Criterion 4 failed run 1 and passed run 2. Edited since; edits not re-judged |
+| 1.5 Survey of public systems | Sonnet gathers, Opus reviews and synthesises | blocked | charter/survey.md, notes/survey/. Criterion 5 failed all three runs on wording stronger than the survey files. Run 3 points corrected, not re-judged (DECISIONS.md A-12) |
+| 1.6 Checkout slice inventory and baseline plan; the three benchmark tasks | Opus drafts, Fable decides | done | charter/checkout-slice.md, charter/benchmark.md. Criterion 6 failed run 1 and passed run 2. The benchmark tasks are not yet fixed, because Gate 1 has not passed |
+| 1.7 Voice and tone starting guideline | Opus drafts, Fable approves | done | charter/voice-and-tone.md. Criterion 7 passed in Gate 1 runs 1 and 2. No person has read it |
+| Gate 1: fresh Fable reviewer; charter posted | Fable reviewer | blocked | Run 1 failed five criteria, run 2 three, run 3 the same three on new points (5, 8, 10). Criteria 1, 2, 3, 4, 6, 7 and 9 passed in run 2. Record in gates/gate-1.md; reported in DECISIONS.md A-12. No channel is named, so the charter is committed here instead of posted (A-02) |
 
 ## Phase 2: Foundations
 

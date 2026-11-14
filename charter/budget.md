@@ -127,9 +127,9 @@ Where the starting values come from: 44 pixels follows Apple's guidance of a 44 
 
 An EXPLORE item is the only way to try something the ranges or the inventory do not allow. It is clay. Brick never imports it, and it is never released to real users. It may be shown to pilot participants.
 
-Every item has an entry in the register, `explore/register.md`: an owner, a hypothesis that evidence could prove wrong, a start date, an expiry date, the evidence to collect, and whether it has been extended. A check on every change fails if an entry is incomplete, if more than three items are active, or if brick imports an item.
+Every item has an entry in the register, `explore/register.md`, a file created with the first item: an owner, a hypothesis that evidence could prove wrong, a start date, an expiry date, the evidence to collect, and whether it has been extended. A check on every change fails if an entry is incomplete, if more than three items are active, or if brick imports an item.
 
-Limits. One new item per pilot comes from an idea on the board that has not been adopted; the cap of three and the 30 days are the lead's. All are *[starting values]*, reviewed at the first quarterly review:
+Limits. The limit of one new item per pilot was taken from an idea on the board that has not been adopted; the cap of three and the 30 days are the lead's. All are *[starting values]*, reviewed at the first quarterly review:
 
 - at most three active items;
 - at most one new item per pilot, or per slice while no pilot is running;
@@ -169,4 +169,4 @@ The 2.5 second and 0.1 thresholds are the "good" thresholds Google publishes for
 2. a second version of something the system provides. The scan's rules are listed with the scan, and it is tested on every cycle against planted duplicates. Its result is reported as "none detected by rules 1 to N", with the share of planted duplicates it caught;
 3. a difference between the design source and the code for the same component. This is "not measured" until a design source exists.
 
-The counts cover this repository's reference pages now, and product repositories once they register and run the same command.
+The counts will cover this repository's reference pages first, and then each product repository that runs the same drift command.
