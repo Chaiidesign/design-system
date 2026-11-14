@@ -1,0 +1,293 @@
+<!-- Clay. Visual direction Instrument. Work item 2.1. Disposable. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instrument: checkout (clay)</title>
+<link rel="icon" href="data:,">
+<script>var t=new URLSearchParams(location.search).get("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t</script>
+<style>
+/* The body (ground, surface, key, edge, text) changes with the theme.
+   The solid parts (accent, status, display) are the same in both. */
+:root{
+color-scheme:light;
+--accent-h:265;
+--color-ground:oklch(.905 .008 85);
+--color-surface:oklch(.972 .005 85);
+--color-key:oklch(.845 .01 85);
+--color-edge:oklch(.53 .012 85);
+--color-text:oklch(.24 .012 85);
+--color-text-soft:oklch(.44 .012 85);
+--color-accent:oklch(.55 .19 var(--accent-h));
+--color-accent-strong:oklch(.525 .19 var(--accent-h));
+--color-display:oklch(.29 .035 var(--accent-h));
+--color-on-solid:oklch(1 0 0);
+--color-danger:oklch(.57 .19 27);
+--color-warning:oklch(.585 .125 70);
+--color-success:oklch(.565 .135 150);
+--color-info:oklch(.565 .09 220);
+--font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--font-size-body:1rem;
+--font-size-heading:1.25rem;
+--font-size-title:1.75rem;
+--font-size-reading:2.25rem;
+--line-body:1.5;
+--line-tight:1.2;
+--weight-strong:600;
+--space-1:.25rem;
+--space-2:.5rem;
+--space-3:.75rem;
+--space-4:1rem;
+--space-5:1.25rem;
+--space-6:2.5rem;
+--radius-control:.75rem;
+--radius-panel:1.25rem;
+--size-control:3rem;
+--size-control-lg:3.5rem;
+--size-mark:1.5rem;
+--size-field-min:6rem;
+--size-column:32rem;
+--border-width:2px;
+--focus-width:3px;
+--press-depth:2px;
+--motion:120ms;
+--motion-loop:800ms
+}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme=light]){
+color-scheme:dark;
+--color-ground:oklch(.155 .006 85);
+--color-surface:oklch(.205 .006 85);
+--color-key:oklch(.295 .008 85);
+--color-edge:oklch(.62 .01 85);
+--color-text:oklch(.94 .006 85);
+--color-text-soft:oklch(.74 .008 85)
+}
+}
+:root[data-theme=dark]{
+color-scheme:dark;
+--color-ground:oklch(.155 .006 85);
+--color-surface:oklch(.205 .006 85);
+--color-key:oklch(.295 .008 85);
+--color-edge:oklch(.62 .01 85);
+--color-text:oklch(.94 .006 85);
+--color-text-soft:oklch(.74 .008 85)
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--color-ground);color:var(--color-text);font:var(--font-size-body)/var(--line-body) var(--font);overflow-wrap:break-word;-webkit-text-size-adjust:100%}
+h1,h2,h3,h4,p,ul,dl,dd{margin:0}
+ul{padding:0;list-style:none}
+h1,h2,h3,h4,label,button,.error,.commit p,dl div:last-child{font-weight:var(--weight-strong)}
+h1{font-size:var(--font-size-title);line-height:var(--line-tight)}
+h2,.commit p,dl div:last-child{font-size:var(--font-size-heading);line-height:var(--line-tight)}
+h3,h4{font-size:var(--font-size-body)}
+h3{margin-top:var(--space-5);color:var(--color-text-soft)}
+a{display:block;padding-block:var(--space-1);color:inherit;text-decoration-thickness:var(--border-width);text-underline-offset:var(--space-1)}
+svg{display:block;width:var(--size-mark);height:var(--size-mark);fill:none;stroke:currentColor;stroke-width:var(--border-width);stroke-linecap:round;stroke-linejoin:round}
+
+/* Layout: one column; parts sit on raised panels, shown by tone alone */
+main,form,.states,.panel,.field{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-4)}
+main{max-width:var(--size-column);margin:auto;padding:var(--space-5) var(--space-4) var(--space-6)}
+.panel{padding:var(--space-5);background:var(--color-surface);border-radius:var(--radius-panel)}
+.states{gap:var(--space-2);margin-top:var(--space-5)}
+
+/* Fields: wells cut into the panel, showing the ground, with a clear edge */
+.field{gap:var(--space-1)}
+.hint,.items span:nth-child(2){color:var(--color-text-soft)}
+.error svg{color:var(--color-danger)}
+input{width:100%;min-height:var(--size-control);margin-top:var(--space-1);padding:0 var(--space-3);border:var(--border-width) solid var(--color-edge);border-radius:var(--radius-control);background:var(--color-ground);color:inherit;font:inherit}
+input:hover,button:hover{border-color:var(--color-text)}
+input[readonly]{border-style:dashed;background:none}
+input[aria-invalid=true]{border-color:var(--color-danger);border-inline-start-width:var(--space-2)}
+.row{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.row label{flex-basis:100%}
+.row input{flex:1 1 var(--size-field-min);margin:0}
+
+/* Keys: solid, bounded, and they move when pressed */
+button{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-height:var(--size-control);padding:var(--space-1) var(--space-4);border:var(--border-width) solid var(--color-edge);border-radius:var(--radius-control);background:var(--color-key);color:var(--color-text);font:inherit;font-weight:var(--weight-strong);font-variant-numeric:tabular-nums;cursor:pointer}
+button:active,[aria-busy=true]{transform:translateY(var(--press-depth))}
+.primary{width:100%;min-height:var(--size-control-lg);border-color:var(--color-accent);background:var(--color-accent);color:var(--color-on-solid);font-size:var(--font-size-heading)}
+.primary:hover,.primary:active,.primary[aria-busy=true]{border-color:var(--color-accent-strong);background:var(--color-accent-strong)}
+[aria-busy=true]{cursor:progress}
+[aria-busy=true]::before{content:"";width:var(--size-mark);height:var(--size-mark);border:var(--focus-width) solid;border-inline-end-color:transparent;border-radius:50%}
+:focus-visible,.msg:focus{outline:var(--focus-width) solid var(--color-accent);outline-offset:var(--border-width)}
+
+/* Order lines and the cost display */
+.items li{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--space-4);padding-block:var(--space-3);border-top:var(--border-width) solid var(--color-ground)}
+.items span:first-child{grid-column:1/-1}
+.items,.display,.commit p{font-variant-numeric:tabular-nums}
+.display{padding:var(--space-4);border-radius:var(--radius-control);background:var(--color-display);color:var(--color-on-solid)}
+dl div{display:flex;align-items:baseline;column-gap:var(--space-4);padding-block:var(--space-1)}
+dt{flex:1}
+dd,.display p{min-width:0;text-align:end}
+dl div:last-child{flex-wrap:wrap;margin-top:var(--space-2);padding-top:var(--space-3);border-top:var(--border-width) solid var(--color-accent)}
+dl div:last-child dt{flex:none}
+dl div:last-child dd{margin-inline-start:auto;font-size:var(--font-size-reading)}
+
+/* Feedback: a neutral plate with a solid tab that carries the colour and the mark */
+.msg,.error{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:var(--space-3)}
+.msg{align-items:center;padding-block:var(--space-4);padding-inline-end:var(--space-4);overflow:hidden;background:var(--color-surface);border-radius:var(--radius-control)}
+.mark{align-self:stretch;margin-block:calc(var(--space-4)*-1);padding:var(--space-4) var(--space-3);color:var(--color-on-solid)}
+.info .mark{background:var(--color-info)}
+.success .mark{background:var(--color-success)}
+.warning .mark{background:var(--color-warning)}
+.danger .mark{background:var(--color-danger)}
+
+@media (prefers-reduced-motion:no-preference){
+input,button{transition:border-color var(--motion),background-color var(--motion),transform var(--motion)}
+[aria-busy=true]::before{animation:spin var(--motion-loop) linear infinite}
+}
+@keyframes spin{to{transform:rotate(1turn)}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Checkout</h1>
+  <p role="note" class="msg info"><span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>This is a test page. Nothing will be charged.</p>
+
+  <section aria-labelledby="summary-heading" class="panel">
+    <h2 id="summary-heading">Order summary</h2>
+    <ul class="items">
+      <li>
+        <span>Organic cotton waffle-weave bath towel, extra large, undyed natural oatmeal</span>
+        <span>Quantity 2</span>
+        <span>£39.00</span>
+      </li>
+      <li>
+        <span lang="ja">抹茶セット</span>
+        <span>Quantity 1</span>
+        <span>£15.00</span>
+      </li>
+      <li>
+        <span>Soap</span>
+        <span>Quantity 3</span>
+        <span>£7.80</span>
+      </li>
+    </ul>
+    <div class="display">
+    <dl>
+      <div><dt>Items</dt><dd>£61.80</dd></div>
+      <div><dt>Discount: Welcome discount</dt><dd>−£5.00</dd></div>
+      <div><dt>Delivery</dt><dd>£3.95</dd></div>
+      <div><dt>Total</dt><dd>£60.75</dd></div>
+    </dl>
+    <p>Includes £10.13 VAT</p>
+    </div>
+  </section>
+
+  <form action="#" method="post" novalidate>
+    <div class="panel">
+    <h2>Contact</h2>
+    <div class="field">
+      <label for="email">Email address</label>
+      <p id="email-hint" class="hint">We'll send your receipt here</p>
+      <input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-hint">
+    </div>
+    </div>
+
+    <div class="panel">
+    <h2>Delivery address</h2>
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text" autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="line1">Address line 1</label>
+      <input id="line1" name="line1" type="text" autocomplete="address-line1">
+    </div>
+    <div class="field">
+      <label for="line2">Address line 2 (optional)</label>
+      <input id="line2" name="line2" type="text" autocomplete="address-line2">
+    </div>
+    <div class="field">
+      <label for="town">Town or city</label>
+      <input id="town" name="town" type="text" autocomplete="address-level2">
+    </div>
+    <div class="field">
+      <label for="postcode">Postcode</label>
+      <input id="postcode" name="postcode" type="text" autocomplete="postal-code">
+    </div>
+    <div class="field">
+      <label for="country">Country</label>
+      <input id="country" name="country" type="text" value="United Kingdom" readonly>
+    </div>
+    </div>
+
+    <div class="panel">
+    <h2>Discount code</h2>
+    <div class="field row">
+      <label for="code">Discount code</label>
+      <input id="code" name="code" type="text" autocomplete="off">
+      <button type="button">Apply code</button>
+    </div>
+    </div>
+
+    <div class="panel commit">
+      <p>Total £60.75</p>
+      <button type="submit" class="primary">Pay £60.75</button>
+    </div>
+  </form>
+
+  <section aria-labelledby="states-heading" class="states">
+    <h2 id="states-heading">Other states of the same parts</h2>
+
+    <h3>Field with an error</h3>
+    <div class="panel">
+    <div class="field">
+      <label for="email-bad">Email address</label>
+      <p id="email-bad-hint" class="hint">We'll send your receipt here</p>
+      <p id="email-bad-error" class="error"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3ZM9 9l6 6M15 9l-6 6"/></svg>Enter an email address with an @, like name@example.com.</p>
+      <input id="email-bad" name="email-bad" type="email" value="sam.example.com" aria-invalid="true" aria-describedby="email-bad-hint email-bad-error">
+    </div>
+    </div>
+
+    <h3>Error summary</h3>
+    <div role="alert" aria-labelledby="problem-heading" tabindex="-1" class="msg danger">
+      <span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3ZM9 9l6 6M15 9l-6 6"/></svg></span>
+      <div>
+      <h4 id="problem-heading">There is a problem</h4>
+      <ul>
+        <li><a href="#email-bad">Enter an email address with an @, like name@example.com.</a></li>
+      </ul>
+      </div>
+    </div>
+
+    <h3>Button while paying</h3>
+    <div class="panel">
+    <button type="button" aria-busy="true" class="primary">Paying £60.75…</button>
+    </div>
+
+    <h3>Feedback: success</h3>
+    <div role="status" class="msg success">
+      <span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 3 3 5-6"/></svg></span>
+      <p>Order placed. Receipt sent to sam@example.com.</p>
+    </div>
+
+    <h3>Feedback: a failure on our side</h3>
+    <div role="alert" class="msg danger">
+      <span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3ZM9 9l6 6M15 9l-6 6"/></svg></span>
+      <p>We couldn't reach the payment service. You have not been charged. Try again.</p>
+    </div>
+
+    <h3>Feedback: warning</h3>
+    <div role="status" class="msg warning">
+      <span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 4l9.5 16h-19ZM12 10v4M12 17h.01"/></svg></span>
+      <p>Delivery cost is added after you enter your postcode.</p>
+    </div>
+
+    <h3>Cost summary with a charge not yet known</h3>
+    <div class="panel">
+    <div class="display">
+    <dl>
+      <div><dt>Items</dt><dd>£61.80</dd></div>
+      <div><dt>Delivery</dt><dd>Not known yet. Enter your postcode to see it.</dd></div>
+      <div><dt>Total so far</dt><dd>£61.80</dd></div>
+    </dl>
+    </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

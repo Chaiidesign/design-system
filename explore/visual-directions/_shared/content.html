@@ -1,0 +1,128 @@
+<!-- Clay. The shared content for the three visual directions (work item 2.1).
+     Every direction uses this text, in this order, with these elements, ids and attributes.
+     A direction may add class attributes, wrapper elements and decorative inline SVG (aria-hidden="true").
+     It may not change, add or remove visible text, or change element types, ids or ARIA attributes. -->
+<main>
+  <h1>Checkout</h1>
+  <p role="note">This is a test page. Nothing will be charged.</p>
+
+  <section aria-labelledby="summary-heading">
+    <h2 id="summary-heading">Order summary</h2>
+    <ul>
+      <li>
+        <span>Organic cotton waffle-weave bath towel, extra large, undyed natural oatmeal</span>
+        <span>Quantity 2</span>
+        <span>£39.00</span>
+      </li>
+      <li>
+        <span lang="ja">抹茶セット</span>
+        <span>Quantity 1</span>
+        <span>£15.00</span>
+      </li>
+      <li>
+        <span>Soap</span>
+        <span>Quantity 3</span>
+        <span>£7.80</span>
+      </li>
+    </ul>
+    <dl>
+      <div><dt>Items</dt><dd>£61.80</dd></div>
+      <div><dt>Discount: Welcome discount</dt><dd>−£5.00</dd></div>
+      <div><dt>Delivery</dt><dd>£3.95</dd></div>
+      <div><dt>Total</dt><dd>£60.75</dd></div>
+    </dl>
+    <p>Includes £10.13 VAT</p>
+  </section>
+
+  <form action="#" method="post" novalidate>
+    <h2>Contact</h2>
+    <div>
+      <label for="email">Email address</label>
+      <p id="email-hint">We'll send your receipt here</p>
+      <input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-hint">
+    </div>
+
+    <h2>Delivery address</h2>
+    <div>
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text" autocomplete="name">
+    </div>
+    <div>
+      <label for="line1">Address line 1</label>
+      <input id="line1" name="line1" type="text" autocomplete="address-line1">
+    </div>
+    <div>
+      <label for="line2">Address line 2 (optional)</label>
+      <input id="line2" name="line2" type="text" autocomplete="address-line2">
+    </div>
+    <div>
+      <label for="town">Town or city</label>
+      <input id="town" name="town" type="text" autocomplete="address-level2">
+    </div>
+    <div>
+      <label for="postcode">Postcode</label>
+      <input id="postcode" name="postcode" type="text" autocomplete="postal-code">
+    </div>
+    <div>
+      <label for="country">Country</label>
+      <input id="country" name="country" type="text" value="United Kingdom" readonly>
+    </div>
+
+    <h2>Discount code</h2>
+    <div>
+      <label for="code">Discount code</label>
+      <input id="code" name="code" type="text" autocomplete="off">
+      <button type="button">Apply code</button>
+    </div>
+
+    <div>
+      <p>Total £60.75</p>
+      <button type="submit">Pay £60.75</button>
+    </div>
+  </form>
+
+  <section aria-labelledby="states-heading">
+    <h2 id="states-heading">Other states of the same parts</h2>
+
+    <h3>Field with an error</h3>
+    <div>
+      <label for="email-bad">Email address</label>
+      <p id="email-bad-hint">We'll send your receipt here</p>
+      <p id="email-bad-error">Enter an email address with an @, like name@example.com.</p>
+      <input id="email-bad" name="email-bad" type="email" value="sam.example.com" aria-invalid="true" aria-describedby="email-bad-hint email-bad-error">
+    </div>
+
+    <h3>Error summary</h3>
+    <div role="alert" aria-labelledby="problem-heading" tabindex="-1">
+      <h4 id="problem-heading">There is a problem</h4>
+      <ul>
+        <li><a href="#email-bad">Enter an email address with an @, like name@example.com.</a></li>
+      </ul>
+    </div>
+
+    <h3>Button while paying</h3>
+    <button type="button" aria-busy="true">Paying £60.75…</button>
+
+    <h3>Feedback: success</h3>
+    <div role="status">
+      <p>Order placed. Receipt sent to sam@example.com.</p>
+    </div>
+
+    <h3>Feedback: a failure on our side</h3>
+    <div role="alert">
+      <p>We couldn't reach the payment service. You have not been charged. Try again.</p>
+    </div>
+
+    <h3>Feedback: warning</h3>
+    <div role="status">
+      <p>Delivery cost is added after you enter your postcode.</p>
+    </div>
+
+    <h3>Cost summary with a charge not yet known</h3>
+    <dl>
+      <div><dt>Items</dt><dd>£61.80</dd></div>
+      <div><dt>Delivery</dt><dd>Not known yet. Enter your postcode to see it.</dd></div>
+      <div><dt>Total so far</dt><dd>£61.80</dd></div>
+    </dl>
+  </section>
+</main>

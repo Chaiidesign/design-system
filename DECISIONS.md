@@ -100,6 +100,14 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 - **What the CEO can do:** read the charter and pass or fail it yourself, which is what the board intended for Gate 1; or ask for a fourth run; or rewrite criteria 5, 8 and 10 so that a bounded check can decide them.
 - **To reverse:** Tell the lead to stop phase 2 until the gate passes.
 
+### A-13. Choose a visual direction
+
+- **Situation:** Three disposable prototypes of the same checkout screen exist in `explore/visual-directions/`: Ledger, Instrument and Signal. They share identical text and markup (checked by `_shared/compare-text.mjs`; output in `gates/raw/visual-directions-text-check.txt`). The lead viewed each at 375 and 320 pixels wide in light and dark: no sideways scroll, no text under 16 pixels, no control under 48 pixels tall. Contrast figures are the builders' own calculations and have not been checked independently.
+- **The lead's recommendation: Ledger.** It needs the fewest parts (one surface, no shadows, three type sizes), which serves principles 5 and 6, and its cost summary is the clearest of the three.
+- **Strongest argument against Ledger:** it reads as a document, and Souvenir is an assistant people talk to; controls that look like text may feel less alive than Instrument's. Also, its square corners leave the corner-radius range with nothing to multiply, so the reference radius would have to be small but not zero.
+- **Decision:** The choice is the CEO's. If there is no answer by 14 November 2026, 18:30, the lead chooses Ledger and logs it.
+- **To reverse:** Choose another direction before the token values are made (item 2.3). After that, a change costs the token values but not the architecture.
+
 ### A-10. What the lead needs from the CEO
 
 In order of how much they unblock: a named steward; a first read of the charter, especially the seven principles and the LOCK rows; a channel for digests; a choice among the three visual directions when they exist; and, for the first pilot, a researcher and participants.

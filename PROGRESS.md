@@ -41,11 +41,22 @@ Pass criteria for Gate 1 (written before the phase started; the reviewer is a fr
 
 ## Phase 2: Foundations
 
-Pass criteria: to be written before the phase starts.
+Pass criteria for Gate 2 (written 13 November, before the phase started; the reviewer is a fresh-context Opus agent). Each names what decides it.
+
+1. **Three directions exist and are comparable.** `explore/visual-directions/` holds three prototypes of the same checkout screen and a written rationale for each. Decided by: a script confirms the three pages contain the same visible text in the same order.
+2. **A direction is chosen and the choice is recorded.** Decided by: an entry in DECISIONS.md naming who chose (the CEO, or the lead after one day), the reasons, and the strongest argument against.
+3. **Token files are valid.** Decided by: the validation script exits with no error on every token file (2025.10 value shapes, every alias resolves, no cycle, every name matches the naming grammar).
+4. **Three themes pass contrast.** Decided by: the contrast script exits with no error for every declared pair in light, dark and increased-contrast.
+5. **The primitive lint is proven.** Decided by: a fixture that uses each primitive group once makes the lint fail once per group, and a clean fixture passes.
+6. **The range check is proven.** Decided by: one theme fixture inside the ranges passes, and one fixture outside each numeric range fails.
+7. **The build is repeatable.** Decided by: two runs of the build produce identical files.
+8. **Size is measured.** Decided by: the build prints the compressed size of the token CSS for the three themes, and the number is on the scorecard beside its budget.
+9. **The architecture holds up to tracing.** Decided by: the reviewer picks fifteen tokens across the three layers and traces each to a raw value; none may skip a layer or break the naming grammar.
+10. **Nothing is claimed that was not run.** Decided by: every number in the phase's records points to a command whose output is saved in `gates/raw/`.
 
 | Item | Owner | Status | Evidence |
 |---|---|---|---|
-| 2.1 Three visual directions as clay prototypes; choose one | Fable | next | |
+| 2.1 Three visual directions as clay prototypes; choose one | Fable | in progress | Three prototypes built and checked (explore/visual-directions/; DECISIONS.md A-13). Waiting for the CEO's choice until 14 November, 18:30 |
 | 2.2 Token architecture: primitive, semantic, component; lint that blocks every primitive group in components | Fable | next | |
 | 2.3 Token files and themes, DTCG 2025.10; contrast checks | Sonnet or Haiku; automated | next | |
 | Gate 2: Opus reviewer plus tests | Opus reviewer | next | |

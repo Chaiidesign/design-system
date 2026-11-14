@@ -1,0 +1,379 @@
+<!-- Clay. Visual direction Ledger. Work item 2.1. Disposable. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger: checkout (clay)</title>
+<script>(function(){var t=new URLSearchParams(location.search).get("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)})()</script>
+<style>
+/* Ledger: ink on paper. Every raw value lives in the :root blocks. */
+:root{
+  color-scheme:light;
+  --accent-h:285; /* change only this number to re-brand */
+  --color-surface:oklch(98.5% .004 90);
+  --color-text:oklch(21% .02 270);
+  --color-text-soft:oklch(46% .02 270);
+  --color-rule:oklch(84% .006 90);
+  --color-accent:oklch(45% .16 var(--accent-h));
+  --color-danger:oklch(50% .18 27);
+  --color-warning:oklch(52% .105 75);
+  --color-success:oklch(47% .11 150);
+  --color-info:oklch(48% .11 240);
+  --font-text:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-title:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --font-size-1:1rem;
+  --font-size-2:1.25rem;
+  --font-size-3:2.25rem;
+  --line-text:1.5;
+  --line-title:1.2;
+  --weight-strong:600;
+  --space-1:.25rem;
+  --space-2:.5rem;
+  --space-3:.75rem;
+  --space-4:1rem;
+  --space-5:1.5rem;
+  --space-6:3rem;
+  --stroke-1:1px;
+  --stroke-2:2px;
+  --stroke-3:3px;
+  --size-control:3rem;
+  --size-mark:1.5rem;
+  --size-short:10rem;
+  --size-measure:34rem;
+  --radius:0;
+  --motion-turn:.8s;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    color-scheme:dark;
+    --color-surface:oklch(19% .015 270);
+    --color-text:oklch(94% .006 90);
+    --color-text-soft:oklch(74% .01 90);
+    --color-rule:oklch(38% .015 270);
+    --color-accent:oklch(80% .1 var(--accent-h));
+    --color-danger:oklch(76% .13 27);
+    --color-warning:oklch(82% .12 75);
+    --color-success:oklch(80% .13 150);
+    --color-info:oklch(78% .1 240);
+  }
+}
+:root[data-theme=dark]{
+  color-scheme:dark;
+  --color-surface:oklch(19% .015 270);
+  --color-text:oklch(94% .006 90);
+  --color-text-soft:oklch(74% .01 90);
+  --color-rule:oklch(38% .015 270);
+  --color-accent:oklch(80% .1 var(--accent-h));
+  --color-danger:oklch(76% .13 27);
+  --color-warning:oklch(82% .12 75);
+  --color-success:oklch(80% .13 150);
+  --color-info:oklch(78% .1 240);
+}
+
+/* Page: one column, a heavy rule at the head like a statement */
+*,::before,::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  margin:0;
+  padding:var(--space-6) var(--space-5);
+  background:var(--color-surface);
+  color:var(--color-text);
+  font:var(--font-size-1)/var(--line-text) var(--font-text);
+  font-variant-numeric:tabular-nums lining-nums;
+  overflow-wrap:anywhere;
+}
+main{
+  max-inline-size:var(--size-measure);
+  margin-inline:auto;
+  padding-block-start:var(--space-4);
+  border-block-start:var(--stroke-3) solid;
+}
+h1,h2,h3,h4,p,ul,dl,dd{margin:0}
+ul{padding:0;list-style-type:""}
+
+/* Type: three sizes. Serif roman for titles, serif italic for sub-heads, sans for the work */
+h1,h2,h3{font-family:var(--font-title);font-weight:400;line-height:var(--line-title)}
+h1{font-size:var(--font-size-3)}
+h2,h3{font-size:var(--font-size-2);margin-block:var(--space-6) var(--space-4)}
+h2{padding-block-start:var(--space-3);border-block-start:var(--stroke-1) solid}
+h3{font-style:italic}
+h2+h3{margin-block-start:var(--space-5)}
+h4{font-size:inherit;font-weight:var(--weight-strong)}
+a{color:var(--color-accent);text-decoration-thickness:var(--stroke-1);text-underline-offset:var(--stroke-3)}
+a:hover{text-decoration-thickness:var(--stroke-2)}
+:focus-visible{outline:var(--stroke-3) solid var(--color-text);outline-offset:var(--stroke-2)}
+
+/* Order lines: name and quantity on the left, the amount in one right-hand column */
+.lines li{
+  display:grid;
+  grid-template-columns:1fr auto;
+  column-gap:var(--space-5);
+  align-items:baseline;
+  padding-block:var(--space-3);
+  border-block-end:var(--stroke-1) solid var(--color-rule);
+}
+.lines span:nth-child(2){grid-row:2;color:var(--color-text-soft)}
+.lines span:last-child{grid-area:1/2}
+.lines span:last-child,.costs dd{text-align:end;white-space:nowrap}
+
+/* Cost summary: single rule above the total, double rule below it */
+.costs{
+  padding-block:var(--space-2) var(--stroke-3);
+  border-block-end:var(--stroke-1) solid;
+}
+.costs div{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:var(--space-5);
+  padding-block:var(--space-1);
+}
+.costs div:last-child{
+  margin-block-start:var(--space-2);
+  padding-block:var(--space-3);
+  border-block:var(--stroke-1) solid;
+  font-size:var(--font-size-2);
+  font-weight:var(--weight-strong);
+}
+.costs .unknown{color:var(--color-text-soft);white-space:normal;text-wrap:balance}
+.vat{margin-block-start:var(--space-2);color:var(--color-text-soft);text-align:end}
+
+/* Fields: plain square outlines, no fill */
+.field{margin-block-start:var(--space-5)}
+h2+.field,h3+.field{margin-block-start:0}
+label{display:block;font-weight:var(--weight-strong)}
+.hint{color:var(--color-text-soft)}
+input,button{
+  min-block-size:var(--size-control);
+  border-radius:var(--radius);
+  background:none;
+  color:inherit;
+  font:inherit;
+}
+input{
+  display:block;
+  inline-size:100%;
+  margin-block-start:var(--space-2);
+  padding:0 var(--space-3);
+  border:var(--stroke-1) solid var(--color-text-soft);
+  appearance:none;
+}
+input:read-only{border-style:dashed}
+input[aria-invalid=true]{border:var(--stroke-2) solid var(--color-danger)}
+.short input{max-inline-size:var(--size-short)}
+.with-action{display:grid;grid-template-columns:1fr auto;column-gap:var(--space-3);align-items:end}
+.with-action label{grid-column:1/-1}
+
+/* Buttons: an outline for ordinary actions, the accent for the one that commits */
+button{
+  padding:0 var(--space-5);
+  border:var(--stroke-1) solid;
+  font-weight:var(--weight-strong);
+  cursor:pointer;
+}
+.commit{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--space-2);
+  inline-size:100%;
+  border-color:var(--color-accent);
+  background:var(--color-accent);
+  color:var(--color-surface);
+}
+button:not([aria-busy=true]):hover{
+  border-color:var(--color-text);
+  background:var(--color-text);
+  color:var(--color-surface);
+}
+[aria-busy=true]{cursor:progress}
+.pay{
+  margin-block-start:var(--space-6);
+  padding-block-start:var(--space-3);
+  border-block-start:var(--stroke-1) solid;
+}
+.pay p{
+  margin-block-end:var(--space-3);
+  font-size:var(--font-size-2);
+  font-weight:var(--weight-strong);
+  text-align:end;
+}
+
+/* Marginal notes: a rule down the leading edge, a mark for the kind, then the message */
+.note,.error{--color-kind:var(--color-info)}
+.bad,.error{--color-kind:var(--color-danger)}
+.warn{--color-kind:var(--color-warning)}
+.good{--color-kind:var(--color-success)}
+.note{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  column-gap:var(--space-2);
+  padding-inline-start:var(--space-3);
+  border-inline-start:var(--stroke-2) solid var(--color-kind);
+}
+.note>:not(.mark){grid-column:2}
+h1+.note{margin-block-start:var(--space-4)}
+.note ul{margin-block-start:var(--space-2)}
+.note a{display:inline-block;padding-block:var(--space-1)}
+.error{
+  display:flex;
+  gap:var(--space-2);
+  margin-block-start:var(--space-1);
+  font-weight:var(--weight-strong);
+}
+.mark{
+  flex:none;
+  inline-size:var(--size-mark);
+  block-size:var(--size-mark);
+  fill:none;
+  stroke:currentColor;
+  stroke-width:var(--stroke-2);
+  stroke-linecap:square;
+  color:var(--color-kind,currentColor);
+}
+.sprite{position:absolute}
+@keyframes turn{to{transform:rotate(1turn)}}
+@media (prefers-reduced-motion:no-preference){
+  [aria-busy=true] .mark{animation:turn var(--motion-turn) linear infinite}
+}
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="mark-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.5v4.5M12 8v.01"/></symbol>
+  <symbol id="mark-good" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="mark-warn" viewBox="0 0 24 24"><path d="M12 4.5l8.5 15h-17zM12 10.5v3.5M12 16.5v.01"/></symbol>
+  <symbol id="mark-bad" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="mark-busy" viewBox="0 0 24 24"><path d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5"/></symbol>
+</svg>
+<main>
+  <h1>Checkout</h1>
+  <p role="note" class="note"><svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-info"/></svg>This is a test page. Nothing will be charged.</p>
+
+  <section aria-labelledby="summary-heading">
+    <h2 id="summary-heading">Order summary</h2>
+    <ul class="lines">
+      <li>
+        <span>Organic cotton waffle-weave bath towel, extra large, undyed natural oatmeal</span>
+        <span>Quantity 2</span>
+        <span>£39.00</span>
+      </li>
+      <li>
+        <span lang="ja">抹茶セット</span>
+        <span>Quantity 1</span>
+        <span>£15.00</span>
+      </li>
+      <li>
+        <span>Soap</span>
+        <span>Quantity 3</span>
+        <span>£7.80</span>
+      </li>
+    </ul>
+    <dl class="costs">
+      <div><dt>Items</dt><dd>£61.80</dd></div>
+      <div><dt>Discount: Welcome discount</dt><dd>−£5.00</dd></div>
+      <div><dt>Delivery</dt><dd>£3.95</dd></div>
+      <div><dt>Total</dt><dd>£60.75</dd></div>
+    </dl>
+    <p class="vat">Includes £10.13 VAT</p>
+  </section>
+
+  <form action="#" method="post" novalidate>
+    <h2>Contact</h2>
+    <div class="field">
+      <label for="email">Email address</label>
+      <p id="email-hint" class="hint">We'll send your receipt here</p>
+      <input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-hint">
+    </div>
+
+    <h2>Delivery address</h2>
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text" autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="line1">Address line 1</label>
+      <input id="line1" name="line1" type="text" autocomplete="address-line1">
+    </div>
+    <div class="field">
+      <label for="line2">Address line 2 (optional)</label>
+      <input id="line2" name="line2" type="text" autocomplete="address-line2">
+    </div>
+    <div class="field">
+      <label for="town">Town or city</label>
+      <input id="town" name="town" type="text" autocomplete="address-level2">
+    </div>
+    <div class="field short">
+      <label for="postcode">Postcode</label>
+      <input id="postcode" name="postcode" type="text" autocomplete="postal-code">
+    </div>
+    <div class="field">
+      <label for="country">Country</label>
+      <input id="country" name="country" type="text" value="United Kingdom" readonly>
+    </div>
+
+    <h2>Discount code</h2>
+    <div class="field with-action">
+      <label for="code">Discount code</label>
+      <input id="code" name="code" type="text" autocomplete="off">
+      <button type="button">Apply code</button>
+    </div>
+
+    <div class="pay">
+      <p>Total £60.75</p>
+      <button type="submit" class="commit">Pay £60.75</button>
+    </div>
+  </form>
+
+  <section aria-labelledby="states-heading">
+    <h2 id="states-heading">Other states of the same parts</h2>
+
+    <h3>Field with an error</h3>
+    <div class="field">
+      <label for="email-bad">Email address</label>
+      <p id="email-bad-hint" class="hint">We'll send your receipt here</p>
+      <p id="email-bad-error" class="error"><svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-bad"/></svg>Enter an email address with an @, like name@example.com.</p>
+      <input id="email-bad" name="email-bad" type="email" value="sam.example.com" aria-invalid="true" aria-describedby="email-bad-hint email-bad-error">
+    </div>
+
+    <h3>Error summary</h3>
+    <div role="alert" aria-labelledby="problem-heading" tabindex="-1" class="note bad">
+      <svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-bad"/></svg>
+      <h4 id="problem-heading">There is a problem</h4>
+      <ul>
+        <li><a href="#email-bad">Enter an email address with an @, like name@example.com.</a></li>
+      </ul>
+    </div>
+
+    <h3>Button while paying</h3>
+    <button type="button" aria-busy="true" class="commit"><svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-busy"/></svg>Paying £60.75…</button>
+
+    <h3>Feedback: success</h3>
+    <div role="status" class="note good">
+      <svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-good"/></svg>
+      <p>Order placed. Receipt sent to sam@example.com.</p>
+    </div>
+
+    <h3>Feedback: a failure on our side</h3>
+    <div role="alert" class="note bad">
+      <svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-bad"/></svg>
+      <p>We couldn't reach the payment service. You have not been charged. Try again.</p>
+    </div>
+
+    <h3>Feedback: warning</h3>
+    <div role="status" class="note warn">
+      <svg class="mark" aria-hidden="true" focusable="false"><use href="#mark-warn"/></svg>
+      <p>Delivery cost is added after you enter your postcode.</p>
+    </div>
+
+    <h3>Cost summary with a charge not yet known</h3>
+    <dl class="costs">
+      <div><dt>Items</dt><dd>£61.80</dd></div>
+      <div><dt>Delivery</dt><dd class="unknown">Not known yet. Enter your postcode to see it.</dd></div>
+      <div><dt>Total so far</dt><dd>£61.80</dd></div>
+    </dl>
+  </section>
+</main>
+</body>
+</html>
