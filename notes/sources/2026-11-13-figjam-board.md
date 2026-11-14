@@ -4,7 +4,7 @@ Date: 2026-11-13. Source: https://www.figma.com/board/Thy6ULSqteAMzw9o65a9Te/Des
 
 ## What this is and how I read it (tool or text copy, date)
 
-This summarises the four Souvenir sections of the board. I read them on 2026-11-13 with the Figma `get_figjam` tool, read-only. Node 147:115 holds "a living design system" and, inside it, "evidence to evolution". Node 20:6 is the whole page, and it contains "sort the work, see the system" (154:494) and "what we are proposing" (151:873, named "Proposal model"). I cross-checked against the text copy in `notes/ceo-brief.md`. They match, but the copy omits "what we are proposing", which comes from the tool alone. Other page material is not covered.
+This summarises the four Souvenir sections of the board. I read them on 2026-11-13 with the Figma `get_figjam` tool, read-only. Node 147:115 holds "a living design system" and, inside it, "evidence to evolution". Node 20:6 is the whole page, and it contains "sort the work, see the system" (154:494) and "what we are proposing" (151:873, named "Proposal model"). I cross-checked against the text copy in `notes/ceo-brief.md`. They match. (Corrected on 13 November after a gate reviewer checked: an earlier version of this note said the copy leaves out "what we are proposing". It does contain it.) Other page material is not covered.
 
 ## The north star and the three principle contracts
 
