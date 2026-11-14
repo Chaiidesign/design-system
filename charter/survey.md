@@ -25,6 +25,7 @@ Labels for claims about behaviour:
 - **Storybook:** a tool for building and showing components one at a time. **Playwright:** a tool that drives a browser in tests. **axe:** an automated accessibility scanner.
 - **CI:** continuous integration, the checks that run automatically on every change. **Eval:** a scored test of how well an AI agent does a task. **AGENTS.md:** a file of rules for AI agents working in a repository.
 - **Candidate Recommendation:** a late stage on the W3C's route to a standard. **Immutable channels:** published versions that are never changed after release.
+- **Vercel:** a web hosting company that publishes guidelines for building interfaces. **Primer:** GitHub's design system. **Nathan Curtis:** a consultant who writes about design system teams. **Jetpack Compose:** Android's interface toolkit.
 - "No reason stated" means the survey file records none, not that the source gives none.
 
 ## What the strong systems have in common
