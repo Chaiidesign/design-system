@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="expect" content="missing-speaker-label">
+<title>Screen fixture: missing-speaker-label</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#1a1a1a;font:16px/1.5 Arial,Helvetica,sans-serif}
+main{padding:16px;display:grid;gap:16px}
+h1{margin:0;font-size:28px;line-height:1.2}
+p{margin:0}
+a{color:inherit}
+button{min-height:48px;padding:0 16px;font:inherit;border:2px solid #555;border-radius:8px;background:#fff;color:#1a1a1a}
+:focus-visible{outline:3px solid #1a1a1a;outline-offset:2px}
+</style>
+<style>
+.sv-chat-message{display:grid;gap:4px}
+.sv-visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+</style>
+</head>
+<body>
+<main>
+<h1>Assistant</h1>
+<article class="sv-chat-message" data-from="person"><p class="sv-chat-message__from">You</p><div class="sv-chat-message__body"><p>Book a table for two on Friday.</p></div></article>
+<article class="sv-chat-message" data-from="assistant"><div class="sv-chat-message__body"><p>Here is what I found for Friday.</p></div></article>
+<article class="sv-chat-message" data-from="assistant"><p class="sv-chat-message__from"> </p><div class="sv-chat-message__body"><p>Two tables are free at 19:30.</p></div></article>
+<article class="sv-chat-message" data-from="person"><p class="sv-chat-message__from sv-visually-hidden">You</p><div class="sv-chat-message__body"><p>Take the first one.</p></div></article>
+</main>
+</body>
+</html>

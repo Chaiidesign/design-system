@@ -335,3 +335,777 @@ ul {
   --sv-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 }
+
+/* src/components/button/button.css */
+/* Button: a key. Secondary (default) is an edge outline, primary is the accent fill, quiet is underlined text.
+   A key moves down by the press depth when pressed and stays down while busy.
+   Disabled keeps the edge and drops to the soft text colour: never opacity, so the label stays at 4.5 to 1. */
+@layer sv.components {
+.sv-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sv-space-2);
+  min-block-size: var(--sv-size-control);
+  margin: 0;
+  padding: var(--sv-space-2) var(--sv-space-4);
+  border: var(--sv-border-thick) solid var(--sv-color-edge);
+  border-radius: var(--sv-radius-control);
+  background-color: transparent;
+  color: var(--sv-color-text);
+  font: inherit;
+  font-weight: var(--sv-font-weight-strong);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sv-button[data-variant="secondary"] {
+  border-color: var(--sv-color-edge);
+}
+
+.sv-button[data-variant="primary"] {
+  min-block-size: var(--sv-button-primary-height);
+  border-color: var(--sv-button-primary-fill);
+  background-color: var(--sv-button-primary-fill);
+  color: var(--sv-button-primary-text);
+}
+
+.sv-button[data-variant="quiet"] {
+  padding-inline: 0;
+  border-color: transparent;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--sv-border-thin);
+  text-underline-offset: var(--sv-space-1);
+}
+
+.sv-button[data-width="full"] {
+  inline-size: 100%;
+}
+
+.sv-button:hover:not(:disabled, [data-variant="quiet"]) {
+  border-color: var(--sv-color-text);
+}
+
+.sv-button[data-variant="quiet"]:hover:not(:disabled) {
+  text-decoration-thickness: var(--sv-border-thick);
+}
+
+.sv-button:active:not(:disabled),
+.sv-button[aria-busy="true"] {
+  translate: 0 var(--sv-button-press-depth);
+}
+
+.sv-button:focus-visible {
+  outline: var(--sv-focus-width) solid var(--sv-color-focus);
+  outline-offset: var(--sv-focus-offset);
+}
+
+.sv-button:disabled {
+  border-color: var(--sv-color-edge);
+  background-color: transparent;
+  color: var(--sv-color-text-soft);
+  cursor: not-allowed;
+}
+
+/* A disabled quiet button loses its underline: the line is what says "press me". */
+.sv-button[data-variant="quiet"]:disabled {
+  border-color: transparent;
+  text-decoration-line: none;
+}
+
+.sv-button[aria-busy="true"] {
+  cursor: progress;
+}
+
+/* The busy mark sits before the label in the label's own colour. */
+.sv-button[aria-busy="true"]::before {
+  content: "";
+  flex: none;
+  inline-size: var(--sv-size-mark);
+  block-size: var(--sv-size-mark);
+  background-color: currentColor;
+  mask: var(--sv-icon-busy) center / contain no-repeat;
+  forced-color-adjust: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sv-button {
+    transition: border-color var(--sv-duration-quick), translate var(--sv-duration-quick);
+  }
+
+  .sv-button[aria-busy="true"]::before {
+    animation: sv-button-turn var(--sv-duration-loop) linear infinite;
+  }
+}
+
+@keyframes sv-button-turn {
+  to {
+    rotate: 1turn;
+  }
+}
+
+@media (forced-colors: active) {
+  .sv-button:disabled {
+    border-color: GrayText;
+    color: GrayText;
+  }
+}
+}
+
+/* src/components/chat-message/chat-message.css */
+/* chat-message: one turn in a conversation. Who speaks is said in words (the __from label)
+   and shown by shape (the person's plate has an edge, an inset and one squared corner),
+   so it never depends on colour. */
+@layer sv.components {
+  .sv-chat-message {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sv-space-1);
+  }
+
+  .sv-chat-message__from {
+    font-weight: var(--sv-font-weight-strong);
+  }
+
+  .sv-chat-message__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sv-space-3);
+  }
+
+  /* The person: a plate held to the end of the line, never closer than the inset to the start. */
+  .sv-chat-message[data-from="person"] {
+    inline-size: fit-content;
+    max-inline-size: calc(100% - var(--sv-chat-message-person-inset));
+    margin-inline-start: auto;
+    padding: var(--sv-space-3) var(--sv-space-4);
+    border: var(--sv-border-thin) solid var(--sv-chat-message-person-edge);
+    border-radius: var(--sv-radius-panel);
+    border-end-end-radius: var(--sv-radius-control);
+    background-color: var(--sv-chat-message-person-surface);
+  }
+
+  /* Souvenir: running text on the ground, the full width of the column. */
+  .sv-chat-message[data-from="assistant"] {
+    inline-size: auto;
+    margin-inline-start: 0;
+  }
+
+  /* Text a person wrote may hold long unbroken strings (an address, a link). */
+  .sv-chat-message [data-user-content] {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* src/components/checkbox/checkbox.css */
+/* Checkbox: the native input, drawn as a well with an edge and an ink tick. The whole label row is the target.
+   Checked: ink tick and an ink edge. Disabled: no well, soft text and tick. Invalid: a thicker edge in the danger colour,
+   so the state is carried by shape as well as colour; the error text beside it is the field's job. */
+@layer sv.components {
+.sv-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sv-space-3);
+  min-block-size: var(--sv-size-control);
+  padding-block: var(--sv-space-3);
+  cursor: pointer;
+}
+
+/* The label text may shrink and wrap beside the box instead of pushing the row wider. */
+.sv-checkbox__label {
+  min-inline-size: 0;
+}
+
+.sv-checkbox input {
+  appearance: none;
+  display: grid;
+  flex: none;
+  inline-size: var(--sv-checkbox-box-size);
+  block-size: var(--sv-checkbox-box-size);
+  margin: 0;
+  border: var(--sv-border-thick) solid var(--sv-color-edge);
+  border-radius: var(--sv-radius-tab);
+  background-color: var(--sv-color-well);
+  color: var(--sv-color-text);
+  cursor: inherit;
+}
+
+.sv-checkbox input::before {
+  content: "";
+  background-color: currentColor;
+  mask: var(--sv-icon-check) center / contain no-repeat;
+  forced-color-adjust: none;
+  visibility: hidden;
+}
+
+.sv-checkbox input:checked::before {
+  visibility: visible;
+}
+
+.sv-checkbox input:checked,
+.sv-checkbox:hover input:not(:disabled) {
+  border-color: var(--sv-color-text);
+}
+
+.sv-checkbox input:focus-visible {
+  outline: var(--sv-focus-width) solid var(--sv-color-focus);
+  outline-offset: var(--sv-focus-offset);
+}
+
+.sv-checkbox input:user-invalid,
+.sv-checkbox input[aria-invalid="true"] {
+  border-width: var(--sv-space-1);
+  border-color: var(--sv-color-danger);
+}
+
+.sv-checkbox:has(:disabled) {
+  color: var(--sv-color-text-soft);
+  cursor: not-allowed;
+}
+
+.sv-checkbox input:disabled {
+  border-color: var(--sv-color-edge);
+  background-color: transparent;
+  color: var(--sv-color-text-soft);
+}
+}
+
+/* src/components/cost-summary/cost-summary.css */
+/* cost-summary: the inverse display. Terms wrap only between words; amounts never wrap and sit
+   on the inline-end edge in tabular figures. When a term and its amount cannot share a line,
+   the amount moves below the term, still at the end. The total is the largest reading on the page. */
+@layer sv.components {
+  .sv-cost-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--sv-space-3) var(--sv-space-4);
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-cost-summary-surface);
+    color: var(--sv-cost-summary-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sv-cost-summary__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--sv-space-4);
+    padding-block: var(--sv-space-1);
+  }
+
+  /* The term never shrinks below its longest word (min-inline-size stays auto). */
+  .sv-cost-summary__row > dt {
+    flex: 1 1 0;
+  }
+
+  .sv-cost-summary__row > dd {
+    flex: none;
+    margin-inline-start: auto;
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .sv-cost-summary__row[data-state="unknown"] > dt {
+    flex: 0 1 auto;
+  }
+
+  .sv-cost-summary__row[data-state="unknown"] > dd {
+    flex: 1 1 0;
+    font-variant-numeric: normal;
+    white-space: normal;
+  }
+
+  .sv-cost-summary__row[data-row="total"] {
+    margin-block-start: var(--sv-space-2);
+    padding-block-start: var(--sv-space-3);
+    border-block-start: var(--sv-border-thin) solid var(--sv-cost-summary-text);
+    font-size: var(--sv-font-size-lead);
+    font-weight: var(--sv-font-weight-strong);
+    line-height: var(--sv-font-line-height-tight);
+  }
+
+  .sv-cost-summary__row[data-row="total"] > dd {
+    font-size: var(--sv-cost-summary-total-size);
+  }
+
+  .sv-cost-summary__note {
+    font-size: var(--sv-font-size-body);
+    font-weight: var(--sv-font-weight-regular);
+    line-height: var(--sv-font-line-height-body);
+    white-space: normal;
+  }
+
+  @media (forced-colors: active) {
+    .sv-cost-summary {
+      border: var(--sv-border-thin) solid CanvasText;
+    }
+  }
+}
+
+/* src/components/error-summary/error-summary.css */
+/* Error summary: a panel-toned plate whose leading edge is the solid danger tab, carrying the danger mark.
+   The tab is a wide leading border, so it follows the writing direction; the mark sits on it. */
+@layer sv.components {
+.sv-error-summary {
+  position: relative;
+  display: grid;
+  gap: var(--sv-space-3);
+  padding: var(--sv-space-4);
+  border-inline-start: calc(var(--sv-size-mark) + var(--sv-space-3) * 2) solid var(--sv-error-summary-tab);
+  border-radius: var(--sv-radius-control);
+  background-color: var(--sv-color-panel);
+}
+
+.sv-error-summary[hidden] {
+  display: none;
+}
+
+.sv-error-summary::before {
+  content: "";
+  position: absolute;
+  inset-block-start: var(--sv-space-4);
+  inset-inline-start: calc(var(--sv-size-mark) * -1 - var(--sv-space-3));
+  inline-size: var(--sv-size-mark);
+  block-size: var(--sv-size-mark);
+  background-color: var(--sv-color-on-solid);
+  mask: var(--sv-icon-danger) center / contain no-repeat;
+}
+
+.sv-error-summary:focus-visible {
+  outline: var(--sv-focus-width) solid var(--sv-color-focus);
+  outline-offset: var(--sv-focus-offset);
+}
+
+.sv-error-summary__title {
+  font-size: var(--sv-font-size-lead);
+  font-weight: var(--sv-font-weight-strong);
+  line-height: var(--sv-font-line-height-tight);
+}
+
+/* Each link stands alone, so it is a full target: 24 pixels of line plus block padding,
+   with a gap wide enough that a focus ring never touches the next link. */
+.sv-error-summary__list {
+  display: grid;
+  gap: var(--sv-space-3);
+}
+
+.sv-error-summary__list a {
+  display: inline-block;
+  padding-block: var(--sv-space-1);
+}
+}
+
+/* src/components/field/field.css */
+/* Field: label, optional hint, error line, and a control that is a well cut into the surface.
+   States: [readonly] is a dashed edge with no well; :disabled has no well, a thin edge and soft text;
+   [aria-invalid="true"] shows the error line and thickens the leading edge in the danger colour.
+   [readonly] rather than :read-only, which would also match a select and a disabled control. */
+@layer sv.components {
+.sv-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sv-space-1);
+}
+
+.sv-field__label {
+  font-weight: var(--sv-font-weight-strong);
+}
+
+.sv-field__hint {
+  color: var(--sv-color-text-soft);
+}
+
+/* Ink at weight 600 with the danger mark before it: the status is never colour alone. */
+.sv-field__error {
+  display: flex;
+  gap: var(--sv-space-2);
+  font-weight: var(--sv-font-weight-strong);
+}
+
+.sv-field__error[hidden] {
+  display: none;
+}
+
+.sv-field__error::before {
+  content: "";
+  flex: none;
+  inline-size: var(--sv-size-mark);
+  block-size: var(--sv-size-mark);
+  background-color: var(--sv-color-danger);
+  mask: var(--sv-icon-danger) center / contain no-repeat;
+}
+
+.sv-field__control {
+  inline-size: 100%;
+  min-block-size: var(--sv-size-control);
+  margin: 0;
+  margin-block-start: var(--sv-space-1);
+  padding: var(--sv-space-2) var(--sv-space-3);
+  border: var(--sv-border-thick) solid var(--sv-color-edge);
+  border-radius: var(--sv-radius-control);
+  background-color: var(--sv-color-well);
+  color: var(--sv-color-text);
+  font: inherit;
+}
+
+.sv-field textarea.sv-field__control {
+  min-block-size: calc(var(--sv-size-control) * 2);
+  resize: vertical;
+}
+
+.sv-field__control:hover:not(:disabled, [readonly], [aria-invalid="true"]) {
+  border-color: var(--sv-color-text);
+}
+
+.sv-field__control:focus-visible {
+  outline: var(--sv-focus-width) solid var(--sv-color-focus);
+  outline-offset: var(--sv-focus-offset);
+}
+
+.sv-field__control[readonly] {
+  border-style: dashed;
+  background-color: transparent;
+}
+
+.sv-field__control:disabled {
+  border-width: var(--sv-border-thin);
+  background-color: transparent;
+  color: var(--sv-color-text-soft);
+  -webkit-text-fill-color: currentColor;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.sv-field:has(.sv-field__control:disabled) .sv-field__label {
+  color: var(--sv-color-text-soft);
+}
+
+.sv-field__control[aria-invalid="true"] {
+  border-inline-start: var(--sv-field-error-edge-width) solid var(--sv-color-danger);
+}
+}
+
+/* src/components/message/message.css */
+/* message: a plate with a solid tab down its whole leading edge. The tab carries the tone's
+   colour and the tone's own mark; the text beside it is always ink, never softer than the page. */
+@layer sv.components {
+  .sv-message {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sv-space-2);
+    justify-items: start;
+    min-block-size: var(--sv-size-control);
+    padding-block: var(--sv-space-3);
+    padding-inline: calc(var(--sv-size-mark) + var(--sv-space-3) * 3) var(--sv-space-4);
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-color-panel);
+    color: var(--sv-color-text);
+  }
+
+  /* On a panel the plate takes the well colour, so it stays a plate. */
+  .sv-message[data-surface="well"] {
+    background-color: var(--sv-message-surface-on-panel);
+  }
+
+  /* The tab: out of flow, so it runs the full height however many lines the text takes. */
+  .sv-message__mark {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(var(--sv-size-mark) + var(--sv-space-3) * 2);
+    padding: var(--sv-space-3);
+    border-start-start-radius: var(--sv-radius-control);
+    border-end-start-radius: var(--sv-radius-control);
+  }
+
+  .sv-message__mark::before {
+    content: "";
+    display: block;
+    block-size: var(--sv-size-mark);
+    background-color: var(--sv-color-on-solid);
+    mask: var(--sv-icon-info) center / contain no-repeat;
+  }
+
+  .sv-message[data-tone="info"] > .sv-message__mark {
+    background-color: var(--sv-color-neutral-solid);
+  }
+
+  .sv-message[data-tone="success"] > .sv-message__mark {
+    background-color: var(--sv-color-success);
+  }
+
+  .sv-message[data-tone="success"] > .sv-message__mark::before {
+    mask-image: var(--sv-icon-success);
+  }
+
+  .sv-message[data-tone="warning"] > .sv-message__mark {
+    background-color: var(--sv-color-warning);
+  }
+
+  .sv-message[data-tone="warning"] > .sv-message__mark::before {
+    mask-image: var(--sv-icon-warning);
+  }
+
+  .sv-message[data-tone="danger"] > .sv-message__mark {
+    background-color: var(--sv-color-danger);
+  }
+
+  .sv-message[data-tone="danger"] > .sv-message__mark::before {
+    mask-image: var(--sv-icon-danger);
+  }
+
+  @media (forced-colors: active) {
+    .sv-message {
+      border: var(--sv-border-thin) solid CanvasText;
+    }
+
+    .sv-message__mark::before {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}
+
+/* src/components/proposal/proposal.css */
+/* proposal: what Souvenir proposes to do, with everything a person needs to check it on one phone screen.
+   A record on a panel: heading, fields, the drafted message (dashed: read, not yet sent), the warning, the actions. */
+@layer sv.components {
+  .sv-proposal {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sv-space-3);
+    padding: var(--sv-space-4);
+    border: var(--sv-border-thin) solid var(--sv-color-divider);
+    border-radius: var(--sv-radius-panel);
+    background-color: var(--sv-color-panel);
+  }
+
+  .sv-proposal__fields {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* A row: the term at the start, the value at the end; when both do not fit, the value takes its own line. */
+  .sv-proposal__fields > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--sv-space-4);
+    padding-block: var(--sv-space-2);
+    border-block-start: var(--sv-border-thin) solid var(--sv-color-divider);
+  }
+
+  .sv-proposal__fields dt {
+    color: var(--sv-color-text-soft);
+  }
+
+  .sv-proposal__fields dd {
+    margin-inline-start: auto;
+    font-weight: var(--sv-font-weight-strong);
+    text-align: end;
+  }
+
+  .sv-proposal__message {
+    display: grid;
+    gap: var(--sv-space-1);
+  }
+
+  .sv-proposal__caption {
+    color: var(--sv-color-text-soft);
+  }
+
+  .sv-proposal__draft {
+    padding: var(--sv-space-3);
+    border: var(--sv-border-thick) dashed var(--sv-proposal-draft-edge);
+    border-radius: var(--sv-radius-control);
+  }
+
+  /* Phone: the primary takes the full width; the others share the row below it. */
+  .sv-proposal__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sv-space-3);
+  }
+
+  .sv-proposal__actions > * {
+    flex: 1 1 auto;
+  }
+
+  .sv-proposal__actions > [data-variant="primary"] {
+    flex-basis: 100%;
+  }
+
+  /* From 48rem: one row, primary first; a long label wraps inside its button rather than pushing one off the row. */
+  @media (min-width: 48rem) {
+    .sv-proposal__actions {
+      flex-wrap: nowrap;
+    }
+
+    .sv-proposal__actions > * {
+      flex: 0 0 auto;
+    }
+
+    .sv-proposal__actions > [data-variant="primary"] {
+      flex: 0 1 auto;
+    }
+  }
+}
+
+/* src/components/select/select.css */
+/* Select: the native select as a field control (a well with an edge), with a chevron at the inline end.
+   It sets its own size, edge and colours so it holds its shape without the field stylesheet.
+   The chevron is two strokes in currentColor (so it goes soft when disabled), drawn as background layers.
+   A mask would also clip the focus outline,
+   and a select has no ::after, so the mark in src/base/icons.css cannot be tinted here. */
+@layer sv.components {
+select.sv-select {
+  appearance: none;
+  display: block;
+  inline-size: 100%;
+  min-block-size: var(--sv-size-control);
+  margin: 0;
+  margin-block-start: var(--sv-space-1);
+  padding: var(--sv-space-2) var(--sv-space-3);
+  padding-inline-end: calc(var(--sv-space-3) + var(--sv-select-arrow-size) + var(--sv-space-2));
+  border: var(--sv-border-thick) solid var(--sv-color-edge);
+  border-radius: var(--sv-radius-control);
+  background-color: var(--sv-color-well);
+  background-image: linear-gradient(to top right, transparent calc(50% - var(--sv-border-thick)), currentColor calc(50% - var(--sv-border-thin) / 2) calc(50% + var(--sv-border-thin) / 2), transparent calc(50% + var(--sv-border-thick))), linear-gradient(to bottom right, transparent calc(50% - var(--sv-border-thick)), currentColor calc(50% - var(--sv-border-thin) / 2) calc(50% + var(--sv-border-thin) / 2), transparent calc(50% + var(--sv-border-thick)));
+  background-repeat: no-repeat;
+  background-size: calc(var(--sv-select-arrow-size) / 4) calc(var(--sv-select-arrow-size) / 4);
+  background-position: right calc(var(--sv-space-3) + var(--sv-select-arrow-size) / 2) center, right calc(var(--sv-space-3) + var(--sv-select-arrow-size) / 4) center;
+  color: var(--sv-color-text);
+  font: inherit;
+  font-size: var(--sv-font-size-body);
+  line-height: var(--sv-font-line-height-body);
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+select.sv-select:dir(rtl) {
+  background-position: left calc(var(--sv-space-3) + var(--sv-select-arrow-size) / 4) center, left calc(var(--sv-space-3) + var(--sv-select-arrow-size) / 2) center;
+}
+
+select.sv-select:hover:not(:disabled, [aria-invalid="true"]) {
+  border-color: var(--sv-color-text);
+}
+
+select.sv-select:focus-visible {
+  outline: var(--sv-focus-width) solid var(--sv-color-focus);
+  outline-offset: var(--sv-focus-offset);
+}
+
+select.sv-select[aria-invalid="true"] {
+  border-inline-start: var(--sv-field-error-edge-width) solid var(--sv-color-danger);
+}
+
+select.sv-select:disabled {
+  border-width: var(--sv-border-thin);
+  background-color: transparent;
+  color: var(--sv-color-text-soft);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  select.sv-select {
+    appearance: auto;
+    padding-inline-end: var(--sv-space-3);
+  }
+}
+}
+
+/* src/components/status/status.css */
+/* status: the state of a thing, as a small solid tab with the tone's own mark, then a short ink label.
+   The tab is ::before, the mark ::after laid over it, so the markup is one span with its words. */
+@layer sv.components {
+  .sv-status {
+    position: relative;
+    display: inline-flex;
+    align-items: start;
+    gap: var(--sv-space-2);
+    min-block-size: calc(var(--sv-font-size-body) * var(--sv-font-line-height-body));
+    color: var(--sv-color-text);
+    font-size: var(--sv-font-size-body);
+    line-height: var(--sv-font-line-height-body);
+    vertical-align: top;
+  }
+
+  .sv-status::before,
+  .sv-status::after {
+    content: "";
+    flex: none;
+    inline-size: var(--sv-size-mark);
+    block-size: var(--sv-size-mark);
+  }
+
+  .sv-status::before {
+    border-radius: var(--sv-radius-tab);
+    background-color: var(--sv-color-neutral-solid);
+  }
+
+  .sv-status::after {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    background-color: var(--sv-color-on-solid);
+    mask: var(--sv-icon-info) center / calc(var(--sv-size-mark) - var(--sv-space-1)) no-repeat;
+  }
+
+  .sv-status[data-tone="info"]::before,
+  .sv-status[data-tone="busy"]::before {
+    background-color: var(--sv-color-neutral-solid);
+  }
+
+  .sv-status[data-tone="success"]::before {
+    background-color: var(--sv-color-success);
+  }
+
+  .sv-status[data-tone="success"]::after {
+    mask-image: var(--sv-icon-success);
+  }
+
+  .sv-status[data-tone="warning"]::before {
+    background-color: var(--sv-color-warning);
+  }
+
+  .sv-status[data-tone="warning"]::after {
+    mask-image: var(--sv-icon-warning);
+  }
+
+  .sv-status[data-tone="danger"]::before {
+    background-color: var(--sv-color-danger);
+  }
+
+  .sv-status[data-tone="danger"]::after {
+    mask-image: var(--sv-icon-danger);
+  }
+
+  .sv-status[data-tone="busy"]::after {
+    mask-image: var(--sv-icon-busy);
+  }
+
+  /* One turn per busy-duration; still when reduced motion is asked for. */
+  @media (prefers-reduced-motion: no-preference) {
+    .sv-status[data-tone="busy"]::after {
+      animation: sv-status-turn var(--sv-status-busy-duration) linear infinite;
+    }
+  }
+
+  @keyframes sv-status-turn {
+    to { transform: rotate(1turn); }
+  }
+
+  @media (forced-colors: active) {
+    .sv-status::before {
+      border: var(--sv-border-thin) solid CanvasText;
+    }
+
+    .sv-status::after {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}

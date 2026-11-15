@@ -1,6 +1,6 @@
 {
   "produced_by": "scripts/size.mjs",
-  "measured_at": "2026-11-15T10:05:44.885Z",
+  "measured_at": "2026-11-15T10:24:39.237Z",
   "method": "gzip level 9 of the minified file (component CSS minified by esbuild from src)",
   "budgets": {
     "component_css": 2048,
@@ -10,14 +10,194 @@
   },
   "rows": [
     {
+      "item": "button CSS",
+      "file": "src/components/button/*.css",
+      "minified": 2288,
+      "gzip": 780,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "chat-message CSS",
+      "file": "src/components/chat-message/*.css",
+      "minified": 808,
+      "gzip": 351,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "checkbox CSS",
+      "file": "src/components/checkbox/*.css",
+      "minified": 1320,
+      "gzip": 518,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "cost-summary CSS",
+      "file": "src/components/cost-summary/*.css",
+      "minified": 1362,
+      "gzip": 491,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "error-summary CSS",
+      "file": "src/components/error-summary/*.css",
+      "minified": 1072,
+      "gzip": 428,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "field CSS",
+      "file": "src/components/field/*.css",
+      "minified": 1696,
+      "gzip": 607,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "message CSS",
+      "file": "src/components/message/*.css",
+      "minified": 1714,
+      "gzip": 530,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "proposal CSS",
+      "file": "src/components/proposal/*.css",
+      "minified": 1285,
+      "gzip": 475,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "select CSS",
+      "file": "src/components/select/*.css",
+      "minified": 2101,
+      "gzip": 633,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "status CSS",
+      "file": "src/components/status/*.css",
+      "minified": 1732,
+      "gzip": 583,
+      "budget": 2048,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "button JS",
+      "file": "dist/components/button.js",
+      "minified": 1126,
+      "gzip": 513,
+      "budget": 5120,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "error-summary JS",
+      "file": "dist/components/error-summary.js",
+      "minified": 1637,
+      "gzip": 737,
+      "budget": 5120,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "field JS",
+      "file": "dist/components/field.js",
+      "minified": 1875,
+      "gzip": 895,
+      "budget": 5120,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
       "item": "all CSS",
       "file": "dist/souvenir.min.css",
-      "minified": 9768,
-      "gzip": 2280,
+      "minified": 25136,
+      "gzip": 4459,
       "budget": 12288,
       "counts": true,
       "over": false,
       "result": "within"
+    },
+    {
+      "item": "UI SDK all",
+      "file": "dist/ui-sdk/all.js",
+      "minified": 212521,
+      "gzip": 74857,
+      "budget": 5120,
+      "counts": false,
+      "over": true,
+      "result": "OVER"
+    },
+    {
+      "item": "UI SDK button",
+      "file": "dist/ui-sdk/button.js",
+      "minified": 41374,
+      "gzip": 15628,
+      "budget": 5120,
+      "counts": false,
+      "over": true,
+      "result": "OVER"
+    },
+    {
+      "item": "UI SDK checkbox",
+      "file": "dist/ui-sdk/checkbox.js",
+      "minified": 53017,
+      "gzip": 19212,
+      "budget": 5120,
+      "counts": false,
+      "over": true,
+      "result": "OVER"
+    },
+    {
+      "item": "UI SDK field",
+      "file": "dist/ui-sdk/field.js",
+      "minified": 62530,
+      "gzip": 22405,
+      "budget": 5120,
+      "counts": false,
+      "over": true,
+      "result": "OVER"
+    },
+    {
+      "item": "UI SDK select",
+      "file": "dist/ui-sdk/select.js",
+      "minified": 176015,
+      "gzip": 63343,
+      "budget": 5120,
+      "counts": false,
+      "over": true,
+      "result": "OVER"
     }
   ],
   "over_budget": [],

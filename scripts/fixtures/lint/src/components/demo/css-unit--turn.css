@@ -1,0 +1,4 @@
+/* 1turn outside @keyframes is a raw angle. */
+@layer sv.components {
+  .sv-demo { transform: rotate(1turn); }
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkbox: demo</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Checkbox</h1>
+
+  <section class="sv-stack" aria-labelledby="states">
+    <h2 id="states">Unchecked and checked</h2>
+    <div class="sv-stack" data-gap="2">
+      <label class="sv-checkbox">
+        <input type="checkbox" name="updates">
+        <span class="sv-checkbox__label">Email me when my order ships</span>
+      </label>
+      <label class="sv-checkbox">
+        <input type="checkbox" name="billing" checked>
+        <span class="sv-checkbox__label">Use my delivery address for billing</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="on-panel">
+    <h2 id="on-panel">On a panel, with a label that wraps</h2>
+    <div class="sv-panel sv-stack" data-gap="2" role="group" aria-label="Delivery options">
+      <label class="sv-checkbox">
+        <input type="checkbox" name="safe-place">
+        <span class="sv-checkbox__label">Leave the parcel in a safe place if nobody is in, and send a photo of where it was left</span>
+      </label>
+      <label class="sv-checkbox">
+        <input type="checkbox" name="gift" checked>
+        <span class="sv-checkbox__label">This is a gift: leave prices off the receipt</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="disabled">
+    <h2 id="disabled">Disabled</h2>
+    <div class="sv-stack" data-gap="2">
+      <label class="sv-checkbox">
+        <input type="checkbox" name="express" disabled>
+        <span class="sv-checkbox__label">Next-day delivery (not available for this postcode)</span>
+      </label>
+      <label class="sv-checkbox">
+        <input type="checkbox" name="saved" checked disabled>
+        <span class="sv-checkbox__label">Save this card for next time</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="invalid">
+    <h2 id="invalid">Required and not checked</h2>
+    <p>Set by the field after a failed submit. The error text beside it is the field's job.</p>
+    <label class="sv-checkbox">
+      <input type="checkbox" name="terms" required aria-invalid="true">
+      <span class="sv-checkbox__label">I agree to the terms of sale</span>
+    </label>
+  </section>
+</main>
+</body>
+</html>

@@ -164,6 +164,18 @@ const NAMED_COLOURS = new Set(("aliceblue antiquewhite aqua aquamarine azure bei
   "accentcolor accentcolortext activetext buttonborder buttonface buttontext canvas canvastext field fieldtext graytext highlight " +
   "highlighttext linktext mark marktext selecteditem selecteditemtext visitedtext").split(/\s+/));
 
+// CSS system colours. They stay in NAMED_COLOURS (so they fail everywhere else) and are allowed only
+// inside @media (forced-colors: active), where the user's palette replaces ours (spec, "Changes to this spec").
+const SYSTEM_COLOURS = new Set(("accentcolor accentcolortext activetext buttonborder buttonface buttontext canvas canvastext field " +
+  "fieldtext graytext highlight highlighttext linktext mark marktext selecteditem selecteditemtext visitedtext").split(" "));
+
+// True only when every comma-separated branch of the media query requires (forced-colors: active) and none is negated.
+// The bare (forced-colors) form and any "not" are not accepted: the block must apply only in forced colours.
+function forcedColoursOnly(prelude) {
+  const branches = splitTop(prelude);
+  return branches.length > 0 && branches.every((b) => /\(\s*forced-colors\s*:\s*active\s*\)/i.test(b) && !/(^|\s)not(\s|\()/i.test(b));
+}
+
 const COLOUR_FUNCS = /(?<![\w-])(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color|color-mix|light-dark)\(/i;
 
 // Pull url(...) segments out of a value. Returns { rest, urls }.
@@ -195,7 +207,7 @@ function unquote(u) { return u.replace(/^["']|["']$/g, ""); }
 // Properties where a bare word can be a colour. Elsewhere a word such as "mark" or "field" is a name, not a colour.
 const COLOUR_PROPS = /(^--|color|background|border|outline|shadow|fill|stroke|text-decoration|column-rule|caret|scrollbar)/;
 
-function colourFindings(value, prop) {
+function colourFindings(value, prop, forcedColours = false) {
   const found = [];
   const hex = /#[0-9a-f]{3,8}(?![\w-])/i.exec(value);
   if (hex) found.push(hex[0]);
@@ -204,13 +216,16 @@ function colourFindings(value, prop) {
   if (!COLOUR_PROPS.test(prop)) return found;
   const noVars = value.replace(/var\(\s*--[\w-]+/g, "var(");
   for (const m of noVars.matchAll(/(?<![\w-])([a-zA-Z][\w-]*)(?![\w-]*\()/g)) {
-    if (NAMED_COLOURS.has(m[1].toLowerCase())) found.push(m[1]);
+    const word = m[1].toLowerCase();
+    if (forcedColours && SYSTEM_COLOURS.has(word)) continue;
+    if (NAMED_COLOURS.has(word)) found.push(m[1]);
   }
   return found;
 }
 
 const ALLOWED_UNIT_VALUES = new Set(["100%", "50%", "1fr"]);
-function unitFindings(value) {
+// Inside @keyframes the one angle allowed is exactly 1turn, so a busy mark can turn (spec, "Changes to this spec").
+function unitFindings(value, inKeyframes = false) {
   const found = [];
   for (const m of value.matchAll(/(?<![\w.#-])-?(\d*\.?\d+)([a-zA-Z%]+)/g)) {
     const num = parseFloat(m[1]);
@@ -219,6 +234,7 @@ function unitFindings(value) {
     if (num === 0) continue;
     const tok = `${m[1]}${unit}`.toLowerCase();
     if (ALLOWED_UNIT_VALUES.has(tok) && !m[0].startsWith("-")) continue;
+    if (inKeyframes && m[0] === "1turn") continue;
     found.push(m[0]);
   }
   return found;
@@ -290,7 +306,11 @@ export function lintCss(text, relPath) {
         if (n.name === "media" && !mediaAllowed(n.prelude)) {
           add(n.line, "css-media", `@media ${n.prelude} — only 48rem, prefers-reduced-motion, prefers-color-scheme and forced-colors are allowed`);
         }
-        if (n.children) visit(n.children, { ...ctx, keyframes: ctx.keyframes || /keyframes$/.test(n.name) });
+        if (n.children) visit(n.children, {
+          ...ctx,
+          keyframes: ctx.keyframes || /keyframes$/.test(n.name),
+          forcedColours: ctx.forcedColours || (n.name === "media" && forcedColoursOnly(n.prelude)),
+        });
         continue;
       }
       if (n.type === "rule") {
@@ -313,12 +333,12 @@ export function lintCss(text, relPath) {
       const { rest, urls } = extractUrls(value);
       const keptUrls = urls.filter((u) => !(isIcons && /^["']?data:/i.test(u)));
       const colourText = stripStrings(rest) + " " + keptUrls.map(unquote).join(" ");
-      for (const c of colourFindings(colourText, prop)) add(line, "css-color", `${prop}: colour value ${c}; use a --sv-color-* token`);
+      for (const c of colourFindings(colourText, prop, ctx.forcedColours)) add(line, "css-color", `${prop}: colour value ${c}; use a --sv-color-* token`);
       const unitText = stripStrings(rest).replace(/#[0-9a-f]{3,8}(?![\w-])/gi, " ");
-      for (const u of unitFindings(unitText)) add(line, "css-unit", `${prop}: ${u} — a number with a unit; every size comes from a token (only 0, 100%, 50%, 1fr)`);
+      for (const u of unitFindings(unitText, ctx.keyframes)) add(line, "css-unit", `${prop}: ${u} — a number with a unit; every size comes from a token (only 0, 100%, 50%, 1fr)`);
     }
   }
-  visit(tree, { keyframes: false, inRule: false });
+  visit(tree, { keyframes: false, forcedColours: false, inRule: false });
   return findings;
 }
 

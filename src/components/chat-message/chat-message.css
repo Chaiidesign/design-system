@@ -1,0 +1,43 @@
+/* chat-message: one turn in a conversation. Who speaks is said in words (the __from label)
+   and shown by shape (the person's plate has an edge, an inset and one squared corner),
+   so it never depends on colour. */
+@layer sv.components {
+  .sv-chat-message {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sv-space-1);
+  }
+
+  .sv-chat-message__from {
+    font-weight: var(--sv-font-weight-strong);
+  }
+
+  .sv-chat-message__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sv-space-3);
+  }
+
+  /* The person: a plate held to the end of the line, never closer than the inset to the start. */
+  .sv-chat-message[data-from="person"] {
+    inline-size: fit-content;
+    max-inline-size: calc(100% - var(--sv-chat-message-person-inset));
+    margin-inline-start: auto;
+    padding: var(--sv-space-3) var(--sv-space-4);
+    border: var(--sv-border-thin) solid var(--sv-chat-message-person-edge);
+    border-radius: var(--sv-radius-panel);
+    border-end-end-radius: var(--sv-radius-control);
+    background-color: var(--sv-chat-message-person-surface);
+  }
+
+  /* Souvenir: running text on the ground, the full width of the column. */
+  .sv-chat-message[data-from="assistant"] {
+    inline-size: auto;
+    margin-inline-start: 0;
+  }
+
+  /* Text a person wrote may hold long unbroken strings (an address, a link). */
+  .sv-chat-message [data-user-content] {
+    overflow-wrap: anywhere;
+  }
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status: demo</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Status</h1>
+
+  <section class="sv-stack" aria-labelledby="tones">
+    <h2 id="tones">Tones</h2>
+    <ul class="sv-stack" data-gap="3">
+      <li><span class="sv-status" data-tone="info">Not sent yet</span></li>
+      <li><span class="sv-status" data-tone="success">Shipped</span></li>
+      <li><span class="sv-status" data-tone="warning">Waiting for your reply</span></li>
+      <li><span class="sv-status" data-tone="danger">Payment failed</span></li>
+      <li><span class="sv-status" data-tone="busy" role="status">Checking both calendars…</span></li>
+    </ul>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="inline">
+    <h2 id="inline">In a line of text</h2>
+    <p>Your order of 3 items is <span class="sv-status" data-tone="success">Shipped</span> and arrives on Tuesday 18 November.</p>
+    <p>The message to Priya is <span class="sv-status" data-tone="warning">Waiting for your reply</span> because Souvenir drafted it and you have not checked it.</p>
+  </section>
+
+  <section class="sv-panel sv-stack" aria-labelledby="rows">
+    <h2 id="rows">In list rows</h2>
+    <ul class="sv-stack" data-gap="3">
+      <li class="sv-row"><span>Organic cotton bath towel</span><span class="sv-status" data-tone="success">Shipped</span></li>
+      <li class="sv-row"><span>抹茶セット</span><span class="sv-status" data-tone="busy">Packing your order…</span></li>
+      <li class="sv-row"><span>Soap</span><span class="sv-status" data-tone="danger">Out of stock</span></li>
+    </ul>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="cells">
+    <h2 id="cells">In table cells</h2>
+    <table>
+      <thead>
+        <tr><th scope="col">Event</th><th scope="col">State</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Planning with Priya</td><td><span class="sv-status" data-tone="busy">Moving to Thursday…</span></td></tr>
+        <tr><td>Team lunch</td><td><span class="sv-status" data-tone="info">Not changed</span></td></tr>
+        <tr><td>Dentist</td><td><span class="sv-status" data-tone="warning">Clashes with Team lunch</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>

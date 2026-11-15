@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI SDK trial: checkout</title>
+<!-- Clay. UI SDK 0.1.0-beta.3 web components around native fallback markup. See README.md. -->
+<link rel="stylesheet" href="trial.css">
+<link rel="stylesheet" href="../../dist/souvenir.css">
+<script type="module" src="../../dist/ui-sdk/all.js"></script>
+<script type="module" src="glue.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack">
+  <h1>Checkout</h1>
+  <p>This is a test page. Nothing will be charged.</p>
+  <form class="sv-stack" method="get" action="result.html">
+    <ui-field>
+      <ui-field-label><label for="email">Email address</label></ui-field-label>
+      <ui-input><input id="email" name="email" type="email" autocomplete="email" required></ui-input>
+      <ui-field-description>We'll send your receipt here</ui-field-description>
+      <ui-field-error match="valueMissing">Enter your email address</ui-field-error>
+      <ui-field-error match="typeMismatch">Enter an email address like name@example.com</ui-field-error>
+    </ui-field>
+
+    <ui-field>
+      <ui-field-label><label for="postcode">Postcode</label></ui-field-label>
+      <ui-input><input id="postcode" name="postcode" type="text" autocomplete="postal-code" required></ui-input>
+      <ui-field-error match="valueMissing">Enter your postcode</ui-field-error>
+    </ui-field>
+
+    <ui-field>
+      <ui-field-label><label for="country">Country</label></ui-field-label>
+      <ui-select name="country" auto-complete="country" required placeholder="Choose your country">
+        <ui-select-trigger><button type="button"><ui-select-value></ui-select-value></button></ui-select-trigger>
+        <ui-select-content>
+          <ui-select-item value="GB">United Kingdom</ui-select-item>
+          <ui-select-item value="IE">Ireland</ui-select-item>
+          <ui-select-item value="FR">France</ui-select-item>
+          <ui-select-item value="DE">Germany</ui-select-item>
+        </ui-select-content>
+        <select id="country" name="country" autocomplete="country" required>
+          <option value="">Choose your country</option>
+          <option value="GB">United Kingdom</option>
+          <option value="IE">Ireland</option>
+          <option value="FR">France</option>
+          <option value="DE">Germany</option>
+        </select>
+      </ui-select>
+      <ui-field-error match="valueMissing">Choose your country</ui-field-error>
+    </ui-field>
+
+    <label class="trial-check">
+      <input type="checkbox" name="terms" value="yes" required>
+      <ui-checkbox name="terms" value="yes" required><ui-checkbox-indicator></ui-checkbox-indicator></ui-checkbox>
+      I accept the terms of sale
+    </label>
+
+    <ui-button pending-announcement="Paying"><button type="submit">Pay £60.75</button></ui-button>
+  </form>
+</main>
+</body>
+</html>

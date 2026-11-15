@@ -1,0 +1,608 @@
+{
+  "produced_by": "explore/ui-sdk-trial/check.mjs",
+  "measured_at": "2026-11-15T10:18:53.831Z",
+  "chromium": "/Users/chaitanyalandge/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+  "pages": {
+    "ui-sdk": {
+      "js_off": {
+        "defined": "scripts off",
+        "accessibility_tree": "- text: Email address\n- textbox \"Email address\"\n- text: We'll send your receipt here Postcode\n- textbox \"Postcode\"\n- text: Country\n- combobox \"Country\":\n  - option \"Choose your country\" [selected]\n  - option \"United Kingdom\"\n  - option \"Ireland\"\n  - option \"France\"\n  - option \"Germany\"\n- checkbox \"I accept the terms of sale\"\n- text: I accept the terms of sale\n- button \"Pay £60.75\"",
+        "controls": [
+          {
+            "tag": "input",
+            "role": null,
+            "name": "email",
+            "autocomplete": "email",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "postcode",
+            "autocomplete": "postal-code",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "select",
+            "role": null,
+            "name": "country",
+            "autocomplete": "country",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "terms",
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "button",
+            "role": null,
+            "name": null,
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          }
+        ],
+        "tab_order": [
+          "input#email",
+          "input#postcode",
+          "select#country",
+          "input",
+          "button"
+        ],
+        "page_errors": [],
+        "submission": {
+          "url": "/explore/ui-sdk-trial/result.html?email=sam%40example.com&postcode=SW1A+1AA&country=GB&terms=yes",
+          "received": {
+            "email": [
+              "sam@example.com"
+            ],
+            "postcode": [
+              "SW1A 1AA"
+            ],
+            "country": [
+              "GB"
+            ],
+            "terms": [
+              "yes"
+            ]
+          },
+          "every_field_once_and_correct": true
+        }
+      },
+      "js_on": {
+        "defined": [
+          "ui-field:true",
+          "ui-input:true",
+          "ui-select:true",
+          "ui-checkbox:true",
+          "ui-button:true"
+        ],
+        "accessibility_tree": "- text: Email address\n- textbox \"Email address\"\n- text: We'll send your receipt here Postcode\n- textbox \"Postcode\"\n- text: Country\n- combobox \"Country\": Choose your country\n- checkbox\n- text: I accept the terms of sale\n- button \"Pay £60.75\"",
+        "controls": [
+          {
+            "tag": "input",
+            "role": null,
+            "name": "email",
+            "autocomplete": "email",
+            "describedby": [
+              "We'll send your receipt here"
+            ],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "postcode",
+            "autocomplete": "postal-code",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "button",
+            "role": "combobox",
+            "name": "country",
+            "autocomplete": "country",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "ui-checkbox",
+            "role": "checkbox",
+            "name": "terms",
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "button",
+            "role": null,
+            "name": null,
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          }
+        ],
+        "tab_order": [
+          "input#email",
+          "input#postcode",
+          "button[role=combobox]#ui-sdk-select-14-trigger",
+          "ui-checkbox[role=checkbox]",
+          "button"
+        ],
+        "empty_submit": {
+          "still_on_form": true,
+          "focused": "ui-checkbox[role=checkbox]",
+          "errors_shown": [
+            "Enter your email address",
+            "Enter your postcode",
+            "Choose your country"
+          ],
+          "native_messages": [
+            "email: Please fill out this field.",
+            "postcode: Please fill out this field."
+          ]
+        },
+        "controls_after_empty_submit": [
+          {
+            "tag": "input",
+            "role": null,
+            "name": "email",
+            "autocomplete": "email",
+            "describedby": [
+              "We'll send your receipt here",
+              "Enter your email address"
+            ],
+            "invalid": "true"
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "postcode",
+            "autocomplete": "postal-code",
+            "describedby": [
+              "Enter your postcode"
+            ],
+            "invalid": "true"
+          },
+          {
+            "tag": "button",
+            "role": "combobox",
+            "name": "country",
+            "autocomplete": "country",
+            "describedby": [
+              "Choose your country"
+            ],
+            "invalid": "true"
+          },
+          {
+            "tag": "ui-checkbox",
+            "role": "checkbox",
+            "name": "terms",
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "button",
+            "role": null,
+            "name": null,
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          }
+        ],
+        "email_message_follows_value": {
+          "while_wrong": [
+            "Enter an email address like name@example.com",
+            "Enter your postcode",
+            "Choose your country"
+          ],
+          "after_fix": [
+            "Enter your postcode",
+            "Choose your country"
+          ],
+          "value_kept": "sam@example.com"
+        },
+        "select_keyboard": {
+          "after_arrow_down": {
+            "expanded": "true",
+            "active": "United Kingdom",
+            "activedescendant": null
+          },
+          "after_typing_Fr": "France",
+          "after_enter": {
+            "trigger_text": "France",
+            "focus_back_on_trigger": true,
+            "form_value": [
+              "FR"
+            ]
+          }
+        },
+        "checkbox_space": {
+          "form_terms": [
+            "yes"
+          ],
+          "aria_checked": "true",
+          "native_checked": null
+        },
+        "button_pending_with_action_waitUntil": {
+          "during": {
+            "aria_busy": "true",
+            "aria_disabled": "true",
+            "data_pending": true,
+            "focused": true,
+            "submit_events_so_far": 1,
+            "live_regions": [
+              {
+                "tag": "div",
+                "live": "polite",
+                "text": "Enter an email address like name@example.com"
+              }
+            ]
+          },
+          "after_1_3_seconds": {
+            "aria_busy": "true",
+            "aria_disabled": "true",
+            "data_pending": true,
+            "focused": true,
+            "submit_events_so_far": 1,
+            "live_regions": [
+              {
+                "tag": "div",
+                "live": "polite",
+                "text": "Paying"
+              }
+            ]
+          },
+          "after_settle": {
+            "aria_busy": null,
+            "aria_disabled": null,
+            "data_pending": false,
+            "focused": true,
+            "submit_events_so_far": 1,
+            "live_regions": [
+              {
+                "tag": "div",
+                "live": "polite",
+                "text": "Paying"
+              }
+            ]
+          }
+        },
+        "injected_css": {
+          "blocks": [
+            {
+              "owner": "inline <style>#ui-sdk-web-1",
+              "css": "@layer ui-sdk {\n  :where([data-slot][hidden]:not([hidden=\"until-found\"])) { display: none !important; }\n  :where(ui-field:not([hidden]), ui-field[hidden=\"until-found\"]) { display: block; }\n  :where(ui-field-label:not([hidden]), ui-field-label[hidden=\"until-found\"]) { display: block; }\n  :where(ui-field-description:not([hidden]), ui-field-description[hidden=\"until-found\"]) { display: block; }\n  :where(ui-field-error:not([hidden]), ui-field-error[hidden=\"until-found\"]) { display: block; }\n  :where(ui-field-set:not([hidden]), ui-field-set[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-field-legend:not([hidden]), ui-field-legend[hidden=\"until-found\"]) { display: block; }\n  :where(ui-field-group:not([hidden]), ui-field-group[hidden=\"until-found\"]) { display: block; }\n  :where(ui-input:not([hidden]), ui-input[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-textarea:not([hidden]), ui-textarea[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-input-group:not([hidden]), ui-input-group[hidden=\"until-found\"]) { display: block; }\n  :where(ui-input-clear:not([hidden]), ui-input-clear[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-select:not([hidden]), ui-select[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-select-label:not([hidden]), ui-select-label[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-trigger:not([hidden]), ui-select-trigger[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-select-clear:not([hidden]), ui-select-clear[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-select-list:not([hidden]), ui-select-list[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-input:not([hidden]), ui-select-input[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-select-empty:not([hidden]), ui-select-empty[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-status:not([hidden]), ui-select-status[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-select-all:not([hidden]), ui-select-select-all[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-item:not([hidden]), ui-select-item[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-group:not([hidden]), ui-select-group[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-group-label:not([hidden]), ui-select-group-label[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-separator:not([hidden]), ui-select-separator[hidden=\"until-found\"]) { display: block; }\n  :where(ui-select-arrow:not([hidden]), ui-select-arrow[hidden=\"until-found\"]) { display: block; }\n  :where(ui-checkbox-group:not([hidden]), ui-checkbox-group[hidden=\"until-found\"]) { display: block; }\n  :where(ui-button:not([hidden]), ui-button[hidden=\"until-found\"]) { display: contents; }\n  :where(ui-select-content[align]) { text-align: inherit; }\n  :where([as-child]) { display: contents; }\n}"
+            },
+            {
+              "owner": "inline <style>#ui-sdk-hidden",
+              "css": "@layer ui-sdk {\n  :where([data-slot][hidden]:not([hidden=\"until-found\"])) { display: none !important; }\n}"
+            }
+          ],
+          "layer_statements_in_order": [
+            "@layer ui-sdk, sv.tokens, sv.base, sv.components, trial;",
+            "@layer sv.tokens, sv.base, sv.components;"
+          ],
+          "properties_set": [
+            "display",
+            "ui-field",
+            "ui-field-label",
+            "ui-field-description",
+            "ui-field-error",
+            "ui-field-set",
+            "ui-field-legend",
+            "ui-field-group",
+            "ui-input",
+            "ui-textarea",
+            "ui-input-group",
+            "ui-input-clear",
+            "ui-select",
+            "ui-select-label",
+            "ui-select-trigger",
+            "ui-select-clear",
+            "ui-select-list",
+            "ui-select-input",
+            "ui-select-empty",
+            "ui-select-status",
+            "ui-select-select-all",
+            "ui-select-item",
+            "ui-select-group",
+            "ui-select-group-label",
+            "ui-select-separator",
+            "ui-select-arrow",
+            "ui-checkbox-group",
+            "ui-button",
+            "text-align"
+          ],
+          "sets_colour_font_or_size": []
+        },
+        "page_errors": [],
+        "submission": {
+          "url": "/explore/ui-sdk-trial/result.html?email=sam%40example.com&postcode=SW1A+1AA&country=GB&terms=yes",
+          "received": {
+            "email": [
+              "sam@example.com"
+            ],
+            "postcode": [
+              "SW1A 1AA"
+            ],
+            "country": [
+              "GB"
+            ],
+            "terms": [
+              "yes"
+            ]
+          },
+          "every_field_once_and_correct": true
+        }
+      }
+    },
+    "native": {
+      "js_off": {
+        "defined": "scripts off",
+        "accessibility_tree": "- text: Email address\n- textbox \"Email address\"\n- paragraph: We'll send your receipt here\n- text: Postcode\n- textbox \"Postcode\"\n- text: Country\n- combobox \"Country\":\n  - option \"Choose your country\" [selected]\n  - option \"United Kingdom\"\n  - option \"Ireland\"\n  - option \"France\"\n  - option \"Germany\"\n- checkbox \"I accept the terms of sale\"\n- text: I accept the terms of sale\n- button \"Pay £60.75\"",
+        "controls": [
+          {
+            "tag": "input",
+            "role": null,
+            "name": "email",
+            "autocomplete": "email",
+            "describedby": [
+              "We'll send your receipt here"
+            ],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "postcode",
+            "autocomplete": "postal-code",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "select",
+            "role": null,
+            "name": "country",
+            "autocomplete": "country",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "terms",
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "button",
+            "role": null,
+            "name": null,
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          }
+        ],
+        "tab_order": [
+          "input#email",
+          "input#postcode",
+          "select#country",
+          "input",
+          "button"
+        ],
+        "page_errors": [],
+        "submission": {
+          "url": "/explore/ui-sdk-trial/result.html?email=sam%40example.com&postcode=SW1A+1AA&country=GB&terms=yes",
+          "received": {
+            "email": [
+              "sam@example.com"
+            ],
+            "postcode": [
+              "SW1A 1AA"
+            ],
+            "country": [
+              "GB"
+            ],
+            "terms": [
+              "yes"
+            ]
+          },
+          "every_field_once_and_correct": true
+        }
+      },
+      "js_on": {
+        "defined": [
+          "ui-field:false",
+          "ui-input:false",
+          "ui-select:false",
+          "ui-checkbox:false",
+          "ui-button:false"
+        ],
+        "accessibility_tree": "- text: Email address\n- textbox \"Email address\"\n- paragraph: We'll send your receipt here\n- text: Postcode\n- textbox \"Postcode\"\n- text: Country\n- combobox \"Country\":\n  - option \"Choose your country\" [selected]\n  - option \"United Kingdom\"\n  - option \"Ireland\"\n  - option \"France\"\n  - option \"Germany\"\n- checkbox \"I accept the terms of sale\"\n- text: I accept the terms of sale\n- button \"Pay £60.75\"",
+        "controls": [
+          {
+            "tag": "input",
+            "role": null,
+            "name": "email",
+            "autocomplete": "email",
+            "describedby": [
+              "We'll send your receipt here"
+            ],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "postcode",
+            "autocomplete": "postal-code",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "select",
+            "role": null,
+            "name": "country",
+            "autocomplete": "country",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "terms",
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "button",
+            "role": null,
+            "name": null,
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          }
+        ],
+        "tab_order": [
+          "input#email",
+          "input#postcode",
+          "select#country",
+          "input",
+          "button"
+        ],
+        "empty_submit": {
+          "still_on_form": true,
+          "focused": "input#email",
+          "errors_shown": [],
+          "native_messages": [
+            "email: Please fill out this field.",
+            "postcode: Please fill out this field.",
+            "country: Please select an item in the list.",
+            "terms: Please check this box if you want to proceed."
+          ]
+        },
+        "controls_after_empty_submit": [
+          {
+            "tag": "input",
+            "role": null,
+            "name": "email",
+            "autocomplete": "email",
+            "describedby": [
+              "We'll send your receipt here"
+            ],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "postcode",
+            "autocomplete": "postal-code",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "select",
+            "role": null,
+            "name": "country",
+            "autocomplete": "country",
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "input",
+            "role": null,
+            "name": "terms",
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          },
+          {
+            "tag": "button",
+            "role": null,
+            "name": null,
+            "autocomplete": null,
+            "describedby": [],
+            "invalid": null
+          }
+        ],
+        "email_message_follows_value": {
+          "while_wrong": [],
+          "after_fix": [],
+          "value_kept": "sam@example.com"
+        },
+        "select_keyboard": "native <select>: keyboard handled by the browser and the operating system (not observable in headless popups)",
+        "checkbox_space": {
+          "form_terms": [
+            "yes"
+          ],
+          "aria_checked": null,
+          "native_checked": true
+        },
+        "button_pending_with_action_waitUntil": {
+          "during": {
+            "aria_busy": null,
+            "aria_disabled": null,
+            "data_pending": false,
+            "focused": true,
+            "submit_events_so_far": 1,
+            "live_regions": []
+          },
+          "after_1_3_seconds": {
+            "aria_busy": null,
+            "aria_disabled": null,
+            "data_pending": false,
+            "focused": true,
+            "submit_events_so_far": 2,
+            "live_regions": []
+          },
+          "after_settle": {
+            "aria_busy": null,
+            "aria_disabled": null,
+            "data_pending": false,
+            "focused": true,
+            "submit_events_so_far": 2,
+            "live_regions": []
+          }
+        },
+        "injected_css": {
+          "blocks": [],
+          "layer_statements_in_order": [
+            "@layer ui-sdk, sv.tokens, sv.base, sv.components, trial;",
+            "@layer sv.tokens, sv.base, sv.components;"
+          ],
+          "properties_set": [],
+          "sets_colour_font_or_size": []
+        },
+        "page_errors": [],
+        "submission": {
+          "url": "/explore/ui-sdk-trial/result.html?email=sam%40example.com&postcode=SW1A+1AA&country=GB&terms=yes",
+          "received": {
+            "email": [
+              "sam@example.com"
+            ],
+            "postcode": [
+              "SW1A 1AA"
+            ],
+            "country": [
+              "GB"
+            ],
+            "terms": [
+              "yes"
+            ]
+          },
+          "every_field_once_and_correct": true
+        }
+      }
+    }
+  }
+}

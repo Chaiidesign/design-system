@@ -6,7 +6,10 @@
 // wide (800 high), light and dark (?theme=), and fails on:
 //   sideways-scroll            the page scrolls sideways
 //   text-too-small             visible text below 16 pixels
-//   control-too-small          a control below 24 by 24 pixels (a checkbox or radio inside a label is measured by its label)
+//   control-too-small          a control below 24 by 24 pixels (a checkbox or radio inside a label is measured by its label).
+//                              Exempt, as WCAG 2.5.8 allows: a link whose computed display is inline and whose parent also holds
+//                              non-empty text or a visible inline sibling with text (a link in running text). A link that is the
+//                              only content of its parent, is not display inline, or has the class sv-button is not exempt.
 //   control-too-short          a button or field below 44 pixels tall
 //   text-contrast              text below 4.5 to 1 against its resolved background (3 to 1 at 24 pixels or more)
 //   control-boundary-contrast  a control whose border and fill are both below 3 to 1 against what is behind it
@@ -15,6 +18,9 @@
 //   focus-overlap              a focus ring (box grown by offset plus width) that intersects another control
 //   word-break                 a word broken across lines (outside [data-user-content], CJK ignored)
 //   cost-total-largest         on a page with .sv-cost-summary, the total's dd is not the largest text
+//   missing-speaker-label      a visible .sv-chat-message without a visible .sv-chat-message__from that has text
+// Also measured, with no pass or fail: the height of the tallest visible .sv-proposal ("proposal height" in the table,
+// proposalHeight in the JSON).
 // Screenshots: digests/2026-11-15/screens/<screen>-<width>-<theme>.png. Data: gates/raw/2026-11-15-screens.json.
 
 import { existsSync, readdirSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
@@ -198,6 +204,20 @@ const PAGE_LIB = String.raw`(() => {
     const r = (label || el).getBoundingClientRect();
     return { x: r.left, y: r.top, w: r.width, h: r.height };
   }
+  // A link in running text (WCAG 2.5.8 inline exception): display inline, not an sv-button, and its parent
+  // holds other content on the line: a non-empty text node or a visible inline element with text.
+  function inRunningText(el) {
+    if (!el.matches('a[href], [role="link"]') || el.classList.contains("sv-button")) return false;
+    if (getComputedStyle(el).display !== "inline") return false;
+    const parent = el.parentElement;
+    if (!parent) return false;
+    for (const n of parent.childNodes) {
+      if (n === el) continue;
+      if (n.nodeType === Node.TEXT_NODE && /\S/.test(n.data)) return true;
+      if (n.nodeType === Node.ELEMENT_NODE && !hidden(n) && getComputedStyle(n).display === "inline" && /\S/.test(n.textContent)) return true;
+    }
+    return false;
+  }
   function controls() {
     const out = [];
     for (const el of document.querySelectorAll(CONTROL_SEL)) {
@@ -282,6 +302,7 @@ const PAGE_LIB = String.raw`(() => {
     const ctrls = controls().map((el) => {
       const k = kind(el);
       return { where: describe(el), tag: el.tagName.toLowerCase(), type: el.getAttribute("type") || "", kind: k, ...targetRect(el),
+        targetExempt: inRunningText(el) ? "inline link in running text (WCAG 2.5.8)" : null,
         boundary: (k === "button" || k === "field" || isBox(el)) ? boundary(el) : null };
     });
     let cost = null;
@@ -295,9 +316,19 @@ const PAGE_LIB = String.raw`(() => {
       });
       cost = { totals: totals.map((d) => ({ size: parseFloat(getComputedStyle(d).fontSize), where: describe(d), text: d.textContent.trim().slice(0, 40) })), maxOther };
     }
+    const chat = [...document.querySelectorAll(".sv-chat-message")].filter((el) => !hidden(el)).map((el) => {
+      const from = [...el.querySelectorAll(".sv-chat-message__from")].find((f) => !hidden(f) && /\S/.test(f.textContent));
+      return { where: describe(el), from: from ? from.textContent.trim().replace(/\s+/g, " ").slice(0, 40) : null };
+    });
+    let proposal = null;
+    const proposals = [...document.querySelectorAll(".sv-proposal")].filter((el) => !hidden(el));
+    if (proposals.length) {
+      const tallest = proposals.map((el) => ({ el, h: el.getBoundingClientRect().height })).sort((a, b) => b.h - a.h)[0];
+      proposal = { count: proposals.length, height: Math.round(tallest.h), where: describe(tallest.el) };
+    }
     return {
       scroll: { scrollWidth: Math.max(de.scrollWidth, document.body.scrollWidth), clientWidth: de.clientWidth },
-      texts: textRows, brokenWords: words, controls: ctrls, cost,
+      texts: textRows, brokenWords: words, controls: ctrls, cost, chat, proposal,
     };
   }
 
@@ -358,7 +389,7 @@ async function checkState(browser, base, file, width, theme, shots) {
     if (t.ratio < t.needs) add("text-contrast", `"${t.text}" is ${t.ratio}:1 (needs ${t.needs}:1) — rgb(${t.fg}) on rgb(${t.bg})`, t.where);
   }
   for (const c of m.controls) {
-    if (c.w < 24 || c.h < 24) add("control-too-small", `${c.tag} target is ${Math.round(c.w)}×${Math.round(c.h)}px (needs 24×24)`, c.where);
+    if ((c.w < 24 || c.h < 24) && !c.targetExempt) add("control-too-small", `${c.tag} target is ${Math.round(c.w)}×${Math.round(c.h)}px (needs 24×24)`, c.where);
     if ((c.kind === "button" || c.kind === "field") && c.h < 44) add("control-too-short", `${c.kind} is ${Math.round(c.h)}px tall (needs 44)`, c.where);
     const b = c.boundary;
     if (b) {
@@ -372,6 +403,9 @@ async function checkState(browser, base, file, width, theme, shots) {
     }
   }
   for (const w of m.brokenWords) add("word-break", `"${w.word}" is broken across lines`, w.where);
+  for (const c of m.chat) {
+    if (!c.from) add("missing-speaker-label", "chat message has no visible .sv-chat-message__from with text", c.where);
+  }
   if (m.cost) {
     if (!m.cost.totals.length) add("cost-total-largest", "page has .sv-cost-summary but no visible total row dd");
     for (const t of m.cost.totals) {
@@ -410,7 +444,8 @@ async function checkState(browser, base, file, width, theme, shots) {
   return {
     file: posix(file), width, theme, url,
     screenshot: shot ? posix(relative(REPO, shot)) : null,
-    measurements: { scroll: m.scroll, texts: m.texts, controls: m.controls, brokenWords: m.brokenWords, cost: m.cost, tabStops: stops },
+    proposalHeight: m.proposal ? m.proposal.height : null,
+    measurements: { scroll: m.scroll, texts: m.texts, controls: m.controls, brokenWords: m.brokenWords, cost: m.cost, chat: m.chat, proposal: m.proposal, tabStops: stops },
     findings,
   };
 }
@@ -444,10 +479,15 @@ async function runAll(files, { shots }) {
 function summaryTable(results) {
   const states = WIDTHS.flatMap((w) => THEMES.map((t) => `${w} ${t}`));
   const files = [...new Set(results.map((r) => r.file))];
-  const rows = files.map((f) => [f, ...states.map((s) => {
-    const r = results.find((x) => x.file === f && `${x.width} ${x.theme}` === s);
-    return r.findings.length ? String(r.findings.length) : "pass";
-  })]);
+  const rows = files.flatMap((f) => {
+    const of = (s) => results.find((x) => x.file === f && `${x.width} ${x.theme}` === s);
+    const out = [[f, ...states.map((s) => (of(s).findings.length ? String(of(s).findings.length) : "pass"))]];
+    // measured only, never a pass or fail
+    if (states.some((s) => of(s).proposalHeight != null)) {
+      out.push(["  proposal height", ...states.map((s) => (of(s).proposalHeight != null ? `${of(s).proposalHeight}px` : "-"))]);
+    }
+    return out;
+  });
   const head = ["Screen", ...states];
   const w = head.map((h, i) => Math.max(h.length, ...rows.map((r) => r[i].length)));
   const line = (c) => "| " + c.map((x, i) => x.padEnd(w[i])).join(" | ") + " |";
@@ -507,7 +547,7 @@ async function runSelfTest() {
     const example = mine.flatMap((r) => r.findings.map((f) => `${r.width} ${r.theme} ${f.rule} ${f.message}${f.where ? ` at ${f.where}` : ""}`));
     for (const e of (ok ? example.slice(0, 1) : example.slice(0, 12))) console.log(`      ${e}`);
   }
-  const RULES = ["page-error", "sideways-scroll", "text-too-small", "control-too-small", "control-too-short", "text-contrast", "control-boundary-contrast", "focus-outline", "focus-contrast", "focus-overlap", "word-break", "cost-total-largest"];
+  const RULES = ["page-error", "sideways-scroll", "text-too-small", "control-too-small", "control-too-short", "text-contrast", "control-boundary-contrast", "focus-outline", "focus-contrast", "focus-overlap", "word-break", "cost-total-largest", "missing-speaker-label"];
   const never = RULES.filter((r) => !seen.has(r));
   if (never.length) { problems++; console.log(`FAIL  rules never seen failing: ${never.join(", ")}`); }
   console.log(`check-screens self-test: ${files.length} pages, ${seen.size} of ${RULES.length} rules seen failing, ${problems} problem${problems === 1 ? "" : "s"}`);

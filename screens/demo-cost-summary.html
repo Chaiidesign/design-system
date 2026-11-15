@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cost summary: demo</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Cost summary</h1>
+
+  <section class="sv-panel sv-stack" aria-labelledby="normal">
+    <h2 id="normal">An order with a discount, on a panel</h2>
+    <dl class="sv-cost-summary">
+      <div class="sv-cost-summary__row"><dt>Items</dt><dd>£61.80</dd></div>
+      <div class="sv-cost-summary__row"><dt>Discount: Welcome discount</dt><dd>−£5.00</dd></div>
+      <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.95</dd></div>
+      <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£60.75<p class="sv-cost-summary__note">Includes £10.13 VAT</p></dd></div>
+    </dl>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="unknown">
+    <h2 id="unknown">A long item name and a cost not known yet, on the ground</h2>
+    <dl class="sv-cost-summary">
+      <div class="sv-cost-summary__row"><dt>Organic cotton waffle-weave bath towel, extra large, undyed natural oatmeal × 2</dt><dd>£39.00</dd></div>
+      <div class="sv-cost-summary__row"><dt lang="ja">抹茶セット × 1</dt><dd>£15.00</dd></div>
+      <div class="sv-cost-summary__row" data-state="unknown"><dt>Delivery</dt><dd>Not known yet. Enter your postcode to see it.</dd></div>
+      <div class="sv-cost-summary__row" data-row="total"><dt>Total so far</dt><dd>£54.00</dd></div>
+    </dl>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="large">
+    <h2 id="large">Large amounts, on the ground</h2>
+    <dl class="sv-cost-summary">
+      <div class="sv-cost-summary__row"><dt>Items</dt><dd>£12,345,675.00</dd></div>
+      <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.90</dd></div>
+      <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£12,345,678.90<p class="sv-cost-summary__note">Includes £2,057,613.15 VAT</p></dd></div>
+    </dl>
+  </section>
+
+  <section class="sv-panel sv-stack" aria-labelledby="large-panel">
+    <h2 id="large-panel">Large amounts, on a panel</h2>
+    <dl class="sv-cost-summary">
+      <div class="sv-cost-summary__row"><dt>Items</dt><dd>£12,345,675.00</dd></div>
+      <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.90</dd></div>
+      <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£12,345,678.90<p class="sv-cost-summary__note">Includes £2,057,613.15 VAT</p></dd></div>
+    </dl>
+  </section>
+</main>
+</body>
+</html>

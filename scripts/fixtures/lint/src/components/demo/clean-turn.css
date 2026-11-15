@@ -1,0 +1,8 @@
+/* Clean: 1turn is allowed inside @keyframes, so a busy mark can turn. */
+@layer sv.components {
+  .sv-demo { animation: sv-demo-turn var(--sv-duration-slow) linear infinite; }
+  @keyframes sv-demo-turn {
+    from { transform: rotate(0); }
+    to { transform: rotate(1turn); }
+  }
+}

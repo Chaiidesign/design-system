@@ -1,0 +1,13 @@
+/* Clean: inside @media (forced-colors: active) the CSS system colour names are allowed. */
+@layer sv.components {
+  @media (forced-colors: active) {
+    .sv-demo { color: CanvasText; background-color: Canvas; border-color: ButtonBorder; }
+    .sv-demo__part { color: ButtonText; background-color: ButtonFace; outline-color: Highlight; }
+    .sv-demo__part[data-variant="primary"] { color: HighlightText; background-color: Highlight; }
+    .sv-demo__part[data-variant="secondary"] { color: LinkText; text-decoration-color: VisitedText; caret-color: ActiveText; }
+    .sv-demo__part[data-variant="quiet"] { color: FieldText; background-color: Field; border-color: GrayText; }
+    .sv-demo__part[data-tone="info"] { color: SelectedItemText; background-color: SelectedItem; }
+    .sv-demo__part[data-tone="warning"] { color: MarkText; background-color: Mark; }
+    .sv-demo__part[data-tone="success"] { color: AccentColorText; background-color: AccentColor; }
+  }
+}

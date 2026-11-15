@@ -1,0 +1,658 @@
+{
+ "results": [
+  {
+   "group": "controls",
+   "verdict": "done with gaps",
+   "summary": "I built button (CSS plus the sv-button element), checkbox and select, each with a demo page and a note. In the last build, lint has 0 findings and size is within budget. The checker found nothing in all 6 states of all three demos. A browser test of sv-button passed on four points: a valid submit sets aria-busy, swaps the label and leaves the button enabled and in the Tab order. Further presses and requestSubmit are cancelled. An invalid novalidate form stays idle. A synthetic pageshow (persisted) puts the label back. One spec gap: the select cannot tint the chevron mark from icons.css. A mask would also clip the focus outline, and a select has no ::after. So the chevron is two currentColor gradient strokes sized by --sv-select-arrow-size, with an RTL position. I looked at the screenshots and fixed: the quiet button's padding, disabled quiet losing its underline, the chevron's weight, and option text that was being cut off.",
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: dist/souvenir.css from 13 files (34593 bytes; minified 25136)\nbuild: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "html-unknown-class class \"sv-checkbox__label\" is not in the built CSS; lint: 27 files, 11 findings (fixed by adding a .sv-checkbox__label rule)"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 0,
+     "last_lines": "lint: 32 files (12 css, 10 html, 10 md), 0 findings"
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "button CSS 780, checkbox CSS 518, select CSS 633, button JS 513, all CSS 4492 gzip; size: 19 rows, 0 over budget"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-button",
+     "exit_code": 0,
+     "last_lines": "screens/demo-button.html | pass x6; 1 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-checkbox",
+     "exit_code": 0,
+     "last_lines": "screens/demo-checkbox.html | pass x6; 1 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-select",
+     "exit_code": 0,
+     "last_lines": "screens/demo-select.html | pass x6; 1 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/.tmp/builder-button-checkbox-select/sv-button-test.mjs (playwright-core, scratch, now deleted)",
+     "exit_code": 0,
+     "last_lines": "valid submit: busy true, text 'Paying £60.75…', disabled false, tabIndex 0; uncancelled submits after busy: 0\ninvalid novalidate submit busy: null\nsame form once valid, busy: true / Sending…\npageshow persisted: after 'Pay £60.75', busy null; page errors: none"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/button/button.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/button/button.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/checkbox/checkbox.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/select/select.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-button.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-checkbox.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-select.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/button.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/checkbox.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/select.md"
+   ],
+   "sizes": [
+    {
+     "item": "button CSS",
+     "gzip_bytes": 780,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "checkbox CSS",
+     "gzip_bytes": 518,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "select CSS",
+     "gzip_bytes": 633,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "button JS (dist/components/button.js)",
+     "gzip_bytes": 513,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "all CSS (dist/souvenir.min.css, all builders, last run)",
+     "gzip_bytes": 4492,
+     "budget_bytes": 12288
+    }
+   ],
+   "decisions": [
+    "Secondary is an edge outline with a transparent fill, so it takes the surface it sits on. There is no key-fill token, and the spec says 'edge outline'.",
+    "The primary label is body size (1rem) at weight 600, not the lead size (1.25rem) the prototype used. This addresses review finding I5: 'Move the event to Thursday at 3pm and send the message to Priya' wraps to 2 lines at 375 and 3 lines at 320, and keeps its block padding.",
+    "Pressed and busy both move the button down by --sv-button-press-depth, using the logical-free translate property. A busy key reads as held down. Both effects animate only when reduced motion is not requested.",
+    "Disabled keeps the edge, removes the primary fill and uses text-soft; no opacity is used. Disabled quiet also loses its underline, because the underline is what says it can be pressed. A link (a.sv-button) has no disabled state; the note says to remove the link instead.",
+    "Quiet has padding-inline 0, so its text lines up with the column edge. It still has the 48px control height.",
+    "The busy mark is ::before with mask var(--sv-icon-busy), background currentColor and forced-color-adjust none. That way it follows the label colour on-solid on the primary, ink on secondary, and stays visible in forced colours. It turns with the keyframe value 1turn. I confirmed the current lint allows that value, but only inside keyframes.",
+    "sv-button checks validity without firing events (form.matches(':valid')). It never calls checkValidity, so it does not set off sv-field's invalid handling. It decides on a setTimeout after the submit, so a cancellation by sv-field or sv-error-summary is respected. It reacts only when e.submitter is its own button or absent. While busy it cancels both click and submit, which also covers Enter in a field. It swaps the button's child nodes for data-busy-label and puts them back on pageshow with persisted set.",
+    "Checkbox: checked gives an ink tick plus an ink edge. Invalid (:user-invalid or aria-invalid='true') gives a 4px edge in the danger colour, so the state is carried by shape as well as hue. Disabled gives no well, soft text and a soft tick. The row is a flex label with align-items flex-start and space-3 block padding, so the box lines up with the first line of a wrapped label.",
+    "Select copies field.css's control values: space-2 by space-3 padding, a thick edge border, radius-control, the well fill, a thin border when disabled, and an error edge of border-inline-start --sv-field-error-edge-width in danger. It sets all of these itself, so it works without field.css. Its specificity (0,1,1) sits under field's [aria-invalid] rule, and that rule does not touch padding, so the chevron keeps its room. In forced colours it returns to appearance auto.",
+    "The demo-select markup follows the spec table: div.sv-field holding label, an optional hint, p.sv-field__error (hidden until there is an error) and select.sv-field__control.sv-select. The live example wraps it in <sv-field>, as demo-field and field.js do.",
+    "I shortened the demo's delivery option labels after the screenshot showed '£3.95' cut off. A native select cannot wrap. I also added text-overflow: ellipsis.",
+    "Note for the lead: each check-screens --only run overwrites gates/raw/2026-11-15-screens.json with that run's screens only. The file now holds only demo-select. A full run is needed before the file is used as a gate."
+   ],
+   "token_gaps": [
+    "component.checkbox.error-edge-width: the thicker edge of an invalid checkbox. I used --sv-space-1 (4px), which is a spacing token used as a border width. I would give it 4px, as a border primitive border.width.4.",
+    "component.select.mark-stroke (or a semantic stroke width for drawn marks): the stroke width of the gradient chevron. I used --sv-border-thin for a 1px solid core plus about 1px of soft edge on each side, roughly 2.5px in all, to match the icon grid's 2.5 stroke. A 2px stroke token would say this directly."
+   ],
+   "spec_gaps": [
+    "Select chevron: the spec asks for the select's own arrow mark, and the task names the chevron mark from src/base/icons.css. That mark is a mask image and can only be coloured through background-color on an element that has it as a mask. A native select has no rendered ::before or ::after. Masking the select itself would also clip its focus outline. Used as background-image, the icon draws in black, which would be invisible in the dark theme. So I drew the chevron as two linear-gradient strokes in currentColor, sized by --sv-select-arrow-size. It follows the theme and goes soft when disabled. Two possible fixes: a part element such as span.sv-select__mark in the spec table, or an icon that can be tinted.",
+    "To keep the spec's single-element markup, the gradient chevron's vertex is slightly flat, where the two strokes meet at the edge of their boxes. At 375 dark the chevron is crisp and clearly visible against the well; I zoomed in on it."
+   ],
+   "not_exercised": [
+    "Hover and pressed (:active) states can't be set by attribute, so they appear in no screenshot. I checked them only by reading the CSS.",
+    "Real back-forward cache restore: I tested pageshow with persisted set by dispatching a synthetic PageTransitionEvent, not by a real back navigation.",
+    "sv-button together with sv-field or sv-error-summary on the same form cancelling a submit. I tested only a plain novalidate form with an invalid required input.",
+    "The teal accent: by the CSS only, --sv-button-primary-fill aliases var(--sv-color-accent), which :root[data-accent='teal'] re-points. I took no screenshot.",
+    "Right-to-left select: I wrote a :dir(rtl) background-position but never rendered it.",
+    "Forced colours mode and reduced motion: written but not rendered.",
+    "Browsers other than Chromium 145, including Safari and Firefox rendering of ::before on an appearance:none checkbox and of the select gradients.",
+    "Screen-reader output for the busy label swap. Whether the new label is announced was not tested."
+   ]
+  },
+  {
+   "group": "forms",
+   "verdict": "done",
+   "summary": "Built field and error-summary as brick. Each has its CSS, a light-DOM custom element, a note and a demo page. Lint is clean across the repo, both demos pass all six checker states, and every size is within budget. A scratch playwright script (since deleted) passed 39 of 39 behaviour assertions:\n- blur after typing\n- submit blocking and focus\n- the summary filling, focusing, linking and hiding\n- form lookup three ways (for=, inside the form, directly before it)\n- the pattern message and the validationMessage fallback\n- generated ids and describedby order\n- the no-script cases: no novalidate, server errors visible, browser validation blocking the submit\n\nI read the 375 light and dark, 320 light and dark, and 1280 light screenshots. I fixed a mitred corner on the summary tab by dropping the divider border, and gave the disabled example a value.",
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "screens/demo-chat-message.html:29 html-unknown-class sv-status ... lint: 15 files, 2 findings (both in another builder's demo-chat-message.html, none in my files)"
+    },
+    {
+     "command": "node scripts/lint.mjs (final)",
+     "exit_code": 0,
+     "last_lines": "lint: 32 files (12 css, 10 html, 10 md), 0 findings"
+    },
+    {
+     "command": "node scripts/size.mjs (final)",
+     "exit_code": 0,
+     "last_lines": "size: 0 over budget; field CSS 607, error-summary CSS 428, field JS 895, error-summary JS 737, all CSS 4459"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-field (final)",
+     "exit_code": 0,
+     "last_lines": "check-screens: 1 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-error-summary (final)",
+     "exit_code": 0,
+     "last_lines": "check-screens: 1 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/.tmp/field-error-summary/behaviour.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "browserType.launch: Executable doesn't exist (default headless shell 1255 not installed)"
+    },
+    {
+     "command": "node scripts/.tmp/field-error-summary/behaviour.mjs (with cached headless shell 1208, final)",
+     "exit_code": 0,
+     "last_lines": "39 PASS lines; all passed"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/field/field.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/field/field.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/error-summary/error-summary.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/error-summary/error-summary.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/field.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/error-summary.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-field.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-error-summary.html"
+   ],
+   "sizes": [
+    {
+     "item": "field CSS",
+     "gzip_bytes": 607,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "error-summary CSS",
+     "gzip_bytes": 428,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "field JS (dist/components/field.js)",
+     "gzip_bytes": 895,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "error-summary JS (dist/components/error-summary.js)",
+     "gzip_bytes": 737,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "all CSS (dist/souvenir.min.css, all builders)",
+     "gzip_bytes": 4459,
+     "budget_bytes": 12288
+    }
+   ],
+   "decisions": [
+    "Control is a well: thick (2px) edge border, control radius, inherited body font, min height size-control; textarea is twice the control height and resizes only vertically. The rules suit a select too: they style only the box, and nothing uses :read-only.",
+    "Read-only uses [readonly], not :read-only, because :read-only also matches select and disabled controls. It shows a dashed edge with no well fill.",
+    "Disabled: thin edge, no well, soft text and soft label (via :has). There is no opacity, because check-screens does not exempt disabled controls from contrast. The demo's hint says why the field is unavailable.",
+    "Error edge: border-inline-start is set to the field-error-edge-width token in danger. Hover is excluded on invalid controls so the danger edge survives.",
+    "The error line and the summary both have an explicit [hidden]{display:none}, because they set display themselves.",
+    "The summary tab is a wide border-inline-start (mark plus 2 x space-3), so it follows the writing direction. The mark is absolutely positioned on it in on-solid. I removed the divider border because the 1px top border made a mitred corner on the tab. The plate is panel-toned, so it belongs on the ground.",
+    "The summary listens for submit in the capture phase on the document and marks the event (svChecked). The field's own form handler then skips, so only one handler validates and moves focus. With no summary, the field handler stops an invalid submit, scrolls the label into view and focuses the first invalid control. Without that, novalidate would let bad data through.",
+    "Behaviour beyond the spec, for the lead to veto:\n- A server-rendered (visible) summary takes focus on load, as in the GOV.UK pattern.\n- A shown error clears on input as soon as the value becomes valid; it never appears while the person is typing.\n- The summary removes a fixed field's link and hides when none remain.\n- sv-field exposes check() and error.\n- No validation runs on load, so server-rendered errors stay until the next blur after typing, or the next submit.",
+    "When an error clears, the error line is emptied as well as hidden, because a hidden element named in aria-describedby is still read.",
+    "Teal: neither component reads --sv-color-accent, so ?accent=teal changes only the borrowed submit button. The danger hue (25) is far from teal (195).",
+    "Both demos use the button builder's class=\"sv-button\" data-variant=\"primary\" data-width=\"full\" for the submit button. Its CSS was present in the build when the lint and checks ran."
+   ],
+   "token_gaps": [
+    "Width of the error summary's solid tab: I compute it as calc(size-mark + space-3 * 2) = 3rem. A component token error-summary.tab-width aliasing a 3rem size would name it.",
+    "Minimum height of a textarea: I compute it as calc(size-control * 2) = 6rem. A token field.textarea-min-height (6rem) would name it."
+   ],
+   "spec_gaps": [
+    "The spec says the CSS uses only :focus-visible. A summary focused by script after a mouse click may therefore show no ring in Chromium; the focus move and the role=alert announcement still happen. GOV.UK shows a ring on :focus. I left it as the spec says."
+   ],
+   "not_exercised": [
+    "Forced-colours mode is untested. The field's error mark is a masked background and may disappear, though the ink text and the thick leading edge remain. I added no forced-colors rule because the lint may flag system colour names outside its exemption.",
+    "No screen reader has heard the role=alert announcement or the aria-describedby output.",
+    "Safari and Firefox are untested, including the unprefixed mask shorthand and -webkit-text-fill-color on disabled controls.",
+    "A real select (the other builder's sv-select) inside sv-field__control is untested.",
+    "Right-to-left layout of the leading edge and the summary tab is untested.",
+    "The behaviour script ran on a cached chrome-headless-shell 1208, not the checker's Chromium 145.",
+    "I did not open the 320 dark and 1280 dark screenshots of demo-error-summary. I opened the 1280 light screenshot of demo-field before the last fixes, and the final demo-field run's other screenshots only at 320 dark.",
+    "The scripts loading late (after the person has typed) was reasoned about, not tested."
+   ]
+  },
+  {
+   "group": "feedback",
+   "verdict": "done with gaps",
+   "summary": "I built message, status and cost-summary as plain HTML and CSS, with no script. The three demo pages and three notes are written. Build, lint and size all pass, and the lint has 0 findings across the repo. demo-message and demo-status pass all 6 screen-check states. demo-cost-summary passes 4 of its 6 states and fails both 320 states with sideways scroll. The cause is the large-order fixture: £12,345,678.90 at the total size is about 281px wide, which is more than the display has room for at 320px on either surface. On a panel the page scrolls to 330px. On the ground the checker passes, but the screenshot shows the figures and the VAT note running past the dark plate. No existing token fixes this, so I left the check failing and reported it as a spec gap. No component uses the accent, so teal cannot change them.",
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: dist/souvenir.css from 13 files (34593 bytes; minified 25136)\nbuild: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "7 html-unknown-class findings, all in screens/demo-checkbox.html (another builder's sv-checkbox__label); none in my files"
+    },
+    {
+     "command": "node scripts/lint.mjs (final)",
+     "exit_code": 0,
+     "last_lines": "lint: 32 files (12 css, 10 html, 10 md), 0 findings"
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "message 530, status 583, cost-summary 491 gzip; all CSS 4459; size: 19 rows, 0 over budget"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-message",
+     "exit_code": 0,
+     "last_lines": "1 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-status",
+     "exit_code": 0,
+     "last_lines": "1 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-cost-summary",
+     "exit_code": 1,
+     "last_lines": "320 light sideways-scroll page is 330px wide in a 320px viewport; 320 dark same; 375 and 1280 pass"
+    },
+    {
+     "command": "grep -n accent src/components/{message,status,cost-summary}/*.css",
+     "exit_code": 1,
+     "last_lines": "(no matches: no accent use, so teal cannot affect these components)"
+    },
+    {
+     "command": "node scripts/.tmp/msc/spin.mjs (rotation sample of busy mark, deleted afterwards)",
+     "exit_code": 0,
+     "last_lines": "no-preference 800 0 45 90 135 180 -135 -90 -45 0 (one clockwise turn per 800 ms); reduce: no animation"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/message/message.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/status/status.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/cost-summary/cost-summary.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-message.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-status.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-cost-summary.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/message.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/status.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/cost-summary.md"
+   ],
+   "sizes": [
+    {
+     "item": "message CSS",
+     "gzip_bytes": 530,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "status CSS",
+     "gzip_bytes": 583,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "cost-summary CSS",
+     "gzip_bytes": 491,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "all CSS (dist/souvenir.min.css, all builders)",
+     "gzip_bytes": 4459,
+     "budget_bytes": 12288
+    }
+   ],
+   "decisions": [
+    "Message tab: span.sv-message__mark is absolutely positioned against the plate (inset-block 0). It therefore runs the full plate height whatever the content: one paragraph, a heading and a paragraph, or a paragraph and a quiet button. The plate pads its inline start by the tab width plus space-3. The mark is drawn in on-solid on ::before, aligned to the first line. Text is always --sv-color-text, never soft (fixes I1). On a panel, data-surface=\"well\" switches the plate to --sv-message-surface-on-panel.",
+    "No overflow:hidden on the message plate. The tab gets its own start-side radii instead, so a quiet button's focus ring is never clipped.",
+    "Status is one span with its words. The tab is ::before (mark-size square, tab radius, tone fill). The mark is ::after, laid over the tab in on-solid, 20px inside the 24px tab. min-block-size is body size x body line height (24px), and vertical-align is top, so it sits in a text line without changing its height. A long label wraps beside the tab, and the tab stays on the first line.",
+    "Busy mark: @keyframes rotate(1turn) over --sv-status-busy-duration, linear, only inside prefers-reduced-motion: no-preference. A first version used quarter-turn matrices because the lint then rejected 1turn. The lead has since updated the lint, and I switched to rotate(1turn). The switched version was measured as one clockwise turn per 800ms, with no animation under reduced motion.",
+    "Cost-summary rows are flex with wrap. The dt is flex 1 1 0 and keeps min-inline-size auto, so it never shrinks below its longest word: no 'Deliv/ery' (fixes L2). The dd is flex none and nowrap, with margin-inline-start auto, so a wrapped amount stays on the end edge. Unknown rows let the dd wrap at body size with proportional figures.",
+    "The cost-summary note p goes inside the total's dd, after the amount. A dl cannot hold a p directly. A second dd in the total row would make the checker measure the 16px note as a total.",
+    "The rule above the total is a 1px solid border in --sv-cost-summary-text at full strength, with no opacity. The total label is at the lead size, weight 600, tight line height. The amount is at --sv-cost-summary-total-size, weight 600.",
+    "The large-order overflow at 320 is left failing in the checker, not hidden. I did not clip it, scroll it, insert wbr, shrink it, or use a container query.",
+    "The quiet button in a message keeps its own padding and is not optically aligned to the text: message.css may not target .sv-button.",
+    "Forced colours: the marks switch to CanvasText with forced-color-adjust none. The message plate, cost display and status tab get a CanvasText border, so nothing vanishes."
+   ],
+   "token_gaps": [
+    "Status mark inset: the mark inside the 24px status tab is calc(var(--sv-size-mark) - var(--sv-space-1)) = 20px, because no token names an inset mark. Proposed: --sv-status-mark-size (component) aliasing a 1.25rem size, or a semantic size.mark-inset."
+   ],
+   "spec_gaps": [
+    "The large total cannot fit at 320px. £12,345,678.90 at 36px (display size, total-size token), weight 600, tabular figures, measures about 281px in Chromium with macOS system-ui. At 320px, the room inside the display is about 256px on the ground and about 222px on a panel. On a panel the page scrolls to 330px, and check-screens flags sideways-scroll at 320 light and dark. On the ground the page does not scroll, so the checker passes, but the 320 screenshot shows the figures and the VAT note running past the dark plate. Both fixtures overflow. The rules cannot all hold here: the amount never wraps, uses the total-size token, is the largest text on the page, and nothing overflows at 320px. No existing size between title (28px, equal to the h1) and display (36px) both fits and beats the h1. The lead's options: (a) allow the total amount only to break between digit groups; (b) make the h1 smaller below 48rem and give the total a smaller narrow-screen size; (c) add a narrow-screen total-size token. The check is left failing."
+   ],
+   "not_exercised": [
+    "Forced-colours rendering (CSS written, never rendered)",
+    "Right-to-left layout (logical properties only, not rendered in RTL)",
+    "A teal screenshot (none of the three components reads --sv-color-accent; grep returned no matches)",
+    "Screen-reader announcements of role=status and role=alert messages",
+    "Fonts other than macOS system-ui: Roboto or Segoe UI widths would move the 320px overflow threshold",
+    "Hover, active and focus screenshots of the quiet button inside a message (the checker's tab-stop focus checks passed)",
+    "Real devices"
+   ]
+  },
+  {
+   "group": "assistant",
+   "verdict": "done with gaps",
+   "summary": "Built chat-message and proposal as CSS-only components, each with a demo page and a note. Both demos pass check-screens with 0 findings in all 6 states, and the final screenshots show the button, message and status parts styled. The lint finds nothing in my files. The 7 findings that remain are all in another builder's screens/demo-checkbox.html. Gzipped CSS: chat-message 351 B, proposal 475 B. Proposal heights at 320 px, measured with a headless script: ready 593, busy 605, done 441, failed 701 (all under 720). The draft is 3 lines at 320 and 375. A person's message is a plate with an edge border, inset from the start by at least the inset token, with a visible \"You\" or \"Souvenir\" label. From 48rem the actions sit in one row.",
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 1,
+     "last_lines": "lint: 24 files (12 css, 10 html, 2 md), 7 findings; all 7 are html-unknown-class sv-checkbox__label in screens/demo-checkbox.html (another builder); 0 in my files"
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "chat-message CSS 808 min / 351 gzip; proposal CSS 1285 / 475; all CSS 25138 / 4467 of 12288; size: 19 rows, 0 over budget"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-proposal",
+     "exit_code": 0,
+     "last_lines": "pass in all 6 states; proposal height 701px at 320, 677 at 375, 521 at 1280; 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-chat-message",
+     "exit_code": 0,
+     "last_lines": "pass in all 6 states; proposal height 593px at 320; 0 findings"
+    },
+    {
+     "command": "node scripts/.tmp/chat-message-proposal/measure.mjs",
+     "exit_code": 0,
+     "last_lines": "320: Ready 593, Busy 605, Done 441, Failed 701, draftLines 3; 1280: all three actions in one row (busy: 244x68, 138x68, 72x68)"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/chat-message/chat-message.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/proposal/proposal.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/chat-message.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/proposal.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-chat-message.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-proposal.html"
+   ],
+   "sizes": [
+    {
+     "item": "chat-message CSS",
+     "gzip_bytes": 351,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "proposal CSS",
+     "gzip_bytes": 475,
+     "budget_bytes": 2048
+    },
+    {
+     "item": "all CSS (dist/souvenir.min.css)",
+     "gzip_bytes": 4467,
+     "budget_bytes": 12288
+    }
+   ],
+   "decisions": [
+    "Person plate: width fits its content, held to the inline end with margin-inline-start auto, and capped at 100% minus --sv-chat-message-person-inset. So the inset from the start is at least the token (32 px rendered at 375). The plate has a thin border in --sv-chat-message-person-edge, panel radius with the end-end corner at the control radius, and a fill in --sv-chat-message-person-surface. Assistant messages are plain text at full width. Both carry a weight-600 speaker label.",
+    "Message body: a grid with a space-3 gap. [data-user-content] inside a message gets overflow-wrap: anywhere.",
+    "Proposal is a self-contained panel (it does not rely on the sv-panel class). Its gap went from space-4 to space-3 so the failed state (two messages) fits 720 px at 320 px wide: 721 became 701.",
+    "Draft markup is figure.sv-proposal__message holding figcaption.sv-proposal__caption ('Message to Priya', soft text) and blockquote.sv-proposal__draft (2 px dashed edge in --sv-proposal-draft-edge). The figcaption gives the draft an accessible name.",
+    "Field rows wrap with flex. The value moves to its own line at the end rather than breaking inside a word. Rows are separated by thin divider rules.",
+    "Actions: buttons are targeted by attribute, never by class, to stay inside the lint's selector scope. On a phone the primary takes flex-basis 100%. From 48rem the row does not wrap; the other buttons do not shrink and only the primary's label wraps. Before this fix the busy state pushed Cancel onto a second row.",
+    "Wording: the primary reads 'Move event and send' (4 words, voice rule 11), which pairs with the given busy label. The heading reads 'Move the event to Thursday and tell Priya'. The draft was shortened so it renders 3 lines at 320 px (it was 4).",
+    "Done state removes both the actions and the 'Check it before you send' warning, because that text is false after sending (voice rule 12). The draft stays.",
+    "The busy primary is not disabled: aria-busy alone, as the spec says. The other actions stay enabled.",
+    "Teal checked by reading the CSS: neither of my stylesheets reads --sv-color-accent. Only the primary button, owned by the button builder, follows data-accent='teal'."
+   ],
+   "token_gaps": [],
+   "spec_gaps": [
+    "Done state: the draft keeps its dashed edge, which by the system's own meaning says 'not yet sent', after the success message says it was sent. There is no sent state for the draft. A possible fix is a solid edge for a sent draft, or dropping the draft once it is sent. That is the lead's call; I added no option.",
+    "At 320 px the busy primary label 'Moving event and sending…' wraps to 2 lines beside the spinner (button 68 px tall, padding kept). It still fits: busy is 605 px.",
+    "The failed state at 320 px is 701 of 720 px, which leaves 19 px. A longer heading or a fourth field row would push it over."
+   ],
+   "not_exercised": [
+    "Hover and pressed states, and real Tab-focus screenshots: the checker measured focus but its screenshots are taken with nothing focused.",
+    "Forced-colors mode and reduced motion.",
+    "The teal accent: checked by reading the CSS, not rendered.",
+    "RTL layouts, though only logical properties are used.",
+    "Screen reader output for figure/figcaption and for role=status on the static warning.",
+    "The real screens/assistant.html use of these components (not my job)."
+   ]
+  },
+  {
+   "group": "tooling",
+   "verdict": "done",
+   "summary": "All four tooling changes are in place, and each one was seen failing before the script change and passing after it. Lint now allows exactly `1turn` inside @keyframes, and allows the 19 system colour names only inside a block that is purely @media (forced-colors: active). The screen checker now exempts links in running text from the 24 by 24 target rule, has a new rule, missing-speaker-label, and records the tallest .sv-proposal height in the table and the JSON without passing or failing it. Lint self-test: 49 fixtures, 0 problems. Screen self-test: 18 pages, 13 of 13 rules seen failing, 0 problems. Normal lint still exits 1 with 49 findings, all html-unknown-class or html-unknown-value in other builders' demo screens against a stale dist build. My changes caused none of them.",
+   "commands": [
+    {
+     "command": "node scripts/lint.mjs --self-test (new fixtures, old script)",
+     "exit_code": 1,
+     "last_lines": "FAIL clean-forced-colors.css got css-color x20; FAIL clean-turn.css got css-unit@6; lint self-test: 49 fixtures, 18 rules seen failing, 2 problems"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --self-test (new fixtures, old script)",
+     "exit_code": 1,
+     "last_lines": "FAIL missing-speaker-label.html expect missing-speaker-label; got nothing; clean--inline-link.html failed control-too-small (links 100x17, 56x17, 113x17); check-screens self-test: 18 pages, 12 of 12 rules seen failing, 2 problems"
+    },
+    {
+     "command": "node scripts/lint.mjs --self-test (after lint change)",
+     "exit_code": 0,
+     "last_lines": "PASS clean-forced-colors.css, clean-turn.css; PASS css-color--system.css got css-color@4,6,9,12,15,18x3; PASS css-unit--angle-in-keyframes.css got css-unit@4,5,6; PASS css-unit--turn.css; lint self-test: 49 fixtures, 18 rules seen failing, 0 problems"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --self-test (after checker change, before fixture update)",
+     "exit_code": 1,
+     "last_lines": "FAIL control-too-small.html expect control-too-small; got nothing (its inline link in a sentence is now exempt); 18 pages, 13 of 13 rules seen failing, 1 problem"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --self-test (after control-too-small.html link made inline-block)",
+     "exit_code": 0,
+     "last_lines": "PASS clean--inline-link.html nothing; PASS control-too-small--lone-link.html (a 56x17px); PASS control-too-small.html (a.info 4x24px); PASS control-too-small--button-link-in-text.html; PASS missing-speaker-label.html (3 per state); check-screens self-test: 18 pages, 13 of 13 rules seen failing, 0 problems"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --dir scripts/.tmp/tooling-changes --no-shots",
+     "exit_code": 0,
+     "last_lines": "|   proposal height | 208px | 208px | 184px | 184px | 184px | 184px |; 2 screens x 6 states, 0 findings; JSON had proposalHeight 208 at 320px and targetExempt set on the 3 links in running text (17px tall)"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 1,
+     "last_lines": "lint: 6 files (4 css, 2 html, 0 md), 49 findings (27 html-unknown-class, 22 html-unknown-value, all in other builders' screens/demo-*.html against the current dist/souvenir.css)"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/lint.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/check-screens.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/src/components/demo/clean-turn.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/src/components/demo/css-unit--turn.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/src/components/demo/css-unit--angle-in-keyframes.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/src/components/demo/clean-forced-colors.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/src/components/demo/css-color--system.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/screens/clean.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/screens/clean--inline-link.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/screens/control-too-small.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/screens/control-too-small--lone-link.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/screens/control-too-small--button-link-in-text.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/screens/missing-speaker-label.html"
+   ],
+   "sizes": [],
+   "decisions": [
+    "I changed the existing small-control fixture (control-too-small.html) without weakening it. Its original markup, a 4 pixel 'i' link inside a sentence, is exactly the case the new rule exempts, so it began to pass (shown in the run before the fixture update). Its link is now display:inline-block, with a comment in the fixture saying why. It still fails control-too-small (4 by 24 pixels), and it now also proves the 'computed display must be inline' condition.",
+    "The 1turn exemption covers only the exact token 1turn, and only inside @keyframes. The failing fixtures show that -1turn, 0.5turn and 360deg inside @keyframes, and 1turn outside, still fail css-unit.",
+    "System colour names stay in the general named-colour list, so they fail everywhere by default. They are allowed only when every comma-separated branch of the @media query contains (forced-colors: active) and no branch uses 'not'. I chose this strict reading: the bare (forced-colors) form, (forced-colors: none), 'not (forced-colors: active)' and '(forced-colors: active), (min-width: 48rem)' all still fail. Hex values, colour functions and ordinary names such as red still fail inside the block. css-color--system.css shows each of these cases.",
+    "A link counts as being in running text only when all of these hold: it is a[href] or [role=link]; it does not have the class sv-button; its computed display is inline; and its parent element has another non-empty text node, or a visible display:inline element with text. A link inside a wrapper element that holds only that link is not exempt, which is the conservative choice. Each exempt control records targetExempt with the text 'inline link in running text (WCAG 2.5.8)' in the JSON, so a pass can be explained.",
+    "missing-speaker-label checks only visible .sv-chat-message elements. A label counts only if it is a visible .sv-chat-message__from with non-whitespace text. The existing hidden() function treats a visually hidden label as not visible, so the fixture fails on three cases: no label, a blank label and a visually hidden label.",
+    "Proposal height is the rounded height of the tallest visible .sv-proposal. It is stored as results[].proposalHeight and measurements.proposal ({count, height, where}). In the summary table it appears as an extra 'proposal height' row under the screen, shown only when at least one state has a proposal. It is never a finding.",
+    "I did not run check-screens in normal mode, because that would overwrite gates/raw/2026-11-15-screens.json and the digest screenshots that other builders own. I ran it with --dir on a scratch folder. Its output folder, scripts/.tmp/check-screens-out, did not exist before, so I deleted it afterwards along with my scratch folder."
+   ],
+   "token_gaps": [],
+   "spec_gaps": [
+    "The task asked for a lone link 18 pixels tall. In this Chromium, at 16px Arial, the lone link measures 56 by 17 pixels, so the fixture tests a 17 pixel link. It fails as intended.",
+    "The spec says links in running text are exempt but does not define 'running text'. I used the task's definition: the parent has other non-empty text or a visible inline sibling with text. A link inside a span that holds only that link, within a sentence, is not exempt."
+   ],
+   "not_exercised": [
+    "I did not exercise the [role=link] path of the running-text exemption; only a[href] is covered by a fixture.",
+    "I did not run check-screens in normal mode over screens/, so the gate JSON and screenshots were not regenerated with the new rule. The new rule and the proposal-height row will first show on the real screens in the lead's next full run.",
+    "I did not run npm run check, because package.json belongs to another builder. Normal lint was run once and exits 1 on 49 html-unknown-class or html-unknown-value findings in other builders' demo screens. Those findings come from a dist/souvenir.css that has not been rebuilt, not from my changes.",
+    "There is no fixture for a link whose only neighbour is an inline element with no text, which should not be exempt; the logic handles it, but no page shows it."
+   ]
+  },
+  {
+   "group": "ui-sdk",
+   "verdict": "done",
+   "summary": "I built and measured UI SDK 0.1.0-beta.3 for field, select, checkbox and button, and the recommendation is to stay native for all four. Measured gzip sizes are 22,405, 63,343, 19,212 and 15,628 bytes; together they are 74,857, with 16,714 bytes of shared code. Every bundle is over the 5,120-byte row. With scripts off, both trial pages sent all four fields exactly once; with scripts on, so did both. To get that, select and checkbox needed glue of our own (211 B). Real gains: the select's keyboard popup, and the button's pending state with a one-second announcement. Problems found: a required checkbox outside a field took focus ahead of the first invalid field, and the select probably loses autofill (inferred, not tested). The injected 'ui-sdk' layer sets only display and text-align: no colour, font or size. The 'check' script now runs build before lint.",
+   "commands": [
+    {
+     "command": "npm install --save-exact --ignore-scripts @ui-sdk/core@0.1.0-beta.3 @ui-sdk/web@0.1.0-beta.3",
+     "exit_code": 0,
+     "last_lines": "added 2 packages, and audited 6 packages; found 0 vulnerabilities"
+    },
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "UI SDK all 74857, button 15628, checkbox 19212, field 22405, select 63343 (OVER, reported, not failing); size: 19 rows, 0 over budget"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 0,
+     "last_lines": "lint: 32 files (12 css, 10 html, 10 md), 0 findings (an earlier run piped through tail reported tail's exit code; this clean re-run gave 0)"
+    },
+    {
+     "command": "node scripts/.tmp/ui-sdk-trial/exp.mjs (exploratory upgrade experiment)",
+     "exit_code": 0,
+     "last_lines": "email=&postcode=&country=&country2=GB  (fallback select left in form by ui-select)"
+    },
+    {
+     "command": "node scripts/build.mjs >/dev/null; node explore/ui-sdk-trial/check.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "page.evaluate: SyntaxError: Unexpected token ')'; process hung, stopped with TaskStop"
+    },
+    {
+     "command": "timeout 240 node explore/ui-sdk-trial/check.mjs",
+     "exit_code": 127,
+     "last_lines": "command not found: timeout"
+    },
+    {
+     "command": "node explore/ui-sdk-trial/check.mjs",
+     "exit_code": 0,
+     "last_lines": "check: every page, scripts off and on, sent every field exactly once: true"
+    },
+    {
+     "command": "node scripts/.tmp/ui-sdk-trial/probe.mjs",
+     "exit_code": 0,
+     "last_lines": "focus after empty submit: ui-checkbox; terms only missing: msg 'Please check this box if you want to proceed.'"
+    },
+    {
+     "command": "node scripts/.tmp/ui-sdk-trial/loo.mjs",
+     "exit_code": 0,
+     "last_lines": "field marginal 6869, select 46988, checkbox 3106, button 1180, shared core 16714, field without label 21791, glue.js min gzip 211"
+    },
+    {
+     "command": "node scripts/.tmp/ui-sdk-trial/probe2.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "page.goto: Timeout 30000ms exceeded (domcontentloaded waits for the held module script)"
+    },
+    {
+     "command": "node scripts/.tmp/ui-sdk-trial/probe2.mjs",
+     "exit_code": 0,
+     "last_lines": "terms not required, focus: input#email; after upgrade trigger: France checkbox: true; late-script submission: ?email=sam%40example.com&postcode=SW1A+1AA&country=FR&terms=yes"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/package.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/package-lock.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/ui-sdk/field/index.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/ui-sdk/select/index.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/ui-sdk/checkbox/index.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/ui-sdk/button/index.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/ui-sdk/all/index.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/index.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/native.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/result.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/trial.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/glue.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/check.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/check-result.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/README.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/explore/ui-sdk-trial/shots/ (6 PNG screenshots)",
+    "dist/ui-sdk/*.js and gates/raw/2026-11-15-size.json (generated by build.mjs and size.mjs)"
+   ],
+   "sizes": [
+    {
+     "item": "UI SDK field (field+input+label) dist/ui-sdk/field.js",
+     "gzip_bytes": 22405,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "UI SDK select dist/ui-sdk/select.js",
+     "gzip_bytes": 63343,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "UI SDK checkbox dist/ui-sdk/checkbox.js",
+     "gzip_bytes": 19212,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "UI SDK button dist/ui-sdk/button.js",
+     "gzip_bytes": 15628,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "UI SDK all four dist/ui-sdk/all.js",
+     "gzip_bytes": 74857,
+     "budget_bytes": 5120
+    },
+    {
+     "item": "explore/ui-sdk-trial/glue.js (minified, measured in scratch)",
+     "gzip_bytes": 211,
+     "budget_bytes": 5120
+    }
+   ],
+   "decisions": [
+    "Recommendation is to stay native for all four components. Every bundle is 3 to 12 times over the 5,120-byte row, and charter/exceptions.md keeps such a part blocked until the CEO changes the row.",
+    "Each component's share in the combined bundle is measured by leaving it out: all four (74,857 B) minus the other three. Results: field 6,869, select 46,988, checkbox 3,106, button 1,180, shared core 16,714. These leave-one-out bundles were built in scratch so they do not add rows to the size table.",
+    "Native fallback design: ui-input and ui-button wrap native elements. ui-select and ui-checkbox replace them, so the page carries a native select and checkbox. glue.js copies the person's choice across after upgrade and removes the native control, so each name submits once. The copy-across was verified with a delayed script.",
+    "A native <label for> is nested inside ui-field-label, so inputs keep their names with scripts off. ui-field keeps an author-set id, so the native label still works after upgrade.",
+    "trial.css is linked before dist/souvenir.css and opens with '@layer ui-sdk, sv.tokens, sv.base, sv.components, trial;' so the injected UI SDK layer has the lowest priority.",
+    "The 'check' script order is now tokens, build, lint, size, screens."
+   ],
+   "token_gaps": [],
+   "spec_gaps": [
+    "charter/exceptions.md requires native fallback markup for every UI SDK-backed part. For select and checkbox, UI SDK supplies none; its docs point to fallback markup on the component pages, but those pages have none. Meeting the rule takes our own glue script (211 B gzip), which the exception does not mention.",
+    "With UI SDK parts mixed on one page, a required ui-checkbox outside a ui-field took focus on an empty submit, ahead of the first invalid field. This breaks the expectation that the first invalid field takes focus.",
+    "UI SDK's field error falls back to the browser's English message, which says 'Please'. That breaks charter voice unless a 'match' message is written for every validity case."
+   ],
+   "not_exercised": [
+    "Real browser autofill. The select losing autofill is inferred from the markup, not observed.",
+    "Screen readers. The announcements were read from DOM live-region text, not heard.",
+    "Real phones, native pickers and browsers other than Chromium.",
+    "A strict content security policy (nonce handling for the injected <style> elements).",
+    "The dark theme and the teal accent on the trial pages.",
+    "UI SDK's agent bridge.",
+    "The native select's keyboard behaviour, because headless Chromium cannot show the operating system's popup.",
+    "A full 'npm run check'. Only build, lint and size were run; screens belong to other builders.",
+    "Screenshots of the trial pages at 320 and 1280 pixels wide. Only 375 pixels, light theme, was captured."
+   ]
+  }
+ ],
+ "missing": []
+}

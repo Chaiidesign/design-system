@@ -1,0 +1,8 @@
+/* Inside @keyframes only the exact value 1turn is allowed; every other angle still fails. */
+@layer sv.components {
+  @keyframes sv-demo-tilt {
+    from { transform: rotate(-1turn); }
+    50% { transform: rotate(0.5turn); }
+    to { transform: rotate(360deg); }
+  }
+}

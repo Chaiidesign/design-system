@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Select: demo</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Select</h1>
+
+  <section class="sv-stack" aria-labelledby="states">
+    <h2 id="states">States</h2>
+    <div class="sv-panel sv-stack">
+      <div class="sv-field">
+        <label class="sv-field__label" for="country">Country</label>
+        <select class="sv-field__control sv-select" id="country" name="country" autocomplete="country-name">
+          <option>United Kingdom</option>
+          <option>Ireland</option>
+          <option>France</option>
+        </select>
+      </div>
+
+      <div class="sv-field">
+        <label class="sv-field__label" for="delivery">Delivery</label>
+        <p class="sv-field__hint" id="delivery-hint">Costs are added to your total before you pay</p>
+        <select class="sv-field__control sv-select" id="delivery" name="delivery" aria-describedby="delivery-hint">
+          <option>Standard, £3.95</option>
+          <option>Next working day, £6.95</option>
+          <option>Collect from a shop, free</option>
+        </select>
+      </div>
+
+      <div class="sv-field">
+        <label class="sv-field__label" for="size">Size</label>
+        <p class="sv-field__hint" id="size-hint">Only one size is left in stock</p>
+        <select class="sv-field__control sv-select" id="size" name="size" disabled aria-describedby="size-hint">
+          <option>Extra large</option>
+        </select>
+      </div>
+
+      <div class="sv-field">
+        <label class="sv-field__label" for="day">Delivery day</label>
+        <p class="sv-field__error" id="day-error">Choose a delivery day</p>
+        <select class="sv-field__control sv-select" id="day" name="day" required aria-invalid="true" aria-describedby="day-error">
+          <option value="">Choose a day</option>
+          <option>Thursday 19 November</option>
+          <option>Friday 20 November</option>
+          <option>Saturday 21 November</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="on-ground">
+    <h2 id="on-ground">On the page ground</h2>
+    <div class="sv-field">
+      <label class="sv-field__label" for="reminder">Remind me</label>
+      <select class="sv-field__control sv-select" id="reminder" name="reminder">
+        <option>15 minutes before</option>
+        <option>1 hour before</option>
+        <option>1 day before</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="live">
+    <h2 id="live">Try it: required, with sv-field</h2>
+    <form class="sv-panel sv-stack" action="#live" method="get">
+      <sv-field>
+        <div class="sv-field">
+          <label class="sv-field__label" for="live-country">Country</label>
+          <p class="sv-field__hint" id="live-country-hint">We deliver to these countries</p>
+          <p class="sv-field__error" id="live-country-error" hidden></p>
+          <select class="sv-field__control sv-select" id="live-country" name="live-country" required data-error-required="Choose the country we deliver to" aria-describedby="live-country-hint">
+            <option value="">Choose a country</option>
+            <option>United Kingdom</option>
+            <option>Ireland</option>
+            <option>France</option>
+          </select>
+        </div>
+      </sv-field>
+      <button type="submit" class="sv-button" data-variant="secondary">Continue to payment</button>
+    </form>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat message: demo</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Chat message</h1>
+
+  <ol class="sv-chat" aria-label="Conversation">
+    <li>
+      <article class="sv-chat-message" data-from="person">
+        <p class="sv-chat-message__from">You</p>
+        <div class="sv-chat-message__body">
+          <p data-user-content>Move my 3pm with Priya to Thursday and tell her why.</p>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="sv-chat-message" data-from="assistant">
+        <p class="sv-chat-message__from">Souvenir</p>
+        <div class="sv-chat-message__body">
+          <span class="sv-status" data-tone="busy" role="status">Checking both calendars…</span>
+          <p>Thursday at 3pm is free for both of you. Here is the change I will make:</p>
+          <section class="sv-proposal" aria-labelledby="proposal-title">
+            <h2 id="proposal-title">Move the event to Thursday and tell Priya</h2>
+            <dl class="sv-proposal__fields">
+              <div><dt>Event</dt><dd>Planning with Priya</dd></div>
+              <div><dt>From</dt><dd>Wednesday, 3:00 pm</dd></div>
+              <div><dt>To</dt><dd>Thursday, 3:00 pm</dd></div>
+            </dl>
+            <figure class="sv-proposal__message">
+              <figcaption class="sv-proposal__caption">Message to Priya</figcaption>
+              <blockquote class="sv-proposal__draft">
+                <p>Hi Priya, can we move planning to Thursday at 3pm? I have a clash on Wednesday.</p>
+              </blockquote>
+            </figure>
+            <div class="sv-message" data-tone="warning" data-surface="well" role="status">
+              <span class="sv-message__mark" aria-hidden="true"></span>
+              <p>Drafted by Souvenir. Check it before you send.</p>
+            </div>
+            <div class="sv-proposal__actions">
+              <button type="button" class="sv-button" data-variant="primary">Move event and send</button>
+              <button type="button" class="sv-button" data-variant="secondary">Edit message</button>
+              <button type="button" class="sv-button" data-variant="quiet">Cancel</button>
+            </div>
+          </section>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="sv-chat-message" data-from="person">
+        <p class="sv-chat-message__from">You</p>
+        <div class="sv-chat-message__body">
+          <p data-user-content>Also send the notes to priya.raghunathan-planning@example.com</p>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="sv-chat-message" data-from="assistant">
+        <p class="sv-chat-message__from">Souvenir</p>
+        <div class="sv-chat-message__body">
+          <div class="sv-message" data-tone="danger" role="alert">
+            <span class="sv-message__mark" aria-hidden="true"></span>
+            <p>We couldn't reach your calendar. Nothing was changed. Try again.</p>
+          </div>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="sv-chat-message" data-from="person">
+        <p class="sv-chat-message__from">You</p>
+        <div class="sv-chat-message__body">
+          <p data-user-content>Thanks</p>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="sv-chat-message" data-from="assistant">
+        <p class="sv-chat-message__from">Souvenir</p>
+        <div class="sv-chat-message__body">
+          <p>Your week has 4 meetings. Thursday is the busiest day, with 2 meetings in the afternoon.</p>
+          <p>Friday morning is free. I can hold it for focused work if you want.</p>
+        </div>
+      </article>
+    </li>
+  </ol>
+</main>
+</body>
+</html>

@@ -1,0 +1,20 @@
+/* System colour names fail outside a forced-colors block, in a block that is not exactly
+   (forced-colors: active), and ordinary colour values still fail inside one. */
+@layer sv.components {
+  .sv-demo { background-color: Canvas; }
+  @media (forced-colors: none) {
+    .sv-demo { color: CanvasText; }
+  }
+  @media not (forced-colors: active) {
+    .sv-demo { color: ButtonText; }
+  }
+  @media (forced-colors: active), (min-width: 48rem) {
+    .sv-demo { color: Highlight; }
+  }
+  @media (forced-colors) {
+    .sv-demo { color: LinkText; }
+  }
+  @media (forced-colors: active) {
+    .sv-demo__part { color: red; background-color: #000; border-color: rgb(0 0 0); }
+  }
+}

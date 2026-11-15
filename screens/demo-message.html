@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Message: demo</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Message</h1>
+
+  <section class="sv-stack" aria-labelledby="tones">
+    <h2 id="tones">Tones on the ground</h2>
+    <div class="sv-message" data-tone="info" role="status">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>Souvenir has not changed anything yet.</p>
+    </div>
+    <div class="sv-message" data-tone="success" role="status">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>Order placed. Receipt sent to sam@example.com.</p>
+    </div>
+    <div class="sv-message" data-tone="warning" role="status">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>Delivery cost is added after you enter your postcode.</p>
+    </div>
+    <div class="sv-message" data-tone="danger" role="alert">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>We couldn't reach the payment service. You have not been charged. Try again.</p>
+    </div>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="content">
+    <h2 id="content">A heading and a paragraph, or a paragraph and a quiet button</h2>
+    <div class="sv-message" data-tone="danger" role="alert">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <h3>Payment failed</h3>
+      <p>We couldn't reach the payment service. You have not been charged.</p>
+    </div>
+    <div class="sv-message" data-tone="danger" role="alert">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>We couldn't reach your calendar. Nothing was changed.</p>
+      <button type="button" class="sv-button" data-variant="quiet">Check calendar again</button>
+    </div>
+  </section>
+
+  <section class="sv-panel sv-stack" aria-labelledby="panel">
+    <h2 id="panel">On a panel</h2>
+    <p>Thursday at 3pm is free for both of you. Here is the message I will send to Priya:</p>
+    <p>Hi Priya, I need to move our planning session to Thursday at 3pm because of a clash on Wednesday. Does that work?</p>
+    <div class="sv-message" data-tone="warning" data-surface="well">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>Drafted by Souvenir. Check it before you send.</p>
+    </div>
+    <div class="sv-message" data-tone="info" data-surface="well" role="status">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>Souvenir has not changed anything yet.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

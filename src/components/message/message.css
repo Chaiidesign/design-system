@@ -1,0 +1,80 @@
+/* message: a plate with a solid tab down its whole leading edge. The tab carries the tone's
+   colour and the tone's own mark; the text beside it is always ink, never softer than the page. */
+@layer sv.components {
+  .sv-message {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sv-space-2);
+    justify-items: start;
+    min-block-size: var(--sv-size-control);
+    padding-block: var(--sv-space-3);
+    padding-inline: calc(var(--sv-size-mark) + var(--sv-space-3) * 3) var(--sv-space-4);
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-color-panel);
+    color: var(--sv-color-text);
+  }
+
+  /* On a panel the plate takes the well colour, so it stays a plate. */
+  .sv-message[data-surface="well"] {
+    background-color: var(--sv-message-surface-on-panel);
+  }
+
+  /* The tab: out of flow, so it runs the full height however many lines the text takes. */
+  .sv-message__mark {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(var(--sv-size-mark) + var(--sv-space-3) * 2);
+    padding: var(--sv-space-3);
+    border-start-start-radius: var(--sv-radius-control);
+    border-end-start-radius: var(--sv-radius-control);
+  }
+
+  .sv-message__mark::before {
+    content: "";
+    display: block;
+    block-size: var(--sv-size-mark);
+    background-color: var(--sv-color-on-solid);
+    mask: var(--sv-icon-info) center / contain no-repeat;
+  }
+
+  .sv-message[data-tone="info"] > .sv-message__mark {
+    background-color: var(--sv-color-neutral-solid);
+  }
+
+  .sv-message[data-tone="success"] > .sv-message__mark {
+    background-color: var(--sv-color-success);
+  }
+
+  .sv-message[data-tone="success"] > .sv-message__mark::before {
+    mask-image: var(--sv-icon-success);
+  }
+
+  .sv-message[data-tone="warning"] > .sv-message__mark {
+    background-color: var(--sv-color-warning);
+  }
+
+  .sv-message[data-tone="warning"] > .sv-message__mark::before {
+    mask-image: var(--sv-icon-warning);
+  }
+
+  .sv-message[data-tone="danger"] > .sv-message__mark {
+    background-color: var(--sv-color-danger);
+  }
+
+  .sv-message[data-tone="danger"] > .sv-message__mark::before {
+    mask-image: var(--sv-icon-danger);
+  }
+
+  @media (forced-colors: active) {
+    .sv-message {
+      border: var(--sv-border-thin) solid CanvasText;
+    }
+
+    .sv-message__mark::before {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+}

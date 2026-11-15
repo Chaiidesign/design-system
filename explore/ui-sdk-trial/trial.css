@@ -1,0 +1,170 @@
+/* Clay: UI SDK trial (explore/ui-sdk-trial). Not linted; tokens only (--sv- custom properties, no primitives).
+   Linked BEFORE dist/souvenir.css so that this first statement fixes the layer order: the layer UI SDK injects
+   comes first and every Souvenir layer wins over it. */
+@layer ui-sdk, sv.tokens, sv.base, sv.components, trial;
+
+@layer trial {
+  /* Before upgrade, hide the parts that need UI SDK's script: a dead trigger, a loose list of items,
+     an empty checkbox. The native fallback beside them does the job instead. */
+  ui-select:not(:defined) > :not(select),
+  ui-checkbox:not(:defined) {
+    display: none;
+  }
+  ui-field-error:not(:defined) {
+    display: none;
+  }
+
+  /* Field: label, hint, control, error. Works on native markup and on UI SDK's data-slot parts alike. */
+  .trial-field,
+  ui-field {
+    display: grid;
+    gap: var(--sv-space-2);
+  }
+  label,
+  [data-slot="field-label"] {
+    font-weight: var(--sv-font-weight-strong);
+  }
+  [data-slot="field-description"],
+  .trial-hint {
+    color: var(--sv-color-text-soft);
+  }
+  input:not([type="checkbox"]),
+  select,
+  [data-slot="select-trigger"] {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-block-size: var(--sv-size-control);
+    padding-inline: var(--sv-space-3);
+    border: var(--sv-border-thin) solid var(--sv-color-edge);
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-color-well);
+    color: var(--sv-color-text);
+    font: inherit;
+    text-align: start;
+  }
+  [data-slot="select-trigger"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sv-space-2);
+  }
+  [data-slot="select-trigger"]::after {
+    content: "";
+    inline-size: var(--sv-select-arrow-size);
+    block-size: var(--sv-select-arrow-size);
+    background-color: currentColor;
+    mask-image: var(--sv-icon-chevron);
+    mask-size: 100% 100%;
+  }
+  [data-slot="select-value"][data-placeholder] {
+    color: var(--sv-color-text-soft);
+  }
+  [data-slot="select-content"] {
+    min-inline-size: var(--anchor-width);
+    max-block-size: var(--available-height);
+    overflow: auto;
+    padding: var(--sv-space-1);
+    border: var(--sv-border-thin) solid var(--sv-color-edge);
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-color-panel);
+  }
+  [data-slot="select-item"] {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--sv-size-control);
+    padding-inline: var(--sv-space-3);
+    border-radius: var(--sv-radius-control);
+  }
+  [data-slot="select-item"][data-highlighted] {
+    outline: var(--sv-focus-width) solid var(--sv-color-focus);
+    outline-offset: calc(var(--sv-focus-width) * -1);
+  }
+  [data-slot="select-item"][data-selected] {
+    font-weight: var(--sv-font-weight-strong);
+  }
+
+  /* Error: text with the danger mark and a thicker leading edge on the control; never colour alone. */
+  [data-slot="field-error"],
+  .trial-error {
+    display: flex;
+    gap: var(--sv-space-2);
+    align-items: start;
+  }
+  [data-slot="field-error"][hidden] {
+    display: none;
+  }
+  [data-slot="field-error"]::before {
+    content: "";
+    flex: none;
+    inline-size: var(--sv-size-mark);
+    block-size: var(--sv-size-mark);
+    margin-block-start: var(--sv-space-1);
+    background-color: var(--sv-color-danger);
+    mask-image: var(--sv-icon-danger);
+    mask-size: 100% 100%;
+  }
+  [data-invalid] > input,
+  input[data-invalid],
+  [data-slot="select-trigger"][data-invalid],
+  input:user-invalid,
+  select:user-invalid {
+    border-inline-start-width: var(--sv-field-error-edge-width);
+  }
+
+  /* Checkbox: the whole row is the target. */
+  .trial-check {
+    display: flex;
+    align-items: center;
+    gap: var(--sv-space-3);
+    min-block-size: var(--sv-size-control);
+    font-weight: var(--sv-font-weight-regular);
+  }
+  .trial-check input[type="checkbox"],
+  [data-slot="checkbox"] {
+    flex: none;
+    display: grid;
+    place-items: center;
+    inline-size: var(--sv-checkbox-box-size);
+    block-size: var(--sv-checkbox-box-size);
+    margin: 0;
+    border: var(--sv-border-thick) solid var(--sv-color-edge);
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-color-well);
+  }
+  .trial-check input[type="checkbox"] {
+    accent-color: var(--sv-color-text);
+  }
+  [data-slot="checkbox-indicator"] {
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: var(--sv-color-text);
+    mask-image: var(--sv-icon-check);
+    mask-size: 100% 100%;
+  }
+
+  /* Button: the primary action. */
+  button[type="submit"] {
+    inline-size: 100%;
+    min-block-size: var(--sv-size-control-primary);
+    padding-inline: var(--sv-space-4);
+    border: 0;
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-button-primary-fill);
+    color: var(--sv-button-primary-text);
+    font: inherit;
+    font-weight: var(--sv-font-weight-strong);
+  }
+  button[data-pending],
+  button[aria-busy="true"] {
+    cursor: progress;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  button:focus-visible,
+  [data-slot="checkbox"]:focus-visible,
+  .trial-check input[type="checkbox"]:focus-visible {
+    outline: var(--sv-focus-width) solid var(--sv-color-focus);
+    outline-offset: var(--sv-focus-offset);
+  }
+}

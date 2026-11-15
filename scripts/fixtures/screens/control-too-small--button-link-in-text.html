@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="expect" content="control-too-small control-too-short">
+<title>Screen fixture: an sv-button link inside a sentence is not exempt</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#1a1a1a;font:16px/1.5 Arial,Helvetica,sans-serif}
+main{padding:16px;display:grid;gap:16px}
+h1{margin:0;font-size:28px;line-height:1.2}
+p{margin:0}
+a{color:inherit}
+button{min-height:48px;padding:0 16px;font:inherit;border:2px solid #555;border-radius:8px;background:#fff;color:#1a1a1a}
+:focus-visible{outline:3px solid #1a1a1a;outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<h1>Your basket</h1>
+<p>Two items are waiting. <a class="sv-button" href="#p">Pay £60.75</a> when you are ready.</p>
+</main>
+</body>
+</html>

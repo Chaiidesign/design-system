@@ -1,0 +1,70 @@
+/* cost-summary: the inverse display. Terms wrap only between words; amounts never wrap and sit
+   on the inline-end edge in tabular figures. When a term and its amount cannot share a line,
+   the amount moves below the term, still at the end. The total is the largest reading on the page. */
+@layer sv.components {
+  .sv-cost-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--sv-space-3) var(--sv-space-4);
+    border-radius: var(--sv-radius-control);
+    background-color: var(--sv-cost-summary-surface);
+    color: var(--sv-cost-summary-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sv-cost-summary__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--sv-space-4);
+    padding-block: var(--sv-space-1);
+  }
+
+  /* The term never shrinks below its longest word (min-inline-size stays auto). */
+  .sv-cost-summary__row > dt {
+    flex: 1 1 0;
+  }
+
+  .sv-cost-summary__row > dd {
+    flex: none;
+    margin-inline-start: auto;
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .sv-cost-summary__row[data-state="unknown"] > dt {
+    flex: 0 1 auto;
+  }
+
+  .sv-cost-summary__row[data-state="unknown"] > dd {
+    flex: 1 1 0;
+    font-variant-numeric: normal;
+    white-space: normal;
+  }
+
+  .sv-cost-summary__row[data-row="total"] {
+    margin-block-start: var(--sv-space-2);
+    padding-block-start: var(--sv-space-3);
+    border-block-start: var(--sv-border-thin) solid var(--sv-cost-summary-text);
+    font-size: var(--sv-font-size-lead);
+    font-weight: var(--sv-font-weight-strong);
+    line-height: var(--sv-font-line-height-tight);
+  }
+
+  .sv-cost-summary__row[data-row="total"] > dd {
+    font-size: var(--sv-cost-summary-total-size);
+  }
+
+  .sv-cost-summary__note {
+    font-size: var(--sv-font-size-body);
+    font-weight: var(--sv-font-weight-regular);
+    line-height: var(--sv-font-line-height-body);
+    white-space: normal;
+  }
+
+  @media (forced-colors: active) {
+    .sv-cost-summary {
+      border: var(--sv-border-thin) solid CanvasText;
+    }
+  }
+}
