@@ -3,7 +3,7 @@
 Each entry gives the decision, the reason, the principle it rests on, and how to reverse it.
 Entries under "Awaiting CEO" were made without an answer from the CEO. In each case the most reversible option was chosen and the work continued.
 
-Last updated: 2026-11-14
+Last updated: 2026-11-15
 
 ## Awaiting CEO
 
@@ -131,6 +131,7 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 
 - **Situation:** On 14 November the CEO wrote "we need to use this" about UI SDK (ui-sdk.dev). The rest of the sentence was cut off. On 13 November the lead had decided the opposite: "watched, not used" (D-008, item 3). The lead read the docs and measured the files; the record is `notes/sources/2026-11-14-ui-sdk.md`. The lead's first version of this entry was failed by a fresh reviewer, because it put UI SDK inside shipped components without noticing that the charter forbids that. This is the corrected entry.
 - **What the lead decided without you:** UI SDK is used now, in the two places the charter already allows: prototypes and time-boxed experiments. D-013 says how.
+- **Point 1 is answered.** On 15 November 2026 the CEO granted the exception ("Yes, add it"). It is recorded in `charter/exceptions.md` and in D-014. Points 2, 3 and 4 stay open; see D-015 for what the CEO then instructed for one night.
 - **1. An exception to principle 6.** The charter says: "Nothing in brick depends on software with a pre-release version tag or a version below 1.0, except items on a written exception list" (`charter/principles.md`, principle 6), and its budget row is "Zero pre-release dependencies in brick" (`charter/budget.md`). Brick means work that is reviewed, tested and shipped. UI SDK is at 0.1.0-beta.3, was first published on 12 November 2026, and says its interfaces may change. A change to a principle's limits is yours. *Default taken:* no exception. UI SDK stays out of every shipped component until you say otherwise. *To grant it:* say "add UI SDK to the exception list". The lead would then pin an exact version and put a Souvenir component in front of every UI SDK part, so that a change in UI SDK is absorbed in one place.
 - **2. The JavaScript budget.** Measured from UI SDK's hosted files: a button costs about 20 kilobytes compressed, a field 22, a calendar 38, a date picker 68; button, input, label, field and toast together cost 55. The charter's rows are 5 kilobytes per component and 15 for the checkout slice, and loosening a budget is yours. No figure exists yet for an app that bundles the packages, or for field and button without toast. *Default taken:* the budget is not changed and no new figure is proposed. Item 3.5 builds field and button both ways as prototypes and measures them; the result comes to you, and it is kept out of the one-time budget reset at Gate 3.
 - **3. Parts beyond the first four.** What UI SDK would give us lies mostly outside the founding set: date picker, calendar and time input for appointment booking; combobox; popover; the chat helpers. The charter says each new part arrives as an experiment and is promoted by the steward, and there is no steward. Each also exceeds the 5 kilobyte row many times over. *Default taken:* these are a candidate list, not a decision. None is built as a shipped part.
@@ -206,6 +207,29 @@ What does not change: the core tasks of every slice need no JavaScript, so any U
 - **Principle:** This decision stays inside principle 6 by keeping UI SDK out of brick. Putting it in brick would be an exception to principle 6, which only the CEO can grant.
 - **Strongest arguments against, in order:** (1) Adopting it in shipped components would break two of the charter's hard checks a day after they were written: no pre-release dependency in brick, and JavaScript budgets exceeded four to fourteen times. (2) It meets no need in the first slice: the four checkout parts work as plain HTML, and UI SDK has nothing for the cost summary or for page-level feedback. (3) The decision rests on half a sentence from the CEO and on docs alone; no component page, no source and no test kit was read or run. (4) The package is three days old, and the bridge, the undo of agent changes and the custom-component agent key are marked experimental.
 - **To reverse:** see A-16.
+
+### D-014. The CEO granted UI SDK an exception to principle 6
+
+Decided by the CEO on 15 November 2026, in answer to A-16, point 1. UI SDK may be a dependency of shipped components, pinned to exactly 0.1.0-beta.3, with a Souvenir component in front of every UI SDK part. The entry and its conditions are in `charter/exceptions.md`, which this decision creates; `charter/principles.md` now says where the list is and that only the CEO adds to it. The JavaScript budget rows are unchanged, so a UI SDK-backed part above 5 kilobytes is still blocked by the budget until the CEO changes the row. To reverse: the CEO says "watch only" and the entry is struck.
+
+### D-015. Version 0.2, built overnight on the CEO's instruction of 15 November
+
+The CEO instructed, for one night: build version 0.2 on the Instrument direction with Ledger's plain words; one token file with a single swappable accent in blue and teal; about ten components; the checkout and assistant screens rebuilt from those components only; an agent test on three screens nobody drew; no new charters, principles or review gates; one fresh review at the end. Where this differs from the charter, the CEO's instruction governs for this work, and each difference is listed here so it can be reversed.
+
+- **Direction:** Instrument replaces the provisional Ledger default of A-13. The CEO chose it.
+- **The ten parts** (button, field, select, checkbox, cost summary, error summary, page message, status tab, assistant message, proposal card) join the founding set by the CEO's instruction. No steward promotion was involved.
+- **Gate 2 is not run tonight,** and no review follows each step. Automated checks run at each step and one fresh-context review runs at the end.
+- **Two themes, not three.** Light and dark are built. The increased-contrast theme the charter requires is not built tonight.
+- **Work is committed to main,** not to a branch as the lead noted on 14 November, because nobody is awake to review a branch.
+- **The lead's own design decisions for 0.2,** each reversible by changing one file:
+  1. Parts are selected by class names beginning `sv-`. Options are `data-` attributes (`data-variant`, `data-tone`). States are native pseudo-classes and ARIA attributes. UI SDK's own part names are not copied (this settles D-013, point 4).
+  2. Every part works as plain HTML and CSS. A light custom element adds behaviour where there is some. Nothing needs JavaScript to complete a core task.
+  3. Text is always ink. The accent appears only as a solid fill. Status colour appears only as a solid tab with a mark of its own shape. The focus ring is ink, which was the clearest in the review of 14 November.
+  4. The accent is one semantic token that points to a blue or a teal primitive. Hover and pressed shades are mixed from it in CSS, so swapping the one token swaps everything.
+  5. "Information" and "busy" carry no hue, so that no status colour sits within 30 degrees of either accent.
+  6. The cost display is an inverse surface: dark on a light theme and light on a dark theme. This fixes the loss of separation the review found in Instrument's dark theme.
+  7. UI SDK is used where it adds behaviour and fits the budget row. Where it does not fit, the part ships on native HTML and the UI SDK variant is built and measured beside it, and the figure goes to the CEO.
+- **"Ledger's plain words"** is read as: the wording of the voice rules, visible "You" and "Souvenir" labels, and no decorative type. If the CEO meant something else, that is a morning question.
 
 ### D-007. Three arguments against the charter, kept on record
 

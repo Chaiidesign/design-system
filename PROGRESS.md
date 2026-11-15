@@ -3,7 +3,7 @@
 The work tree for the Souvenir design system. Status is one of: next, in progress, done, blocked.
 An item is marked done only when its check output or reviewer verdict has been shown in the session and is linked here.
 
-Last updated: 2026-11-14
+Last updated: 2026-11-15
 
 ## Setup
 
@@ -61,6 +61,20 @@ Pass criteria for Gate 2 (written 13 November, before the phase started; the rev
 | 2.2 Token architecture: primitive, semantic, component; lint that blocks every primitive group in components | Fable | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (a ban ships with its check; a failing check names its rule). Work moves off main to a branch from this item on |
 | 2.3 Token files and themes, DTCG 2025.10; contrast checks | Sonnet or Haiku; automated | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (colours and lengths converted in code, in OKLCH; no tolerance added to any range) |
 | Gate 2: Opus reviewer plus tests | Opus reviewer | next | |
+
+## Version 0.2, overnight, 15 November
+
+Set by the CEO's instruction of 15 November (DECISIONS.md D-015). It runs ahead of the phases below and replaces their order for this work. Judged by the screens, not by documents.
+
+| Item | Owner | Status | Evidence |
+|---|---|---|---|
+| V.0 Record the UI SDK exception | Fable | done | charter/exceptions.md; DECISIONS.md D-014 |
+| V.1 Direction: Instrument; fix its quiet machine-draft warning | Fable | in progress | |
+| V.2 Tokens: one file, OKLCH, blue and teal accent, light and dark | Opus builds; scripts check | next | |
+| V.3 Ten components, plain HTML and CSS plus web components; sizes measured | Opus builds; scripts check | next | |
+| V.4 Checkout and assistant screens from components only, checked at 320, 375 and 1280, light and dark | Opus builds; scripts check | next | |
+| V.5 AGENTS.md and a note per component; a fresh agent builds three screens from them alone | Sonnet builds the screens; Fable fixes the system | next | |
+| V.6 One fresh-context review; digest with screenshots | Fable reviewer; Fable | next | |
 
 ## Phase 3: Checkout slice
 

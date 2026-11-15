@@ -128,6 +128,9 @@ button:active{transform:translateY(var(--press-depth))}
 .mark{align-self:stretch;margin-block:calc(var(--space-4)*-1);padding:var(--space-4) var(--space-3);color:var(--color-on-solid)}
 .info .mark{background:var(--color-info)}
 .danger .mark{background:var(--color-danger)}
+/* The machine-draft warning is a status like any other: ink text and a solid amber tab. It sits inside a panel, so its plate is the ground showing through. */
+.warning .mark{background:var(--color-warning)}
+.msg.inset{background:var(--color-ground)}
 
 @media (prefers-reduced-motion:no-preference){
 input,button,textarea{transition:border-color var(--motion),background-color var(--motion),transform var(--motion)}
@@ -162,7 +165,7 @@ input,button,textarea{transition:border-color var(--motion),background-color var
         <blockquote aria-label="Drafted message" class="well">
           <p>Hi Priya, I need to move our planning session to Thursday at 3pm because of a clash on Wednesday. Does that work?</p>
         </blockquote>
-        <p class="hint stamp"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20l1-4L16.5 4.5l3 3L8 19ZM14 7l3 3"/></svg>Drafted by Souvenir. Check it before you send.</p>
+        <p class="msg warning inset"><span class="mark"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 4l9.5 16h-19ZM12 10v4M12 17h.01"/></svg></span>Drafted by Souvenir. Check it before you send.</p>
         <div class="actions">
           <button type="button" class="primary">Move event and send message</button>
           <button type="button">Edit message</button>
