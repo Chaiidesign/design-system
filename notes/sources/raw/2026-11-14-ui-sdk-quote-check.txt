@@ -1,0 +1,10 @@
+Run: 2026-11-15T07:26:53Z  check-reader-quotes.py against the docs text files fetched from ui-sdk.dev on 14 November 2026 (PST)
+core-guides        facts  38  quote found in file  38
+core-utilities     facts  41  quote found in file  41
+core-behaviors-a   facts  38  quote found in file  38
+core-behaviors-b   facts  38  quote found in file  37
+agents             facts  40  quote found in file  40
+components         facts  37  quote found in file  37
+status             facts  31  quote found in file   1
+total 263, found at stated line 232, found elsewhere in file 0, not checkable or missing 31
+  MISS ('core-behaviors-b', 'docs_core_llms.txt', 6180, 'Someone who prefer reduced motion gets the end at once')

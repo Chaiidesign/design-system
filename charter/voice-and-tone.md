@@ -122,6 +122,7 @@ An unknown charge may appear only before the step that commits the person to pay
 3. Owning our failures with "we" builds more trust than impersonal wording. Apple's guidance advises against "we" in errors; this file diverges, and it needs a test.
 4. People can state what they will pay from the cost summary wording.
 5. The starting values for sentence and message length are short enough to read and long enough to be exact.
+6. A busy button whose visible label changes ("Pay £48.20" to "Paying £48.20…", rule 17) helps people more than a label that stays the same beside a spinner. A set of skills supplied by the CEO takes the opposite view; its reason was not in the files supplied.
 
 ## The lead's decisions, 13 November 2026
 

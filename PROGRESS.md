@@ -3,7 +3,7 @@
 The work tree for the Souvenir design system. Status is one of: next, in progress, done, blocked.
 An item is marked done only when its check output or reviewer verdict has been shown in the session and is linked here.
 
-Last updated: 2026-11-13
+Last updated: 2026-11-14
 
 ## Setup
 
@@ -12,6 +12,7 @@ Last updated: 2026-11-13
 | S.1 Read CLAUDE.md, the CEO brief and the references | Fable | done | DECISIONS.md D-001 to D-008 |
 | S.2 Summarise the three process sources into notes/sources/ | Opus | done | notes/sources/; DECISIONS.md D-002 |
 | S.3 Create PROGRESS.md, DECISIONS.md, scorecard.md, lessons/ | Fable | done | this commit |
+| S.4 Read UI SDK and the six skills the CEO supplied on 14 November | Opus readers; Fable decides | done | notes/sources/2026-11-14-ui-sdk.md; notes/sources/2026-11-14-ceo-skills.md; DECISIONS.md D-013, A-16, A-17 |
 
 ## Phase 1: Charter
 
@@ -56,9 +57,9 @@ Pass criteria for Gate 2 (written 13 November, before the phase started; the rev
 
 | Item | Owner | Status | Evidence |
 |---|---|---|---|
-| 2.1 Three visual directions as clay prototypes; choose one | Fable | in progress | Three prototypes built and checked (explore/visual-directions/; DECISIONS.md A-13). Waiting for the CEO's choice until 14 November, 18:30 |
-| 2.2 Token architecture: primitive, semantic, component; lint that blocks every primitive group in components | Fable | next | |
-| 2.3 Token files and themes, DTCG 2025.10; contrast checks | Sonnet or Haiku; automated | next | |
+| 2.1 Three visual directions as clay prototypes; choose one | Fable | in progress | Three prototypes built on two screens (explore/visual-directions/). The deadline passed with no choice from the CEO, so the lead took Ledger provisionally (DECISIONS.md A-13). Not done: a fresh Fable reviewer was asked on 14 November to judge all six pages with measurements; its verdict is not yet saved in gates/raw/ |
+| 2.2 Token architecture: primitive, semantic, component; lint that blocks every primitive group in components | Fable | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (a ban ships with its check; a failing check names its rule). Work moves off main to a branch from this item on |
+| 2.3 Token files and themes, DTCG 2025.10; contrast checks | Sonnet or Haiku; automated | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (colours and lengths converted in code, in OKLCH; no tolerance added to any range) |
 | Gate 2: Opus reviewer plus tests | Opus reviewer | next | |
 
 ## Phase 3: Checkout slice
@@ -67,10 +68,12 @@ Pass criteria: to be written before the phase starts.
 
 | Item | Owner | Status | Evidence |
 |---|---|---|---|
-| 3.1 Component API, naming and file conventions | Fable | next | |
-| 3.2 Cost summary end to end as the reference component, then a skill written from it | Opus | next | |
+| 3.1 Component API, naming and file conventions | Fable | next | Decides the part-naming and state-attribute convention (DECISIONS.md D-013, point 4) after reading UI SDK's styling and component pages |
+| 3.2 Cost summary end to end as the reference component, with the reference checkout page, its fixtures and its test server; then a skill written from it | Opus | next | The test server blocks every request that writes data before any capture runs (notes/sources/2026-11-14-ceo-skills.md) |
 | 3.3 Field, button, feedback from that skill | Sonnet or Haiku | next | |
-| 3.4 Unit, keyboard, axe and visual-regression tests; metadata | Sonnet or Haiku | next | |
+| 3.4 Unit, keyboard, axe and visual-regression tests; metadata | Sonnet or Haiku | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (baselines never edited; a no-change control capture; focus judged by real Tab presses; responsiveness measured, not seen) |
+| 3.5 Field and button built twice in explore/, on plain HTML and on UI SDK with native fallback markup; compressed size and the three scripted interactions measured for each | Opus builds; Sonnet or Haiku measures; Opus reviews | next | Informs DECISIONS.md A-16, point 2; the CEO decides if a figure is above the budget row. The measurement is kept out of the Gate 3 budget reset. Clay only: nothing in brick imports it |
+| 3.6 Short survey of stable, multi-framework, unstyled behaviour libraries, as alternatives to UI SDK | Sonnet gathers with quotes; Opus reviews | next | Required by DECISIONS.md D-013 before any UI SDK part could enter brick |
 | Gate 3: Opus reviewer plus tests; Fable samples all four | Opus reviewer, Fable | next | |
 
 ## Phase 4: Tooling and docs
@@ -80,7 +83,7 @@ Pass criteria: to be written before the phase starts.
 | Item | Owner | Status | Evidence |
 |---|---|---|---|
 | 4.1 Repo structure, semver, deprecation and retire policy, CI | Fable | next | |
-| 4.2 Docs site built with the system, package, MCP server, AGENTS.md and llms.txt, design-code sync plan, usage telemetry plan | Opus | next | |
+| 4.2 Docs site built with the system, package, MCP server, AGENTS.md and llms.txt, design-code sync plan, usage telemetry plan | Opus | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (never document a state or use with no source; every usage rule has a snippet that breaks it). UI SDK's per-package docs for agents are a model (notes/sources/2026-11-14-ui-sdk.md) |
 | 4.3 Docs pages, lint rules, CI wiring | Sonnet or Haiku | next | |
 | 4.4 Adoption test: a Sonnet or Haiku agent builds a checkout page from the docs alone; fix what it struggled with | Sonnet or Haiku, Fable | next | |
 | Gate 4: fresh Fable reviewer | Fable reviewer | next | |

@@ -1,0 +1,20 @@
+Run: 2026-11-15T07:26:39Z  python3 -I notes/sources/raw/measure-ui-sdk-size.py
+web.js       raw    1420  gzip-9    814
+web/core.js  raw   75192  gzip-9  26374
+web.css      raw   83561  gzip-9  12003
+
+button       files   5  raw   55589  gzip-9, summed per file  20413
+label        files   3  raw   51876  gzip-9, summed per file  18634
+input        files   7  raw   60742  gzip-9, summed per file  22634
+field        files   4  raw   60958  gzip-9, summed per file  21647
+checkbox     files   8  raw   67325  gzip-9, summed per file  24292
+toast        files  19  raw  112731  gzip-9, summed per file  44717
+dialog       files  26  raw  126238  gzip-9, summed per file  51133
+popover      files  22  raw  117063  gzip-9, summed per file  46961
+select       files  36  raw  165951  gzip-9, summed per file  67639
+calendar     files  14  raw   97552  gzip-9, summed per file  37881
+date-picker  files  29  raw  169075  gzip-9, summed per file  67954
+textarea     files   7  raw   60726  gzip-9, summed per file  22624
+scroll-area  files   6  raw   72808  gzip-9, summed per file  26402
+
+button + input + label + field + toast, shared files counted once: files 29  raw 138088  gzip-9 55446

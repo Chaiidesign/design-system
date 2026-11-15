@@ -3,7 +3,7 @@
 Each entry gives the decision, the reason, the principle it rests on, and how to reverse it.
 Entries under "Awaiting CEO" were made without an answer from the CEO. In each case the most reversible option was chosen and the work continued.
 
-Last updated: 2026-11-13
+Last updated: 2026-11-14
 
 ## Awaiting CEO
 
@@ -107,6 +107,8 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 - **The lead's recommendation: Ledger.** It needs the fewest parts (one surface, no shadows, three type sizes), which serves principles 5 and 6, and its cost summary is the clearest of the three.
 - **Strongest argument against Ledger:** it reads as a document, and Souvenir is an assistant people talk to; controls that look like text may feel less alive than Instrument's. Also, its square corners leave the corner-radius range with nothing to multiply, so the reference radius would have to be small but not zero.
 - **Decision:** The choice is the CEO's. If there is no answer by 14 November 2026, 18:30, the lead chooses Ledger and logs it.
+- **Outcome, 14 November 2026, 23:19:** the deadline passed with no choice. The CEO wrote twice after the assistant screens were shown, about other things, and named no direction. The lead takes Ledger as the working direction, provisionally: no token value has been made from it. This default is not yet reviewed. The lead's comparison after the assistant screens (the real choice is between Ledger and Instrument; Signal is the weakest for a conversation) was made on Sonnet and is in no file. A fresh Fable reviewer was asked on 14 November to judge the three directions on both screens with measurements; item 2.1 stays in progress until that verdict is saved in `gates/raw/` and the rationale files carry the comparison.
+- **Still needed from the CEO:** the sentence that ruled out one direction was cut off after "but for sure not the one with". Please send it again.
 - **To reverse:** Choose another direction before the token values are made (item 2.3). After that, a change costs the token values but not the architecture.
 
 ### A-14. The lead now runs on Sonnet 5.5, not Fable 5.2
@@ -114,12 +116,34 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 - **Situation:** On 13 November the CEO said the Fable limit had been reached and the work must continue on a cheaper model, and set the session to `claude-sonnet-5-5`. CLAUDE.md routes vision, principles, visual direction, architecture, naming, arbitration and gate reviews to the lead on Fable.
 - **Decision:** The lead continues on Sonnet 5.5 and follows the CEO's instruction. To keep the rule's intent, each decision that much depends on and that no test can check (token architecture, naming grammar, the visual direction) is put to the advisor tool, a stronger reviewer, before it is written, and is logged as made on Sonnet. Gate reviews are still done by fresh reviewers; their tier is whatever the CEO's limit allows and is recorded with the verdict.
 - **To reverse:** Switch the session back to Fable. Decisions logged as made on Sonnet can then be re-read.
+- **Closed, 14 November 2026:** the CEO set the session back to `claude-fable-5-2`, and the routing in CLAUDE.md applies again as written. Two things made on Sonnet need a tier-up review and are getting one: the assistant-screen prototypes, which a Sonnet builder made and the lead checked while itself on Sonnet; and the lead's comparison of the three directions on those screens, which is a judgment of visual direction and is reserved for Fable. A fresh Fable reviewer was asked on 14 November to judge all six pages (item 2.1).
 
 ### A-15. The archived 0.1.0 is not deleted
 
 - **Situation:** The CEO said the old build may be deleted if needed, to clear the confusion it caused.
 - **Decision:** Not deleted. The confusion did not come from the tag. It came from the old AGENTS.md being passed to subagents while the conversation that wrote it was still open (A-01). That session has now ended: the new session's instruction files no longer list AGENTS.md. Deleting the tag would remove the record and fix nothing. Deleting is also the one step here that cannot be undone, and CLAUDE.md says a deletion needs the CEO's approval for something the lead did not create.
 - **To reverse:** Tell the lead in a plain sentence to delete `v0.1.0-archive`, and it will.
+
+### A-16. UI SDK: four things only the CEO can settle
+
+- **Situation:** On 14 November the CEO wrote "we need to use this" about UI SDK (ui-sdk.dev). The rest of the sentence was cut off. On 13 November the lead had decided the opposite: "watched, not used" (D-008, item 3). The lead read the docs and measured the files; the record is `notes/sources/2026-11-14-ui-sdk.md`. The lead's first version of this entry was failed by a fresh reviewer, because it put UI SDK inside shipped components without noticing that the charter forbids that. This is the corrected entry.
+- **What the lead decided without you:** UI SDK is used now, in the two places the charter already allows: prototypes and time-boxed experiments. D-013 says how.
+- **1. An exception to principle 6.** The charter says: "Nothing in brick depends on software with a pre-release version tag or a version below 1.0, except items on a written exception list" (`charter/principles.md`, principle 6), and its budget row is "Zero pre-release dependencies in brick" (`charter/budget.md`). Brick means work that is reviewed, tested and shipped. UI SDK is at 0.1.0-beta.3, was first published on 12 November 2026, and says its interfaces may change. A change to a principle's limits is yours. *Default taken:* no exception. UI SDK stays out of every shipped component until you say otherwise. *To grant it:* say "add UI SDK to the exception list". The lead would then pin an exact version and put a Souvenir component in front of every UI SDK part, so that a change in UI SDK is absorbed in one place.
+- **2. The JavaScript budget.** Measured from UI SDK's hosted files: a button costs about 20 kilobytes compressed, a field 22, a calendar 38, a date picker 68; button, input, label, field and toast together cost 55. The charter's rows are 5 kilobytes per component and 15 for the checkout slice, and loosening a budget is yours. No figure exists yet for an app that bundles the packages, or for field and button without toast. *Default taken:* the budget is not changed and no new figure is proposed. Item 3.5 builds field and button both ways as prototypes and measures them; the result comes to you, and it is kept out of the one-time budget reset at Gate 3.
+- **3. Parts beyond the first four.** What UI SDK would give us lies mostly outside the founding set: date picker, calendar and time input for appointment booking; combobox; popover; the chat helpers. The charter says each new part arrives as an experiment and is promoted by the steward, and there is no steward. Each also exceeds the 5 kilobyte row many times over. *Default taken:* these are a candidate list, not a decision. None is built as a shipped part.
+- **4. Which framework Souvenir's products use.** UI SDK has adapters for React, Vue, Svelte, Solid and web components. The lead does not know what Souvenir's products are built with. *Default taken:* no adapter is chosen until the first prototype is built. Web components need no framework, which serves the "universal" value, but with them we write each part's starting state into the server's markup by hand.
+- **Risks kept on record:** no statement of WCAG conformance and no browser-support statement; one maintainer account on the registry; built-in screen-reader messages for eleven behaviours default to English; an agent can still type into a card field whose value is hidden from it. Whether a part meets WCAG 2.2 AA is decided by our own checks and per-component audit, never by UI SDK's claims.
+- **To reverse:** Say "watch only" and the prototypes and experiments stop. Nothing shipped depends on it.
+
+### A-17. The six skills are read; none is installed; one method is in use
+
+- **Situation:** On 14 November the CEO attached six skill files (design-system-boss, build-design-system, migrate-design-system, token-mapping, ui-review, component-docs) with the same message. The record is `notes/sources/2026-11-14-ceo-skills.md`.
+- **Decision:** None is installed. Each points to files that were not supplied (24 scripts, playbooks and reference files), and CLAUDE.md says a skill is never installed unread. Four of the six are written for an app that already ships an interface; this repo has none.
+- **In use today:** the method of ui-review, adapted. On 14 November a fresh reviewer was asked to judge the three visual directions on both screens by that method: measured findings only, at 320 and 375 pixels, with the charter's own rows as the criteria. Its verdict is linked from item 2.1 in PROGRESS.md when it returns.
+- **Practices taken:** seventeen are listed in the record. Eight restate rules we already have, in sharper words; nine are new. They will be applied at the work items named beside each, and PROGRESS.md points to the record from those items. The brief lines are in `briefs/template.md` from today. None changes a principle, a budget, the scorecard definitions or the benchmark.
+- **One difference kept as ours:** for a busy button the skills keep the idle label, add a spinner and set `aria-busy`; our voice rule 17 changes the visible label to say what is happening. The skill's reason is not in the file supplied. Ours stays as a house rule; whether a changed label helps or confuses is an assumption that needs a human test.
+- **What the lead needs:** the six full folders, and who wrote them under what licence.
+- **To reverse:** Supply the folders and say "install them". The lead will read every file first and report anything that conflicts with CLAUDE.md before installing.
 
 ### A-10. What the lead needs from the CEO
 
@@ -163,6 +187,23 @@ Fresh reviewers judged all ten criteria again. Criteria 1, 2, 3, 4, 6, 7 and 9 p
 
 Criteria 5, 8 and 10 failed again on new, smaller points. See A-12 and `gates/gate-1.md`. From phase 2 on, each pass criterion is written so that a script, a count or a stated sample can decide it (lesson of 13 November, "criteria that say every").
 
+### D-013. UI SDK is used in prototypes and experiments now, and enters shipped components only with the CEO's exception
+
+This revises D-008, item 3, after the CEO's instruction of 14 November. Evidence: `notes/sources/2026-11-14-ui-sdk.md`. The lead's first version of this decision put UI SDK inside shipped components. A fresh reviewer failed it: principle 6 allows no pre-release dependency in brick, and the lead had not checked its own charter (lesson of 14 November). This is the corrected decision.
+
+1. **A measured prototype.** Field and button are built twice in `explore/`, once on plain HTML and once on UI SDK with native fallback markup, and compared for compressed size and for the three scripted interactions (item 3.5). The same prototype is where an adapter is chosen.
+2. **One experiment with the agent bridge.** Registered as the checkout slice's one new EXPLORE item when the reference checkout page exists. Hypothesis: an agent using the bridge fills the reference checkout up to payment, and never presses Pay without the person. Evidence: scripted agent runs on the reference page, counting completions and any Pay press without a person. Owner: the lead. Expiry: 30 days after registration, extended once at most. Starting it needs a fresh Fable reviewer's verdict, because the lead proposes and decides it. The card fields are marked hidden from the agent, since UI SDK otherwise lets an agent type into them.
+3. **What we learn from it without depending on it.** How it packages docs for agents inside each installed package, and how its test kit checks keyboard patterns and server rendering, inform our own docs (item 4.2) and tests (item 3.4).
+4. **The part-naming convention is decided in item 3.1, not here.** UI SDK names each part with a `data-slot` attribute and marks state with `data-*` and ARIA attributes. Adopting the same mechanism would let one stylesheet serve a plain part and a UI SDK part. But the pages that list UI SDK's actual part and state names were not read, and our part names are public names that must not move when a beta renames its own. So: the mechanism is a candidate for item 3.1; the names are Souvenir's own and are mapped to UI SDK's inside a wrapper; states the browser already knows use native pseudo-classes.
+5. **Candidates for later, if the CEO grants the exception** (A-16, points 1 and 3): date picker, calendar and time input for appointment booking; combobox; popover; the chat helpers. Not dialog or the native select, which the platform already provides and principle 6 puts first. Not toast, because the checkout spec rules out a message that dismisses itself.
+
+What does not change: the core tasks of every slice need no JavaScript, so any UI SDK-backed part ships native fallback markup and is tested with scripts off; UI SDK's `web.css` is never loaded, and the behavioural stylesheet it injects is read and checked against our lints before any part uses it; whether a part meets WCAG 2.2 AA is decided by our own checks and per-component audit, and its status stays "automated checks only" until sessions with people; none of UI SDK's install prompts or its skill is run unread.
+
+- **Reason:** Of the three behaviour libraries surveyed (Radix, React Aria, UI SDK) it is the only one not tied to React, and the only one with a way for an agent to operate a page, which matches what Souvenir is. No wider search was made. Item 3.6 surveys stable multi-framework unstyled libraries before any UI SDK part could enter brick.
+- **Principle:** This decision stays inside principle 6 by keeping UI SDK out of brick. Putting it in brick would be an exception to principle 6, which only the CEO can grant.
+- **Strongest arguments against, in order:** (1) Adopting it in shipped components would break two of the charter's hard checks a day after they were written: no pre-release dependency in brick, and JavaScript budgets exceeded four to fourteen times. (2) It meets no need in the first slice: the four checkout parts work as plain HTML, and UI SDK has nothing for the cost summary or for page-level feedback. (3) The decision rests on half a sentence from the CEO and on docs alone; no component page, no source and no test kit was read or run. (4) The package is three days old, and the bridge, the undo of agent changes and the custom-component agent key are marked experimental.
+- **To reverse:** see A-16.
+
 ### D-007. Three arguments against the charter, kept on record
 
 1. **It is a closed loop with no person in it.** Agents wrote the promises, build to them, check them and review the gate. The system could reach zero drift and a rising benchmark while being wrong for people.
@@ -175,7 +216,7 @@ The lead's answer: the charter now separates what is anchored outside the system
 
 1. *Touch target:* 24 pixels is the LOCK floor; 44 pixels for primary controls where the pointer is coarse is a starting value.
 2. *A behaviour library tied to one framework:* not in the core. Native HTML and CSS first; custom elements only where the platform lacks a behaviour.
-3. *The beta UI SDK:* watched, not used.
+3. *The beta UI SDK:* watched, not used. **Revised on 14 November 2026 by D-013:** used, with limits.
 4. *Browser policy:* features available in every major browser for 30 months may be relied on; newer ones only as enhancement.
 5. *Versioning:* semantic versioning, deprecate in a minor release, remove in the next major. Confirmed in item 4.1.
 6. *Distribution:* a package is the source of truth. A copy-in registry is not offered at first, because copies drift.

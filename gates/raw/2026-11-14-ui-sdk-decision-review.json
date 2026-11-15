@@ -1,0 +1,414 @@
+{
+ "reviews": [
+  {
+   "lens": "citations",
+   "verdict": "pass with fixes",
+   "checked": "Opened all 47 line references in notes/sources/2026-11-14-ui-sdk.md (25 core:, 7 web:, 15 agents:) with surrounding lines; grepped all ten docs files for each of the 11 \"not said\" items; counted the component list in all five framework files (55 each, identical, claim holds); compared every size figure with raw/2026-11-14-ui-sdk-size.txt and re-ran measure-ui-sdk-size.py (byte-for-byte identical; all imports are static, so no lazy-chunk inflation); verified the ten checksums; re-fetched the npm registry record for @ui-sdk/core and the five adapters, the GitHub repo API, README.md and SECURITY.md at 07:33 UTC 15 Nov 2026. Dates, versions' publish days, Apache-2.0, one listed maintainer, zero runtime dependencies, repo created 26 Oct, 107 open issues, the README beta quote, the Vercel security address, the budget figures and the core:499 contradiction all check out. No blocker found; six major and seven minor corrections follow.",
+   "findings": [
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"Any time-of-day or appointment-slot helper: dates only.\" (line 59)",
+     "problem": "Refuted. The docs list a Time Input component in every framework and document a booking-slot behaviour with overlap checking. The reader's 'not found' was scoped to the Utilities range (core lines 2110-3766) and was generalised to the whole docs. D-013 item 2 names only date picker and calendar for appointment booking, so the appointment-booking scope is understated.",
+     "evidence": "docs_web-components_llms.txt:1347 \"- [Time Input](/docs/web-components/components/time-input): Type a time one part at a time, on the clock your user's language uses.\" (same entry at react:1613, vue:1339, svelte:1307, solid:1375). docs_core_llms.txt:5208 \"### Bookings on a Timeline\"; core:5210 \"For room bookings, those units can be minutes from midnight.\"; core:5234 \"Values snap to half hours, and bookings can't overlap.\"; core:5277 \"`isSpanFree(bookings, proposed)` checks whether a proposed booking overlaps another on its track.\" Readers JSON: reader 5 fact 31 and reader 2 fact 28 (\"Timeline spans (relevant to appointment booking)\") already recorded both.",
+     "fix": "Delete the bullet. Add under 'Facts that help us': a Time Input component is listed (its page was not read), and core has `createSpans` / `isSpanFree` for time ranges on tracks with snapping and overlap rules (core:5208-5277); focusability and names are left to the author (core:5236). Say what is actually absent: no time-zone-aware date-time value and no ready-made slot picker component."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"Any validation message or error-summary pattern.\" (line 56) and \"Toast is the only feedback component\" (line 53)",
+     "problem": "The docs do document a per-field validation message part and a pattern for showing a server's rejection message. The bullet contradicts its own second sentence, which cites that part. Progress is also a listed status component. DECISIONS.md A-16 item 1 repeats this to the CEO as \"UI SDK has nothing for two of them (inline feedback and the cost summary)\"; that is only true of page-level alerts and error summaries, not of field-level inline feedback.",
+     "evidence": "docs_web-components_llms.txt:952 \"### Label and Validate a Field\"; :954 \"`ui-field` finds the control inside it and connects the label, description, and error\"; :968 \"<ui-field-error></ui-field-error>\"; :978 \"Set the field's `invalid` property to `true` and show the server's message.\"; Field list entry \"Connect a form control to its label, description, and validation errors.\"; :1335 \"[Progress]...: Show a task's progress, or an indeterminate state while its progress is unknown.\" Reader 5 facts 22 and 24 recorded the field error part.",
+     "fix": "Reword line 56 to: \"Any error-summary pattern. Field has a per-field error part (`ui-field-error`) that shows the browser's message when empty and a server message set by script (web:954, web:978, web:1017).\" Reword line 53 to: \"No inline alert, page-level status message or error summary. Feedback parts that exist: the field error part, Progress, and Toast, which needs a script call (web:715).\" Then correct A-16 item 1 to say UI SDK has nothing for page-level inline feedback and the cost summary."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"Password, card and one-time-code fields are hidden from the agent automatically (`agents:1002`).\" (line 29)",
+     "problem": "Stronger than the source. The source says these fields are treated as secret, not hidden. In these docs 'hidden' and 'secret' are two different marks: a secret field stays visible to the agent with its value redacted, and the agent can still type into it. This matters for the checkout EXPLORE item in D-013 item 4 (an agent can type into a card field).",
+     "evidence": "docs_agents_llms.txt:1002 \"Password, card and one-time-code fields are treated as secret without a mark. A hidden input is left out without one.\" docs_agents_llms.txt:988-989 \"| `data-agent-hidden` | Nothing. Components inside are left out of `snapshot` and `query`...\" / \"| `data-agent-secret` | The component, with its value shown as `\"[redacted]\"` once it's filled. The agent can still type into it.\"",
+     "fix": "Replace with: \"The values of password, card and one-time-code fields are redacted from the agent automatically; the agent still sees the field and can type into it (`agents:989`, `agents:1002`). To keep a field from the agent entirely it must be marked `data-agent-hidden`.\" Move the 'can still type into it' half to 'Facts that cost us'."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"**One account publishes it.** The only maintainer listed on the registry is one personal account\" (line 37)",
+     "problem": "The second sentence is true (one maintainer listed), but the heading is not: the two most recent versions of all six packages were published by GitHub Actions through npm trusted publishing, with provenance attestations, not by the personal account. The registry reader recorded this (reader 6, fact 10) and the note dropped it. DECISIONS.md A-16 carries the same wording as a risk: \"one publishing account\".",
+     "evidence": "curl https://registry.npmjs.org/@ui-sdk%2fcore (07:33 UTC 15 Nov 2026): versions[\"0.1.0-beta.3\"]._npmUser = {\"name\": \"GitHub Actions\", \"email\": \"npm-oidc-no-reply@github.com\", \"trustedPublisher\": {\"id\": \"github\", ...}}; dist.attestations.provenance.predicateType = \"https://slsa.dev/provenance/v1\". Same for 0.1.0-beta.2 and for react, vue, svelte, solid, web. Only 0.0.0-stage and 0.1.0-beta.1 were published by the maintainer account. maintainers array length is 1.",
+     "fix": "Retitle: \"One account controls it on the registry.\" Body: \"The only maintainer listed is one personal account. Beta.1 was published from that account; beta.2 and beta.3 were published by the repository's GitHub Actions workflow with provenance attestations (lead re-checked).\" Change A-16's risk to \"one registry maintainer account\"."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"**Server markup carries state.** Parts render their attributes into the server's HTML (`core:867`).\" (line 25)",
+     "problem": "Stronger than the source for web components, which is the adapter A-16 item 3 takes by default. The cited line's next sentence, and web:1038, say that with web components the author sends the markup and writes the initial ARIA state by hand; nothing computes it on the server. The components reader marked this as conflicting with the no-JavaScript budget.",
+     "evidence": "docs_core_llms.txt:867 \"...On web components, you send the markup and the element connects its behavior once its module loads.\" docs_web-components_llms.txt:1038 \"Plain server-rendered HTML does not calculate the primitive's ARIA state. Here, `aria-pressed=\"true\"` describes the initial button before upgrade and matches `default-pressed`.\" Reader 5 fact (line 1038): effect \"conflicts\".",
+     "fix": "Reword: \"With the React, Vue, Svelte and Solid adapters, parts render their attributes into the server's HTML (`core:867`). With web components they do not: we write the initial markup and ARIA state by hand and the element takes over when its script loads (`web:1038`).\" List the web-components half under 'Facts that cost us'."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"**What was read:** the site's ten text files for agents\" (line 9) and the 'What was not read' list (line 12)",
+     "problem": "The reader record shows no reader was given the Vue, Svelte or Solid files, and the React file was used only to compare its component list. That is about 273 of the 920 kilobytes. No reader fact cites any of the four. The 'not read' list omits them, and it also says the pages on server rendering and on styling and animation were not read, although the note cites the Web Components sections of exactly those names (web:558, web:566, web:1038-1044). CLAUDE.md's honesty rule asks for claims the run can point to. Consequences found in this review: the 'same list in every framework' claim rested on two of five files (I counted all five: 55 each, identical, so it is true), and vue:86 was missed (see the bundling finding).",
+     "evidence": "raw/2026-11-14-ui-sdk-and-skills-readers.json: reader sections are core 1-2109 + guides, core 2110-3766, core 3767-5986, core 5987-8084, agents + llms.txt, and \"docs_web-components_llms.txt lines 1-1583, web.md lines 1-1572 plus component-list comparison against docs_react_llms.txt\". Reader 5 gaps[0]: \"Vue, Svelte and Solid were not checked (no files given).\" Count of facts by file: docs_react/vue/svelte/solid_llms.txt = 0.",
+     "fix": "Line 9: \"Ten files were fetched; six were read in full (llms.txt, Core, Agents, Guides, Web Components, web.md). The React file was read only for its component list. The Vue, Svelte and Solid files were not read; a script later confirmed their component lists match (55 each).\" Line 12: add those three files and the rest of the React file; replace \"the pages on server rendering and on styling and animation\" with \"those pages for React, Vue, Svelte and Solid\". If the lead did read the four files itself, say so and where the record is."
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"The optional `web.css` gives every component a default look (`web:16`)\" (line 40)",
+     "problem": "Wrong file. The sentence is at web.md line 16, not docs_web-components_llms.txt line 16, and the legend on line 14 defines no prefix for web.md. The fact itself is supported.",
+     "evidence": "web.md:16 \"`web.css` gives every component its default look.\" docs_web-components_llms.txt:16 \"Import the components you need to register their tags, add them to your page, and style them with your own CSS.\" Reader 5's fact names file web.md, line 16.",
+     "fix": "Cite as `web.md:16` and add to the legend: \"`web.md:` is the no-build Web Components file.\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"or reduced motion beyond a rule the author writes\" (line 57)",
+     "problem": "The docs do say the library itself responds to the reduced-motion preference in at least one behaviour, and state the outcome for transitions. Two readers recorded these facts. The author-written rule is true only of the panel and entry/exit CSS (core:6230, core:6299).",
+     "evidence": "docs_core_llms.txt:5913 \"With reduced motion, the wheel jumps to an option instead of gliding there.\" docs_core_llms.txt:6180 \"Someone who prefers reduced motion gets the end at once.\" docs_core_llms.txt:6299 \"Add a reduced-motion rule to your CSS, as in the panel example.\"",
+     "fix": "Reword: \"No general reduced-motion setting. The scroll wheel jumps instead of gliding under reduced motion (`core:5913`); for CSS transitions the author writes the rule (`core:6299`).\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"only the Gregorian calendar is supported (`core:2752`)\" (line 42)",
+     "problem": "Slightly stronger than the source, which says the month grid is Gregorian and that calendars sharing Gregorian months keep their own years.",
+     "evidence": "docs_core_llms.txt:2752 \"They keep month and day labels aligned with the Gregorian grid. A locale that uses different months, such as Persian, uses Gregorian labels; calendars that share those months, such as Thai Buddhist, can keep their own years.\"",
+     "fix": "\"Month grids are Gregorian only: a locale with different months, such as Persian, gets Gregorian labels; one that shares the months, such as Thai Buddhist, keeps its own years (`core:2752`).\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"**Announcements default to English** (`core:4472`)\" (line 42)",
+     "problem": "The cited line is one option of one behaviour (the selection rectangle). The general statement is broader than the line. It is supported for eleven behaviour options, each of which the author can override; text passed to `announce()` is the author's own. None of the eleven is a checkout part. A-16 repeats the general form as a risk.",
+     "evidence": "docs_core_llms.txt:4472 \"`message?` ... What screen readers hear when the rectangle lifts. Defaults to English.\" The same phrase \"Defaults to English\" appears at core:4482, 4833, 4842, 4854, 5384, 5398, 5446, 5456, 7671, 7680, all on a `message?` option.",
+     "fix": "\"The built-in screen-reader messages of eleven drag, selection and canvas behaviours default to English; each takes a `message` function to replace them (`core:4472` and ten more).\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"or any statement on removing unused code when bundling\" (line 52)",
+     "problem": "One such statement exists, in a file no reader was given. The package metadata also declares the bundler hint, which bears on the unmeasured 'an app that bundles the packages may ship less' sentence. The rest of the bullet holds: no size figure from the project (grep for kB, bytes, gzip, tree-shak, sideEffects in the docs returns nothing).",
+     "evidence": "docs_vue_llms.txt:86 \"Each one is still imported from its own entry, so a page bundles only what it uses.\" Registry: versions[\"0.1.0-beta.3\"].sideEffects = [\"*.css\"] for @ui-sdk/core.",
+     "fix": "\"No size figure from the project. On bundling, the docs say only that each component is imported from its own entry, so a page bundles only what it uses (Vue file, line 86); the package declares `sideEffects: [\"*.css\"]`.\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "\"231 of the 232 quotes from the docs files were found at the stated line; the one miss is a quote where the reader corrected a typo in the source\" (line 11)",
+     "problem": "Three small inaccuracies. (a) The direction is reversed: the source is correct and the reader's quote has the typo. (b) There are 233 docs-file quotes, not 232: the registry reader also has one docs quote, which was found, so the figure is 232 of 233. (c) 'at the stated line' is a window of three lines before to two after, per the script.",
+     "evidence": "docs_core_llms.txt:6180 \"Someone who prefers reduced motion gets the end at once.\" raw/2026-11-14-ui-sdk-quote-check.txt: \"MISS ('core-behaviors-b', 'docs_core_llms.txt', 6180, 'Someone who prefer reduced motion gets the end at once')\"; \"status  facts 31  quote found in file 1\"; \"total 263, found at stated line 232\". raw/check-reader-quotes.py: \"window = lines[max(0, ln-4): ln+3]\".",
+     "fix": "\"232 of the 233 quotes from the docs files were found within three lines of the stated line; the one miss is a quote the reader mistyped ('prefer' for 'prefers', core:6180).\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ui-sdk.md",
+     "where": "Line references on lines 27, 28, 30 and 39; version list on line 35",
+     "problem": "Citations that land near, not on, the supporting sentence, and one incomplete list. (a) `core:5776` is the `role=\"log\"` line; the follow-without-pulling claim is at core:5757. (b) `core:7816` is the list of patterns; `checkPattern` is described at core:7804. (c) For 'state changes are client-only', web:1038 does not say it; web:1042 does. (d) Line 30 reads as if every package carries a skill; the source says the skill ships inside `@ui-sdk/core` only. (e) The registry holds four versions, not three: a `0.0.0-stage` placeholder precedes the betas, and the `latest` tag still points at beta.2.",
+     "evidence": "docs_core_llms.txt:5757 \"`createStickToBottom` follows new content while the reader is at the bottom. Scrolling up lets them read without being pulled away\"; core:7804 \"`checkPattern` checks its roles, names, states, references between parts, and keyboard interactions\"; docs_web-components_llms.txt:1042 \"Keyboard navigation and state changes managed by ui-sdk need the component's script.\"; docs_agents_llms.txt:294 \"The skill also ships inside `@ui-sdk/core`, at `node_modules/@ui-sdk/core/skills/ui-sdk/SKILL.md`.\"; registry time: \"0.0.0-stage\": \"2026-11-12T17:05:52.769Z\"; dist-tags {\"latest\": \"0.1.0-beta.2\", \"beta\": \"0.1.0-beta.3\"}.",
+     "fix": "Change the references to `core:5757`, `core:7804` and `web:1042`; write \"and `@ui-sdk/core` carries a skill that always matches the installed version (`agents:294`)\"; write \"The published versions are a placeholder (0.0.0-stage) and 0.1.0-beta.1, beta.2 and beta.3; the `latest` tag points at beta.2.\""
+    }
+   ],
+   "not_checked": [
+    "The claim that no other surveyed library has an agent half (line 20): it depends on charter/survey.md, which is outside this lens; agents:5 supports only that UI SDK has one.",
+    "Whether the lead itself read the React, Vue, Svelte and Solid files outside the reader record; the finding rests on the reader JSON only.",
+    "The per-component pages (Field, Toast, Time Input, Button and the rest) are not in the fetched files, so 'not said' items could only be tested against the ten files; a component page may say more.",
+    "The contents of web.css and of the injected `ui-sdk` cascade layer.",
+    "Bundled (npm) sizes: only the hosted browser files were measured, by the lead and again by me.",
+    "The 107 open-issue count is a moving number; it matched at 07:33 UTC on 15 November 2026 and may differ later.",
+    "The wording of DECISIONS.md D-013, A-16 and A-17 beyond the places where they repeat a sentence found wrong here, and the whole of notes/sources/2026-11-14-ceo-skills.md.",
+    "The registry reader's other web facts (download count, contributor counts, changelog contents, the third-party whole-entry size figure), which the note does not cite."
+   ]
+  },
+  {
+   "lens": "decision",
+   "verdict": "fail",
+   "checked": "Read in full: DECISIONS.md (D-013, A-16, A-17, A-13, A-14, D-008, A-04, A-08), notes/sources/2026-11-14-ui-sdk.md and 2026-11-14-ceo-skills.md, charter/budget.md, principles.md, operating-model.md, checkout-slice.md, benchmark.md, survey.md, vision.md, notes/survey/behaviour-and-distribution.md, PROGRESS.md, scorecard.md, the size measurement, the git log and the uncommitted diff; spot-checked about a dozen lines of the fetched UI SDK docs. All eight questions are answered: 1 one blocker (principle 6) plus budget, decision-right and native-first conflicts; 2 the principle 6 delta and a benchmark row are changed unsaid, and D-013 point 4 lacks an expiry; 3 none of the three A-16 defaults is the most reversible; 4 \"What does not change\" is narrower than the charter in two places and no written naming convention conflicts with data-slot; 5 \"only library found\" rests on a survey of three; 6 the A-13 outcome meets the three elements Gate 2 criterion 2 names, but \"done\" for item 2.1 is not justified; 7 the argument against is fair but not the strongest; 8 item 3.5 cannot decide A-16 point 1 and its tier is too low for the build half.",
+   "findings": [
+    {
+     "severity": "blocker",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 point 2 \"A Souvenir component wraps the UI SDK part ... The version is pinned exactly\"; D-013 \"Principle: 6, built to last (hence the pin and the wrapper)\"; A-16 point 2 \"Default taken: accepted\"",
+     "problem": "Q1, Q2, Q3. UI SDK is 0.1.0-beta.3. Putting it inside Souvenir components makes it a pre-release dependency of brick, which principle 6 forbids and the budget sets at a delta of zero. Neither entry mentions the rule; D-013 cites principle 6 as support. No exception list exists, and nothing says who may write one. CLAUDE.md requires the CEO to be asked before a principle's delta changes. A-16 point 2 asks about \"accepting a beta\" without saying it overrides a charter rule, and takes the less reversible default.",
+     "evidence": "charter/principles.md:135 \"Nothing in brick depends on software with a pre-release version tag or a version below 1.0 (*[starting value]*), except items on a written exception list.\" charter/budget.md:97 \"Zero pre-release dependencies in brick.\" charter/principles.md:28 \"Nor are the other checks of principles 5 to 7 that block a change: a pre-release dependency\". CLAUDE.md: \"Ask me first, under 'Awaiting CEO': changes to the principles or their deltas\". `grep -rn -i \"exception list\" --include=*.md .` returns only charter/principles.md:135. UI SDK docs_core_llms.txt:2043 \"ui-sdk hasn't reached 1.0 yet\".",
+     "fix": "Rewrite A-16 point 2 to quote principle 6 and budget.md:97 and ask the CEO for a named entry on the exception list. Change the default to the more reversible one: UI SDK is used in clay and EXPLORE items only, and no brick component depends on it until the CEO approves the exception. In D-013, replace the principle line with a statement that the decision is an exception to principle 6, softened by the pin and the wrapper."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 point 2 \"Date picker and calendar for appointment booking; select and combobox; dialog and popover; toast; and the chat helpers\"",
+     "problem": "Q1, Q2. Every part in this list is outside the founding set. The charter says each arrives as an EXPLORE item, promotion is the steward's decision, at most three are active and one is new per slice. D-013 records the list as a lead decision and A-16 does not put it among the CEO's items. The same parts measure 38 to 68 kilobytes each against a 5 kilobyte per-component row that A-16 says \"is not changed\"; A-16 raises the budget only for the four checkout parts.",
+     "evidence": "charter/operating-model.md:64 \"Adding a new part, variant, token or option outside the founding set. Each arrives as an EXPLORE item, so this is always a promotion | ... | Steward\". DECISIONS.md:52 (A-04 row 13) \"With no steward, the system can grow only by the founding set\". charter/README.md:33 \"A work item the lead adds later does not enlarge the founding set.\" charter/budget.md:134-135 \"at most three active items; at most one new item per pilot, or per slice while no pilot is running\". charter/budget.md:152 \"At most 5 kilobytes per component, 15 for the slice\"; budget.md:96 \"Budgets never exceeded\". notes/sources/raw/2026-11-14-ui-sdk-size.txt: \"select ... 67639\", \"date-picker ... 67954\", \"dialog ... 51133\", \"popover ... 46961\", \"toast ... 44717\", \"calendar ... 37881\".",
+     "fix": "Reword point 2 as a candidate list, not a decision: each part enters as an EXPLORE item under the cap of three, promotion is the steward's, and none can enter brick under the current per-component JavaScript row. Add both to A-16 as a fourth item for the CEO, with the measured sizes."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 \"What does not change: the core tasks of the checkout slice need no JavaScript (charter/budget.md) ... UI SDK's default stylesheet is never loaded\"",
+     "problem": "Q4. Two gaps. (a) The charter's no-script rule covers every slice, not only checkout. A UI SDK date picker in the booking slice would sit in a core task, and the facts file says its behaviours need JavaScript, so the sentence quietly narrows a budget row. For checkout it holds only if every UI SDK-backed part ships native fallback markup, which is on component pages nobody read. (b) UI SDK injects a second stylesheet of its own whose contents were not read; the sentence mentions only web.css.",
+     "evidence": "charter/budget.md:151 \"JavaScript needed to read the page and complete the core tasks | None. The page works by sending the form to a server\". charter/principles.md:46 \"Every core task of a slice can be completed ... inside the performance budgets\". notes/sources/2026-11-14-ui-sdk.md:39 \"Its behaviours need JavaScript ... Our core tasks must work with none.\" and :41 \"It injects a small stylesheet of its own ... Its contents were not read.\" UI SDK docs_web-components_llms.txt:1044 \"For a control that must submit before upgrade, include a native input or select using the fallback markup shown on its component page.\" notes/sources/2026-11-14-ui-sdk.md:12 \"What was not read: the per-component pages\".",
+     "fix": "Write: \"the core tasks of every slice need no JavaScript; a UI SDK-backed part ships native fallback markup and is tested with script off; UI SDK's web.css is never loaded, and its injected behavioural stylesheet is read and checked against the token and browser-feature lints before any part uses it.\""
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 point 2 \"It is the behaviour layer where plain HTML is not enough ... select and combobox; dialog and popover; toast\"",
+     "problem": "Q1. The list includes behaviours that the lead's own survey and D-008 say the platform already provides (dialog, select), and one the checkout spec rules out (a message that dismisses itself). Principle 6 puts a web standard before a library.",
+     "evidence": "charter/principles.md:135 \"a web standard before a library\". DECISIONS.md:214 (D-008 item 2) \"Native HTML and CSS first; custom elements only where the platform lacks a behaviour.\" notes/survey/behaviour-and-distribution.md:26 \"`<dialog>`: `showModal()` makes the rest of the page inert, moves focus in, closes on Esc ... widely available since March 2022\" and :64 \"dialog, popover, inert ... need no library\". charter/checkout-slice.md:47 \"Do not build: messages that disappear on a timer.\" UI SDK docs_web-components_llms.txt:1349 \"Toast ... Show notifications with actions, timed dismissal\".",
+     "fix": "Remove dialog and native select from the list, or state for each the behaviour the native element lacks. Mark toast as allowed only with timed dismissal off and the message also shown inline, or drop it."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "A-16 point 1 \"about 60 kilobytes for the slice is what the measurement implies\"",
+     "problem": "Q5. The figure the CEO is invited to name is not in the measurement. The measured total is 55 kilobytes, it includes toast (which the slice rules out and which point 1 does not propose to add), it is from hosted files and not a bundle, and no measurement exists for field and button without toast.",
+     "evidence": "notes/sources/raw/2026-11-14-ui-sdk-size.txt: \"button + input + label + field + toast, shared files counted once: files 29 raw 138088 gzip-9 55446\". notes/sources/2026-11-14-ui-sdk.md:38 \"An app that bundles the packages may ship less; that has not been measured.\" A-16 point 1 itself: \"UI SDK is added to field and button only\".",
+     "fix": "Replace with: \"measured from hosted files, button, input, label, field and toast together are 55 kilobytes; field and button without toast have not been measured, and a bundled figure does not exist. No new figure is proposed until item 3.5 reports.\""
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/PROGRESS.md",
+     "where": "Item 3.5 \"Sonnet or Haiku measures; Fable decides | next | Decides DECISIONS.md A-16, point 1\"",
+     "problem": "Q8. Item 3.5 cannot decide A-16 point 1. A-16 lists point 1 under \"Three things that are yours\" (the CEO's), and any result above 5 kilobytes per component is a loosening only the CEO may make; the hosted measurement is already 20. If UI SDK were in field and button at Gate 3, the one-time reset to \"measured value plus a fifth\" would absorb it without the CEO. The tier is also only half right: measuring is script-checkable, but building field and button on UI SDK with fallback markup needs engineering judgment. The item also names no need UI SDK meets in parts that already \"work as plain HTML\".",
+     "evidence": "DECISIONS.md:130-131 \"Three things that are yours: 1. Inside the first four checkout parts, or not.\" charter/operating-model.md:72 \"Loosening a performance budget, other than the one reset at Gate 3 ... | CEO\". charter/budget.md:145 \"At Gate 3 the lead resets each one once, up or down, to the first measured value plus a fifth\". CLAUDE.md: \"A written spec exists but the work needs design or engineering judgment: a subagent on the latest Opus\" and \"Work at one tier is reviewed one tier up, in a fresh context.\" charter/principles.md:115 \"Every component ... has to earn its place by a distinct need.\"",
+     "fix": "Change the row to: \"Opus builds the two variants in explore/; Sonnet or Haiku measures; Opus reviews. Informs A-16 point 1; the CEO decides if either figure is above the budget row. The measurement is excluded from the Gate 3 reset.\" Add the need UI SDK is meant to meet in field and button, or drop the item."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 \"Reason: It is the only library found that renders one behaviour definition in five frameworks and brings no look of its own\"",
+     "problem": "Q5, Q7. The survey looked at three behaviour libraries, two of them React-only, so \"the only library found\" is true of a search of three and reads as much stronger. The decision's main reason is uniqueness, and no search for multi-framework unstyled libraries was run. (From the reviewer's own knowledge, not checked in this run: Zag.js and Ark UI are candidates of that kind and should be looked at.)",
+     "evidence": "notes/survey/behaviour-and-distribution.md headings at :4 \"Radix UI Primitives\", :10 \"React Aria (Adobe)\", :16 \"UI SDK (vercel-labs/ui)\"; :66 \"the only multi-framework, agent-oriented option found\". charter/survey.md:108 names the same three. `grep -rn \"Zag\\|Ark UI\\|Headless UI\" notes charter` returns nothing.",
+     "fix": "Write: \"Of the three behaviour libraries surveyed (Radix, React Aria, UI SDK) it is the only one that is not tied to React. No wider search was made.\" Add a short survey of stable multi-framework unstyled libraries before any UI SDK part enters brick."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 point 1 \"Its styling hooks become ours, from the first component\"; A-16 \"removing it means rewriting the inside of the parts that use it and nothing else\"",
+     "problem": "Q3, Q4. No written convention conflicts with data-slot: item 3.1 is still \"next\". The problems are elsewhere. (a) The pages that list each component's part names and state attributes were not read, so a naming convention enters brick on clay research. (b) Part and state attribute names are documented markup, which principle 6 treats as public names; tying them to a beta's names means either a breaking change or a broken shared stylesheet when UI SDK renames. The reversal claim ignores this. (c) PROGRESS puts the convention into item 2.2, which no Gate 2 criterion checks. (d) \"States are data-* or ARIA attributes\" cannot cover focus, hover or autofill with script off; UI SDK's own example uses native pseudo-classes. The more reversible default is our own part naming, decided in item 3.1 and mapped at the wrapper.",
+     "evidence": "notes/sources/2026-11-14-ui-sdk.md:12 \"What was not read: the per-component pages (Button, Field, Input, Toast and the rest), the pages on server rendering and on styling and animation\". UI SDK docs_web-components_llms.txt:491 \"Each component's Styling section lists its attributes and CSS variables.\" and :239 \"hover:bg-neutral-100 focus-visible:outline-2\". charter/principles.md:135 \"Every breaking change, meaning a change to a token name, a component's documented markup, attributes, class names or events\". docs_core_llms.txt:2043 \"any of these can still change between releases\". PROGRESS.md:61 \"Must include the part-naming and state-attribute convention from DECISIONS.md D-013, point 1\". CLAUDE.md: \"promote clay to brick only through a gate\".",
+     "fix": "Move the convention to item 3.1 and decide it there after reading the styling and component pages. State that part names are Souvenir's own and are mapped to UI SDK's inside the wrapper, and that browser-known states use native pseudo-classes. Change the reversal line to say the shared stylesheet and part names would also need changing if the names were copied."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 point 3 \"Its test kit joins the checks for every component built on it: the keyboard and ARIA pattern check, the server-render check\"; A-16 point 3 \"Default taken: web components\"",
+     "problem": "Q3, Q5. (a) The pattern check supports fifteen named patterns; date picker, calendar, popover, toast, field and button are not among them, so \"every component built on it\" is stronger than the source. (b) Under the web-components default, the server does not compute a part's state: the author writes it by hand. The facts file lists \"Server markup carries state\" as a benefit and cites a line whose second sentence excepts web components. The default therefore gives up a listed benefit, and neither entry says so. (c) No adapter has to be chosen now, since nothing is built on UI SDK yet; leaving it open is more reversible.",
+     "evidence": "UI SDK docs_core_llms.txt:7816 \"The supported patterns are `listbox`, `menu`, `menubar`, `tabs`, `radio-group`, `toolbar`, `tree`, `dialog`, `alertdialog`, `disclosure`, `accordion`, `combobox`, `slider`, `switch`, and `checkbox`.\" docs_core_llms.txt:867 \"On web components, you send the markup and the element connects its behavior once its module loads.\" docs_web-components_llms.txt:1038 \"Plain server-rendered HTML does not calculate the primitive's ARIA state.\" notes/sources/2026-11-14-ui-sdk.md:25 \"Server markup carries state.\"",
+     "fix": "Point 3: \"the pattern check where UI SDK has a pattern (15 listed); date picker, calendar, popover and toast need our own keyboard tests.\" A-16 point 3: default \"no adapter chosen until the first UI SDK part is built in explore/\", and note that the web-components adapter needs hand-written ARIA state in server markup. Correct line 25 of the facts file."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/PROGRESS.md",
+     "where": "Item 2.1 \"done | Three prototypes built and checked ... the lead took Ledger, provisionally\"",
+     "problem": "Q6. The A-13 outcome does name who chose, the reasons and the strongest argument against, so it meets the three elements Gate 2 criterion 2 lists. \"Done\" is still not justified. The row links no check output and no reviewer verdict, and the charter's proof for choosing a direction includes a reviewer; none exists in gates/. The outcome also calls the choice provisional, says the real choice is between two directions, gives no reason drawn from the assistant screens the CEO asked for, and leaves unread a CEO sentence that ruled one direction out.",
+     "evidence": "PROGRESS.md:4 \"An item is marked done only when its check output or reviewer verdict has been shown in the session and is linked here.\" charter/operating-model.md:68 \"Choosing the visual direction or the voice | Lead | Three or more variants; a reviewer | CEO. If there is no answer within a day, the lead chooses and logs it\". `ls gates/raw` shows only challenge-reviews, gate-1 runs, visual-directions-builder-reports.json and visual-directions-text-check.txt. DECISIONS.md:105 \"Contrast figures are the builders' own calculations and have not been checked independently.\" DECISIONS.md:106 \"The CEO's sentence ruling out one direction was cut off and could not be read\". DECISIONS.md:110 \"It is provisional ... the real choice is between Ledger and Instrument\".",
+     "fix": "Set 2.1 to \"in progress\" until a fresh Fable reviewer has judged the three directions on both screens and the verdict is saved in gates/ and linked. Add to A-13 a request that the CEO resend the cut-off sentence, and a reason for Ledger over Instrument drawn from the assistant screens."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "A-14 closing line \"While on Sonnet the lead made no decision of the kind the routing rule reserves for Fable ... Nothing needs re-reading.\"",
+     "problem": "Q6. The record contradicts this. The assistant screens were built by a Sonnet builder and checked by the lead while on Sonnet: the same tier, not a fresh context. The A-13 outcome then relies on \"the lead's own note after the assistant screens\", a comparative judgment of visual direction made in that period. That note is in no file in the repository. Visual direction is reserved for Fable.",
+     "evidence": "git log: \"75f1fa5 2026-11-13 21:48:44 -0800 Log the move to Sonnet 5.5\" then \"b5ddb16 2026-11-13 21:56:54 -0800 Apply the three visual directions to an assistant screen\". scorecard.md:31 \"Assistant screen: 1 Sonnet builder\". DECISIONS.md:110 \"the lead's own note after the assistant screens stands, that the real choice is between Ledger and Instrument and that Signal is the weakest for a conversation\"; `grep -rn -i \"weakest\\|between Ledger\" .` finds that sentence only at DECISIONS.md:110. CLAUDE.md: \"do it yourself on Fable 5.2 ... This covers vision, principles and deltas, visual direction\" and \"Work at one tier is reviewed one tier up, in a fresh context.\"",
+     "fix": "Change the closing line to say that the assistant screens and the lead's comparison of the three directions were made on Sonnet and need a tier-up review. Have the lead on Fable look at the six pages again, write the comparison into the rationale files, and get the fresh Fable review named in the previous finding."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 \"Strongest argument against: the package is three days old, and four of the things we want from it (the bridge, undo of agent changes, the custom-component agent key, the Solid adapter) are experimental\"",
+     "problem": "Q7. The argument is fair but not the strongest. Three stronger ones are available from the lead's own files. (1) Adoption breaks two of the charter's hard checks a day after they were written: no pre-release dependency in brick, and JavaScript budgets exceeded 4 to 14 times. (2) It meets no need in the first slice: the four parts work as plain HTML and UI SDK has nothing for two of them. (3) The decision rests on half a sentence from the CEO and on docs alone: no component page, no source and no test kit was read or run. Also, nothing in the entries says Souvenir wants the Solid adapter; the default is web components.",
+     "evidence": "charter/principles.md:28 \"Performance budgets are hard checks on every change. They are not traded by rank. Nor are ... a pre-release dependency\". DECISIONS.md:131 \"The four parts work as plain HTML, and UI SDK has nothing for two of them\". DECISIONS.md:128 \"The rest of the sentence was cut off.\" notes/sources/2026-11-14-ui-sdk.md:12 \"What was not read: the per-component pages ... and the source code.\" DECISIONS.md:133 \"Default taken: web components\".",
+     "fix": "Rewrite the argument to lead with the three points above, keep the age of the package as the fourth, and remove \"the Solid adapter\" from the list of things wanted."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "A-17 \"None of those changes a principle, a budget, the scorecard definitions or the benchmark.\"",
+     "problem": "Q2. One of the seventeen adopted practices is recorded as going into the benchmark's violation list. Violations are part of the benchmark's scoring and of the scorecard's benchmark measure, which the CEO owns. Either the sentence or the table row is wrong.",
+     "evidence": "notes/sources/2026-11-14-ceo-skills.md:71 \"Every usage rule has evidence and a snippet that breaks it ... | component-docs | Component docs and the benchmark's violation list\". scorecard.md:15 \"Benchmark | Three fixed build tasks ...: tasks completed, violations, tool calls\". CLAUDE.md: \"Ask me first ...: changes to ... the scorecard definitions or the benchmark tasks.\"",
+     "fix": "Remove \"and the benchmark's violation list\" from the table row, or move that one practice to a proposal under \"Awaiting CEO\" and say sixteen are adopted."
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 point 4 \"Owner: the lead. Expiry: set when the item is registered.\"",
+     "problem": "Q2. Owner and a falsifiable hypothesis are present. The expiry, the start date and the evidence to collect are not, although the charter fixes expiry at 30 days from the start. The entry does not say the item takes the checkout slice's single new-item slot, or that starting it needs a fresh Fable reviewer's verdict because the lead is both proposer and decider. \"The assistant page\" is in no slice in the work tree.",
+     "evidence": "CLAUDE.md: \"EXPLORE: an owner, a hypothesis and an expiry.\" charter/budget.md:130 \"an owner, a hypothesis that evidence could prove wrong, a start date, an expiry date, the evidence to collect, and whether it has been extended\"; :135-136 \"at most one new item per pilot, or per slice while no pilot is running; expiry 30 days after the start\". charter/operating-model.md:78 \"When the lead is the proposer, in a row where the table names the lead as decider, the proof is written by a fresh reviewer on Fable\".",
+     "fix": "Write: \"Expiry: 30 days after registration, one extension at most. Evidence: N scripted agent runs on the reference checkout page, counting completions and any Pay press without a person. It is the checkout slice's one new item. Starting it needs a fresh Fable reviewer's verdict.\" Scope it to the checkout page until an assistant page is a work item."
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "D-013 \"WCAG 2.2 AA is decided by our own tests\"; A-16 \"Our own tests, not theirs, decide whether a part meets WCAG 2.2 AA.\"",
+     "problem": "Q4. The intent matches the charter (UI SDK's claims are not relied on), but the wording gives tests more than the charter does. The charter says automated checks find only part of the problems, that the rest are covered by a per-component audit with manual checks, and that status stays \"automated checks only\" until sessions with people.",
+     "evidence": "charter/budget.md:29 \"Every other criterion is covered by a per-component audit ... checked by a named automated check, checked by a named manual check, or not applicable\". charter/budget.md:49 \"Automated scans find only part of the accessibility problems that exist ... Every component's status therefore says 'automated checks only' until sessions with people have been run.\"",
+     "fix": "Write: \"whether a part meets WCAG 2.2 AA is decided by our own checks and per-component audit, never by UI SDK's claims; its status stays 'automated checks only' until sessions with people.\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "Line 6 \"Last updated: 2026-11-13\"",
+     "problem": "The file carries entries dated 14 November 2026 (D-013, A-16, A-17, the A-13 outcome, the A-14 closing line) under a header that says it was last updated on 13 November.",
+     "evidence": "DECISIONS.md:6 \"Last updated: 2026-11-13\"; DECISIONS.md:110 \"Outcome, 14 November 2026, 23:19\".",
+     "fix": "Change line 6 to \"Last updated: 2026-11-14\"."
+    }
+   ],
+   "not_checked": [
+    "The CEO's original messages (\"we need to use this\", the cut-off sentence about a direction): they are not in the repository, so the entries' accounts of them were taken as written.",
+    "Whether any check output or verdict was \"shown in the session\": only the files and links in the repository could be inspected.",
+    "The six skill files in skills-in/ were not opened; A-17 was checked against the lead's summary notes/sources/2026-11-14-ceo-skills.md only.",
+    "The facts file was spot-checked on about a dozen lines against the fetched docs, not quote by quote; registry, repository and publish-date facts were not re-fetched.",
+    "The per-component, server-rendering and styling pages of UI SDK, and its source code, are not in the fetched files and were not read.",
+    "The remark that Zag.js and Ark UI are multi-framework unstyled alternatives is from the reviewer's own knowledge and was not verified in this run.",
+    "The readers' raw return (notes/sources/raw/2026-11-14-ui-sdk-and-skills-readers.json) and the size script were not audited; the size output file was read as given.",
+    "The tag v0.1.0-archive was not read, as instructed."
+   ]
+  },
+  {
+   "lens": "skills",
+   "verdict": "pass with fixes",
+   "checked": "Read all six skill files in full, notes/sources/2026-11-14-ceo-skills.md, DECISIONS.md A-12 to A-17, PROGRESS.md, charter/budget.md, charter/voice-and-tone.md, and the relevant parts of charter/benchmark.md, checkout-slice.md, operating-model.md and the skills reader's return in the raw JSON; ran a script that greps every quoted string, shasum -a 256 on the six files, and a grep count of referenced files. Results: (a) 6 of 7 skill quotes are exact, one is constructed and one is cut before a clause that changes its meaning; (b) all six checksum prefixes match; (c) five verdicts are fair, ui-review's \"when\" is too cautious because it can be run now in adapted form; (d) all 17 practices are really in the named skills, but one destination touches the benchmark, several destinations are not in PROGRESS.md as named, and \"adopted\" has nothing to point to yet; (e) 24 unique missing files (so \"about 25\" holds), 17 rows and 14 overlaps are right, but 8 of the 17 are among the 14; (f) our side is stated correctly in every item (rule 17, 320 pixels and 200%, model routing), the skills' side is misstated in three; (g) at least six conflicts the reader found and four useful practices are left out. No blocker: the decision not to install stands.",
+   "findings": [
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Skill table, ui-review row: \"Usable on the prototypes once its criteria file is supplied\"; line 5: \"differ from the reader's in two places, which are marked\"; DECISIONS.md A-17: \"With the criteria file, ui-review can be run on the three visual directions at once\"",
+     "problem": "(c) ui-review can be used now, in adapted form, on the six prototype pages in explore/visual-directions/. Its own text accepts a prototype, lets a system's own rules stand as the criteria, and needs none of the missing scripts. The reader said exactly this, and the lead's narrower verdict is not marked as a difference from the reader. Of the two differences that are marked, the second (busy button) is an agreement, not a difference. The CEO wrote \"we need to use this\", so telling them nothing is usable today is stronger than the source. A-13 also records that the prototypes' contrast figures \"have not been checked independently\", which is the gap such a pass would fill. The other five verdicts are fair: boss, build and migrate need an app that ships UI, token-mapping stops at \"No list exists\", component-docs stops with no component code.",
+     "evidence": "ui-review.SKILL.md:3 \"Use to critique a screen, flow, prototype or running build, accessibility included\"; :8 \"An installed design system's own rules come first and count as agreed criteria.\"; :14 \"Otherwise use the host's browser tool and save the tree yourself.\" Reader JSON, skills.skills[4].when: \"It could run in partial form now on the explore/ prototypes (clay)... with Souvenir's budget.md LOCK rows as the agreed criteria. The skill allows this\". DECISIONS.md A-13: \"Contrast figures are the builders' own calculations and have not been checked independently.\"",
+     "fix": "Change the ui-review \"When\" cell to: \"Its method can be run now on the prototypes, with the LOCK rows in charter/budget.md as the criteria and widths of 320 and 375 pixels; its own 13 criteria need the missing criteria.md.\" Say in the short answer that one of the six is usable today in adapted form. Mark this as a place where the reader and the first draft differed, and drop the busy-button sentence from the list of differences. Either run that pass on the prototypes or record why not."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Line 42: build-design-system: \"The app's own look is the source. Invent no colour, font, shadow, gradient or motion value it does not already have\". Ours is a clean slate with a direction the CEO chooses.",
+     "problem": "(a)(f) The quote is exact as far as it goes but stops before a clause that removes most of the stated conflict. The skill allows a new look when the person chooses a design source and confirms a sample, which is the route this project takes (CEO chooses a direction, A-13). The real remaining difference is the default when nobody chooses: the skills fall back to the current look and forbid shipping a direction nobody chose, and here there is no current look.",
+     "evidence": "build-design-system.SKILL.md:8 \"Invent no colour, font, shadow, gradient or motion value it does not already have, unless the person chose a design source and confirmed a sample.\" design-system-boss.SKILL.md:34 \"A visual direction nobody chose. \\\"Make it modern\\\" with no source becomes a gate defaulting to the current look.\"",
+     "fix": "Quote the sentence to its full stop. Restate the conflict as: \"The skills allow a new look only when the person chose a source and confirmed a sample, and otherwise default to the current look. We have no current look, so a choice is always needed.\" Note beside it that the skills' Never list would not accept Ledger as taken in the A-13 outcome, because nobody chose it; CLAUDE.md and Gate 2 criterion 2 allow it as a provisional default."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Line 47: \"build-design-system: keep the idle label and put a spinner in the box... Ours stays, because a spinner alone says nothing to someone who cannot see it\"",
+     "problem": "(f) Our side is right: rule 17 and the checkout spec do change the label to \"Paying £48.20…\". The skill's side is misstated. The skill does not use a spinner alone; it also sets aria-busy, which is what tells assistive technology the control is busy. The reason given for keeping our rule therefore argues against something the skill does not say. The supplied file gives no reason for the skill's rule (it may be in the missing references/traps.md), so the comparison cannot be settled from the text. DECISIONS.md A-17 repeats the short form without aria-busy. The assumption is correctly labelled as needing a human test but is not in any list of assumptions.",
+     "evidence": "build-design-system.SKILL.md:64 \"Wrong: `{saving ? \\\"Saving...\\\" : \\\"Save\\\"}`. Right: the idle label stays, a spinner sits inside the same box, `aria-busy` is set.\" charter/voice-and-tone.md:60 \"17. **Loading and done states** reuse the button's verb and keep any amount: \\\"Pay £48.20\\\" → \\\"Paying £48.20…\\\"\". charter/checkout-slice.md:37 \"busy (label changes to the progressive form and keeps any amount, such as \\\"Paying £48.20…\\\"; busy announced; further presses ignored)\". charter/voice-and-tone.md:118-124 lists five assumptions, none about the busy label.",
+     "fix": "Write: \"build-design-system keeps the idle label, adds a spinner in the same box and sets aria-busy. Ours changes the visible label and announces busy. The skill's reason is not in the file supplied. Ours stays as a house rule; whether a changed label helps or confuses is an assumption that needs a human test.\" Add that assumption to the list in charter/voice-and-tone.md and use the same wording in A-17."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Line 46: \"The skills capture at 390 and 1280 pixels. Our budget requires 320 pixels and text at 200 percent.\"",
+     "problem": "(f) Our side is correct. The skills' side is stronger than the source: 390 and 1280 are defaults, and the rule is the narrowest and widest width the app supports. With 320 as our narrowest width, the skills would capture at 320, so there is no conflict on width. The real gap is that the skills have no test at 200% text size.",
+     "evidence": "build-design-system.SKILL.md:17 \"at the narrowest and widest supported width (390 and 1280 by default)\"; ui-review.SKILL.md:14 \"(the app's narrowest and widest, 390 and 1280 by default)\". charter/budget.md:41 \"Content reflows at 320 pixels wide, and text can be enlarged to 200%\".",
+     "fix": "Write: \"The skills capture at the narrowest and widest supported width, 390 and 1280 by default. Ours would be set to 320. They have no check at 200% text size, which our budget requires.\""
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Table row: \"Every usage rule has evidence and a snippet that breaks it... | component-docs | Component docs and the benchmark's violation list\"; line 53: \"None changes a principle, a budget, the scorecard or the benchmark\"; DECISIONS.md A-17: \"None of those changes a principle, a budget, the scorecard definitions or the benchmark.\"",
+     "problem": "(d) The practice is in the skill (component-docs.SKILL.md:17). The destination is not real and contradicts the assurance given to the CEO. charter/benchmark.md has no \"violation list\"; it has four fixed violation categories, and the scorecard's benchmark measure counts them. Adding broken-rule snippets to what the benchmark counts would change a benchmark definition, which CLAUDE.md reserves for the CEO. Nothing has been changed yet (benchmark.md is unmodified), so this is a wrong statement, not yet a breach.",
+     "evidence": "charter/benchmark.md:156 \"**Violations,** per run, in four categories:\"; charter/benchmark.md:3 \"The tasks become fixed when Gate 1 passes. From then, only the CEO can change them.\" CLAUDE.md: \"Ask me first, under \\\"Awaiting CEO\\\": changes to the principles or their deltas, the approvals list, the scorecard definitions or the benchmark tasks.\" `git status --short` shows only DECISIONS.md, PROGRESS.md and scorecard.md modified.",
+     "fix": "Change the destination to \"Component docs, and the lint rules written from them\". If the lead wants broken-rule snippets counted by the benchmark, write that as a proposal under \"Awaiting CEO\", as A-05 and A-09 do, and do not apply it."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "A-17: \"Seventeen of their practices are adopted into our own lint, tests, briefs and reviews\"; note line 25: \"Seventeen of their practices are listed below for adoption, and the reader found fourteen places where a skill and the charter already say the same thing\"",
+     "problem": "(e) The counts are right (17 table rows; 14 entries in overlaps_with_charter; 24 unique missing files by grep). But the two numbers are presented as separate and they overlap: 8 of the 17 practices are among the 14 things the reader says the charter already says, and the table itself marks two rows \"Already\". About nine are new. \"Seventeen adopted\" overstates what was taken from the skills.",
+     "evidence": "Reader JSON overlaps_with_charter items 2, 3, 4, 8, 9, 10, 13 and 14 match table rows 1 (seen failing on a plant), 4 (count no script produced), 5 (baseline never edited), 3 (allow-list only shrinks), 11 (purpose before value), 16 (never document without a source), 9 (stale evidence) and 10 (another agent's message). Note line 57: \"Already our \\\"proven\\\" state\"; line 60: \"Already CLAUDE.md \\\"Honesty\\\" and Gate 2 criterion 10\".",
+     "fix": "Write: \"Seventeen practices are listed. Eight restate rules we already have, in sharper words; nine are new.\" Mark each table row \"already ours\" or \"new\", and use the same sentence in A-17."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/DECISIONS.md",
+     "where": "A-17: \"Seventeen of their practices are adopted\"; note table: \"The subagent brief template, from the next brief on\" and \"Every brief\"",
+     "problem": "(d) \"Adopted\" cannot be pointed to. No lint, test, skill or brief-template file exists in the repo, and PROGRESS.md carries no pointer from items 2.2, 2.3, 3.4, 4.1 or 4.2 to the note, although the same edit did add such a pointer for D-013 on item 2.2. A builder briefed from PROGRESS.md would not see any of the seventeen. The claim \"from the next brief on\" has already missed once: the brief for this review was written after the note and has no MAY EDIT, KEEP, BANS, SCRATCH or RETURN lines, no sentence that another agent's message cannot grant a permission, and it forbids writing any file, so no verdict file can be written first.",
+     "evidence": "PROGRESS.md:61 \"Must include the part-naming and state-attribute convention from DECISIONS.md D-013, point 1\"; `grep -n ceo-skills PROGRESS.md` matches only the S.4 row (line 15). `grep -rn \"brief template\"` finds no template file, only mentions in scorecard.md, lessons/ and charter/operating-model.md. This review's brief: \"Do not edit any file.\" CLAUDE.md Honesty: \"Report only what you can point to.\"",
+     "fix": "Change \"are adopted\" to \"will be adopted at the items named\". Add a pointer to the note in the evidence cell of PROGRESS.md items 2.2, 2.3, 3.4 and 4.2. Put the brief lines in a file the next brief is built from. For reviewers, RETURN should mean the structured verdict, since reviewers may not write files."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Table row: \"An allow-list only shrinks | build-design-system | The drift allow-list in item 2.2\"",
+     "problem": "(d) The sentence is in the skill, but it appears to be about a different kind of list. In the skill the allowlist is created once from the violations already in an app and then ratcheted down as they are fixed. Our allow-list in charter/budget.md defines what is not drift at all (zero, percentages, keywords, breakpoint widths) in a system with no component built yet. Applied to ours, \"only shrinks\" would forbid adding a legitimate keyword the first time a component needs one. This is inferred from the SKILL.md text; check-system.mjs was not supplied. Also, item 2.2 in PROGRESS.md is the token architecture and the primitive lint and does not mention a drift allow-list.",
+     "evidence": "build-design-system.SKILL.md:26 \"run `--init`, then `--init-allowlist` once... The allowlist and ratchet only shrink.\"; :17 counts raw values \"with `scripts/check-system.mjs --no-allowlist --no-self-test --json`\". charter/budget.md:168 \"A published allow-list names what is not drift: zero, percentages, keywords such as \\\"inherit\\\", and breakpoint widths\". PROGRESS.md:61 \"2.2 Token architecture: primitive, semantic, component; lint that blocks every primitive group in components\".",
+     "fix": "Reword to: \"A list of grandfathered violations only shrinks. Applies to the drift count of a product repository adopting the system, not to the definitional allow-list in budget.md, which changes by review.\" Name the item that actually builds the raw-value lint, or add one."
+    },
+    {
+     "severity": "major",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Section \"Where they conflict with our rules\" (eight items), and table row \"A finding names an element, a width and a measurement, never a feeling | ui-review | Gate reviews and the \\\"review against principles\\\" skill\"",
+     "problem": "(g) The conflict list leaves out conflicts the reader reported that touch the charter or CLAUDE.md. (1) ui-review gives panel reviewers no persona; the operating model recruits reviewers with different lenses. (2) ui-review's press-feedback limit is 100 ms; our budget is 200 ms; nobody has said which governs. (3) ui-review drops findings that rest on taste; CLAUDE.md requires review against five materials, some of which are judgment. This one collides with a practice the note adopts into gate reviews. (4) component-docs hand-writes one entry per component; CLAUDE.md wants one source to generate both sets of docs. The verdict hints at this but the conflict list does not state it. (5) The boss never writes product code where it can start agents, and migrate fans out workers; CLAUDE.md has the lead do high-dependency work itself and D-005 stops subagents recruiting. (6) build-design-system requires a disabled state captured for every component; our checkout spec deliberately builds none. Also, token-mapping is \"later, with one change\", but the reader found a second: its gap threshold reports a high gap count as the wrong token list, where we would call it drift.",
+     "evidence": "ui-review.SKILL.md:18 \"give each the same prompt and no persona, read only\" against charter/operating-model.md:43 \"the lead recruits reviewers with different lenses\". ui-review.SKILL.md:16 \"each `duration` under 100 ms\" against charter/budget.md:158 \"At most 200 milliseconds\". ui-review.SKILL.md:24 \"A finding that rests on taste is dropped to Left out.\" against CLAUDE.md \"Review every component against all five.\" component-docs.SKILL.md:22 \"it saves to `docs/system/<name>.md`\" against CLAUDE.md \"One source generates both sets of docs.\" design-system-boss.SKILL.md:31 \"Product code written by the boss on a host that can start other agents.\" build-design-system.SKILL.md:24 \"its disabled, required, error and long-text states are captured\" against charter/checkout-slice.md:38 \"Do not build: disabled because a form is incomplete.\" token-mapping.SKILL.md:21 \"lead with `Status: not actionable (gap threshold)`\".",
+     "fix": "Add these six items to the conflict list, each with which side stays. Scope the \"never a feeling\" row to findings against measurable criteria, and keep a separate judgment section in gate reviews for the five materials. State that the 200 ms budget governs and the 100 ms probe is not adopted."
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Section \"What we take from them now\" (the 17 rows)",
+     "problem": "(g) Four practices in the skills that bear directly on this system are not taken and not mentioned. The first matters most for an assistant product. (1) Copy rules ship with exemptions for text that must stay verbatim and for strings a person or machine pastes elsewhere. Our writing check bans words such as \"just\", \"valid\" and \"please\" and fails on urgency wording in literal text; without exemptions it will flag drafted messages and quotations, or push someone to rewrite what a person sends. (2) Show the first component family to a person before fanning out, which fits item 3.2 (cost summary first) before 3.3. (3) A fix is written as a check that fails on the current build, which fits build-loop step 6. (4) A surface that writes data is checked by request-body equality, which fits the budget row that the amount the test server receives equals the total shown. The reader listed all four.",
+     "evidence": "build-design-system.SKILL.md:26 \"Copy rules ship with their exemptions, element-scoped, for text that must stay verbatim (quotes, terms, version strings) and for payload strings that a machine or person pastes elsewhere... because rewriting them changes what someone else receives.\"; :23 \"Show the family to the person before fan-out\". ui-review.SKILL.md:39 \"the fix as a check that fails on the current build\". migrate-design-system.SKILL.md:48 \"A write surface gets every width and theme plus request-body equality\". charter/voice-and-tone.md:49 (banned words) and charter/budget.md:57, :59.",
+     "fix": "Add the four as rows, or say why each is left out. For the first, name the writing check as the destination and state that drafted, quoted and pasted text is exempt by element."
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Table row: \"A check counts only once it has been seen failing on a planted violation, and the plant is then removed | ... becomes the procedure for Gate 2 criteria 5 and 6\"",
+     "problem": "(d) The practice is in the skill, the \"proven\" state is in charter/budget.md, and the criteria numbers are right. But criteria 5 and 6 are decided by fixtures that stay in the repo and fail on every run. Plant-and-delete is a one-time proof and is weaker than a kept fixture. Used as \"the procedure\" it would loosen how the two criteria are met.",
+     "evidence": "PROGRESS.md:51 \"a fixture that uses each primitive group once makes the lint fail once per group, and a clean fixture passes\"; charter/budget.md:11 \"**proven:** has caught a breach planted on purpose\"; charter/budget.md:169 \"tested on every cycle against planted duplicates\". build-design-system.SKILL.md:26 \"see exit 1 naming the rule, then delete the plant\".",
+     "fix": "Write: \"Criteria 5 and 6 keep their fixtures. From the skill we add that the failure must name the rule and must be seen in the session that reports it.\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Table row: \"A report opens with unanswered defaults, then what changed, then a ranked list... | design-system-boss | The daily digest and the final report\"",
+     "problem": "(d) The practice is in the skill. CLAUDE.md fixes the digest as five lines in the order done, next, decisions made for me, risks, and lists what the final report gives. Opening the digest with unanswered defaults reorders a format the CEO set. The note does not mention this.",
+     "evidence": "CLAUDE.md: \"Post a five-line digest in [sandbox channel] once a day: done, next, decisions made for me, risks.\" digests/2026-11-13.md follows that order. design-system-boss.SKILL.md:53 \"the final message opens with unanswered defaults, then what changed, then one ranked table of what was found and not fixed (30 rows at most)\".",
+     "fix": "Write: \"The digest keeps CLAUDE.md's order; its 'decisions made for you' line lists every default taken unanswered. The final report adds one ranked table of what was found and not fixed.\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Table row: \"Normalise colours and lengths with code, never by eye; compare colours by a measured difference | token-mapping | The contrast and range checks, item 2.3\"",
+     "problem": "(d) The practice is in the skill. Neither named check compares colours by a measured difference: contrast is a ratio, and the range check holds lightness and chroma fixed and measures hue distance. A colour-difference tolerance in the range check would widen an ADAPT range, which needs the CEO. Item 2.3 names contrast checks only; the range check is Gate 2 criterion 6. The lead did not adopt the skill's tolerance numbers, which is right, but the row does not say so.",
+     "evidence": "token-mapping.SKILL.md:15 \"**Normalise** both sides (lengths to px, colours to OKLCH compared by delta E OK) with code, never by eye.\" charter/budget.md:114 \"The lightness and chroma of each step stay fixed.\"; :109 \"changing a range, wider or narrower, needs the CEO\". PROGRESS.md:62 \"2.3 Token files and themes, DTCG 2025.10; contrast checks\".",
+     "fix": "Write: \"Colours and lengths are converted in code, in OKLCH, in the contrast script, the range check and the drift scan. No tolerance is added to any range.\""
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "\"The test server and captures, item 3.4\"; line 49: \"That is worth adopting once code exists (item 4.1)\"",
+     "problem": "(d) Two destinations do not match PROGRESS.md as written. Item 3.4 lists tests and metadata and no test server; no item names the test server, which checkout-slice.md says is made in phase 3. Code first exists at items 2.2 and 2.3 (lint and token files), not 4.1, so a branch rule tied to 4.1 arrives after two phases of commits on main. The other item numbers (2.2 lint, 2.3, 3.4 visual regression, 4.2 docs) and Gate 2 criteria 5, 6 and 10 exist and say what is claimed.",
+     "evidence": "PROGRESS.md:74 \"3.4 Unit, keyboard, axe and visual-regression tests; metadata\"; PROGRESS.md:84 \"4.1 Repo structure, semver, deprecation and retire policy, CI\"; charter/checkout-slice.md:3 \"the reference page, its fixtures and its test server are made in phase 3\".",
+     "fix": "Name the test server in a phase 3 item and point the capture-guard row at it. Change the branch sentence to \"from item 2.2, when the first script is committed\", or give the reason for waiting until 4.1."
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Line 45: ui-review ends with \"Ready to ship: yes\" or \"no\"",
+     "problem": "(a) \"Ready to ship: yes\" is in quotation marks and does not appear in the file. The file's only ship line is the \"no\" example; \"yes\" and \"yes, with fixes\" appear as verdict words. Every other quoted sentence attributed to a skill was found exactly by grep.",
+     "evidence": "ui-review.SKILL.md:34 \"The ship line follows: `Ready to ship: no. Enter in Email cancels the invite (blocking 1, should-fix 2, 3 questions for a person).` Any `blocking` finding makes the verdict `no`... `should-fix` alone `yes, with fixes`, only notes `yes`.\" Quote-check script output: 'Ready to ship: yes' | NOT FOUND.",
+     "fix": "Write: ui-review ends with a ship line, \"Ready to ship:\" followed by no, yes with fixes, or yes."
+    },
+    {
+     "severity": "minor",
+     "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/notes/sources/2026-11-14-ceo-skills.md",
+     "where": "Line 22: \"including every script (`capture.mjs`, `capture-guard.mjs`, `pixdiff.mjs`, `check-system.mjs`, `oklch.mjs`, `legacy.mjs`, `land.mjs`)\"; line 23: \"They take an app that already ships an interface and pull a design system out of it.\"",
+     "problem": "(e) \"About 25\" holds: grep finds 24 unique referenced files. The script list reads as complete and omits an eighth, find-chromium.mjs. Separately, \"pull a design system out of it\" is true of build-design-system only; migrate moves an app onto an existing system and token-mapping reports against an existing token list. A-17 words this correctly.",
+     "evidence": "build-design-system.SKILL.md:10 \"which `scripts/find-chromium.mjs` finds or explains how to install\". grep count of unique .mjs and .md references across the six files: 8 scripts, 4 playbooks, 12 reference files. migrate-design-system.SKILL.md:3 \"Use when an app has to move onto a design system that already exists\". DECISIONS.md A-17: \"Four of the six are written for an app that already ships an interface\".",
+     "fix": "Add find-chromium.mjs to the list and write \"24 files\". Replace the second sentence with A-17's wording: \"They are written for an app that already ships an interface.\""
+    }
+   ],
+   "not_checked": [
+    "The contents of the 24 files the skills point to (scripts, playbooks, references). They were not supplied, so what check-system.mjs treats as an allowlist and why the skills keep the idle button label are inferred from the SKILL.md text only.",
+    "Whether the lead read all six files in full and whether the reader ran on Opus. The raw JSON does not record a model.",
+    "The CEO's own words (\"we need to use this\") and the claim that rollout to existing products is in the CEO's brief beyond a keyword search of notes/ceo-brief.md.",
+    "Whether ui-review actually runs cleanly on the six prototype pages. The finding that it can be used now rests on the skill's text and the reader's return; I did not run it.",
+    "notes/sources/2026-11-14-ui-sdk.md, D-013, A-16 and the UI SDK docs files, which are outside this lens.",
+    "The other 150 or so reader facts in the raw JSON; only the `skills` section was read."
+   ]
+  }
+ ],
+ "missing": []
+}
