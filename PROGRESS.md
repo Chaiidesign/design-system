@@ -57,7 +57,7 @@ Pass criteria for Gate 2 (written 13 November, before the phase started; the rev
 
 | Item | Owner | Status | Evidence |
 |---|---|---|---|
-| 2.1 Three visual directions as clay prototypes; choose one | Fable | in progress | Three prototypes built on two screens (explore/visual-directions/). The deadline passed with no choice from the CEO, so the lead took Ledger provisionally (DECISIONS.md A-13). Not done: a fresh Fable reviewer was asked on 14 November to judge all six pages with measurements; its verdict is not yet saved in gates/raw/ |
+| 2.1 Three visual directions as clay prototypes; choose one | Fable | done | Three prototypes on two screens (explore/visual-directions/). Reviewer's verdict: gates/raw/2026-11-14-visual-directions-review.md (no clear winner; all hard rows pass). Choice recorded with reasons and the strongest argument against: DECISIONS.md A-13. The lead took Ledger provisionally, with three corrections; the CEO can still choose otherwise until item 2.3 starts |
 | 2.2 Token architecture: primitive, semantic, component; lint that blocks every primitive group in components | Fable | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (a ban ships with its check; a failing check names its rule). Work moves off main to a branch from this item on |
 | 2.3 Token files and themes, DTCG 2025.10; contrast checks | Sonnet or Haiku; automated | next | Practices to apply: notes/sources/2026-11-14-ceo-skills.md (colours and lengths converted in code, in OKLCH; no tolerance added to any range) |
 | Gate 2: Opus reviewer plus tests | Opus reviewer | next | |
