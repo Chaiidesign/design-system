@@ -98,20 +98,20 @@ async function main() {
     // 4. Fill every required field by its label and pay.
     await page.goto(checkout);
     for (const [label, value] of REQUIRED) await page.getByLabel(label, { exact: true }).fill(value);
-    const names = [...new Set(await page.locator("form#checkout [name]").evaluateAll((els) => els.map((e) => e.name)).catch(() => null) ?? [])];
+    const names = [...new Set(await page.locator('form#checkout [name]:not([form]), [form="checkout"][name]').evaluateAll((els) => els.map((e) => e.name)).catch(() => null) ?? [])];
     // evaluateAll needs script in the page in some builds; fall back to reading the attributes one by one.
     if (!names.length) {
-      const loc = page.locator("form#checkout [name]");
+      const loc = page.locator('form#checkout [name]:not([form]), [form="checkout"][name]');
       for (let i = 0; i < await loc.count(); i++) names.push(await loc.nth(i).getAttribute("name"));
     }
-    assert(names.length >= 9, "the form has its named fields", names.join(", "));
+    assert(names.length >= 8, "the form has its named fields", names.join(", "));
     await Promise.all([page.waitForURL(/checkout-result\.html/, { timeout: 5000 }).catch(() => null),
       page.getByRole("button", { name: "Pay £60.75" }).click()]);
     const result = new URL(page.url());
     assert(result.pathname.endsWith("/screens/checkout-result.html"), "pressing Pay loads checkout-result.html", `url ${result.pathname}`);
     const success = page.locator('.sv-message[data-tone="success"]');
     const successText = (await success.count()) ? (await success.innerText()).trim() : "";
-    assert(await success.isVisible().catch(() => false) && successText === "Order placed. Receipt sent to sam@example.com.",
+    assert(await success.isVisible().catch(() => false) && successText === "Receipt sent to the email address you gave.",
       "the result page shows the success message", `"${successText}"`);
     const q = result.searchParams;
     const missing = names.filter((n) => !q.has(n));
@@ -122,6 +122,16 @@ async function main() {
     }
     assert(q.get("country") === "GB" && q.get("billing") === "same", "the query string carries the chosen country and the ticked billing box",
       `country=${q.get("country")}, billing=${q.get("billing")}`);
+
+    // 5. The Enter key pays. Enter in a field presses the form's first submit button, so that button must be Pay
+    //    and never a second action such as "Apply code" (the final review of 15 November found exactly that).
+    await page.goto(checkout);
+    for (const [label, value] of REQUIRED) await page.getByLabel(label, { exact: true }).fill(value);
+    await page.getByLabel("Postcode", { exact: true }).focus();
+    await Promise.all([page.waitForURL(/checkout-result\.html/, { timeout: 5000 }).catch(() => null), page.keyboard.press("Enter")]);
+    const entered = new URL(page.url());
+    assert(entered.pathname.endsWith("/screens/checkout-result.html") && !entered.searchParams.has("code"),
+      "Enter in a filled field pays, and sends no discount code with the payment", `${entered.pathname.split("/").pop()}${entered.search.slice(0, 40)}`);
     await context.close();
   } finally {
     if (browser) await browser.close();

@@ -2,7 +2,7 @@
 // Souvenir screen checker (spec section 6, point 4), driven by playwright-core.
 //   node scripts/check-screens.mjs [--only <substring>] [--no-shots] [--dir <folder>]
 //   node scripts/check-screens.mjs --self-test
-// Visits every .html directly under screens/ and screens/agent-test/ (not index.html) at 320, 375 and 1280 pixels
+// Visits every .html in screens/ and all its subfolders (not screens/index.html) at 320, 375 and 1280 pixels
 // wide (800 high), light and dark (?theme=), and fails on:
 //   sideways-scroll            the page scrolls sideways
 //   text-too-small             visible text below 16 pixels
@@ -25,11 +25,25 @@
 //                              sideways-scroll does not see.
 //   many-accent-fills          on a page whose file name does not begin demo-, more than one visible element whose
 //                              computed background equals the computed --sv-color-accent on :root (AGENTS.md rule 4)
+//   hidden-has-box             an element with the hidden attribute that still has a box (display not none)
+//   busy-beside-result         a visible .sv-status[data-tone="busy"] in the same .sv-chat-message as a visible .sv-proposal
+//                              or .sv-message[data-tone="success"]: the busy mark says work is going on next to its result
+// Two more passes, each reported in a table of its own and counted in the result:
+//   Text at 200 percent: every screen whose file name does not begin demo-, at 320 and 375 wide, light, with the root
+//   font size set to 200 percent (the run proves the computed size doubled). Fails on:
+//     sideways-scroll-200        the page scrolls sideways
+//     overflow-inside-part-200   text spills out of a part, as overflow-inside-part
+//   First screen of a checkout: every page with a .sv-cost-summary and a form, at 320 by 720, light, scrolled to the top.
+//   The bottom edge of the total row (in page coordinates) is printed either way. Fails on:
+//     total-below-first-screen   the total row's bottom edge is below 720 pixels, or there is no visible total row
 // Also measured, with no pass or fail: the height of the tallest visible .sv-proposal ("proposal height" in the table,
 // proposalHeight in the JSON).
-// Screenshots: digests/2026-11-15/screens/<screen>-<width>-<theme>.png. Data: gates/raw/2026-11-15-screens.json.
+// Screenshots: digests/2026-11-15/screens/<screen>-<width>-<theme>.png (animations stopped first, so a turning mark
+// draws the same every run). Data: gates/raw/2026-11-15-screens.json.
+// --only <substring> checks only the matching screens and writes its JSON and screenshots to
+// scripts/.tmp/check-screens-only/, never to the gate file or the digest; it exits 1 when nothing matches.
 
-import { existsSync, readdirSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, mkdirSync, writeFileSync, readFileSync, statSync } from "node:fs";
 import { join, dirname, resolve, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
@@ -47,13 +61,18 @@ const args = process.argv.slice(2);
 const DIR = args.includes("--dir") ? args[args.indexOf("--dir") + 1] : null;
 // --out <folder inside the repo> moves that --dir output elsewhere (default scripts/.tmp/check-screens-out).
 const TMP_OUT = args.includes("--out") ? resolve(REPO, args[args.indexOf("--out") + 1]) : join(REPO, "scripts", ".tmp", "check-screens-out");
-const SHOTS_DIR = DIR ? join(TMP_OUT, "screens") : join(REPO, "digests", "2026-11-15", "screens");
-const OUT_JSON = DIR ? join(TMP_OUT, "screens.json") : join(REPO, "gates", "raw", "2026-11-15-screens.json");
-const MAX_TAB_STOPS = 300;
-
 const SELF_TEST = args.includes("--self-test");
-const NO_SHOTS = args.includes("--no-shots") || SELF_TEST;
 const ONLY = args.includes("--only") ? args[args.indexOf("--only") + 1] : null;
+// A partial run never overwrites the gate file or the digest: --dir writes to TMP_OUT, --only to its own folder.
+const ONLY_OUT = join(REPO, "scripts", ".tmp", "check-screens-only");
+const OUT_ROOT = DIR ? TMP_OUT : ONLY ? ONLY_OUT : null;
+const SHOTS_DIR = OUT_ROOT ? join(OUT_ROOT, "screens") : join(REPO, "digests", "2026-11-15", "screens");
+const OUT_JSON = OUT_ROOT ? join(OUT_ROOT, "screens.json") : join(REPO, "gates", "raw", "2026-11-15-screens.json");
+const MAX_TAB_STOPS = 300;
+const FOLD = { width: 320, height: 720 };
+const ZOOM_WIDTHS = [320, 375];
+
+const NO_SHOTS = args.includes("--no-shots") || SELF_TEST;
 const posix = (p) => p.split(sep).join("/");
 
 // ---------------------------------------------------------------- contrast (WCAG 2.2 relative luminance)
@@ -358,6 +377,39 @@ const PAGE_LIB = String.raw`(() => {
     return { accent: a.slice(0, 3), elements: out };
   }
 
+  // hidden-has-box: an element with the hidden attribute that still generates a box.
+  function hiddenBoxes() {
+    const out = [];
+    for (const el of document.body.querySelectorAll("[hidden]")) {
+      const display = getComputedStyle(el).display;
+      if (display === "none") continue;
+      const r = el.getBoundingClientRect();
+      out.push({ where: describe(el), display, width: Math.round(r.width), height: Math.round(r.height), text: el.textContent.trim().replace(/\s+/g, " ").slice(0, 40) });
+    }
+    return out;
+  }
+
+  // busy-beside-result: a visible busy status in the same chat message as a visible proposal or success message.
+  function busyBesideResult() {
+    const out = [];
+    for (const st of document.body.querySelectorAll('.sv-status[data-tone="busy"]')) {
+      if (hidden(st)) continue;
+      const msg = st.closest(".sv-chat-message");
+      if (!msg) continue;
+      const results = [...msg.querySelectorAll('.sv-proposal, .sv-message[data-tone="success"]')].filter((e) => !hidden(e));
+      if (results.length) out.push({ where: describe(st), text: st.textContent.trim().replace(/\s+/g, " ").slice(0, 40), beside: results.map((e) => describe(e)) });
+    }
+    return out;
+  }
+
+  // The bottom edge of the visible total row, in page coordinates (null when there is none).
+  function totalRowBottom() {
+    const row = [...document.querySelectorAll('.sv-cost-summary__row[data-row="total"]')].find((e) => !hidden(e));
+    if (!row) return null;
+    const r = row.getBoundingClientRect();
+    return { top: Math.round((r.top + window.scrollY) * 10) / 10, bottom: Math.round((r.bottom + window.scrollY) * 10) / 10, where: describe(row) };
+  }
+
   function measure() {
     const de = document.documentElement;
     const ts = texts();
@@ -394,6 +446,7 @@ const PAGE_LIB = String.raw`(() => {
       scroll: { scrollWidth: Math.max(de.scrollWidth, document.body.scrollWidth), clientWidth: de.clientWidth },
       texts: textRows, brokenWords: words, controls: ctrls, cost, chat, proposal,
       partOverflow: overflowInsideParts(), accentFills: accentFills(),
+      hiddenBoxes: hiddenBoxes(), busyBesideResult: busyBesideResult(),
     };
   }
 
@@ -426,7 +479,7 @@ const PAGE_LIB = String.raw`(() => {
     }
     return { id: el.__svStop, where: describe(el), style, width, offset, colour, behind, rings, overlaps };
   }
-  window.__svCheck = { measure, focusInfo };
+  window.__svCheck = { measure, focusInfo, overflowInsideParts, totalRowBottom };
 })()`;
 
 // ---------------------------------------------------------------- one page state
@@ -478,6 +531,8 @@ async function checkState(browser, base, file, width, theme, shots) {
   if (!demoPage && m.accentFills && m.accentFills.elements.length > 1) {
     add("many-accent-fills", `${m.accentFills.elements.length} visible elements are filled with the accent rgb(${m.accentFills.accent}): ${m.accentFills.elements.map((e) => `${e.where} "${e.text}"`).join("; ")}`);
   }
+  for (const h of m.hiddenBoxes) add("hidden-has-box", `element with the hidden attribute is displayed (${h.display}, ${h.width}×${h.height}px)${h.text ? ` with "${h.text}"` : ""}`, h.where);
+  for (const b of m.busyBesideResult) add("busy-beside-result", `busy status "${b.text}" sits in the same chat message as ${b.beside.join(", ")}`, b.where);
   if (m.cost) {
     if (!m.cost.totals.length) add("cost-total-largest", "page has .sv-cost-summary but no visible total row dd");
     for (const t of m.cost.totals) {
@@ -510,25 +565,92 @@ async function checkState(browser, base, file, width, theme, shots) {
     await page.evaluate(() => { document.activeElement?.blur?.(); window.scrollTo(0, 0); });
     const name = posix(relative(DIR ? resolve(REPO, DIR) : join(REPO, "screens"), join(REPO, file))).replace(/\//g, "-").replace(/\.html$/, "");
     shot = join(SHOTS_DIR, `${name}-${width}-${theme}.png`);
-    await page.screenshot({ path: shot, fullPage: true });
+    // Stop every animation first (finite ones jump to their end, infinite ones to their start), so a turning
+    // busy mark draws the same in every run and the digest does not change when nothing else did.
+    await page.screenshot({ path: shot, fullPage: true, animations: "disabled" });
   }
   await context.close();
   return {
     file: posix(file), width, theme, url,
     screenshot: shot ? posix(relative(REPO, shot)) : null,
     proposalHeight: m.proposal ? m.proposal.height : null,
-    measurements: { scroll: m.scroll, texts: m.texts, controls: m.controls, brokenWords: m.brokenWords, cost: m.cost, chat: m.chat, proposal: m.proposal, partOverflow: m.partOverflow, accentFills: m.accentFills, tabStops: stops },
+    measurements: { scroll: m.scroll, texts: m.texts, controls: m.controls, brokenWords: m.brokenWords, cost: m.cost, chat: m.chat, proposal: m.proposal, partOverflow: m.partOverflow, accentFills: m.accentFills, hiddenBoxes: m.hiddenBoxes, busyBesideResult: m.busyBesideResult, tabStops: stops },
     findings,
   };
 }
 
+// Text at 200 percent: one screen at one width, light, root font size doubled. Sideways scroll and part overflow only.
+async function checkText200(browser, base, file, width) {
+  const context = await browser.newContext({ viewport: { width, height: HEIGHT }, deviceScaleFactor: 1, colorScheme: "light" });
+  const page = await context.newPage();
+  const url = `${base}/${posix(file)}?theme=light`;
+  await page.goto(url, { waitUntil: "load" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(PAGE_LIB);
+  const sizes = await page.evaluate(() => {
+    const de = document.documentElement;
+    const before = parseFloat(getComputedStyle(de).fontSize);
+    de.style.setProperty("font-size", "200%", "important");
+    return { before, after: parseFloat(getComputedStyle(de).fontSize) };
+  });
+  const findings = [];
+  const add = (rule, message, where = "") => findings.push({ rule, message, where });
+  let scroll = null, partOverflow = [];
+  if (Math.abs(sizes.after - 2 * sizes.before) > 0.5) {
+    // the pass proves nothing if the text did not grow: fail loudly instead of passing
+    add("sideways-scroll-200", `could not set the root font size to 200 percent: it is ${sizes.after}px, was ${sizes.before}px`);
+  } else {
+    await page.evaluate(() => document.fonts.ready);
+    ({ scroll, partOverflow } = await page.evaluate(() => {
+      const de = document.documentElement;
+      return { scroll: { scrollWidth: Math.max(de.scrollWidth, document.body.scrollWidth), clientWidth: de.clientWidth }, partOverflow: window.__svCheck.overflowInsideParts() };
+    }));
+    if (scroll.scrollWidth > scroll.clientWidth) add("sideways-scroll-200", `with text at 200 percent the page is ${scroll.scrollWidth}px wide in a ${scroll.clientWidth}px viewport`);
+    for (const o of partOverflow) add("overflow-inside-part-200", `with text at 200 percent, "${o.text}" extends ${o.amount}px beyond the box of .${o.cls}`, o.where);
+  }
+  await context.close();
+  return { file: posix(file), width, theme: "light", rootFont: sizes, url, measurements: { scroll, partOverflow }, findings };
+}
+
+// First screen of a checkout: at 320 by 720, light, top of the page, where does the total row end?
+// Returns null for a page without both a .sv-cost-summary and a form.
+async function checkFirstScreen(browser, base, file) {
+  const context = await browser.newContext({ viewport: { width: FOLD.width, height: FOLD.height }, deviceScaleFactor: 1, colorScheme: "light" });
+  const page = await context.newPage();
+  const url = `${base}/${posix(file)}?theme=light`;
+  await page.goto(url, { waitUntil: "load" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(PAGE_LIB);
+  const r = await page.evaluate(() => {
+    const applies = !!document.querySelector(".sv-cost-summary") && !!document.querySelector("form");
+    return { applies, total: applies ? window.__svCheck.totalRowBottom() : null };
+  });
+  await context.close();
+  if (!r.applies) return null;
+  const findings = [];
+  if (!r.total) findings.push({ rule: "total-below-first-screen", message: "page has a cost summary and a form but no visible total row", where: "" });
+  else if (r.total.bottom > FOLD.height) findings.push({ rule: "total-below-first-screen", message: `at ${FOLD.width} by ${FOLD.height} the total row ends at ${r.total.bottom}px (top ${r.total.top}px), below the first ${FOLD.height} pixels`, where: r.total.where });
+  return { file: posix(file), width: FOLD.width, height: FOLD.height, theme: "light", url, totalRow: r.total, findings };
+}
+
 // ---------------------------------------------------------------- runs
 
+// Every .html under dirRel, in all subfolders, sorted; index.html at the top level is skipped (it is the gallery).
 function screenFiles(dirRel) {
-  const dir = join(REPO, dirRel);
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir).filter((f) => f.endsWith(".html") && f !== "index.html").sort().map((f) => join(dirRel, f));
+  const out = [];
+  const walk = (rel) => {
+    const dir = join(REPO, rel);
+    if (!existsSync(dir)) return;
+    for (const name of readdirSync(dir).sort()) {
+      const p = join(rel, name);
+      if (statSync(join(REPO, p)).isDirectory()) walk(p);
+      else if (name.endsWith(".html")) out.push(p);
+    }
+  };
+  walk(dirRel);
+  return out;
 }
+const isDemo = (file) => /^demo-/.test(posix(file).split("/").pop());
 
 async function runAll(files, { shots }) {
   const server = await createServer({ root: REPO, port: 0 });
@@ -541,7 +663,16 @@ async function runAll(files, { shots }) {
     for (const file of files) for (const width of WIDTHS) for (const theme of THEMES) {
       results.push(await checkState(launched.browser, server.url, file, width, theme, shots));
     }
-    return { results, chromium: { version: launched.browser.version(), path: launched.path, source: launched.why } };
+    const text200 = [];
+    for (const file of files.filter((f) => !isDemo(f))) for (const width of ZOOM_WIDTHS) {
+      text200.push(await checkText200(launched.browser, server.url, file, width));
+    }
+    const firstScreen = [];
+    for (const file of files) {
+      const r = await checkFirstScreen(launched.browser, server.url, file);
+      if (r) firstScreen.push(r);
+    }
+    return { results, text200, firstScreen, chromium: { version: launched.browser.version(), path: launched.path, source: launched.why } };
   } finally {
     if (launched) await launched.browser.close();
     await server.close();
@@ -566,6 +697,24 @@ function summaryTable(results) {
   return [line(head), "|" + w.map((n) => "-".repeat(n + 2)).join("|") + "|", ...rows.map(line)].join("\n");
 }
 
+function simpleTable(head, rows) {
+  const w = head.map((h, i) => Math.max(h.length, ...rows.map((r) => r[i].length)));
+  const line = (c) => "| " + c.map((x, i) => x.padEnd(w[i])).join(" | ") + " |";
+  return [line(head), "|" + w.map((n) => "-".repeat(n + 2)).join("|") + "|", ...rows.map(line)].join("\n");
+}
+
+function text200Table(text200) {
+  const files = [...new Set(text200.map((r) => r.file))];
+  const cell = (r) => (!r ? "-" : r.findings.length ? `${r.findings.length} (${[...new Set(r.findings.map((f) => f.rule))].join(", ")})` : "pass");
+  return simpleTable(["Screen, text at 200%", ...ZOOM_WIDTHS.map((w) => `${w} light`)],
+    files.map((f) => [f, ...ZOOM_WIDTHS.map((w) => cell(text200.find((r) => r.file === f && r.width === w)))]));
+}
+
+function firstScreenTable(firstScreen) {
+  return simpleTable([`Page with cost summary and form`, `total row at ${FOLD.width}x${FOLD.height} light`, "result"],
+    firstScreen.map((r) => [r.file, r.totalRow ? `top ${r.totalRow.top}px, bottom ${r.totalRow.bottom}px` : "no visible total row", r.findings.length ? "fail" : "pass"]));
+}
+
 function printFindings(results) {
   for (const r of results) for (const f of r.findings) {
     console.log(`${r.file} ${r.width} ${r.theme} ${f.rule} ${f.message}${f.where ? ` at ${f.where}` : ""}`);
@@ -575,16 +724,19 @@ function printFindings(results) {
 async function runNormal() {
   const top = DIR ? relative(REPO, resolve(REPO, DIR)) : "screens";
   if (top.startsWith("..")) { console.error("check-screens: --dir must be inside the repository"); return 1; }
-  let files = [...screenFiles(top), ...screenFiles(join(top, "agent-test"))];
+  let files = screenFiles(top);
   if (ONLY) files = files.filter((f) => posix(f).includes(ONLY));
   if (!files.length) {
-    console.log(`check-screens: no screens to check${ONLY ? ` matching "${ONLY}"` : ""} (screens/*.html and screens/agent-test/*.html, index.html skipped); nothing written`);
-    return 0;
+    // nothing to check is never a pass: a screen the checker cannot find is a screen nobody checked
+    console.log(`check-screens: no screens to check${ONLY ? ` matching "${ONLY}"` : ""} in ${posix(top)}/ and its subfolders (${posix(top)}/index.html skipped); nothing written`);
+    return 1;
   }
-  const { results, chromium: info } = await runAll(files, { shots: !NO_SHOTS });
-  printFindings(results);
+  const { results, text200, firstScreen, chromium: info } = await runAll(files, { shots: !NO_SHOTS });
+  printFindings([...results, ...text200, ...firstScreen]);
   console.log(summaryTable(results));
-  const total = results.reduce((n, r) => n + r.findings.length, 0);
+  console.log(text200.length ? text200Table(text200) : "check-screens: no screen for the 200 percent text pass (demo pages are skipped)");
+  console.log(firstScreen.length ? firstScreenTable(firstScreen) : `check-screens: no page with both a cost summary and a form for the ${FOLD.width} by ${FOLD.height} first-screen check`);
+  const total = [...results, ...text200, ...firstScreen].reduce((n, r) => n + r.findings.length, 0);
   mkdirSync(dirname(OUT_JSON), { recursive: true });
   writeFileSync(OUT_JSON, JSON.stringify({
     produced_by: "scripts/check-screens.mjs",
@@ -593,6 +745,8 @@ async function runNormal() {
     screenshots: !NO_SHOTS,
     states: results.length, findings_total: total, pass: total === 0,
     results,
+    text_200_percent: { widths: ZOOM_WIDTHS, theme: "light", rules: ["sideways-scroll-200", "overflow-inside-part-200"], demo_pages: "skipped", results: text200 },
+    first_screen: { width: FOLD.width, height: FOLD.height, theme: "light", rule: "total-below-first-screen", applies_to: "pages with a .sv-cost-summary and a form", results: firstScreen },
   }, null, 2) + "\n");
   console.log(`check-screens: ${files.length} screens × ${WIDTHS.length * THEMES.length} states, ${total} finding${total === 1 ? "" : "s"}; data in ${posix(relative(REPO, OUT_JSON))}${NO_SHOTS ? "" : `, screenshots in ${posix(relative(REPO, SHOTS_DIR))}/`}`);
   return total ? 1 : 0;
@@ -601,7 +755,8 @@ async function runNormal() {
 async function runSelfTest() {
   const dirRel = join("scripts", "fixtures", "screens");
   const files = readdirSync(join(REPO, dirRel)).filter((f) => f.endsWith(".html")).sort().map((f) => join(dirRel, f));
-  const { results } = await runAll(files, { shots: false });
+  const run = await runAll(files, { shots: false });
+  const results = [...run.results, ...run.text200, ...run.firstScreen];
   console.log("check-screens self-test: each bad page must yield exactly the rules in its <meta name=\"expect\">, the clean page none");
   let problems = 0;
   const seen = new Set();
@@ -614,12 +769,13 @@ async function runSelfTest() {
     const ok = expect.size === got.size && [...expect].every((x) => got.has(x));
     if (!ok) problems++;
     else got.forEach((r) => seen.add(r));
-    const perState = mine.map((r) => `${r.width}${r.theme[0]}:${r.findings.length}`).join(" ");
+    const perState = mine.map((r) => `${r.width}${r.height ? "x" + r.height : ""}${r.theme[0]}${r.rootFont ? "@200%" : ""}:${r.findings.length}`).join(" ");
     console.log(`${ok ? "PASS" : "FAIL"}  ${posix(file).replace("scripts/fixtures/screens/", "").padEnd(34)} expect ${[...expect].join(", ") || "nothing"}; got ${[...got].join(", ") || "nothing"}  [${perState}]`);
     const example = mine.flatMap((r) => r.findings.map((f) => `${r.width} ${r.theme} ${f.rule} ${f.message}${f.where ? ` at ${f.where}` : ""}`));
     for (const e of (ok ? example.slice(0, 1) : example.slice(0, 12))) console.log(`      ${e}`);
   }
-  const RULES = ["page-error", "sideways-scroll", "text-too-small", "control-too-small", "control-too-short", "text-contrast", "control-boundary-contrast", "focus-outline", "focus-contrast", "focus-overlap", "word-break", "cost-total-largest", "missing-speaker-label", "overflow-inside-part", "many-accent-fills"];
+  const RULES = ["page-error", "sideways-scroll", "text-too-small", "control-too-small", "control-too-short", "text-contrast", "control-boundary-contrast", "focus-outline", "focus-contrast", "focus-overlap", "word-break", "cost-total-largest", "missing-speaker-label", "overflow-inside-part", "many-accent-fills",
+    "hidden-has-box", "busy-beside-result", "sideways-scroll-200", "overflow-inside-part-200", "total-below-first-screen"];
   const never = RULES.filter((r) => !seen.has(r));
   if (never.length) { problems++; console.log(`FAIL  rules never seen failing: ${never.join(", ")}`); }
   console.log(`check-screens self-test: ${files.length} pages, ${seen.size} of ${RULES.length} rules seen failing, ${problems} problem${problems === 1 ? "" : "s"}`);

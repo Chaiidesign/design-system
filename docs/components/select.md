@@ -45,7 +45,7 @@ An option written in another language takes a `lang` attribute, and this is allo
 </div>
 ```
 
-Never use it for: more than about 15 options or a list the person must search (use a text field), two or three options that all fit on screen (use radios), or a choice that starts an action at once (use buttons).
+Use it for one choice from a few options, even two or three: there is no radio part, and never put `type="radio"` inside `label.sv-checkbox`. Never use it for: more than about 15 options or a list the person must search (use a text field), or a choice that starts an action at once (use buttons).
 
 ## Don't
 

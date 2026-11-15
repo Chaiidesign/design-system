@@ -4,15 +4,13 @@
 .sv-error-summary {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--sv-space-3);
   padding: var(--sv-space-4);
   border-inline-start: var(--sv-error-summary-tab-width) solid var(--sv-error-summary-tab);
   border-radius: var(--sv-radius-control);
   background-color: var(--sv-color-panel);
-}
-
-.sv-error-summary[hidden] {
-  display: none;
+  overflow-wrap: anywhere;
 }
 
 /* While the summary rests hidden, its wrapper is no box either, so a stack around it keeps one gap. */
@@ -44,14 +42,18 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
 }
 
 /* Each link stands alone, so it is a full target: 24 pixels of line plus block padding,
-   with a gap wide enough that a focus ring never touches the next link. */
+   with a gap wide enough that a focus ring never touches the next link.
+   A link quotes the field's message, which may quote what the person typed: like the title at enlarged
+   text, it breaks inside a word rather than spill (overflow-wrap on the summary). */
 .sv-error-summary__list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--sv-space-3);
 }
 
 .sv-error-summary__list a {
   display: inline-block;
+  max-inline-size: 100%;
   padding-block: var(--sv-space-1);
 }
 }

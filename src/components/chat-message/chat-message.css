@@ -35,9 +35,4 @@
     inline-size: auto;
     margin-inline-start: 0;
   }
-
-  /* Text a person wrote may hold long unbroken strings (an address, a link). */
-  .sv-chat-message [data-user-content] {
-    overflow-wrap: anywhere;
-  }
 }

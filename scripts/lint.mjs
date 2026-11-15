@@ -5,7 +5,11 @@
 //   node scripts/lint.mjs --self-test  every fixture in scripts/fixtures/lint must fail on exactly its named rule
 // Page rules (screens and fences): html-many-primary (more than one data-variant="primary"; demo-* files exempt),
 // html-form-no-action, html-button-no-type, html-control-no-label, html-heading-order (one h1, no level skipped
-// going deeper, a page starts with h1; fragments exempt from the last), html-placeholder-label.
+// going deeper, a page starts with h1; fragments exempt from the last), html-placeholder-label; and, from the final
+// review: html-default-submit-skips, html-link-no-href, html-fake-control, html-presentational, html-submit-no-form,
+// html-undefined-element, html-unknown-data-attr, html-radio-in-checkbox, html-button-no-script (see scriptRules).
+// html-undefined-element and html-unknown-data-attr read dist/souvenir.js: the elements it defines, the data- attributes it reads.
+// CSS: in a component file a number in cqi is allowed inside clamp() or min(); every other unit rule is unchanged.
 // Output: one line per finding, "file:line rule-name message", then a count. Exit 1 on any finding.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
@@ -228,8 +232,25 @@ function colourFindings(value, prop, forcedColours = false) {
 }
 
 const ALLOWED_UNIT_VALUES = new Set(["100%", "50%", "1fr"]);
+
+// The names of the functions whose parentheses enclose position pos of a value, innermost last.
+// A bare "(" counts as a function with the empty name. A name is the identifier right before "(",
+// so "minmax(" is minmax and "--x-min(" is --x-min, never min.
+function enclosingFunctions(value, pos) {
+  const stack = [];
+  for (let i = 0; i < pos; i++) {
+    const c = value[i];
+    if (c === "(") stack.push((/([\w-]*)$/.exec(value.slice(0, i))[1] || "").toLowerCase());
+    else if (c === ")") stack.pop();
+  }
+  return stack;
+}
+
 // Inside @keyframes the one angle allowed is exactly 1turn, so a busy mark can turn (spec, "Changes to this spec").
-function unitFindings(value, inKeyframes = false) {
+// In component CSS (allowCqi) a number in cqi is allowed when it sits inside clamp() or min(), at any depth: a size
+// that follows the part's own container between token bounds (lead's decision on review finding 2). The other
+// arguments of that clamp() or min() are checked as usual.
+function unitFindings(value, inKeyframes = false, allowCqi = false) {
   const found = [];
   for (const m of value.matchAll(/(?<![\w.#-])-?(\d*\.?\d+)([a-zA-Z%]+)/g)) {
     const num = parseFloat(m[1]);
@@ -239,6 +260,7 @@ function unitFindings(value, inKeyframes = false) {
     const tok = `${m[1]}${unit}`.toLowerCase();
     if (ALLOWED_UNIT_VALUES.has(tok) && !m[0].startsWith("-")) continue;
     if (inKeyframes && m[0] === "1turn") continue;
+    if (allowCqi && unit.toLowerCase() === "cqi" && enclosingFunctions(value, m.index).some((f) => f === "clamp" || f === "min")) continue;
     found.push(m[0]);
   }
   return found;
@@ -339,7 +361,7 @@ export function lintCss(text, relPath) {
       const colourText = stripStrings(rest) + " " + keptUrls.map(unquote).join(" ");
       for (const c of colourFindings(colourText, prop, ctx.forcedColours)) add(line, "css-color", `${prop}: colour value ${c}; use a --sv-color-* token`);
       const unitText = stripStrings(rest).replace(/#[0-9a-f]{3,8}(?![\w-])/gi, " ");
-      for (const u of unitFindings(unitText, ctx.keyframes)) add(line, "css-unit", `${prop}: ${u} — a number with a unit; every size comes from a token (only 0, 100%, 50%, 1fr)`);
+      for (const u of unitFindings(unitText, ctx.keyframes, !!compName)) add(line, "css-unit", `${prop}: ${u} — a number with a unit; every size comes from a token (only 0, 100%, 50%, 1fr; in a component, cqi inside clamp() or min())`);
     }
   }
   visit(tree, { keyframes: false, forcedColours: false, inRule: false });
@@ -393,7 +415,8 @@ function parseHtml(text) {
       if (!attrs.has(name)) attrs.set(name, m[2] ?? m[3] ?? m[4] ?? "");
     }
     const tag = nm[1].toLowerCase();
-    const el = { tag, attrs, line: lineAt(lt), index: elements.length, content: null, ancestors: stack.map((x) => x.tag) };
+    // ancestors: the open ancestors' tag names; ancestorEls: the same ancestors as element records (outermost first).
+    const el = { tag, attrs, line: lineAt(lt), index: elements.length, content: null, ancestors: stack.map((x) => x.tag), ancestorEls: stack.slice() };
     if (!VOID.has(tag) && !selfClosed) stack.push(el);
     i = j + 1;
     if (RAW_TEXT.has(tag)) {
@@ -431,6 +454,39 @@ export function readBuiltCss(cssText) {
   }
   return { classes, values };
 }
+
+// What the built script defines and reads, derived from dist/souvenir.js itself (never a hand-kept list):
+//   elements   every name passed to customElements.define("sv-…")
+//   dataAttrs  every data- attribute the script reads: X.dataset.name, an alias of a dataset object (i=t.dataset … i.name,
+//              as minified code writes it), a destructured dataset ({name:x}=t.dataset), or a "data-…" string literal
+//              (getAttribute("data-…") and the like). camelCase names become data-kebab-case.
+export function readBuiltScript(jsText) {
+  const elements = new Set();
+  for (const m of jsText.matchAll(/customElements\.define\(\s*["'`]([a-z][\w.-]*-[\w.-]*)["'`]/g)) elements.add(m[1]);
+  const kebab = (s) => "data-" + s.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
+  const dataAttrs = new Set();
+  const aliases = new Set();
+  // an alias: a name assigned an expression that ends in .dataset (i=t.dataset, i=t&&t.dataset)
+  for (const m of jsText.matchAll(/(?<![\w$.])([A-Za-z_$][\w$]*)\s*=(?!=)[^,;=(){}]*?\.dataset(?![\w$])/g)) aliases.add(m[1]);
+  for (const m of jsText.matchAll(/\{([^{}]*)\}\s*=\s*(?:[A-Za-z_$][\w$]*\.)*dataset(?![\w$])/g)) {
+    for (const k of m[1].matchAll(/(?:^|,)\s*([A-Za-z_$][\w$]*)/g)) dataAttrs.add(kebab(k[1]));
+  }
+  for (const m of jsText.matchAll(/\.dataset\.([A-Za-z_$][\w$]*)/g)) dataAttrs.add(kebab(m[1]));
+  for (const m of jsText.matchAll(/\.dataset\[\s*["'`]([\w-]+)["'`]\s*\]/g)) dataAttrs.add(kebab(m[1]));
+  for (const a of aliases) {
+    const re = new RegExp(`(?<![\\w$.])${a.replace(/\$/g, "\\$")}\\.([A-Za-z_$][\\w$]*)`, "g");
+    for (const m of jsText.matchAll(re)) dataAttrs.add(kebab(m[1]));
+  }
+  for (const m of jsText.matchAll(/["'`](data-[a-z][\w-]*)["'`]/g)) dataAttrs.add(m[1]);
+  return { elements, dataAttrs };
+}
+
+// Attribute prefixes whose every name must be one the built script reads (lead's decision on review findings 23 and 42).
+const SCRIPT_DATA_PREFIX = /^data-(error|busy)-/;
+// Elements that are a button, a link or a form control: the only ones that may carry role="button", tabindex or on*.
+const NATIVE_CONTROLS = new Set(["a", "area", "button", "input", "select", "textarea"]);
+const PRESENTATIONAL_ELEMENTS = new Set(["font", "center"]);
+const PRESENTATIONAL_ATTRS = ["bgcolor", "color", "align", "border"];
 
 const CHECKED_DATA = ["data-variant", "data-tone", "data-width", "data-layout", "data-gap", "data-from", "data-row", "data-state", "data-surface", "data-align", "data-length"];
 
@@ -470,6 +526,73 @@ function pageRules(els, relPath, kind, add) {
       if (prevLevel === 0 && level !== 1 && kind !== "snippet") add(line, "html-heading-order", `the first heading is an h${level}; a page starts with its h1`);
       if (prevLevel > 0 && level > prevLevel + 1) add(line, "html-heading-order", `h${level} follows h${prevLevel}; a heading goes at most one level deeper than the one before it`);
       prevLevel = level;
+    }
+  }
+}
+
+// Rules added after the final review of 15 November (findings 17, 23 and 42; the lead's subset):
+//   html-default-submit-skips  the first submit button of a form (its default button, which Enter presses) carries
+//                              formnovalidate or formaction. Ownership follows HTML: a form="id" attribute names the
+//                              owner, otherwise the nearest form ancestor; a <button> with no type counts as submit.
+//   html-link-no-href          an a.sv-button without href (it is not a link and not a button)
+//   html-fake-control          role="button", tabindex or an on* attribute on an element that is not a button, link or
+//                              form control (on* is also html-inline-script everywhere)
+//   html-presentational        <font>, <center>, or a bgcolor, color, align or border attribute anywhere, or size on
+//                              anything but <input>
+//   html-submit-no-form        a type="submit" button (or input type submit or image) that no form owns
+//   html-undefined-element     an sv- element that dist/souvenir.js does not define with customElements.define
+//   html-unknown-data-attr     a data-error-… or data-busy-… attribute that dist/souvenir.js does not read
+//   html-radio-in-checkbox     an input type="radio" inside an element with the class sv-checkbox
+//   html-button-no-script      a type="button" (button or input) that is not inside an sv- custom element, so no
+//                              system script can act on it
+function scriptRules(els, add, script) {
+  const typeOf = (el) => (el.attrs.get("type") || "").trim().toLowerCase();
+  const isSubmit = (el, countTypeless) => (el.tag === "button" && (typeOf(el) === "submit" || (countTypeless && !el.attrs.has("type"))))
+    || (el.tag === "input" && (typeOf(el) === "submit" || typeOf(el) === "image"));
+  const formsById = new Map(els.filter((e) => e.tag === "form" && e.attrs.get("id")).map((e) => [e.attrs.get("id"), e]));
+  const owner = (el) => {
+    if (el.attrs.has("form")) return formsById.get(el.attrs.get("form")) || null;
+    return [...el.ancestorEls].reverse().find((a) => a.tag === "form") || null;
+  };
+  const firstSubmit = new Map();
+  for (const el of els) {
+    if (!isSubmit(el, true)) continue;
+    const f = owner(el);
+    if (f && !firstSubmit.has(f)) firstSubmit.set(f, el);
+  }
+  for (const [form, el] of firstSubmit) {
+    const skips = ["formnovalidate", "formaction"].filter((a) => el.attrs.has(a));
+    if (skips.length) add(el.line, "html-default-submit-skips", `the first submit button of the form at line ${form.line} carries ${skips.join(" and ")}; it is the form's default button, so Enter in any field presses it. Give it a form of its own (form="…")`);
+  }
+  const defined = script ? script.elements : null;
+  const reads = script ? script.dataAttrs : null;
+  for (const el of els) {
+    const { tag, attrs, line } = el;
+    const classes = (attrs.get("class") || "").split(/\s+/).filter(Boolean);
+    if (tag === "a" && classes.includes("sv-button") && !attrs.has("href")) add(line, "html-link-no-href", "a.sv-button has no href: without one it is neither a link nor a button. Give it an href, or use <button>");
+    if (!NATIVE_CONTROLS.has(tag)) {
+      const fake = [];
+      if ((attrs.get("role") || "").trim().toLowerCase() === "button") fake.push('role="button"');
+      if (attrs.has("tabindex") && attrs.get("tabindex").trim() !== "-1") fake.push(`tabindex="${attrs.get("tabindex")}"`); // -1 is a target for focus moved by script or a #fragment, not a Tab stop
+      for (const name of attrs.keys()) if (/^on[a-z]+$/.test(name)) fake.push(name);
+      if (fake.length) add(line, "html-fake-control", `<${tag}> carries ${fake.join(", ")}; only a button, link or form control may. Use <button> or <a href>${attrs.get("tabindex") === "-1" ? ' (this includes tabindex="-1": the rule allows tabindex only on a button, link or form control)' : ""}`);
+    }
+    if (PRESENTATIONAL_ELEMENTS.has(tag)) add(line, "html-presentational", `<${tag}> is presentational markup; a screen has no style of its own`);
+    const pres = PRESENTATIONAL_ATTRS.filter((a) => attrs.has(a));
+    if (attrs.has("size") && tag !== "input") pres.push("size");
+    if (pres.length) add(line, "html-presentational", `<${tag}> carries ${pres.join(", ")}; presentational attributes are not allowed`);
+    if (isSubmit(el, false) && !owner(el)) {
+      add(line, "html-submit-no-form", attrs.has("form") ? `submit button names form="${attrs.get("form")}", which is not a form on this page` : "submit button is not inside a form and names none, so it submits nothing");
+    }
+    if (tag.startsWith("sv-") && defined && !defined.has(tag)) add(line, "html-undefined-element", `<${tag}> is not defined by dist/souvenir.js (it defines ${[...defined].sort().join(", ") || "nothing"})`);
+    if (reads) for (const name of attrs.keys()) {
+      if (SCRIPT_DATA_PREFIX.test(name) && !reads.has(name)) add(line, "html-unknown-data-attr", `${name} is not read by dist/souvenir.js (it reads ${[...reads].filter((r) => SCRIPT_DATA_PREFIX.test(r)).sort().join(", ") || "none of data-error-… or data-busy-…"})`);
+    }
+    if (tag === "input" && typeOf(el) === "radio" && el.ancestorEls.some((a) => (a.attrs.get("class") || "").split(/\s+/).includes("sv-checkbox"))) {
+      add(line, "html-radio-in-checkbox", 'input type="radio" inside .sv-checkbox; the checkbox part holds a checkbox only');
+    }
+    if ((tag === "button" || tag === "input") && typeOf(el) === "button" && !el.ancestors.some((t) => t.startsWith("sv-"))) {
+      add(line, "html-button-no-script", `type="button" outside any sv- element does nothing: no system script acts on it. Use a link, or a submit button in a form`);
     }
   }
 }
@@ -562,6 +685,7 @@ export function lintHtml(text, relPath, { kind, fileAbs, rootAbs, built, lineOff
   }
   if (kind === "document" && stylesheets === 0) add(1, "html-stylesheet", "a screen needs exactly one stylesheet link, to dist/souvenir.css");
   pageRules(els, relPath, kind, (line, rule, message) => add(line, rule, message));
+  scriptRules(els, (line, rule, message) => add(line, rule, message), built.script || null);
   return findings;
 }
 
@@ -588,10 +712,14 @@ function lintMarkdown(text, relPath, ctx) {
 
 // ---------------------------------------------------------------- run
 
+// The built CSS (classes and option values) and the built script (defined elements, data attributes read).
+// built.script is null when dist/souvenir.js is missing; the run then reports that once (scriptMissing).
 function loadBuilt(rootAbs) {
   const p = join(rootAbs, "dist", "souvenir.css");
-  if (!existsSync(p)) return { built: { classes: new Set(), values: new Map() }, missing: true };
-  return { built: readBuiltCss(readFileSync(p, "utf8")), missing: false };
+  const js = join(rootAbs, "dist", "souvenir.js");
+  const script = existsSync(js) ? readBuiltScript(readFileSync(js, "utf8")) : null;
+  if (!existsSync(p)) return { built: { classes: new Set(), values: new Map(), script }, missing: true, scriptMissing: !script };
+  return { built: { ...readBuiltCss(readFileSync(p, "utf8")), script }, missing: false, scriptMissing: !script };
 }
 
 export function lintFile(fileAbs, rootAbs, built) {
@@ -620,7 +748,7 @@ function print(f) { console.log(`${f.file}:${f.line} ${f.rule} ${f.message}`); }
 
 function runNormal() {
   const files = lintFiles(REPO);
-  const { built, missing } = loadBuilt(REPO);
+  const { built, missing, scriptMissing } = loadBuilt(REPO);
   const findings = [];
   const needsBuilt = files.some((f) => !f.endsWith(".css"));
   if (needsBuilt && !missing) {
@@ -629,6 +757,10 @@ function runNormal() {
     if (newer.length) console.warn(`lint: warning: ${newer.length} file(s) in src/ are newer than dist/souvenir.css (${toPosix(relative(REPO, newer[0]))}…); class and option checks use the last build — run node scripts/build.mjs`);
   }
   if (needsBuilt && missing) findings.push({ file: "dist/souvenir.css", line: 1, rule: "html-unknown-class", message: "dist/souvenir.css is missing, so no class or option can be verified; run node scripts/build.mjs first" });
+  if (needsBuilt && scriptMissing) findings.push({ file: "dist/souvenir.js", line: 1, rule: "html-undefined-element", message: "dist/souvenir.js is missing, so no sv- element or data-error-/data-busy- attribute can be verified; run node scripts/build.mjs first" });
+  if (built.script) {
+    console.log(`lint: dist/souvenir.js defines ${[...built.script.elements].sort().join(", ") || "no elements"}; reads ${[...built.script.dataAttrs].filter((a) => SCRIPT_DATA_PREFIX.test(a)).sort().join(", ") || "no data-error-/data-busy- attributes"}`);
+  }
   for (const f of files) findings.push(...lintFile(f, REPO, built));
   findings.forEach(print);
   const counts = { css: files.filter((f) => f.endsWith(".css")).length, html: files.filter((f) => f.endsWith(".html")).length, md: files.filter((f) => f.endsWith(".md")).length };
@@ -640,13 +772,17 @@ function runNormal() {
 const REQUIRED_RULES = ["css-syntax", "css-layer", "css-selector-scope", "css-media", "css-physical", "css-var-prefix", "css-color", "css-unit",
   "html-style-element", "html-style-attr", "html-inline-svg", "html-custom-element", "html-inline-script", "html-class-prefix",
   "html-unknown-class", "html-unknown-value", "html-stylesheet", "html-module-script",
-  "html-many-primary", "html-form-no-action", "html-button-no-type", "html-control-no-label", "html-heading-order", "html-placeholder-label"];
+  "html-many-primary", "html-form-no-action", "html-button-no-type", "html-control-no-label", "html-heading-order", "html-placeholder-label",
+  "html-default-submit-skips", "html-link-no-href", "html-fake-control", "html-presentational", "html-submit-no-form",
+  "html-undefined-element", "html-unknown-data-attr", "html-radio-in-checkbox", "html-button-no-script"];
 
 function runSelfTest() {
   const root = join(REPO, "scripts", "fixtures", "lint");
   const files = lintFiles(root);
-  const { built, missing } = loadBuilt(root);
+  const { built, missing, scriptMissing } = loadBuilt(root);
   if (missing) { console.log("self-test: scripts/fixtures/lint/dist/souvenir.css is missing"); return 1; }
+  if (scriptMissing) { console.log("self-test: scripts/fixtures/lint/dist/souvenir.js is missing"); return 1; }
+  console.log(`lint self-test: fixture dist/souvenir.js defines ${[...built.script.elements].sort().join(", ")}; reads ${[...built.script.dataAttrs].sort().join(", ")}`);
   let failures = 0;
   const badRules = new Set();
   let cleanCss = 0, cleanHtml = 0;
@@ -654,9 +790,12 @@ function runSelfTest() {
   for (const f of files) {
     const rel = toPosix(relative(root, f));
     // Files that must keep a fixed name (AGENTS.md, docs/layout.md, docs/patterns.md) state their expectation
-    // in a comment: <!-- lint-expect: <rule> --> or <!-- lint-expect: nothing -->.
-    const marker = /<!--\s*lint-expect:\s*([\w-]+)\s*-->/.exec(readFileSync(f, "utf8"));
-    const stem = marker ? marker[1] : basename(f, extname(f)).split("--")[0];
+    // in a comment: <!-- lint-expect: <rule> --> or <!-- lint-expect: nothing -->. Any fixture may also name an
+    // exact set of rules, <!-- lint-expect: rule-a rule-b -->, when one break is caught by two rules (an onclick on a
+    // div is html-inline-script and html-fake-control): it must then produce exactly that set, every one of them.
+    const marker = /<!--\s*lint-expect:\s*([\w-]+(?:\s+[\w-]+)*)\s*-->/.exec(readFileSync(f, "utf8"));
+    const expected = marker ? marker[1].split(/\s+/) : [basename(f, extname(f)).split("--")[0]];
+    const stem = expected[0];
     // src/base/icons.css must keep its real name for its data-URI exemption, so it is a clean fixture too.
     // A file named demo-… must produce nothing (it proves the demo exemption of html-many-primary).
     const clean = stem.startsWith("clean") || stem === "nothing" || stem.startsWith("demo-") || rel === "src/base/icons.css";
@@ -668,12 +807,13 @@ function runSelfTest() {
       if (ok && f.endsWith(".css")) cleanCss++;
       if (ok && (f.endsWith(".html") || f.endsWith(".md"))) cleanHtml++;
     } else {
-      ok = rules.length === 1 && rules[0] === stem;
-      if (ok) badRules.add(stem);
+      const want = [...new Set(expected)].sort();
+      ok = rules.length === want.length && want.every((r, i) => rules[i] === r);
+      if (ok) want.forEach((r) => badRules.add(r));
     }
     if (!ok) failures++;
     const shown = got.length ? got.map((x) => `${x.rule}@${x.line}`).join(", ") : "no findings";
-    console.log(`${ok ? "PASS" : "FAIL"}  ${rel.padEnd(52)} expect ${clean ? "nothing" : stem}; got ${shown}`);
+    console.log(`${ok ? "PASS" : "FAIL"}  ${rel.padEnd(52)} expect ${clean ? "nothing" : expected.join(" + ")}; got ${shown}`);
     if (!ok) got.forEach((x) => console.log("      " + `${x.file}:${x.line} ${x.rule} ${x.message}`));
   }
   if (badRules.size < 12) { console.log(`FAIL  only ${badRules.size} distinct rules proven failing; need at least 12`); failures++; }

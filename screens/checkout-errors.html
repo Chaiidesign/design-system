@@ -12,7 +12,7 @@
 <main class="sv-page sv-stack" data-gap="6" data-layout="split">
   <h1>Checkout</h1>
 
-  <div class="sv-message" data-tone="info" role="note">
+  <div class="sv-message" data-tone="info">
     <span class="sv-message__mark" aria-hidden="true"></span>
     <p>This is a test page. Nothing will be charged.</p>
   </div>
@@ -29,6 +29,12 @@
 
   <section class="sv-page__aside sv-panel sv-stack" aria-labelledby="summary-heading">
     <h2 id="summary-heading">Order summary</h2>
+    <dl class="sv-cost-summary">
+      <div class="sv-cost-summary__row"><dt>Items</dt><dd>£61.80</dd></div>
+      <div class="sv-cost-summary__row"><dt>Discount: Welcome discount</dt><dd>−£5.00</dd></div>
+      <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.95</dd></div>
+      <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£60.75<p class="sv-cost-summary__note">Includes £10.13 VAT</p></dd></div>
+    </dl>
     <ul class="sv-list">
       <li class="sv-list__item">
         <div class="sv-list__main"><p>Organic cotton waffle-weave bath towel, extra large, undyed natural oatmeal</p><p class="sv-list__detail">Quantity 2</p></div>
@@ -43,15 +49,9 @@
         <p class="sv-list__trail">£7.80</p>
       </li>
     </ul>
-    <dl class="sv-cost-summary">
-      <div class="sv-cost-summary__row"><dt>Items</dt><dd>£61.80</dd></div>
-      <div class="sv-cost-summary__row"><dt>Discount: Welcome discount</dt><dd>−£5.00</dd></div>
-      <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.95</dd></div>
-      <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£60.75<p class="sv-cost-summary__note">Includes £10.13 VAT</p></dd></div>
-    </dl>
   </section>
 
-  <form class="sv-page__main sv-stack" data-gap="6" id="checkout" method="get" action="checkout-result.html">
+  <form class="sv-page__main sv-stack" data-gap="6" id="checkout" method="get" action="checkout-result.html#result">
     <section class="sv-panel sv-stack" aria-labelledby="contact-heading">
       <h2 id="contact-heading">Contact</h2>
       <sv-field>
@@ -126,22 +126,21 @@
       <h2 id="code-heading">Discount code</h2>
       <sv-field>
         <div class="sv-field">
-          <label class="sv-field__label" for="code">Discount code</label>
-          <input class="sv-field__control" id="code" name="code" type="text" inputmode="text" autocomplete="off" enterkeyhint="done" spellcheck="false" autocapitalize="characters">
+          <label class="sv-field__label" for="code">Code</label>
+          <input class="sv-field__control" id="code" name="code" form="discount" type="text" inputmode="text" autocomplete="off" enterkeyhint="done" spellcheck="false" autocapitalize="characters">
         </div>
       </sv-field>
       <div class="sv-row">
-        <button type="submit" class="sv-button" data-variant="secondary" formaction="checkout.html" formnovalidate>Apply code</button>
+        <button type="submit" class="sv-button" data-variant="secondary" form="discount">Apply code</button>
       </div>
     </section>
 
-    <div class="sv-panel sv-stack" data-gap="3">
-      <p><strong>Total £60.75</strong></p>
-      <sv-button>
-        <button type="submit" class="sv-button" data-variant="primary" data-width="full" data-busy-label="Paying £60.75…">Pay £60.75</button>
-      </sv-button>
-    </div>
+    <sv-button>
+      <button type="submit" class="sv-button" data-variant="primary" data-width="full" data-busy-label="Paying £60.75…">Pay £60.75</button>
+    </sv-button>
   </form>
+
+  <form id="discount" method="get" action="checkout.html"></form>
 </main>
 </body>
 </html>

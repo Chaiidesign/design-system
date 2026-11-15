@@ -35,7 +35,7 @@ Several related boxes go in a group named by a visible heading: `role="group"` w
 
 The label states what checking it means, in the person's terms. A required box says what they agree to, not "I accept".
 
-Never use it for: choosing one of several options (use radios or a select), starting an action at once (use a button), or a box ticked for the person to opt them in to marketing.
+Never use it for: one choice from a few options (use a select; there is no radio part, and never put `type="radio"` inside `label.sv-checkbox`), starting an action at once (use a button), or a box ticked for the person to opt them in to marketing.
 
 ## Don't
 

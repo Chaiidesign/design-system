@@ -27,12 +27,12 @@ A cost not known yet is said in words, on a row with `data-state="unknown"`:
 
 | Attribute or part | Value | Effect |
 |---|---|---|
-| `data-row` on a row | `total` | Label at the lead size; amount at the display size, weight 600; a rule above. One per summary, last. |
-| `data-length` on the total row | `long` | Set it when the total has more than nine characters (£1,234.56 has nine; £12,345.67 has ten). The amount steps down to 28 pixels, still larger than the page title; on a phone the amount moves below "Total", at the inline end. |
+| `data-row` on a row | `total` | Label at the lead size; amount at weight 600, at the display size when the display is wide enough, else smaller with its width, never below the lead size; a rule above. One per summary, last. |
+| `data-length` on the total row | `long` | Set it when the total has more than nine characters (£1,234.56 has nine; £12,345.67 has ten). The amount starts from the display-long size and may go down to the body size on a narrow display; on a phone it moves below "Total", at the inline end. |
 | `data-state` on a row | `unknown` | The value is plain words at body size and wraps normally. |
 | `p.sv-cost-summary__note` | inside the total's `dd`, after the amount | Small print under the total, at the inline end. |
 
-Amounts use tabular figures, sit on the inline-end edge and never wrap. A term wraps only between words; if a term's longest word and its amount cannot share a line, the amount moves below the term. It sits on the ground or on an `sv-panel` as it is.
+Amounts use tabular figures, sit on the inline-end edge, keep their own direction in right-to-left text, and never wrap; only the total, when even its smallest size does not fit (text enlarged), breaks rather than leave the display. A term wraps only between words; if a term's longest word and its amount cannot share a line, the amount moves below the term. It sits on the ground or on an `sv-panel` as it is. The display holds terms, amounts and the note only: never a link, a status or a button (ink on the inverse surface cannot be read). Put those after it.
 
 A long total, which fits the display at 320 pixels wide on a panel:
 

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment not confirmed</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Payment not confirmed</h1>
+  <div class="sv-message" data-tone="danger" role="alert" id="result" tabindex="-1">
+    <span class="sv-message__mark" aria-hidden="true"></span>
+    <p>We couldn't confirm your payment of £60.75. We don't know yet whether you were charged. Check with your bank before you try again.</p>
+  </div>
+  <section class="sv-panel sv-stack" aria-labelledby="summary-heading">
+    <h2 id="summary-heading">Your order</h2>
+    <dl class="sv-cost-summary">
+      <div class="sv-cost-summary__row"><dt>Items</dt><dd>£61.80</dd></div>
+      <div class="sv-cost-summary__row"><dt>Discount: Welcome discount</dt><dd>−£5.00</dd></div>
+      <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.95</dd></div>
+      <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£60.75<p class="sv-cost-summary__note">Includes £10.13 VAT</p></dd></div>
+    </dl>
+  </section>
+  <a class="sv-button" data-variant="secondary" href="checkout.html">Return to checkout</a>
+</main>
+</body>
+</html>

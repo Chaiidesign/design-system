@@ -29,10 +29,13 @@
     color: var(--sv-color-text-soft);
   }
 
+  /* Values and the draft come from outside the page (an event name, a link): a long string breaks. */
   .sv-proposal__fields dd {
+    min-inline-size: 0;
     margin-inline-start: auto;
     font-weight: var(--sv-font-weight-strong);
     text-align: end;
+    overflow-wrap: anywhere;
   }
 
   .sv-proposal__message {
@@ -45,14 +48,16 @@
   }
 
   .sv-proposal__draft {
+    min-inline-size: 0;
     padding: var(--sv-space-3);
+    overflow-wrap: anywhere;
     border: var(--sv-border-thick) dashed var(--sv-proposal-draft-edge);
     border-radius: var(--sv-radius-control);
   }
 
-  /* The primary has a row of its own at every width, so its label (a verb and its object) is not squeezed;
-     the others share the row below it. A proposal is never wider than the page column, so one row
-     would make the primary wrap even on a desktop. */
+  /* The primary, inside its sv-button, has a row of its own at every width, so its label (a verb and its
+     object) is not squeezed; the others share the row below it. A proposal is never wider than the page
+     column, so one row would make the primary wrap even on a desktop. */
   .sv-proposal__actions {
     display: flex;
     flex-wrap: wrap;
@@ -63,8 +68,17 @@
     flex: 1 1 auto;
   }
 
+  .sv-proposal__actions > sv-button {
+    display: flex;
+  }
+
+  .sv-proposal__actions > sv-button,
   .sv-proposal__actions > [data-variant="primary"] {
     flex-basis: 100%;
+  }
+
+  .sv-proposal__actions > sv-button > button {
+    flex: 1 1 auto;
   }
 
   /* From 48rem the others keep their own width rather than stretching across the column. */
@@ -73,6 +87,7 @@
       flex: 0 0 auto;
     }
 
+    .sv-proposal__actions > sv-button,
     .sv-proposal__actions > [data-variant="primary"] {
       flex-basis: 100%;
     }

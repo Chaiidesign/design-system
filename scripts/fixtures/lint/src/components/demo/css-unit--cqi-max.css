@@ -1,0 +1,3 @@
+@layer sv.components {
+  .sv-demo { font-size: max(var(--sv-font-size-body), 12cqi); }
+}

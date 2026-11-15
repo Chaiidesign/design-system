@@ -26,14 +26,13 @@
       <article class="sv-chat-message" data-from="assistant">
         <p class="sv-chat-message__from">Souvenir</p>
         <div class="sv-chat-message__body">
-          <span class="sv-status" data-tone="busy" role="status">Checking both calendars…</span>
           <p>Thursday at 3pm is free for both of you. Here is the change I will make:</p>
           <section class="sv-proposal" aria-labelledby="proposal-title">
             <h2 id="proposal-title">Move the event to Thursday and tell Priya</h2>
             <dl class="sv-proposal__fields">
               <div><dt>Event</dt><dd>Planning with Priya</dd></div>
-              <div><dt>From</dt><dd>Wednesday, 3:00 pm</dd></div>
-              <div><dt>To</dt><dd>Thursday, 3:00 pm</dd></div>
+              <div><dt>From</dt><dd>Wed 18 November, 3:00 pm</dd></div>
+              <div><dt>To</dt><dd>Thu 19 November, 3:00 pm</dd></div>
             </dl>
             <figure class="sv-proposal__message">
               <figcaption class="sv-proposal__caption">Message to Priya</figcaption>
@@ -46,7 +45,7 @@
               <p>Drafted by Souvenir. Check it before you send.</p>
             </div>
             <form class="sv-proposal__actions" action="demo-chat-message.html" method="get">
-              <button type="submit" class="sv-button" data-variant="primary">Move event and send</button>
+              <sv-button><button type="submit" class="sv-button" data-variant="primary" data-busy-label="Moving event and sending…">Move event and send</button></sv-button>
               <a class="sv-button" data-variant="secondary" href="demo-chat-message.html">Edit message</a>
               <a class="sv-button" data-variant="quiet" href="demo-chat-message.html">Cancel</a>
             </form>

@@ -149,6 +149,18 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 - **What the lead needs:** the six full folders, and who wrote them under what licence.
 - **To reverse:** Supply the folders and say "install them". The lead will read every file first and report anything that conflicts with CLAUDE.md before installing.
 
+### A-18. Blue or teal
+
+- **Situation:** Version 0.2 has one accent token with a blue and a teal value (D-015). Both are built and photographed in `digests/2026-11-15/accent/`.
+- **Decision:** Blue is the default until the CEO chooses. The lead recommends blue: teal is 45 degrees of hue from the "success" green, the nearest any status colour comes to an accent, and blue is at least 108 degrees from all three.
+- **To reverse:** Change `semantic.light.color.accent` and `semantic.dark.color.accent` in the token file to the teal primitive, or set `data-accent="teal"` on a page.
+
+### A-19. UI SDK is in no shipped part, because of the budget row
+
+- **Situation:** The CEO granted UI SDK an exception to principle 6 (D-014) and asked for it to be used "for behaviour where it helps", measured against 5 kilobytes. Built and bundled for four parts, it measures 15,628 bytes (button), 19,212 (checkbox), 22,405 (field) and 63,343 (select), and 74,857 for all four together (`gates/raw/2026-11-15-size.json`; `explore/ui-sdk-trial/README.md`). The system's own scripts for the same parts are 746 to 1,170 bytes.
+- **Decision:** No part of version 0.2 uses UI SDK. The JavaScript budget row is the CEO's to change, and the lead did not change it. This also answers A-16, point 2, with real bundled figures.
+- **To reverse:** Name a new row for UI SDK-backed parts. The trial under `explore/ui-sdk-trial/` shows each part working with scripts off and on.
+
 ### A-10. What the lead needs from the CEO
 
 In order of how much they unblock: a named steward; a first read of the charter, especially the seven principles and the LOCK rows; a channel for digests; a choice among the three visual directions when they exist; and, for the first pilot, a researcher and participants.
@@ -229,6 +241,7 @@ The CEO instructed, for one night: build version 0.2 on the Instrument direction
   5. "Information" and "busy" carry no hue, so that no status colour sits within 30 degrees of either accent.
   6. The cost display is an inverse surface: dark on a light theme and light on a dark theme. This fixes the loss of separation the review found in Instrument's dark theme.
   7. UI SDK is used where it adds behaviour and fits the budget row. Where it does not fit, the part ships on native HTML and the UI SDK variant is built and measured beside it, and the figure goes to the CEO.
+- **Outcome, morning of 15 November:** built, reviewed once and failed, then fixed; the record is `digests/2026-11-15.md`. The Ledger and Signal prototype code was removed once version 0.2 passed its checks; their rationale notes are kept. The cost summary is in the core, which breaks the CEO's rule that nothing ecommerce-only may be; it is listed as not done.
 - **"Ledger's plain words"** is read as: the wording of the voice rules, visible "You" and "Souvenir" labels, and no decorative type. If the CEO meant something else, that is a morning question.
 
 ### D-007. Three arguments against the charter, kept on record

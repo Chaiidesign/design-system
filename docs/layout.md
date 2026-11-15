@@ -1,10 +1,10 @@
 # Layout
 
-How to build a page from the system. A screen holds no style of its own: no `<style>`, no `style` attribute, only `sv-` classes and `sv-` elements. If a screen needs something the system lacks, add it to the system (a token, a component, `src/base/base.css`), never to the screen.
+How to build a page from the system. A screen holds no style of its own: no `<style>`, no `style` attribute. Ordinary HTML elements are fine; a class or a custom element must begin `sv-`. If a screen needs something the system lacks, add it to the system (a token, a component, `src/base/base.css`), never to the screen.
 
 ## Page skeleton
 
-Copy this whole file. The one inline script reads `?theme=` and `?accent=`; it must come before the stylesheet. The two paths, to `dist/souvenir.css` and `dist/souvenir.js`, are relative to the file you are writing: `../dist/` for a file directly in `screens/`. For a file one folder deeper, such as `screens/orders/list.html`, add one `../` to each:
+Copy this whole file. The one inline script reads `?theme=` and `?accent=`; it must come before the stylesheet. The two paths, to `dist/souvenir.css` and `dist/souvenir.js`, are relative to the file you are writing: `../dist/` for a file directly in `screens/`. The screen check visits `screens/` and `screens/agent-test/`, so put your file in one of those two folders. For a file one folder deeper, such as `screens/agent-test/orders.html`, add one `../` to each:
 
 ```html
 <link rel="stylesheet" href="../../dist/souvenir.css">
@@ -96,7 +96,7 @@ States after a save, after a failed load and before an action that cannot be und
 
 ## Split page
 
-Put the aside first when a phone should read it first, as an order summary before the form. From 48rem it moves to the second column, beside the main. It holds nothing focusable, so the Tab order still follows the screen.
+Put the aside first when a phone should read it first, as an order summary before the form. From 48rem it moves to the second column, beside the main. A short aside holds nothing focusable, so the Tab order still follows the screen.
 
 ```html
 <main class="sv-page sv-stack" data-gap="6" data-layout="split">
@@ -104,8 +104,67 @@ Put the aside first when a phone should read it first, as an order summary befor
   <section class="sv-page__aside sv-panel sv-stack" aria-labelledby="summary-heading">
     <h2 id="summary-heading">Order summary</h2>
   </section>
-  <form class="sv-page__main sv-stack" data-gap="6" action="/pay" method="post"></form>
+  <form class="sv-page__main sv-stack" data-gap="6" action="/pay#result" method="post"></form>
 </main>
+```
+
+**A long order.** The aside stays in view only while it is shorter than the screen. When an order has more than five rows, do not list them in the aside: keep the cost summary there, with one line above it that gives the count and a quiet link to the full list. Put the full `sv-list` after the form, or on a page of its own. The link is the aside's only Tab stop, and it comes before the form at every width.
+
+```html
+<section class="sv-page__aside sv-panel sv-stack" aria-labelledby="summary-heading">
+  <h2 id="summary-heading">Order summary</h2>
+  <p>14 items</p>
+  <a class="sv-button" data-variant="quiet" href="/basket">See all 14 items</a>
+  <dl class="sv-cost-summary">
+    <div class="sv-cost-summary__row"><dt>Items</dt><dd>£212.40</dd></div>
+    <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.95</dd></div>
+    <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£216.35</dd></div>
+  </dl>
+</section>
+```
+
+## Forms
+
+Beyond the attributes a component note shows, you may add these five to a control freely: `autocomplete` (whenever the browser can fill the value: `email`, `postal-code`, `name`), `inputmode` (the keyboard to show: `numeric`, `email`), `enterkeyhint` (the label of the Enter key: `search`, `next`, `done`), `autocapitalize` (`off` or `characters` for codes) and `spellcheck` (`false` for codes, names and addresses). Any other attribute must be named in a note.
+
+A form has one submit, the one that commits. A discount code, or any second action that must not pay, is a form of its own, linked with the `form` attribute: its `<form>` stands empty outside the paying form (forms cannot nest), and its field and button sit where they belong on the screen and name it with `form`. Never put a second submit in the paying form.
+
+```html
+<form id="code-form" action="/basket/code" method="post"></form>
+<form class="sv-stack" data-gap="6" action="/pay#result" method="post">
+  <sv-field>
+    <div class="sv-field">
+      <label class="sv-field__label" for="code">Discount code (optional)</label>
+      <p class="sv-field__error" id="code-error" hidden></p>
+      <input class="sv-field__control" id="code" name="code" form="code-form" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="code-error">
+    </div>
+  </sv-field>
+  <button type="submit" class="sv-button" data-variant="secondary" form="code-form">Apply code</button>
+  <sv-button>
+    <button type="submit" class="sv-button" data-variant="primary" data-width="full" data-busy-label="Paying £60.75…">Pay £60.75</button>
+  </sv-button>
+</form>
+```
+
+## Running text
+
+Put running text in an `sv-stack`: paragraphs and headings have no margin of their own. Give each section its own `sv-stack`, and separate sections with `data-gap="6"` on the stack that holds them. A `ul` shows no bullets: it is for rows. For a list inside prose, use an `ol`. `blockquote`, `h4` to `h6`, `small`, `code`, tables and images have no style yet: do not use them, and report the gap.
+
+```html
+<article class="sv-stack" data-gap="6">
+  <section class="sv-stack" aria-labelledby="returns">
+    <h2 id="returns">Returns</h2>
+    <p>You can return most items within 30&nbsp;days of delivery.</p>
+    <ol>
+      <li>Open the order and choose the items to return.</li>
+      <li>Print the label and attach it to the parcel.</li>
+    </ol>
+  </section>
+  <section class="sv-stack" aria-labelledby="refunds">
+    <h2 id="refunds">Refunds</h2>
+    <p>We refund your payment within 5&nbsp;working days of receiving the parcel.</p>
+  </section>
+</article>
 ```
 
 ## Headings

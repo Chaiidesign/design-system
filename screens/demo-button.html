@@ -15,9 +15,9 @@
   <section class="sv-stack" aria-labelledby="variants">
     <h2 id="variants">Variants</h2>
     <div class="sv-row">
-      <button type="button" class="sv-button" data-variant="primary">Pay £60.75</button>
-      <button type="button" class="sv-button" data-variant="secondary">Apply code</button>
-      <button type="button" class="sv-button" data-variant="quiet">Cancel</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="primary">Pay £60.75</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="secondary">Apply code</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="quiet">Cancel</button>
     </div>
     <div class="sv-row">
       <a class="sv-button" data-variant="secondary" href="#variants">Back to basket</a>
@@ -28,16 +28,16 @@
   <section class="sv-stack" aria-labelledby="on-panel">
     <h2 id="on-panel">On a panel, full width</h2>
     <div class="sv-panel sv-stack" data-gap="3">
-      <button type="button" class="sv-button" data-variant="primary" data-width="full">Pay £60.75</button>
-      <button type="button" class="sv-button" data-variant="secondary" data-width="full">Edit message</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="primary" data-width="full">Pay £60.75</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="secondary" data-width="full">Edit message</button>
     </div>
   </section>
 
   <section class="sv-stack" aria-labelledby="wrapping">
     <h2 id="wrapping">A label that wraps</h2>
     <div class="sv-panel sv-stack" data-gap="3">
-      <button type="button" class="sv-button" data-variant="primary">Move the event to Thursday at 3pm and send the message to Priya</button>
-      <button type="button" class="sv-button" data-variant="secondary">Use the same address for billing and delivery</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="primary">Move the event to Thursday at 3pm and send the message to Priya</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="secondary">Use the same address for billing and delivery</button>
     </div>
   </section>
 
@@ -45,8 +45,8 @@
     <h2 id="busy">Busy</h2>
     <p>Set by the sv-button script after a valid submit. The label says what is happening, and further presses do nothing.</p>
     <div class="sv-panel sv-stack" data-gap="3">
-      <button type="button" class="sv-button" data-variant="primary" data-width="full" aria-busy="true">Paying £60.75…</button>
-      <button type="button" class="sv-button" data-variant="secondary" aria-busy="true">Applying code…</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="primary" data-width="full" aria-busy="true">Paying £60.75…</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="secondary" aria-busy="true">Applying code…</button>
     </div>
   </section>
 
@@ -54,9 +54,9 @@
     <h2 id="disabled">Disabled</h2>
     <p>Only when the action cannot happen yet. Say why next to it.</p>
     <div class="sv-row">
-      <button type="button" class="sv-button" data-variant="primary" disabled>Pay £60.75</button>
-      <button type="button" class="sv-button" data-variant="secondary" disabled>Apply code</button>
-      <button type="button" class="sv-button" data-variant="quiet" disabled>Cancel</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="primary" disabled>Pay £60.75</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="secondary" disabled>Apply code</button>
+      <button type="submit" form="demo" class="sv-button" data-variant="quiet" disabled>Cancel</button>
     </div>
   </section>
 
@@ -69,6 +69,7 @@
       </sv-button>
     </form>
   </section>
+  <form id="demo" action="demo-button.html" method="get"></form>
 </main>
 </body>
 </html>

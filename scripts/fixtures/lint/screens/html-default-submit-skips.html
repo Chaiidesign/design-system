@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lint fixture</title>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page">
+  <h1>Apply code first</h1>
+  <!-- Review finding 17: "Apply code" comes first in the form, so Enter presses it and skips validation. -->
+  <form method="get" action="result.html">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email">
+    <label for="code">Discount code</label>
+    <input id="code" name="code" type="text">
+    <button type="submit" class="sv-button" formaction="checkout.html" formnovalidate>Apply code</button>
+    <button type="submit" class="sv-button">Pay</button>
+  </form>
+</main>
+</body>
+</html>

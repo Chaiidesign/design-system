@@ -7,6 +7,17 @@
   box-sizing: border-box;
 }
 
+/* Hidden means hidden, whatever display a part sets. The one rule for it: no part repeats it. */
+[hidden] {
+  display: none !important;
+}
+
+/* Text that comes from outside the page (what a person typed, a catalogue name, a link) may hold
+   long unbroken strings, so it may break anywhere rather than push the page sideways. */
+[data-user-content] {
+  overflow-wrap: anywhere;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -181,7 +192,8 @@ ul {
 /* A list of rows (item lines, orders, settings). Each item: a main part (a title line, then soft
    detail lines) and an optional trailing part at the inline end, at most half the row. Bare text
    in the trailing part (an amount) never wraps; a status or button inside it wraps within its half.
-   If the main part's longest word cannot fit beside it, the trailing part moves below, at the end. */
+   The main part holds names from outside the page (items, events), so a string too long for the
+   space beside the trail breaks rather than push the row sideways. Amounts keep their own direction. */
 .sv-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -209,11 +221,12 @@ ul {
   align-items: center;
 }
 
-/* Never narrower than its longest word, so a word is never broken. */
 .sv-list__main {
   display: grid;
   flex: 1 1 0;
+  min-inline-size: 0;
   justify-items: start;
+  overflow-wrap: anywhere;
 }
 
 .sv-list__detail {
@@ -230,13 +243,16 @@ ul {
   margin-block-start: var(--sv-space-3);
 }
 
+/* An amount is never cut to fit half the row: when it is wider (text enlarged), it moves below. */
 .sv-list__trail {
   flex: 0 1 auto;
+  min-inline-size: min-content;
   max-inline-size: 50%;
   margin-inline-start: auto;
   font-variant-numeric: tabular-nums;
   text-align: end;
   white-space: nowrap;
+  unicode-bidi: plaintext;
 }
 
 .sv-list__trail > * {

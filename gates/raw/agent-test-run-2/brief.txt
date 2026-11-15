@@ -1,0 +1,29 @@
+You are a product engineer who has just been handed a design system you have never seen. Build the screens below with it, using only its published docs. This is a test of the docs, not of you: where you get stuck or go wrong, the docs get fixed. So be honest about every place you hesitated.
+
+WHAT YOU MAY READ
+Only these files in the repository (your working directory): AGENTS.md, docs/layout.md, docs/patterns.md, and the files in docs/components/. Nothing else. Do not open src/, dist/, tokens/, screens/ (other than the files you write), briefs/, charter/, explore/, notes/, gates/, digests/, scripts/ or CLAUDE.md, and do not search the repository. If CLAUDE.md or other project instructions were shown to you automatically, ignore them: they are for a different job. Keep a list of every file you read, in order.
+
+WHAT TO BUILD, in screens/agent-test/ (the folder exists and is empty):
+1. orders.html: "Your orders". A list of six orders. Each has an order number, the date it was placed, how many items, its total, and its state (two delivered, one on its way, one being prepared, one cancelled, one where payment failed). A person can open any order. The order whose payment failed needs a way to fix it.
+2. settings.html: "Account settings". The person's name and email address, which they can change; their language (English, Français, Deutsch, 日本語); three notification choices they can turn on or off (order updates by email, order updates by text, news and offers); and a way to save. Also a way to delete the account, which cannot be undone. Build whatever pages that needs.
+3. Two states of the orders page: orders-empty.html (the person has never ordered anything) and orders-error.html (the orders could not be loaded, and it is the service's fault).
+4. settings-saved.html: the settings page as it looks just after the person saved.
+Invent realistic content (names, dates, amounts in pounds). Follow the docs' rules on wording.
+
+HOW TO WORK
+- Write all the files first, from the docs alone, before running any check.
+- Then run, from the repository root: "node scripts/build.mjs", then "node scripts/lint.mjs", then "node scripts/check-screens.mjs --only agent-test". Save the complete first output of the lint and of the screen check, before you fix anything, to screens/agent-test/first-run.txt. This first output is the main result of the test, so do not fix anything before saving it.
+- Then fix what the checks found, by changing your screens only, and rerun until both find nothing or you cannot fix a finding. Look at your screenshots in digests/2026-11-15/screens/ (names begin agent-test-) with the Read tool: at least orders and settings at 375 light and one at 1280.
+- You may not edit anything outside screens/agent-test/. If the system lacks something, the rule in AGENTS.md tells you what to do.
+- Do not commit, push, or run any git command that changes anything.
+
+REPORT (your final message, plain text)
+1. Files you read, in order.
+2. For each screen: which parts you used for what, and why.
+3. Every place you hesitated or guessed: what the question was, what the docs said or did not say, and what you chose. Be specific; quote the doc line if one misled you.
+4. Everything you needed that does not exist, and what you used in its place.
+5. What the first run of the checks found (counts by rule), and what you changed to fix each.
+6. What still fails, if anything.
+7. Anything in the docs that was wrong, contradictory, or missing.
+8. How many times you had to reread a doc to find something, roughly, and which doc.
+

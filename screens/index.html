@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Souvenir design system 0.2</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Souvenir design system 0.2</h1>
+
+  <p>Every page follows the theme of your device. To see one in the dark theme, add <span data-user-content>?theme=dark</span> to the end of its address, or <span data-user-content>?theme=light</span> for the light theme. To see the teal accent in place of the blue, add <span data-user-content>?accent=teal</span>. To ask for both, join them with an ampersand: <span data-user-content>?theme=dark&amp;accent=teal</span>.</p>
+
+  <section class="sv-stack" aria-labelledby="screens-heading">
+    <h2 id="screens-heading">Screens</h2>
+    <ul class="sv-list">
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="checkout.html">Checkout</a><p class="sv-list__detail">An order summary with its total, and the form that pays for it</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="checkout-errors.html">Checkout with errors</a><p class="sv-list__detail">The same form after a failed submit, with the error summary and two fields in error</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="checkout-result.html">Order placed</a><p class="sv-list__detail">The page after paying: a success message and what the order cost</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="assistant.html">Assistant</a><p class="sv-list__detail">A conversation in which Souvenir proposes to move an event and send a message</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="assistant-done.html">Assistant after approval</a><p class="sv-list__detail">The same conversation once the event is moved and the message is sent</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="agent-heading">
+    <h2 id="agent-heading">Screens an agent built from the notes alone</h2>
+    <ul class="sv-list">
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="agent-test/orders.html">Your orders</a><p class="sv-list__detail">A list of orders, each with its amount, status and action</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="agent-test/orders-empty.html">Your orders, empty</a><p class="sv-list__detail">The same page with no orders yet</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="agent-test/orders-error.html">Your orders, failed to load</a><p class="sv-list__detail">The same page when the orders could not be loaded</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="agent-test/settings.html">Account settings</a><p class="sv-list__detail">A form for your details and notifications</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="agent-test/settings-saved.html">Account settings, saved</a><p class="sv-list__detail">The same form after a save worked</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="agent-test/delete-account.html">Delete your account</a><p class="sv-list__detail">A page of its own for an action that cannot be undone</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="patterns-heading">
+    <h2 id="patterns-heading">Patterns</h2>
+    <ul class="sv-list">
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="pattern-confirm.html">An action that cannot be undone</a><p class="sv-list__detail">The confirmation page, with what will be lost and the button that does it</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="pattern-states.html">Page states</a><p class="sv-list__detail">After a save, an empty list and after a failed load</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="pattern-payment-failed.html">Payment not confirmed</a><p class="sv-list__detail">A payment whose result we do not know, and what is safe to do next</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="pattern-search-empty.html">Search with no results</a><p class="sv-list__detail">A search that found nothing, and what to try instead</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="components-heading">
+    <h2 id="components-heading">Components</h2>
+    <ul class="sv-list">
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-button.html">Button</a><p class="sv-list__detail">Each variant, a label that wraps, busy and disabled</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-field.html">Field</a><p class="sv-list__detail">Hint, error, optional, read-only, disabled and several lines</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-select.html">Select</a><p class="sv-list__detail">Its states, on a panel and on the page ground</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-checkbox.html">Checkbox</a><p class="sv-list__detail">Unchecked, checked, disabled, required and a label that wraps</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-cost-summary.html">Cost summary</a><p class="sv-list__detail">A discount, a cost not known yet and large amounts</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-error-summary.html">Error summary</a><p class="sv-list__detail">Every error on a form, after a failed submit</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-message.html">Message</a><p class="sv-list__detail">Each tone, on the page ground and on a panel</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-status.html">Status</a><p class="sv-list__detail">Each tone, in a line of text, in list rows and in table cells</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-list.html">List</a><p class="sv-list__detail">An order summary, orders, settings and saved addresses</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-chat-message.html">Chat message</a><p class="sv-list__detail">A turn from the person and a turn from Souvenir</p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><a href="demo-proposal.html">Proposal</a><p class="sv-list__detail">Ready, busy, done and failed</p></div>
+      </li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

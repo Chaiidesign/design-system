@@ -1,0 +1,354 @@
+{
+ "results": [
+  {
+   "part": "parts",
+   "verdict": "done with gaps",
+   "summary": "I fixed all 22 assigned findings and proved each one with a headless playwright-core script of my own: 41 assertions, all pass. Build passes and every component is within its size budget. One gap remains. With the lead's 9cqi coefficient, demo-cost-summary fails cost-total-largest at 320 wide: the long total shows at 23.04px and 19.98px while the h1 is 24px. I kept the lead's value and give the numbers below. The new 200% check showed text spilling out of four other boxes: the list's trailing amount, a cost-summary term, the message, and the error summary title. I fixed those in base and component CSS, so the checkout and assistant screens now pass that check. Lint still exits 1 on 28 findings, all from rules other builders added. None are in my CSS or JS, but three land in notes I edit: button.md, and error-summary.md twice.",
+   "fixed": [
+    "18: base.css has the one [hidden]{display:none !important} rule; the copies in field.css (.sv-field__error[hidden]) and error-summary.css (.sv-error-summary[hidden]) are removed. Scratch page: 13 parts carrying hidden all compute display:none.",
+    "4, 22: base.css has [data-user-content]{overflow-wrap:anywhere}; the chat-message copy is removed. Text from outside the page now breaks inside these, each with min-inline-size:0: .sv-list__main, .sv-proposal__fields dd, .sv-proposal__draft, .sv-field__error, and the error summary (box and links). Scratch page with a 90-character string in each: scrollWidth equals clientWidth at 320, 375 and 1280, and every text rectangle stays inside its box. Screenshot checked. Side effect: the list's main part can now shrink beside the trailing amount, so a very long word breaks rather than pushing the amount below. The comment in base.css is updated.",
+    "3: .sv-error-summary and its list use grid-template-columns minmax(0,1fr), and overflow-wrap:anywhere is on the box. checkout-errors at 320 and 375 with root font 200%: no sideways scroll, title, links and error lines inside their boxes. check-screens' 200% pass on checkout-errors: pass.",
+    "2: .sv-cost-summary has container-type:inline-size. The total is clamp(lead, 14cqi, total-size) and the long total clamp(body, 9cqi, total-size-long). The total dd is flex 0 1 auto, min-inline-size 0, white-space normal, overflow-wrap anywhere. Scratch page at 320 and 375, 200%, light and dark, ground and panel, £60.75 and £12,345,678.90 marked long: scrollWidth equals viewport and all text stays inside the display. At 320 on a panel the amount breaks as the last resort. checkout.html at 100%: total 31.08px at 320, 36px at 375 and 1280, against 24px for the next largest text ('Checkout'); same on checkout-errors.",
+    "19, 30: field.js now checks, on submit, every other control of the form the browser would validate. This runs even when sv-error-summary marked the event first, but only if no field failed. The first invalid control stops the submit and gets reportValidity(). sv-field creates a missing error line before it sets aria-describedby. Proofs: a valid email plus an unticked required checkbox stays on the page with focus on the checkbox, both with and without an error summary. A required sv-field with no error line gets one, visible, saying 'Please fill out this field.' and named in aria-describedby.",
+    "7: the error line gets aria-live=polite when sv-field takes charge, and it is un-hidden before its text is set. error-summary.js listens for sv-field-invalid and gives a listed link the new message. Proof: the link changed from 'Enter your email address.' to 'Enter an email address with an @, like name@example.com.' after typing 'sam@' and leaving the field. The page-title part is skipped as decided.",
+    "20: button.js does not go busy when the form's target or the button's formtarget is another window. On any pageshow it releases a busy state it started itself; a busy state written in the markup stays. It also releases after 10 seconds (RELEASE_MS). button.md says what the person sees. Proofs: target=_blank gives aria-busy null. A 204 answer goes busy with 'Saving…', is released after 10036 ms with the label back to 'Save', and the next press submits (1 request). A synthetic pageshow releases the state. The demo Busy example stays busy after load.",
+    "21: error-summary.js focuses a summary the server rendered only when document.activeElement is the body. Proof: with souvenir.js delayed 2.5 s, typing 'LS1' then ' 4AP' in Postcode leaves focus in postcode with value 'LS1 4AP'. Without the delay, the summary still takes focus on load.",
+    "32: sv-field, sv-button and sv-error-summary retry their setup in a microtask, then with a MutationObserver that disconnects once set up. Proof: the elements created empty, filled 50 ms later, are all set up (label for, describedby, check() invalid for an empty required field, button wired, summary listening, novalidate on).",
+    "6, 25: proposal.css gives `.sv-proposal__actions > sv-button` (display flex, full row) and its button the full width. The old rule for a primary that is a direct child is kept so assistant.html does not break before it is updated. proposal.md markup, the Busy row (names the sv-button script) and the 'Script' line ('No script' removed) are updated, and so are demo-proposal.html (Ready, Busy, Failed) and demo-chat-message.html. Proofs: the button fills its row at 375 (309 of 309px) and at 1280 (478 of 478px), with the links below. Two presses give 1 request and 'Moving event and sending…' with aria-busy true.",
+    "44: proposal.md has a new 'Alternatives' row: each alternative is its own proposal, every submit is secondary, and only the newest single proposal in a thread carries the primary. The note is 60 lines.",
+    "26, 43: field.md and checkbox.md now say to use a select for one choice from a few options, that there is no radio part, and never to put type=\"radio\" inside label.sv-checkbox. select.md states the same as the part's use. grep finds no 'use radios' left.",
+    "11, 29: forced colours. The field error mark is CanvasText with forced-color-adjust none. The primary is Highlight and HighlightText, so it differs from the outlined secondary, and its busy mark is HighlightText. The secondary's busy mark is ButtonText. The select drops its drawn arrow (background-image none). As part of finding 11, quiet buttons get a Canvas border so no edge appears. Proofs by computed style and a screenshot I viewed: mark rgb(0,0,0) on text rgb(0,0,0); select appearance auto with no background image; primary rgba(5,0,73,0.8) against secondary transparent; each mark differs from its key.",
+    "12: unicode-bidi:plaintext on cost-summary amounts and .sv-list__trail. Proof in dir=rtl: the minus is drawn before £ for −£5.00 and −£7.80, and amounts stay at the inline end. The same test fails with the rule overridden.",
+    "31: cost-summary.md now says the display holds terms, amounts and the note only, never a link, status or button. It also states the new fluid total sizes; the row that claimed '28 pixels, still larger than the page title' is rewritten.",
+    "34: a disabled button has a thin edge: 1px against 2px for the enabled secondary, same 48px height. button.md is updated.",
+    "33 (part): --sv-icon-chevron is deleted from icons.css and nothing references it. The select.css comment that pointed to it is updated."
+   ],
+   "not_fixed": [
+    "2 (partly): screens/demo-cost-summary.html fails cost-total-largest at 320 light and dark, 4 findings. The long total is 23.04px on the ground and 19.98px on a panel, against the 24px h1. The cause is the lead's 9cqi coefficient on a 222px panel display. I measured the alternatives with an override: 11cqi gives 24.4px on the panel and 28px on the ground, '£12,345,678.90' fits on one line (191 of 222px), and a 15-character total would fit too. 12cqi gives 26.6px at 209 of 222px. I kept the lead's value. Changing it is a one-token edit in cost-summary.css for the lead to decide."
+   ],
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 1,
+     "last_lines": "lint: 52 files (12 css, 27 html, 13 md), 28 findings. All are html-fake-control, html-button-no-script or html-submit-no-form, rules other builders added. None are in CSS or JS; the cqi units are accepted."
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "size: 21 rows, 0 over budget or missing. button CSS 847, cost-summary 605, field 662, proposal 514, message 540 bytes; field JS 1170; all CSS 5001 of 12288"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-",
+     "exit_code": 1,
+     "last_lines": "11 screens x 6 states, 4 findings, all cost-total-largest on demo-cost-summary at 320 light and dark; every other demo passes"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only checkout",
+     "exit_code": 1,
+     "last_lines": "3 screens x 6 states, 1 finding: total-below-first-screen on checkout-errors (screen layout, not a part). 200% pass: all pass"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only assistant",
+     "exit_code": 0,
+     "last_lines": "2 screens x 6 states, 0 findings; 200% pass all pass"
+    },
+    {
+     "command": "node scripts/.tmp/parts/prove.mjs cost summary long hidden forms focus proposal forced rtl disabled",
+     "exit_code": 0,
+     "last_lines": "41 PASS, all passed"
+    },
+    {
+     "command": "NOPLAIN=1 node scripts/.tmp/parts/prove.mjs rtl",
+     "exit_code": 1,
+     "last_lines": "FAIL right-to-left (minusLeftOfPound false), which shows the test catches the bug without the fix"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/base/base.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/base/icons.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/button/button.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/button/button.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/chat-message/chat-message.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/cost-summary/cost-summary.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/error-summary/error-summary.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/error-summary/error-summary.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/field/field.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/field/field.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/message/message.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/proposal/proposal.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/select/select.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/button.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/checkbox.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/cost-summary.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/field.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/proposal.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/select.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-proposal.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-chat-message.html"
+   ],
+   "needs_from_others": [
+    "screens/assistant.html (screens builder): wrap the proposal's primary in <sv-button> with data-busy-label=\"Moving event and sending…\", as proposal.md now shows. proposal.css still styles a primary that is a direct child, so the screen keeps its layout until then. Without the wrapper it still has no busy state and no guard against a second press.",
+    "Lead: decide the coefficient for the long total. With 9cqi, demo-cost-summary fails cost-total-largest at 320 (23.04px and 19.98px against a 24px h1). 11cqi would pass and keep the amount on one line (24.4px on a panel at 320).",
+    "Lint-rule builder: their new rules flag notes I edit. docs/components/button.md:43 (html-submit-no-form, the 'Don't' snippet), docs/components/error-summary.md:7 and :33 (html-fake-control on the summary's own div with tabindex=-1). They also flag screens/demo-button.html (14 html-button-no-script on its static type=button examples) and demo-error-summary.html:16, pattern-*.html and checkout*.html (html-fake-control). The rule and the system's error-summary markup contradict each other; I did not change either.",
+    "Screens builder: checkout-errors.html fails the new total-below-first-screen check at 320x720 (total row top 935.8px). This is screen layout, not a part.",
+    "Note to the lead: demo-chat-message.html had a busy status in the same message as its proposal, which the new busy-beside-result rule flags. I removed that line; the busy status is still shown in demo-status.html."
+   ]
+  },
+  {
+   "part": "screens",
+   "verdict": "done with gaps",
+   "summary": "I fixed all the assigned findings in the five screens and added screens/index.html. Build, lint and check-screens (checkout, assistant) all pass, and my own Playwright proof passed 30 of 30 assertions. scripts/check-noscript.mjs now fails 2 assertions. Both failures come from its old expectations (the success text and the code field), and I may not edit that script. The proposal's primary is wrapped in sv-button and renders at the full row width, but docs/components/proposal.md has not yet been updated by the other builder. So I matched button.md's markup, not a proposal.md example. The index page is skipped by check-screens by design. I measured it myself: no text under 16 px and no sideways scroll at 320 or 1280.",
+   "fixed": [
+    "1, 17: I added an empty <form id=\"discount\" method=\"get\" action=\"checkout.html\"> as the last child of main in checkout.html and checkout-errors.html. The code input and \"Apply code\" now carry form=\"discount\", and formaction and formnovalidate are gone. Proof, with JavaScript on and off: Pay is the first submit of form#checkout. Enter in Postcode with everything filled reaches checkout-result.html#result, and the query has no code. Enter in the empty form makes no navigation. \"Apply code\" makes one navigation, to checkout.html?code=WELCOME. With JavaScript on and the submit intercepted, form#checkout does not submit, no field gets aria-invalid, the error summary stays hidden, the typed email is kept and Pay does not go busy. As expected on a static server, the code form's reload resets the typed values. The existing test-page message is unchanged.",
+    "46: I removed the bold \"Total £60.75\" line and its panel from both checkout pages. Pay's sv-button is now a direct child of the form. I checked this in the 320 and 1280 screenshots.",
+    "9: In both checkout pages the order summary is now heading, then cost summary, then items. The result page has no items, so nothing moved there. On checkout.html the total row runs 382 to 466 px at 320x720 and 358 to 442 px at 375x720, with the amount at 395 to 438 and 371 to 414. checkout-errors.html is still below the fold (936 to 1020 at 320, 840 to 924 at 375) because its error summary shows above it. The split layout holds at 1280: the aside is beside the main column and the total is at 334 to 418.",
+    "14 (part): The field label under the \"Discount code\" heading is now \"Code\". The result message now reads \"Receipt sent to the email address you gave.\" under the h1 \"Order placed\", which also settles 8 and 45 because the page no longer names an address. \"Back to checkout\" is removed. Checked in the browser.",
+    "47 (part): I removed role=\"note\" from the test-page message on checkout.html, checkout-errors.html and checkout-result.html.",
+    "5, 39: The busy status is gone from assistant.html and assistant-done.html: 0 .sv-status[data-tone=busy] at 320 and 375. The done page's lead-in now reads \"Thursday at 3pm was free for both of you. Here is the change I made:\". Checked by text match and in the 375 light screenshot.",
+    "59: From and To now read \"Wednesday 18 November, 3:00 pm\" and \"Thursday 19 November, 3:00 pm\" on both assistant pages. The failed turn now reads \"We couldn't reach your calendar. Nothing was changed.\" followed by a quiet a.sv-button \"Try again\" (href assistant.html). Seen in the 375 dark screenshot.",
+    "6, 25: The proposal's primary is now inside sv-button, with data-variant=primary, data-width=full and data-busy-label=\"Moving event and sending…\". On a press its label became \"Moving event and sending…\" with aria-busy=true, and two presses with the response held 800 ms made one request. The primary is 254 of 254 px at 320 and 309 of 309 at 375. The proposal is 701 px tall at 320 (617 at 375), so it still fits 720.",
+    "8 (part): The composer textarea is now in sv-field with an error line, aria-describedby, required and data-error-required=\"Write a message to send.\" on both assistant pages. An empty Send stays on the page and shows that message. assistant.html also has an info message: \"This is a test page. Souvenir will not act on anything.\"",
+    "13: The checkout form's action ends #result, and the result page's success message has id=result and tabindex=-1. The proposal form's action ends #result, and the done page's success message has the same. Measured in Chromium: the result page has focus on #result with its top at 81 px. assistant-done at 375x800 has focus on #result with its top at 297 px.",
+    "index: I created screens/index.html, titled \"Souvenir design system 0.2\", with one paragraph explaining ?theme=dark, ?theme=light and ?accent=teal (written as plain text, not code). It has four sv-list groups under h2 headings: Screens (5), Screens an agent built from the notes alone (6), Patterns (4, including the new pattern-payment-failed and pattern-search-empty), and Components (11). Each row is a link with one soft detail line. The lint passes with 0 findings. All 26 links return 200, and all 26 HTML files in screens/ and screens/agent-test/ are linked. At 320 and 1280 there is no text under 16 px and no sideways scroll."
+   ],
+   "not_fixed": [
+    "check-screens does not cover screens/index.html: it prints \"index.html skipped\" by design. I measured the index with my own script and found no failures, but no system check has run on it."
+   ],
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 0,
+     "last_lines": "lint: 52 files (12 css, 27 html, 13 md), 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only checkout",
+     "exit_code": 0,
+     "last_lines": "check-screens: 3 screens × 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only assistant",
+     "exit_code": 0,
+     "last_lines": "proposal height assistant.html 701px at 320, 617px at 375, 497px at 1280; 2 screens × 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only index",
+     "exit_code": 0,
+     "last_lines": "check-screens: no screens to check matching \"index\" (screens/*.html and screens/agent-test/*.html, index.html skipped); nothing written"
+    },
+    {
+     "command": "node scripts/check-noscript.mjs",
+     "exit_code": 1,
+     "last_lines": "FAIL the result page shows the success message (\"Receipt sent to the email address you gave.\"); FAIL the query string carries every named field (missing: code); check-noscript: 2 failures"
+    },
+    {
+     "command": "node scripts/.tmp/screens/prove.mjs (scratch Playwright proof, now deleted)",
+     "exit_code": 0,
+     "last_lines": "prove: 0 failure(s) (30 PASS lines)"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/checkout.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/checkout-errors.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/checkout-result.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/assistant.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/assistant-done.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/index.html"
+   ],
+   "needs_from_others": [
+    "scripts/check-noscript.mjs (lead): two assertions name the old version, and I may not edit the script. (1) It expects the success text \"Order placed. Receipt sent to sam@example.com.\" It should expect \"Receipt sent to the email address you gave.\" (2) It collects field names with the descendant selector \"form#checkout [name]\". That still finds the code input, which sits inside the form's markup but belongs to form#discount, so \"the query string carries every named field\" fails with \"missing: code\". It should read form#checkout.elements, or skip any control with a form attribute that names another form. After that change form#checkout has 8 named fields (email, name, line1, line2, town, postcode, country, billing), so its \"names.length >= 9\" assertion will need 8. That is a correction to the count, not a loosening. An Enter-key assertion would also be worth adding: my scratch proof showed Enter in Postcode with everything filled reaches checkout-result.html#result, with JavaScript on and off.",
+    "docs/components/proposal.md (parts builder): when I last read it, it still showed a bare primary, \"No script\", and undated From and To values. The screens now use <sv-button><button type=\"submit\" class=\"sv-button\" data-variant=\"primary\" data-width=\"full\" data-busy-label=\"Moving event and sending…\">. Please make the note match, data-width=\"full\" included, or tell me to drop it. The dated From and To values are also in the screens now.",
+    "Proposal fields (parts builder): at 375, \"Wednesday 18 November, 3:00 pm\" drops onto its own line under \"From\", while \"Thursday 19 November, 3:00 pm\" stays beside \"To\". This comes from the \"a long value takes its own line\" sizing, and it looks uneven. It belongs to the component, not the screen.",
+    "docs/patterns.md and button.md (lead or docs builder): the screens now use a separate empty form plus form=\"<id>\" for a second, non-paying submit, and #result with tabindex=-1 on result pages. The spec's change list still says \"Apply code\" carries formaction and formnovalidate. That rule and the notes should describe the new approach.",
+    "check-screens.mjs (lead): it skips screens/index.html, so the new index page gets no system check."
+   ]
+  },
+  {
+   "part": "checks",
+   "verdict": "done with gaps",
+   "summary": "I made every assigned fix and proved each one. All three self-tests exit 0: lint (99 fixtures, 33 rules seen failing), size (4 trees) and check-screens (27 pages, 20 of 20 rules). \"npm run check\" exits 1 at the lint step, because the new lint rules find 28 problems in existing screens and notes. I left those failing, as told. I then ran the later steps on their own: size exits 0, the screen checker exits 1 (5 findings, written to scratch), and the no-script check exits 1 (2 failures that come from checkout content, not from these scripts). The gap is that the full chain does not pass: other builders have to fix what the new rules found.",
+   "fixed": [
+    "cqi: in component CSS lint.mjs now accepts a number in cqi inside clamp() or min() at any depth. It still flags bare cqi, calc(), max(), minmax(), cqw, the rem bounds inside the clamp, and cqi in base CSS. There are 8 fixtures: 1 clean and 7 that must fail, all passing the self-test. The lint as of HEAD flags cost-summary.css lines 61 and 68 (14cqi, 9cqi); the new lint gives no findings on that file.",
+    "17: new rule html-default-submit-skips. It decides which form owns a submit button the way HTML does (the form= attribute first, then the nearest enclosing form), and counts a button with no type as submit. Fixtures: the plain case, formaction only, ownership through form=, and a clean case where Apply code has its own form. Run on the reviewer's markup (git show HEAD:screens/checkout.html), it flags line 131 (Apply code). The HEAD lint flags nothing there.",
+    "23/42: nine new lint rules, each proven failing by its own fixtures. html-link-no-href: a.sv-button with no href. html-fake-control: role=button, tabindex or on* on an element that is not a button, link or form control; for on*, a fixture expects exactly two rules, itself and html-inline-script. html-presentational: font, center, align, bgcolor, and size on an element other than input. html-submit-no-form, including a form= that names no form. html-undefined-element: an sv- element the built script does not define. html-unknown-data-attr: a data-error- or data-busy- attribute the built script does not read. html-radio-in-checkbox: a radio inside .sv-checkbox. html-button-no-script: type=button (button or input) outside any sv- element. Both lists are derived from dist/souvenir.js, including dataset reads through an alias in the minified code, and printed on each run. Real run: it defines sv-button, sv-error-summary, sv-field and reads data-busy-label, data-error-pattern, data-error-required, data-error-type. A fixture proves errorLine is not counted as a data attribute.",
+    "55: check-screens walks screens/ and all its subfolders and skips only the top-level index.html. Proven on a scratch tree: orders/deep/list.html and sub/index.html were checked, the top-level index.html was skipped. --only that matches nothing exits 1. --only checkout-result exited 0 and wrote to scripts/.tmp/check-screens-only/; the timestamps of gates/raw/2026-11-15-screens.json and of the digest PNG were identical before and after.",
+    "2, 3: a second pass at 320 and 375, light, root font at 200 percent, on every screen that is not a demo page. Its rules are sideways-scroll-200 and overflow-inside-part-200, shown in a table of their own and stored under text_200_percent in the JSON. The run checks that the computed root size doubled (16 to 32px) and fails loudly if it did not. Fixtures: sideways-scroll-200 and overflow-inside-part-200, both sized in rem so they pass at 100% and fail only at 200%. The first real run found 30 such findings on 11 screens at 320; the last run found none.",
+    "18: screen rule hidden-has-box (an element with the hidden attribute whose display is not none), with a fixture.",
+    "9: screen rule total-below-first-screen, at 320 by 720 light, on pages with both a cost summary and a form. It prints the total row's position whether it passes or fails and is stored under first_screen in the JSON. Fixture fails; clean.html passes. Real run: checkout.html bottom 460.1px, pass; checkout-errors.html bottom 1014.1px, fail.",
+    "5: screen rule busy-beside-result: a visible busy status in the same chat message as a visible proposal or success message. Two fixtures, one also proving that a busy status in a message of its own passes. Real run: it fires on demo-chat-message.html in all 6 states.",
+    "40: package.json check now runs, in order: tokens, build, lint, size, node scripts/size.mjs --self-test, screens, node scripts/check-screens.mjs --self-test, noscript. Every step is joined with &&, so the chain still stops at the first failure. The new size self-test builds 4 trees from a seeded generator under scripts/.tmp/ and runs size.mjs --root on each: within budget exits 0; component CSS over budget, component scripts over budget and checkout page over budget each exit 1 and name exactly that row. Self-test exit 0.",
+    "28: size.mjs adds two rows. 'all component scripts': gzip of dist/souvenir.js, the one bundle of every component script, now 2114 bytes against 15360. 'checkout page': checkout.html plus every file it loads, each gzipped on its own and summed, with each file listed in the JSON, now 13033 bytes against 102400. A row that cannot be measured is marked MISSING and fails. size.mjs also takes --out. Real run: exit 0.",
+    "53: build.mjs writes into scripts/.tmp/dist-build-<pid>/ (ignored by git), renames each file into dist/, then removes files it no longer makes from dist/components and dist/ui-sdk. On a copied tree the old and new build.mjs produced identical dist/ (diff -r). A poller read dist/ about 5000 times during 5 builds each: the old build gave 9344 bad readings (0-byte souvenir.css, missing components); the new build gave 0. Limit: dist/ is replaced file by file, so for a moment a new souvenir.css can sit beside the previous souvenir.js. The poller cannot detect that mix, because both builds made identical output.",
+    "61 (part): check-screens.mjs and shots-accent.mjs now take every screenshot with animations disabled. Proven in check-screens only: two runs each of demo-status, which has a turning mark, and checkout-errors gave identical hashes for all 12 PNGs. shots-accent.mjs was changed with the same option but not run, because it writes into digests/."
+   ],
+   "not_fixed": [
+    "None of the assigned findings is unfixed. Limits: shots-accent.mjs was not run (it writes into digests/). The build's file-by-file replacement can briefly put a new stylesheet beside the previous script. The --only output folder scripts/.tmp/check-screens-only/ was left in place because other builders' runs had already written there."
+   ],
+   "commands": [
+    {
+     "command": "node scripts/lint.mjs --self-test",
+     "exit_code": 0,
+     "last_lines": "lint self-test: 99 fixtures, 33 rules seen failing, 0 problems"
+    },
+    {
+     "command": "node scripts/size.mjs --self-test",
+     "exit_code": 0,
+     "last_lines": "size self-test: 4 trees, 0 problems"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --self-test",
+     "exit_code": 0,
+     "last_lines": "check-screens self-test: 27 pages, 20 of 20 rules seen failing, 0 problems"
+    },
+    {
+     "command": "npm run check",
+     "exit_code": 1,
+     "last_lines": "tokens and build pass; lint: 52 files (12 css, 27 html, 13 md), 28 findings -> chain stops at lint (12 html-button-no-script, 15 html-fake-control, 1 html-submit-no-form)"
+    },
+    {
+     "command": "node scripts/size.mjs --out scripts/.tmp/checks/size2.json",
+     "exit_code": 0,
+     "last_lines": "all component scripts 2114/15360 within; checkout page 13033/102400 within; size: 21 rows, 0 over budget or missing"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --dir screens --out scripts/.tmp/checks/run2 --no-shots",
+     "exit_code": 1,
+     "last_lines": "26 screens x 6 states, 5 findings: checkout-errors total-below-first-screen (bottom 1014.1px); demo-cost-summary cost-total-largest x4 at 320; the 200% pass gives pass on all 15 screens; busy-beside-result on demo-chat-message x6 seen in the earlier run"
+    },
+    {
+     "command": "npm run noscript",
+     "exit_code": 1,
+     "last_lines": "check-noscript: 2 failures (result page success text differs; query string missing: code)"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only zzz-no-such-screen",
+     "exit_code": 1,
+     "last_lines": "check-screens: no screens to check matching \"zzz-no-such-screen\" in screens/ and its subfolders (screens/index.html skipped); nothing written"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only checkout-result",
+     "exit_code": 0,
+     "last_lines": "check-screens: 1 screens x 6 states, 0 findings; data in scripts/.tmp/check-screens-only/screens.json"
+    },
+    {
+     "command": "node scripts/.tmp/checks/poll.mjs (old build x5, new build x5 on a copied tree)",
+     "exit_code": 0,
+     "last_lines": "old build.mjs: 5 builds, 5079 polls, 9344 bad readings; new build.mjs: 5 builds, 5075 polls of 22 files, 0 bad readings"
+    },
+    {
+     "command": "node scripts/build.mjs --root scripts/.tmp/checks/b-new && diff -r b-old/dist b-new/dist",
+     "exit_code": 0,
+     "last_lines": "dist identical"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/package.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/lint.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/check-screens.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/size.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/build.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/shots-accent.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/README.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/dist/souvenir.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/dist/souvenir.js (new)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/docs/components/clean-snippet-headings.md (type=button wrapped in sv-demo)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/docs/components/html-many-primary--snippet.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/screens/{clean-page-rules,demo-many-primary,html-inline-script--handler,html-many-primary}.html (markup changed so each still yields exactly its own rule)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/screens/ (21 new: clean-default-submit, html-default-submit-skips x3, html-link-no-href, html-fake-control x3, html-presentational x5, html-submit-no-form x2, html-undefined-element, html-unknown-data-attr x2, html-radio-in-checkbox, html-button-no-script x2)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/lint/src/ (8 new cqi fixtures: components/demo/clean-cqi.css, css-unit--cqi-bare, --cqi-max, --cqi-calc, --cqi-minmax, --clamp-rem, --cqw-in-clamp; base/css-unit--cqi-base.css)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/fixtures/screens/ (6 new: hidden-has-box, busy-beside-result, busy-beside-result--proposal, sideways-scroll-200, overflow-inside-part-200, total-below-first-screen; expectations tightened in sideways-scroll.html and overflow-inside-part.html to include their -200 rule)"
+   ],
+   "needs_from_others": [
+    "LEAD DECISION: 15 of the 28 lint findings are html-fake-control on tabindex=\"-1\", which marks a focus target, not a Tab stop. The files are screens/checkout.html:21, checkout-errors.html:21, checkout-result.html:15, assistant-done.html:50, demo-error-summary.html:16, pattern-payment-failed.html:14, pattern-search-empty.html:27, agent-test/settings.html:15, agent-test/settings-saved.html:19, docs/components/error-summary.md:7 and :33, and docs/patterns.md:38, :82, :102 and :123. Your rule as written flags every tabindex, so I kept them. Choice: either exempt tabindex=\"-1\", which clears all 15, or change the result-message pattern. A result page reached by a form submit with no script needs tabindex=\"-1\" in its markup, so the error summary's script could set it there, but the no-script result pages could not.",
+    "Screens builder: screens/demo-button.html lines 18-20, 31, 32, 39, 40, 48, 49 and 57-59 have 12 html-button-no-script findings: type=\"button\" outside any sv- element.",
+    "Notes builder: docs/components/button.md:43 is html-submit-no-form, a type=submit button in a snippet with no form.",
+    "Screens builder (finding 9): at 320 by 720, screens/checkout-errors.html fails total-below-first-screen. Its total row runs from 935.8px to 1014.1px. screens/checkout.html passes at 381.8 to 460.1px.",
+    "Screens builder (finding 5): screens/demo-chat-message.html fails busy-beside-result in all 6 states, because its busy status 'Checking both calendars...' sits in the same chat message as a proposal.",
+    "Cost-summary builder: screens/demo-cost-summary.html fails cost-total-largest at 320, light and dark: the long total renders at 23.04px and 19.98px against a 24px heading. This rule is not new.",
+    "No-script check (scripts/check-noscript.mjs, not one of my findings): npm run noscript fails twice. The result page text is now 'Receipt sent to the email address you gave.', but line 114 expects 'Order placed. Receipt sent to sam@example.com.'. And 'code' is missing from the query string, because the code field now belongs to form=\"discount\" (the fix for 17). Someone has to decide whether the check's every-named-field assertion should count only fields the checkout form owns. I did not change it, because that could loosen the test.",
+    "Docs follow-up: AGENTS.md ('Check your work') and docs/layout.md line 7 should say that --only now writes to scripts/.tmp/check-screens-only/ and never to the gate file or digest, that --only matching nothing exits 1, that subfolders of screens/ are now checked, and that npm run check now runs the size and screen self-tests."
+   ]
+  },
+  {
+   "part": "notes",
+   "verdict": "done with gaps",
+   "summary": "Every finding I was given is now covered in AGENTS.md (84 lines), docs/layout.md and docs/patterns.md (149 lines). I also built two new pattern screens. Both pass the screen check in all 6 states, and I looked at both at 375 wide, in light and in dark. Four claims were proven in headless Chromium: focus lands on #result, the separate discount-code form keeps the code out of the payment, an ol shows numbers in running text, and the long-order aside fits the screen. Two gaps remain. The lint exits 1, and the only rule my files break is the new html-fake-control: it rejects tabindex=\"-1\", which the lead's decision 13 requires. Also, AGENTS.md now says --only writes to a scratch folder, but check-screens.mjs still writes to the gate files.",
+   "fixed": [
+    "42: AGENTS.md line 16 now reads 'The checks catch the common breaks of rules 1, 2, 4, 6, 7 and 8; passing them does not prove you kept a rule.' Rules 3 and 5 are softened to 'when you write them as the notes show'. Line 84 now lists what the lint finds: a form with no method or action, a button with no type. Proven by grep.",
+    "57: AGENTS.md line 3 now says version 0.2 had one fresh-context review on 15 November 2026, which found faults that were then fixed, and that the fixes have not been reviewed again. Proven by grep.",
+    "61: Rule 1 in AGENTS.md now says ordinary HTML elements are fine and a class or custom element must begin sv-. layout.md line 3 has the same wording. The parts-table row for lists now reads 'an amount at the end; a status or an action under the details'. Proven by grep.",
+    "50: Rule 4 now says that on a page whose one purpose is its form (sign in, search), that form's submit is the primary. patterns.md has a new section, 'A form the server rejects as a whole': a danger alert above the form, no field marked, email and password fields, and a quiet a.sv-button 'Forgot your password?' after the field. The 'Buttons and links' section now says a link on a line of its own is a quiet a.sv-button. Proven by lint: the fence's only finding is html-fake-control (see not_fixed).",
+    "26 and 43: 'radio buttons' is now in AGENTS.md's list of what does not exist, with 'For one choice from a few, use a select.' Proven by grep.",
+    "49: layout.md has a new 'Running text' section with a snippet. Headless Chromium on the snippet: the ol shows decimal markers with 40px padding, p has 0 margin, and I looked at the screenshot. The snippet passes the lint.",
+    "48: layout.md 'Split page' has a new 'A long order' paragraph and snippet. With more than five rows the aside keeps the cost summary, a count line and a quiet 'See all 14 items' link, and the full list goes after the form or on a page of its own. The old 'holds nothing focusable' sentence now applies to a short aside only. Headless at 1280x800: the aside's bottom is at 415px, and the first Tab stop is the aside link.",
+    "51: patterns.md has a new section, 'A search that finds nothing': type=search with a visible label, the button under the field (not in an sv-row) as the primary, and an info message with role=status that repeats the search words in span[data-user-content]. It has markup, and screens/pattern-search-empty.html shows it.",
+    "52: patterns.md has a new section, 'After a failed payment'. A table gives the h1, title and message for three cases: not taken, declined, and unknown. In the unknown case the h1 is 'Payment not confirmed', never 'not taken', and the message says 'We don't know yet whether you were charged. Check with your bank before you try again.' The cost summary stays, the way back is a secondary 'Return to checkout' link, and the page has no primary. It has markup, and screens/pattern-payment-failed.html shows the unknown case.",
+    "13: patterns.md now has 'After a save, and any result page': the form's action ends #result, and the result has id=result and tabindex=-1. All the new snippets follow it. Headless at 320x568: loading either new screen with #result focuses #result. A GET submit to an action ending #result keeps the fragment and focuses #result. Without the fragment, focus stays on BODY.",
+    "59 (part): The Words sections in AGENTS.md and patterns.md now say: Souvenir says 'I' in a conversation, and 'we' is for failures of the service. Times are written '3:00 pm'. A date goes beside any time a person must approve ('Thursday 19 November, 3:00 pm'). A no-break space goes inside a postcode example and between a number and its unit. 'Try again' was dropped from the AGENTS failure example because it had no control. Proven by grep: 6 U+00A0 in each of AGENTS.md and patterns.md, and &nbsp; in the layout.md prose snippet.",
+    "47 (part): layout.md has a new 'Forms' section. It lists the five attributes a builder may add freely, and says a discount code or any second action that must not pay is a form of its own, linked with the form attribute, never a second submit in the paying form. It has a snippet. Headless probe, with JavaScript on and off: Apply code posts only code=WELCOME5 to its own action, and Pay posts to the pay action without the code. The new html-default-submit-skips rule raises nothing on the snippet.",
+    "55 (part): layout.md's example path is now screens/agent-test/orders.html, a folder the checker visits. It also says the check visits screens/ and screens/agent-test/. AGENTS.md now says to save directly in screens/, and that --only writes to a scratch folder under scripts/.tmp/. That last statement depends on a code change; see not_fixed.",
+    "62: I built screens/pattern-search-empty.html and screens/pattern-payment-failed.html from the system only. check-screens (run with --dir screens --only pattern- --out to my scratch folder) passes them in all 6 states. I opened the 375 light and dark screenshots of both and they look intended."
+   ],
+   "not_fixed": [
+    "13, 50, 51, 52 and 62, lint part: the lint exits 1. The only findings in my files are html-fake-control on tabindex=\"-1\": patterns.md lines 34, 78, 98 and 119, pattern-search-empty.html:27 and pattern-payment-failed.html:14. The rule is new from another builder. The lead's decision 13 requires tabindex=\"-1\", and the same rule also flags existing system markup (error-summary.md:7 and 33, demo-error-summary.html, checkout-result.html, checkout.html, checkout-errors.html, assistant-done.html, agent-test/settings*.html). I did not strip the attribute and I did not touch the rule.",
+    "55, code part: AGENTS.md now says --only writes to a scratch folder under scripts/.tmp/. scripts/check-screens.mjs lines 50-51 still write to gates/raw/2026-11-15-screens.json and digests/2026-11-15/screens/ unless --dir is given, so the statement is not true yet. For the same reason I did not run the literal 'check-screens.mjs --only pattern-': it would have written outside MAY EDIT. I ran '--dir screens --only pattern- --out scripts/.tmp/notes/screens' instead."
+   ],
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 1,
+     "last_lines": "docs/patterns.md:34,78,98,119 and screens/pattern-search-empty.html:27, pattern-payment-failed.html:14: html-fake-control <div> carries tabindex=\"-1\" (the only findings in my files); lint: 52 files (12 css, 27 html, 13 md), 28 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --dir screens --only pattern- --out scripts/.tmp/notes/screens",
+     "exit_code": 0,
+     "last_lines": "pattern-confirm, pattern-payment-failed, pattern-search-empty, pattern-states: pass in all 6 states; 4 screens x 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/.tmp/notes/focus.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "browserType.launch: executable doesn't exist at chromium-1255 (wrong Chromium path)"
+    },
+    {
+     "command": "EXE=<cached chromium-1208> node scripts/.tmp/notes/focus.mjs",
+     "exit_code": 0,
+     "last_lines": "both screens: direct #result -> active result; submit GET -> active result, href ends #result; no fragment -> BODY; PASS"
+    },
+    {
+     "command": "EXE=<cached chromium-1208> node scripts/.tmp/notes/probe.mjs",
+     "exit_code": 0,
+     "last_lines": "Apply code posts only code, Pay posts without code (js on and off); ol decimal, p margin 0; aside bottom 415 at 1280x800; first Tab stop 'See all 14 items'; ALL PASS"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/AGENTS.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/layout.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/patterns.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/pattern-search-empty.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/pattern-payment-failed.html"
+   ],
+   "needs_from_others": [
+    "Lint owner (scripts/lint.mjs, html-fake-control): allow tabindex=\"-1\" on non-controls. It makes an element a target for focus from script or from a #fragment, not a Tab stop. The lead's decision 13 and the existing error-summary (error-summary.md:7 and 33, demo-error-summary.html) depend on it. Keep rejecting tabindex >= 0, role=button and on* attributes.",
+    "Checker owner (scripts/check-screens.mjs lines 50-51): with --only and no --dir, write the JSON and screenshots under scripts/.tmp/ and leave gates/raw/2026-11-15-screens.json and the digests alone. AGENTS.md 'Check your work' now says it does, and that 'the last line it prints names the folder'. If the checker starts walking screens/ recursively, layout.md line 7 stays true but can be relaxed.",
+    "Screens and parts owners, finding 47: checkout.html (Apply code with formaction plus formnovalidate), button.md and the spec's change list still describe a second submit inside the paying form. layout.md 'Forms' now says the discount code is a separate empty <form id> linked with form=. A headless probe proved that approach with script on and off. field.js uses control.form, so it follows the form attribute.",
+    "Screens owner, finding 13: to follow the pattern, the checkout and assistant forms' action should end #result, and the result message on checkout-result.html and assistant-done.html should carry id=\"result\" tabindex=\"-1\".",
+    "Parts owner, findings 26 and 43: field.md:35, select.md:48 and checkbox.md:38 still say 'use radios'. AGENTS.md now says radio buttons do not exist and to use a select for one choice from a few."
+   ]
+  }
+ ],
+ "missing": []
+}

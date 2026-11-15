@@ -177,6 +177,17 @@
   box-sizing: border-box;
 }
 
+/* Hidden means hidden, whatever display a part sets. The one rule for it: no part repeats it. */
+[hidden] {
+  display: none !important;
+}
+
+/* Text that comes from outside the page (what a person typed, a catalogue name, a link) may hold
+   long unbroken strings, so it may break anywhere rather than push the page sideways. */
+[data-user-content] {
+  overflow-wrap: anywhere;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -351,7 +362,8 @@ ul {
 /* A list of rows (item lines, orders, settings). Each item: a main part (a title line, then soft
    detail lines) and an optional trailing part at the inline end, at most half the row. Bare text
    in the trailing part (an amount) never wraps; a status or button inside it wraps within its half.
-   If the main part's longest word cannot fit beside it, the trailing part moves below, at the end. */
+   The main part holds names from outside the page (items, events), so a string too long for the
+   space beside the trail breaks rather than push the row sideways. Amounts keep their own direction. */
 .sv-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -379,11 +391,12 @@ ul {
   align-items: center;
 }
 
-/* Never narrower than its longest word, so a word is never broken. */
 .sv-list__main {
   display: grid;
   flex: 1 1 0;
+  min-inline-size: 0;
   justify-items: start;
+  overflow-wrap: anywhere;
 }
 
 .sv-list__detail {
@@ -400,13 +413,16 @@ ul {
   margin-block-start: var(--sv-space-3);
 }
 
+/* An amount is never cut to fit half the row: when it is wider (text enlarged), it moves below. */
 .sv-list__trail {
   flex: 0 1 auto;
+  min-inline-size: min-content;
   max-inline-size: 50%;
   margin-inline-start: auto;
   font-variant-numeric: tabular-nums;
   text-align: end;
   white-space: nowrap;
+  unicode-bidi: plaintext;
 }
 
 .sv-list__trail > * {
@@ -441,14 +457,14 @@ ul {
   --sv-icon-danger: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='miter'%3E%3Cpath d='M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3Z'/%3E%3Cpath d='M9 9l6 6M15 9l-6 6'/%3E%3C/svg%3E");
   --sv-icon-busy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M12 3a9 9 0 1 0 9 9'/%3E%3C/svg%3E");
   --sv-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E");
-  --sv-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 }
 
 /* src/components/button/button.css */
 /* Button: a key. Secondary (default) is an edge outline, primary is the accent fill, quiet is underlined text.
    A key moves down by the press depth when pressed and stays down while busy.
-   Disabled keeps the edge and drops to the soft text colour: never opacity, so the label stays at 4.5 to 1. */
+   Disabled thins the edge (a change of shape, not only of colour) and drops to the soft text colour:
+   never opacity, so the label stays at 4.5 to 1. */
 @layer sv.components {
 .sv-button {
   display: inline-flex;
@@ -512,6 +528,7 @@ ul {
 }
 
 .sv-button:disabled {
+  border-width: var(--sv-border-thin);
   border-color: var(--sv-color-edge);
   background-color: transparent;
   color: var(--sv-color-text-soft);
@@ -555,7 +572,33 @@ ul {
   }
 }
 
+/* Forced colours: the primary stays a solid key (Highlight), so it still differs from the outlined
+   secondary; the busy mark takes the label's system colour. Disabled comes last and wins. */
 @media (forced-colors: active) {
+  .sv-button[aria-busy="true"]::before {
+    background-color: ButtonText;
+  }
+
+  .sv-button[data-variant="primary"]:not(:disabled) {
+    border-color: Highlight;
+    background-color: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  .sv-button[data-variant="primary"]:not(:disabled):focus-visible {
+    outline-color: CanvasText;
+  }
+
+  .sv-button[data-variant="primary"][aria-busy="true"]::before {
+    background-color: HighlightText;
+  }
+
+  /* The quiet button keeps no edge: forced colours would draw its transparent border. */
+  .sv-button[data-variant="quiet"] {
+    border-color: Canvas;
+  }
+
   .sv-button:disabled {
     border-color: GrayText;
     color: GrayText;
@@ -600,11 +643,6 @@ ul {
   .sv-chat-message[data-from="assistant"] {
     inline-size: auto;
     margin-inline-start: 0;
-  }
-
-  /* Text a person wrote may hold long unbroken strings (an address, a link). */
-  .sv-chat-message [data-user-content] {
-    overflow-wrap: anywhere;
   }
 }
 
@@ -683,8 +721,10 @@ ul {
 
 /* src/components/cost-summary/cost-summary.css */
 /* cost-summary: the inverse display. Terms wrap only between words; amounts never wrap and sit
-   on the inline-end edge in tabular figures. When a term and its amount cannot share a line,
-   the amount moves below the term, still at the end. The total is the largest reading on the page. */
+   on the inline-end edge in tabular figures, in their own direction (a minus stays in front in
+   right-to-left). When a term and its amount cannot share a line, the amount moves below the term,
+   still at the end. The total is the largest reading on the page and never leaves the display:
+   its size follows the display's width between a floor and its token, and as a last resort it breaks. */
 @layer sv.components {
   .sv-cost-summary {
     display: grid;
@@ -694,6 +734,7 @@ ul {
     background-color: var(--sv-cost-summary-surface);
     color: var(--sv-cost-summary-text);
     font-variant-numeric: tabular-nums;
+    container-type: inline-size;
   }
 
   .sv-cost-summary__row {
@@ -704,9 +745,12 @@ ul {
     padding-block: var(--sv-space-1);
   }
 
-  /* The term never shrinks below its longest word (min-inline-size stays auto). */
+  /* The term never shrinks below its longest word (min-inline-size stays auto), unless that word is
+     wider than the whole row (text enlarged): then it breaks inside the word rather than spill. */
   .sv-cost-summary__row > dt {
     flex: 1 1 0;
+    max-inline-size: 100%;
+    overflow-wrap: break-word;
   }
 
   .sv-cost-summary__row > dd {
@@ -714,6 +758,7 @@ ul {
     margin-inline-start: auto;
     text-align: end;
     white-space: nowrap;
+    unicode-bidi: plaintext;
   }
 
   .sv-cost-summary__row[data-state="unknown"] > dt {
@@ -736,12 +781,16 @@ ul {
   }
 
   .sv-cost-summary__row[data-row="total"] > dd {
-    font-size: var(--sv-cost-summary-total-size);
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    font-size: clamp(var(--sv-font-size-lead), 14cqi, var(--sv-cost-summary-total-size));
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
-  /* A total of more than nine characters steps down one size so it fits a phone-width display. */
+  /* A total of more than nine characters starts from a smaller size and floor. */
   .sv-cost-summary__row[data-row="total"][data-length="long"] > dd {
-    font-size: var(--sv-cost-summary-total-size-long);
+    font-size: clamp(var(--sv-font-size-body), 11cqi, var(--sv-cost-summary-total-size-long));
   }
 
   .sv-cost-summary__note {
@@ -765,15 +814,13 @@ ul {
 .sv-error-summary {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--sv-space-3);
   padding: var(--sv-space-4);
   border-inline-start: var(--sv-error-summary-tab-width) solid var(--sv-error-summary-tab);
   border-radius: var(--sv-radius-control);
   background-color: var(--sv-color-panel);
-}
-
-.sv-error-summary[hidden] {
-  display: none;
+  overflow-wrap: anywhere;
 }
 
 /* While the summary rests hidden, its wrapper is no box either, so a stack around it keeps one gap. */
@@ -805,14 +852,18 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
 }
 
 /* Each link stands alone, so it is a full target: 24 pixels of line plus block padding,
-   with a gap wide enough that a focus ring never touches the next link. */
+   with a gap wide enough that a focus ring never touches the next link.
+   A link quotes the field's message, which may quote what the person typed: like the title at enlarged
+   text, it breaks inside a word rather than spill (overflow-wrap on the summary). */
 .sv-error-summary__list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--sv-space-3);
 }
 
 .sv-error-summary__list a {
   display: inline-block;
+  max-inline-size: 100%;
   padding-block: var(--sv-space-1);
 }
 }
@@ -837,15 +888,14 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
   color: var(--sv-color-text-soft);
 }
 
-/* Ink at weight 600 with the danger mark before it: the status is never colour alone. */
+/* Ink at weight 600 with the danger mark before it: the status is never colour alone.
+   It may quote what the person typed, so a long string breaks rather than spill. */
 .sv-field__error {
   display: flex;
   gap: var(--sv-space-2);
+  min-inline-size: 0;
   font-weight: var(--sv-font-weight-strong);
-}
-
-.sv-field__error[hidden] {
-  display: none;
+  overflow-wrap: anywhere;
 }
 
 .sv-field__error::before {
@@ -905,11 +955,20 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
 .sv-field__control[aria-invalid="true"] {
   border-inline-start: var(--sv-field-error-edge-width) solid var(--sv-color-danger);
 }
+
+/* Forced colours would paint the mark as Canvas on Canvas: keep it, in the text colour. */
+@media (forced-colors: active) {
+  .sv-field__error::before {
+    background-color: CanvasText;
+    forced-color-adjust: none;
+  }
+}
 }
 
 /* src/components/message/message.css */
 /* message: a plate with a solid tab down its whole leading edge. The tab carries the tone's
-   colour and the tone's own mark; the text beside it is always ink, never softer than the page. */
+   colour and the tone's own mark; the text beside it is always ink, never softer than the page.
+   In a narrow place with text enlarged, a word wider than the plate breaks rather than spill. */
 @layer sv.components {
   .sv-message {
     position: relative;
@@ -923,6 +982,7 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
     border-radius: var(--sv-radius-control);
     background-color: var(--sv-color-panel);
     color: var(--sv-color-text);
+    overflow-wrap: anywhere;
   }
 
   /* On a panel the plate takes the well colour, so it stays a plate. */
@@ -1021,10 +1081,13 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
     color: var(--sv-color-text-soft);
   }
 
+  /* Values and the draft come from outside the page (an event name, a link): a long string breaks. */
   .sv-proposal__fields dd {
+    min-inline-size: 0;
     margin-inline-start: auto;
     font-weight: var(--sv-font-weight-strong);
     text-align: end;
+    overflow-wrap: anywhere;
   }
 
   .sv-proposal__message {
@@ -1037,14 +1100,16 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
   }
 
   .sv-proposal__draft {
+    min-inline-size: 0;
     padding: var(--sv-space-3);
+    overflow-wrap: anywhere;
     border: var(--sv-border-thick) dashed var(--sv-proposal-draft-edge);
     border-radius: var(--sv-radius-control);
   }
 
-  /* The primary has a row of its own at every width, so its label (a verb and its object) is not squeezed;
-     the others share the row below it. A proposal is never wider than the page column, so one row
-     would make the primary wrap even on a desktop. */
+  /* The primary, inside its sv-button, has a row of its own at every width, so its label (a verb and its
+     object) is not squeezed; the others share the row below it. A proposal is never wider than the page
+     column, so one row would make the primary wrap even on a desktop. */
   .sv-proposal__actions {
     display: flex;
     flex-wrap: wrap;
@@ -1055,8 +1120,17 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
     flex: 1 1 auto;
   }
 
+  .sv-proposal__actions > sv-button {
+    display: flex;
+  }
+
+  .sv-proposal__actions > sv-button,
   .sv-proposal__actions > [data-variant="primary"] {
     flex-basis: 100%;
+  }
+
+  .sv-proposal__actions > sv-button > button {
+    flex: 1 1 auto;
   }
 
   /* From 48rem the others keep their own width rather than stretching across the column. */
@@ -1065,6 +1139,7 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
       flex: 0 0 auto;
     }
 
+    .sv-proposal__actions > sv-button,
     .sv-proposal__actions > [data-variant="primary"] {
       flex-basis: 100%;
     }
@@ -1075,8 +1150,7 @@ sv-error-summary:has(> .sv-error-summary[hidden]) {
 /* Select: the native select as a field control (a well with an edge), with a chevron at the inline end.
    It sets its own size, edge and colours so it holds its shape without the field stylesheet.
    The chevron is two strokes in currentColor (so it goes soft when disabled), drawn as background layers.
-   A mask would also clip the focus outline,
-   and a select has no ::after, so the mark in src/base/icons.css cannot be tinted here. */
+   A mask would also clip the focus outline, and a select has no ::after to carry an icon mark. */
 @layer sv.components {
 select.sv-select {
   appearance: none;
@@ -1127,10 +1201,12 @@ select.sv-select:disabled {
   cursor: not-allowed;
 }
 
+/* Forced colours bring back the native arrow, so the drawn one goes: one arrow, never two. */
 @media (forced-colors: active) {
   select.sv-select {
     appearance: auto;
     padding-inline-end: var(--sv-space-3);
+    background-image: none;
   }
 }
 }

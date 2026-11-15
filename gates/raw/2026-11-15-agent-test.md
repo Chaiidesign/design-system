@@ -1,6 +1,6 @@
 # Agent test, 15 November 2026
 
-Two runs. Each time a fresh Sonnet agent was allowed to read only AGENTS.md, the layout and pattern notes and the component notes, and was asked to build screens nobody had drawn: a list of six orders, account settings, and an empty and an error state. It wrote every file before running any check and saved the first output of the checks before fixing anything. The lead then ran the same checks itself.
+Two runs. Each time a fresh Sonnet agent was told to read only AGENTS.md, the layout and pattern notes and the component notes, and was asked to build screens nobody had drawn: a list of six orders, account settings, and an empty and an error state. It wrote every file before running any check and saved the first output of the checks before fixing anything. The lead then ran the same checks itself.
 
 | | Run 1 | Run 2, after the fixes |
 |---|---|---|
@@ -9,9 +9,10 @@ Two runs. Each time a fresh Sonnet agent was allowed to read only AGENTS.md, the
 | Screen-check findings on the first run, at 320, 375 and 1280 pixels, light and dark | 0 in 24 states | 0 in 36 states |
 | Fixes needed to pass | none | none |
 | Invented classes, options or styles | none | none |
-| Model tokens | 112,142 | 118,834 |
-| Places it said it guessed | 16 | 12, all smaller |
+| Model tokens, as the tool reported them | 112,142 | 118,834 |
+| Places it said it guessed (the lead's count of the items in section 3 of each report) | 16 | 12 |
 | The saved screens | `gates/raw/agent-test-run-1/` | `screens/agent-test/` |
+| The brief it was given, and its own report | `gates/raw/agent-test-run-1/brief.txt`, `report.txt` | `gates/raw/agent-test-run-2/brief.txt`, `report.txt` |
 
 ## What run 1 got wrong, by the lead's eye, though no check failed
 
@@ -23,7 +24,7 @@ Two runs. Each time a fresh Sonnet agent was allowed to read only AGENTS.md, the
 
 ## What was changed in the system, not in its screens
 
-A patterns note (empty list, failed load, saved page, an action that cannot be undone); the meaning of each status tone, with examples; one place for each part of a list row; links in every example that goes to another page; a visible heading for a group of checkboxes; a default for a choice that always has a value; dates with a year; and ten new checks, so that the rules AGENTS.md states are enforced (one primary action, forms and buttons that work without script, a label on every control, headings in order, no placeholders, text spilling out of a part, a second accent fill).
+A patterns note (empty list, failed load, saved page, an action that cannot be undone); the meaning of each status tone, with examples; one place for each part of a list row; links in every example that goes to another page; a visible heading for a group of checkboxes; a default for a choice that always has a value; dates with a year; and eight new checks, six in the lint and two in the screen checker, which catch part of rules 4, 6, 7 and 8 (one primary action, a form without method and action, a button without a type, a control without a label, headings out of order, a placeholder, text spilling out of a part, a second accent fill). The final review then wrote sixteen bad pages and eleven passed both checks, so these checks catch common breaks and do not prove a rule was kept.
 
 ## What run 2 did differently
 

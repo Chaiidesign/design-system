@@ -26,19 +26,19 @@ The one submit button that commits money or sends something goes inside `sv-butt
 | `data-variant="quiet"` | | Underlined ink text, no edge. Cancel, back, change |
 | `data-width="full"` | | Fills its container. Use for the primary on a phone |
 | hover, pressed, focus | the browser | Ink edge on hover; moves down by the press depth when pressed; ink focus ring |
-| `disabled` | `<button>` only | Soft label, edge kept, no fill. Say next to it why it is unavailable |
+| `disabled` | `<button>` only | Soft label, thin edge, no fill. Say next to it why it is unavailable |
 | `aria-busy="true"` | set by `sv-button` | Turning mark before the label, held down, further presses ignored |
 
 Labels name the result with a verb: "Pay £60.75", "Move event and send message". A busy label says what is happening: "Paying £60.75…". A long label wraps and keeps its padding.
 
-`sv-button` script: on a valid submit by this button it sets `aria-busy="true"`, swaps in `data-busy-label`, and ignores further presses and Enter. It never sets `disabled`, so the button keeps its place in the Tab order and is still submitted. Going back to the page restores the label. With no script the form still submits.
+`sv-button` script: on a valid submit by this button it sets `aria-busy="true"`, swaps in `data-busy-label`, and ignores further presses and Enter. It never sets `disabled`, so the button keeps its place in the Tab order and is still submitted. It does not go busy when the form has a `target` (or the button a `formtarget`) other than its own window. Going back to the page restores the label. If the page never answers (the server sends nothing to show, or the person stops the load), the person sees the busy label for 10 seconds, then the button returns to its own label and can be pressed again; nothing else on the page changes. With no script the form still submits.
 
 Never use it for: navigation inside running text (use a plain `a`), a toggle (use a checkbox), or a link that is disabled (remove the link instead).
 
 ## Don't
 
-Don't show "busy" with `disabled`. The button drops out of the Tab order, loses focus mid-press, and its name and value are not submitted.
+Don't show "busy" with `disabled`. The button drops out of the Tab order, loses focus mid-press, and its name and value are not submitted. (This snippet is not checked.)
 
-```html
+```
 <button type="submit" class="sv-button" data-variant="primary" disabled>Paying £60.75…</button>
 ```

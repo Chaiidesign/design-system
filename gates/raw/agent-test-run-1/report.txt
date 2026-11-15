@@ -1,0 +1,100 @@
+All four screens passed both checks on the first run: lint found 0 findings, and the screen check found 0 findings across 4 screens x 6 states (320, 375 and 1280 wide, light and dark). I changed nothing after the first run, so first-run.txt is also the final result. I looked at only one screenshot, agent-test-orders-320-light.png. Its layout looked intended, apart from "2 items" wrapping onto its own line on the Cancelled row. The other 23 screenshots were not viewed.
+
+Files are in /Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/agent-test/: orders.html, settings.html, orders-empty.html, orders-error.html, first-run.txt.
+
+**1. Files read, in order**
+1. AGENTS.md
+2. docs/layout.md
+3. docs/components/button.md
+4. docs/components/field.md
+5. docs/components/select.md
+6. docs/components/checkbox.md
+7. docs/components/cost-summary.md
+8. docs/components/error-summary.md
+9. docs/components/message.md
+10. docs/components/status.md
+
+I ran `ls` on docs/components/ before reading those. I did not read chat-message.md or proposal.md, because nothing in the brief needed them. I read nothing else, and I ran no git commands. I read the screenshot agent-test-orders-320-light.png, which the brief allowed.
+
+**2. Parts used per screen**
+- **orders.html**
+  - `sv-page` and `sv-stack` form the skeleton, with an `h1` and an `h2` "All orders".
+  - `sv-list` holds the six orders. Each title is an `a` to `/orders/NNNNN`, so any order can be opened.
+  - The total sits in `sv-list__trail` as bare text. That is rule 10 and the layout example.
+  - The date and item count are one `sv-list__detail` line ("Placed 12 November · 3 items").
+  - `sv-status` sits on a second detail line:
+    - Being prepared is `busy`.
+    - On its way is `info`.
+    - Delivered (x2) is `success`.
+    - Payment failed is `danger`.
+    - Cancelled is `warning`.
+  - The failed-payment order has an `a.sv-button` with `data-variant="secondary"`: "Fix payment" plus a visually-hidden " for order 10420".
+  - The page has no primary button, because nothing on it commits money.
+- **settings.html**
+  - One form (`method="post"`, `action="/account"`).
+  - Two `sv-field` text fields (name, email) and one `sv-field` with `sv-select` for language.
+  - Three `sv-checkbox` rows in a `role="group"` stack.
+  - One primary button, "Save changes".
+  - A separate `sv-panel` for deleting the account, containing:
+    - a `warning` message with `data-surface="well"` saying "This cannot be undone";
+    - its own form with a secondary "Delete account" button.
+- **orders-empty.html**: an `info` message with `data-surface="well"`, as the empty-list rule says. It says what will appear and adds a quiet link, "Start shopping".
+- **orders-error.html**: a `danger` message with `role="alert"` that says what happened and what is safe, plus a quiet "Try again" link back to orders.html.
+
+**3. Hesitations and guesses**
+- **Status and total on one row.** layout.md says `sv-list__trail` holds "an amount, a `sv-status` or a quiet button". That reads as one thing, and I needed an amount and a status on each order. I put the amount in the trail (rule 10 names the trail for amounts) and the status in a detail line. The docs never say a status may sit in `sv-list__detail`. The lint accepted it, but I guessed.
+- **Fix-payment control.** I wasn't sure whether to use a quiet or secondary button, or a link. layout.md says the trail may hold a quiet button, but the trail was taken by the amount.
+  - I used `a.sv-button` because it goes to another page, and AGENTS.md rule 6 says a link is an `<a>`.
+  - I chose secondary because quiet looks like a plain link. The brief says the failed order needs a way to fix it, so I wanted it to stand out.
+  - I put it in `sv-list__main`, which is an undocumented placement.
+- **Where the delete form goes.** There is no dialog, and no doc covers destructive actions.
+  - I used a separate form on a panel with a warning message.
+  - I made the button secondary, because AGENTS.md rule 4 says only the action that commits is primary, and Save already took it.
+  - I'm unsure whether "delete" counts as a commit.
+  - The button label is "Delete account", which fits the "says what it does and to what" rule. No confirmation step exists, so one click deletes.
+- **Group label for the checkboxes.** checkbox.md shows `role="group" aria-label="..."`. I used `aria-labelledby` pointing at the visible `h2` "Notifications" instead, so the label is visible (rule 7). Whether `aria-labelledby` is allowed on the group is not stated. The lint passed it.
+- **Nested h2.** The `h2` sits in a `section` that carries the same `aria-labelledby`, and the group points at that same `h2`. That works, but it is redundant.
+- **Hints.** field.md says a hint is "one sentence, no full stop". I gave the email a hint and left the name and language without one, since a hint is optional.
+- **Select with no empty option.** select.md says a required select starts on an empty option. Language always has a value, so I didn't make it required and preselected English. The "Don't" in select.md is about required choices, so I think this is fine. The docs don't cover a select with a sensible default.
+- **Language names.** I didn't put `lang` attributes on the Français, Deutsch and 日本語 options. That is good practice, but the docs don't mention it, and AGENTS.md says never to invent. I did not test whether the lint allows it.
+- **Cancelled tone.** The status table has no "cancelled" example. I chose `warning`. `danger` is for failure, and `info` seemed too quiet for something the person may not have wanted.
+- **Being prepared tone.** `busy` says "something is in progress". Its example label ends in "…" and the table shows a spinning ring. I wasn't sure it suits a state that lasts days, and I left off `role="status"`. Another option was `info`.
+- **Order of orders.** The brief gave no order. I listed newest first and mixed the states.
+- **Dates.** I wrote "12 November" with no year, per the Words section. Orders from the previous year would be ambiguous, but the docs only give that format.
+- **The "·" separator** between date and item count is plain text. I assume it is allowed.
+- **Empty and error links.** Empty has a "Start shopping" link to `/shop`, an invented URL. Error has a "Try again" link to orders.html, because a `button type="button"` does nothing without script. message.md's example uses a button, which would break rule 6 on this page.
+- **Wording of the error message.** AGENTS.md gives "We couldn't load your orders", and I wrote "could not" instead. "couldn't" is a contraction, and I wasn't sure of the house style. I also added "you have not been charged", which is a claim I can't know on a page that only lists orders.
+- **Page title.** The skeleton uses a `<title>` matching the `h1`. I gave all three orders pages the same title, "Your orders", with no state in it.
+
+**4. Missing things and what I used instead**
+- **A confirmation dialog for deleting the account.** I used a warning message, a separate form and a secondary button.
+- **Navigation** (a link from orders to settings, or back). There is none, so the pages don't link to each other.
+- **A way to put an amount and a status both in a row's trail.** I put the status in a detail line.
+- **A "danger" button variant for destructive actions.** I used secondary.
+- **A saved-state message.** I did not build a post-save "Your changes are saved" state, and nothing said whether one was expected.
+- **A visible label for a group of checkboxes.** The note shows `aria-label` only. I used a heading.
+- **Radios.** The note refers to them, but there is no radio doc. I didn't need them, because language is a select.
+
+**5. First-run findings**
+- Lint: 0 findings, over 42 files (12 css, 20 html, 10 md).
+- Screen check: 0 findings, 24 of 24 page-and-viewport cells pass.
+- There was nothing to fix.
+
+**6. What still fails**
+Nothing, as far as the two checks go. Neither check can tell whether my guesses in section 3 are what the system intends, such as the status in the detail line, the delete button's variant and the `aria-labelledby` group. Treat them as unconfirmed.
+
+**7. Doc problems**
+- layout.md and AGENTS.md don't say how to show a status and an amount on one list row, and orders is the obvious case. The `sv-list` description ("an amount, a `sv-status` or a quiet button") implies only one.
+- The skeleton says "Paths are relative to `screens/`" and shows `../dist/`. The brief says to use `../../dist/` from a subfolder, and the docs don't mention subfolders.
+- message.md's "danger" example uses a `<button type="button">` that does nothing without script, which conflicts with rule 6. The same applies to the layout.md empty-list example. For navigation, an `a.sv-button` was needed.
+- field.md's Options table says the Optional state is written "(optional)" in the label. There is no equivalent note for a select.
+- AGENTS.md's "Which part" table lists a status "for the state of one thing" but gives no guidance on tones for common order states like cancelled or on its way.
+- AGENTS.md says "No exclamation marks, no 'please', no 'sorry'" but doesn't say whether contractions such as "couldn't" are fine. Its own example uses one, and message.md uses "couldn't" too.
+- select.md's note about a preselected default is aimed at required choices only.
+- The AGENTS.md line "Each one is enforced by `npm run check`" doesn't match the commands it gives later (build, lint, check-screens). I didn't run `npm run check`.
+
+**8. Rereads**
+About 3 rereads, all of layout.md: twice to find what `sv-list__trail` can hold and where a status can go, and once for the empty-list pattern. I looked back at button.md once, to confirm a link can use `a.sv-button`. Nothing else needed a reread.
+
+---
+Usage as the tool reported it when the agent finished: 112,142 model tokens, 8 tool uses, 73 seconds. This line was copied by the lead from the tool's notice; the notice itself is not saved.

@@ -1,8 +1,7 @@
 /* Select: the native select as a field control (a well with an edge), with a chevron at the inline end.
    It sets its own size, edge and colours so it holds its shape without the field stylesheet.
    The chevron is two strokes in currentColor (so it goes soft when disabled), drawn as background layers.
-   A mask would also clip the focus outline,
-   and a select has no ::after, so the mark in src/base/icons.css cannot be tinted here. */
+   A mask would also clip the focus outline, and a select has no ::after to carry an icon mark. */
 @layer sv.components {
 select.sv-select {
   appearance: none;
@@ -53,10 +52,12 @@ select.sv-select:disabled {
   cursor: not-allowed;
 }
 
+/* Forced colours bring back the native arrow, so the drawn one goes: one arrow, never two. */
 @media (forced-colors: active) {
   select.sv-select {
     appearance: auto;
     padding-inline-end: var(--sv-space-3);
+    background-image: none;
   }
 }
 }

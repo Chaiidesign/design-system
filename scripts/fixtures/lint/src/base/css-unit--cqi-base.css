@@ -1,0 +1,4 @@
+/* cqi is allowed in component CSS only, not in base */
+@layer sv.base {
+  .sv-page { font-size: clamp(var(--sv-font-size-body), 4cqi, var(--sv-font-size-lead)); }
+}

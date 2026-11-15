@@ -32,7 +32,7 @@ The `sv-field` element (optional, light DOM): fills in missing ids, `for` and `a
 
 With no script, render a server error as plain markup: `aria-invalid="true"` on the control and the message in a visible error line. The browser's own validation runs.
 
-Never use it for: a choice from two to five options (radios), a yes or no (checkbox), a search box in a toolbar, or text the person cannot change (show it as text, or `readonly` if it is sent with the form).
+Never use it for: one choice from a few options (use a select; there is no radio part, and never put `type="radio"` inside `label.sv-checkbox`), a yes or no (checkbox), a search box in a toolbar, or text the person cannot change (show it as text, or `readonly` if it is sent with the form).
 
 ## Don't
 

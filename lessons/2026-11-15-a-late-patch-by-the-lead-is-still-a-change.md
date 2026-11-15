@@ -1,0 +1,7 @@
+# A late patch by the lead is still a change
+
+- **What happened:** Near the end of the overnight build the lead edited the checkout screens by hand so that they matched a note: "Apply code" became a second submit button in the paying form. Every check passed. The final review found that Enter in any field now pressed "Apply code" and wiped the form. It was the worst fault of the night. In the same hour the lead staged every file for a commit while reviewers were running, which swept a reviewer's scratch file in and five built files out. Evidence: `gates/raw/2026-11-15-final-review.json`, findings 1, 17 and 53.
+- **Cause:** The lead treated its own small edits as too small to test, and treated "the checks pass" as proof. No check pressed Enter. The commit command took everything in the folder.
+- **Change made:** (1) The no-script check now presses Enter in a filled field and requires the payment, with no discount code attached. (2) A lint rule rejects a first submit button that skips validation. (3) The lead stages named paths, never everything, while any other agent is running. (4) A change the lead makes by hand to a screen or a script gets the same proof a builder must give: a command that would have failed before it.
+- **Scope and reason:** Every edit by the lead outside the records. The lead's edits are the least reviewed in the system, so they need the most proof.
+- **Delete when:** The lead's hand edits go through the same passport as everyone else's, with an independent check.

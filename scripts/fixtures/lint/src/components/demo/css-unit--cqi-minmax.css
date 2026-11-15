@@ -1,0 +1,4 @@
+/* minmax( is not min( */
+@layer sv.components {
+  .sv-demo { grid-template-columns: minmax(0, 40cqi); }
+}

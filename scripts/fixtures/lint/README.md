@@ -8,3 +8,7 @@ This README is not linted (only `docs/components/*.md`, `docs/layout.md`, `docs/
 `docs/layout.md`, `docs/patterns.md` and `AGENTS.md` keep their real names (the lint reads them by name), so each states
 what it must produce in a comment: `<!-- lint-expect: <rule> -->`, or `<!-- lint-expect: nothing -->` for a clean one.
 A file whose name begins `demo-` must produce nothing: it proves demo pages are exempt from `html-many-primary`.
+`dist/souvenir.js` stands in for the built script: the lint reads the elements it defines and the data- attributes it
+reads from it, so it is written the way esbuild minifies (a dataset alias, and errorLine as a plain property).
+A fixture may name an exact set of rules in `<!-- lint-expect: rule-a rule-b -->` when one break is caught by two
+rules; it must then produce exactly that set.

@@ -1,19 +1,21 @@
 {
   "produced_by": "scripts/size.mjs",
-  "measured_at": "2026-11-15T11:04:25.566Z",
+  "measured_at": "2026-11-15T12:05:32.193Z",
   "method": "gzip level 9 of the minified file (component CSS minified by esbuild from src)",
   "budgets": {
     "component_css": 2048,
     "component_js": 5120,
     "all_css": 12288,
+    "all_component_scripts": 15360,
+    "checkout_page": 102400,
     "ui_sdk_reported_against": 5120
   },
   "rows": [
     {
       "item": "button CSS",
       "file": "src/components/button/*.css",
-      "minified": 2288,
-      "gzip": 780,
+      "minified": 2753,
+      "gzip": 847,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -22,8 +24,8 @@
     {
       "item": "chat-message CSS",
       "file": "src/components/chat-message/*.css",
-      "minified": 808,
-      "gzip": 351,
+      "minified": 748,
+      "gzip": 324,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -42,8 +44,8 @@
     {
       "item": "cost-summary CSS",
       "file": "src/components/cost-summary/*.css",
-      "minified": 1470,
-      "gzip": 508,
+      "minified": 1716,
+      "gzip": 604,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -52,8 +54,8 @@
     {
       "item": "error-summary CSS",
       "file": "src/components/error-summary/*.css",
-      "minified": 1088,
-      "gzip": 421,
+      "minified": 1165,
+      "gzip": 467,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -62,8 +64,8 @@
     {
       "item": "field CSS",
       "file": "src/components/field/*.css",
-      "minified": 1699,
-      "gzip": 607,
+      "minified": 1809,
+      "gzip": 662,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -72,8 +74,8 @@
     {
       "item": "message CSS",
       "file": "src/components/message/*.css",
-      "minified": 1678,
-      "gzip": 523,
+      "minified": 1701,
+      "gzip": 540,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -82,8 +84,8 @@
     {
       "item": "proposal CSS",
       "file": "src/components/proposal/*.css",
-      "minified": 1248,
-      "gzip": 464,
+      "minified": 1492,
+      "gzip": 514,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -92,8 +94,8 @@
     {
       "item": "select CSS",
       "file": "src/components/select/*.css",
-      "minified": 2101,
-      "gzip": 633,
+      "minified": 2123,
+      "gzip": 640,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -112,8 +114,8 @@
     {
       "item": "button JS",
       "file": "dist/components/button.js",
-      "minified": 1126,
-      "gzip": 513,
+      "minified": 1750,
+      "gzip": 746,
       "budget": 5120,
       "counts": true,
       "over": false,
@@ -122,8 +124,8 @@
     {
       "item": "error-summary JS",
       "file": "dist/components/error-summary.js",
-      "minified": 1678,
-      "gzip": 756,
+      "minified": 2262,
+      "gzip": 945,
       "budget": 5120,
       "counts": true,
       "over": false,
@@ -132,8 +134,8 @@
     {
       "item": "field JS",
       "file": "dist/components/field.js",
-      "minified": 1916,
-      "gzip": 910,
+      "minified": 2562,
+      "gzip": 1170,
       "budget": 5120,
       "counts": true,
       "over": false,
@@ -142,10 +144,49 @@
     {
       "item": "all CSS",
       "file": "dist/souvenir.min.css",
-      "minified": 26985,
-      "gzip": 4792,
+      "minified": 28094,
+      "gzip": 5001,
       "budget": 12288,
       "counts": true,
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "all component scripts",
+      "file": "dist/souvenir.js",
+      "minified": 6572,
+      "gzip": 2114,
+      "budget": 15360,
+      "counts": true,
+      "method": "gzip level 9 of dist/souvenir.js, the single minified bundle of every src/components/*/*.js",
+      "over": false,
+      "result": "within"
+    },
+    {
+      "item": "checkout page",
+      "file": "screens/checkout.html and the 2 files it loads",
+      "minified": 55136,
+      "gzip": 13059,
+      "budget": 102400,
+      "counts": true,
+      "method": "each file gzipped (level 9) on its own, as it is sent, then summed; sizes as stored (the page links the files as they are)",
+      "parts": [
+        {
+          "file": "screens/checkout.html",
+          "bytes": 7266,
+          "gzip": 1914
+        },
+        {
+          "file": "dist/souvenir.css",
+          "bytes": 41298,
+          "gzip": 9031
+        },
+        {
+          "file": "dist/souvenir.js",
+          "bytes": 6572,
+          "gzip": 2114
+        }
+      ],
       "over": false,
       "result": "within"
     },

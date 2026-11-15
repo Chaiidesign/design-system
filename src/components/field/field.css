@@ -17,15 +17,14 @@
   color: var(--sv-color-text-soft);
 }
 
-/* Ink at weight 600 with the danger mark before it: the status is never colour alone. */
+/* Ink at weight 600 with the danger mark before it: the status is never colour alone.
+   It may quote what the person typed, so a long string breaks rather than spill. */
 .sv-field__error {
   display: flex;
   gap: var(--sv-space-2);
+  min-inline-size: 0;
   font-weight: var(--sv-font-weight-strong);
-}
-
-.sv-field__error[hidden] {
-  display: none;
+  overflow-wrap: anywhere;
 }
 
 .sv-field__error::before {
@@ -84,5 +83,13 @@
 
 .sv-field__control[aria-invalid="true"] {
   border-inline-start: var(--sv-field-error-edge-width) solid var(--sv-color-danger);
+}
+
+/* Forced colours would paint the mark as Canvas on Canvas: keep it, in the text colour. */
+@media (forced-colors: active) {
+  .sv-field__error::before {
+    background-color: CanvasText;
+    forced-color-adjust: none;
+  }
 }
 }

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lint fixture</title>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page">
+  <h1>Apply code in a form of its own</h1>
+  <!-- The fix for finding 17: the code button belongs to its own form through form="discount". -->
+  <form id="checkout" method="get" action="result.html">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" data-error-required="Enter your email address">
+    <label for="code">Discount code</label>
+    <input id="code" name="code" form="discount" type="text">
+    <button type="submit" class="sv-button" form="discount">Apply code</button>
+    <sv-demo><button type="submit" class="sv-button" data-busy-label="Paying…">Pay</button></sv-demo>
+  </form>
+  <form id="discount" method="get" action="checkout.html"></form>
+  <label class="sv-checkbox"><input type="checkbox" name="news"> Send me news</label>
+  <label>Name <input type="text" name="name" size="20"></label>
+  <a class="sv-button" href="basket.html">Back to basket</a>
+  <sv-demo><button type="button" class="sv-button">Show code</button></sv-demo>
+</main>
+</body>
+</html>

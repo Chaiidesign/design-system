@@ -1,0 +1,4 @@
+/* the cqi is allowed, the rem bounds are not: bounds come from tokens */
+@layer sv.components {
+  .sv-demo { font-size: clamp(1rem, 4cqi, 2rem); }
+}

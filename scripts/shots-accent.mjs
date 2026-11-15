@@ -46,7 +46,7 @@ for (const screen of ["checkout", "assistant"]) {
       await page.goto(`${base}${screen}.html?theme=${theme}&accent=${accent}`, { waitUntil: "load" });
       const fill = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--sv-color-accent").trim());
       const file = `${OUT}/${screen}-${accent}-${width}-${theme}.png`;
-      await page.screenshot({ path: file, fullPage: true });
+      await page.screenshot({ path: file, fullPage: true, animations: "disabled" }); // a turning mark draws the same every run
       await page.close();
       console.log(`${file}  accent ${fill}`);
       n++;

@@ -1,0 +1,6 @@
+/* cqi inside clamp() or min() is allowed in a component, at any depth, between token bounds. */
+@layer sv.components {
+  .sv-demo { font-size: clamp(var(--sv-font-size-display-long), 12cqi, var(--sv-font-size-display)); }
+  .sv-demo__part { inline-size: min(100%, 40cqi); }
+  .sv-demo > dd { font-size: clamp(var(--sv-font-size-body), calc(10cqi - var(--sv-space-1)), var(--sv-font-size-display)); }
+}

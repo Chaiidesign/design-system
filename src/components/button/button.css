@@ -1,6 +1,7 @@
 /* Button: a key. Secondary (default) is an edge outline, primary is the accent fill, quiet is underlined text.
    A key moves down by the press depth when pressed and stays down while busy.
-   Disabled keeps the edge and drops to the soft text colour: never opacity, so the label stays at 4.5 to 1. */
+   Disabled thins the edge (a change of shape, not only of colour) and drops to the soft text colour:
+   never opacity, so the label stays at 4.5 to 1. */
 @layer sv.components {
 .sv-button {
   display: inline-flex;
@@ -64,6 +65,7 @@
 }
 
 .sv-button:disabled {
+  border-width: var(--sv-border-thin);
   border-color: var(--sv-color-edge);
   background-color: transparent;
   color: var(--sv-color-text-soft);
@@ -107,7 +109,33 @@
   }
 }
 
+/* Forced colours: the primary stays a solid key (Highlight), so it still differs from the outlined
+   secondary; the busy mark takes the label's system colour. Disabled comes last and wins. */
 @media (forced-colors: active) {
+  .sv-button[aria-busy="true"]::before {
+    background-color: ButtonText;
+  }
+
+  .sv-button[data-variant="primary"]:not(:disabled) {
+    border-color: Highlight;
+    background-color: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  .sv-button[data-variant="primary"]:not(:disabled):focus-visible {
+    outline-color: CanvasText;
+  }
+
+  .sv-button[data-variant="primary"][aria-busy="true"]::before {
+    background-color: HighlightText;
+  }
+
+  /* The quiet button keeps no edge: forced colours would draw its transparent border. */
+  .sv-button[data-variant="quiet"] {
+    border-color: Canvas;
+  }
+
   .sv-button:disabled {
     border-color: GrayText;
     color: GrayText;

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="expect" content="total-below-first-screen">
+<title>Screen fixture: total-below-first-screen</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#1a1a1a;font:16px/1.5 system-ui,sans-serif}
+main{padding:16px;display:grid;gap:16px}
+h1{margin:0;font-size:28px;line-height:1.2}
+p,dl,dd{margin:0}
+button{min-height:48px;padding:0 16px;font:inherit;border:2px solid #555;border-radius:8px;background:#fff;color:#1a1a1a}
+:focus-visible{outline:3px solid #1a1a1a;outline-offset:2px}
+.items{min-height:900px}.cost{padding:16px;background:#1a1a1a;color:#fff}.sv-cost-summary__row{display:flex;justify-content:space-between;gap:16px}.sv-cost-summary__row[data-row=total] dd{font-size:36px}
+</style>
+</head>
+<body>
+<main>
+<h1>Checkout</h1>
+<!-- A long item list before the cost summary pushes the total below the first 720 pixels at 320 wide. -->
+<p class="items">Organic cotton bath towel, extra large</p>
+<div class="cost"><dl class="sv-cost-summary">
+  <div class="sv-cost-summary__row"><dt>Items</dt><dd>£61.80</dd></div>
+  <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£60.75</dd></div>
+</dl></div>
+<form method="get" action="paid.html"><button type="submit">Pay £60.75</button></form>
+</main>
+</body>
+</html>

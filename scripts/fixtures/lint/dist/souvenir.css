@@ -10,4 +10,6 @@
   .sv-demo[data-tone="info"] { display: grid; }
   .sv-demo[data-variant="secondary"] { display: grid; }
   .sv-demo[data-length="long"] { display: grid; }
+  .sv-button { display: inline-flex; }
+  .sv-checkbox { display: flex; }
 }

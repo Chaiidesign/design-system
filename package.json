@@ -9,7 +9,7 @@
     "build": "node scripts/build.mjs",
     "size": "node scripts/size.mjs",
     "screens": "node scripts/check-screens.mjs",
-    "check": "npm run tokens && npm run build && npm run lint && npm run size && npm run screens && npm run noscript",
+    "check": "npm run tokens && npm run build && npm run lint && npm run size && node scripts/size.mjs --self-test && npm run screens && node scripts/check-screens.mjs --self-test && npm run noscript",
     "serve": "node scripts/serve.mjs",
     "noscript": "node scripts/check-noscript.mjs"
   },

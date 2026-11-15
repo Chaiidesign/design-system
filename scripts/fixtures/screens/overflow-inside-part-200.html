@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="expect" content="overflow-inside-part-200">
+<title>Screen fixture: overflow-inside-part-200</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#1a1a1a;font:16px/1.5 system-ui,sans-serif}
+main{padding:16px;display:grid;gap:16px}
+h1{margin:0;font-size:28px;line-height:1.2}
+p,dl,dd{margin:0}
+button{min-height:48px;padding:0 16px;font:inherit;border:2px solid #555;border-radius:8px;background:#fff;color:#1a1a1a}
+:focus-visible{outline:3px solid #1a1a1a;outline-offset:2px}
+.panel{padding:16px;background:#f2f2f2}.sv-amount-box{inline-size:160px;white-space:nowrap;font-size:1.25rem;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<main>
+<h1>Total</h1>
+<!-- The amount fits its 160 pixel part at 1.25rem; at 200 percent text it spills out, but stays inside the page. -->
+<section class="panel"><p class="sv-amount-box">£12,345.67</p></section>
+</main>
+</body>
+</html>

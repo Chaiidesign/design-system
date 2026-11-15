@@ -1,0 +1,508 @@
+{
+ "reviews": [
+  {
+   "lens": "screens",
+   "verdict": "fail",
+   "checked": "Viewed the digest screenshots of all 13 listed screens (320 light, 375 light and dark, 1280 light and dark) and the 12 accent shots. Drove checkout.html, checkout-errors.html and assistant.html in headless Chromium with JavaScript on, using my own playwright-core scripts: empty submit, summary links, bad email, fix, Apply code, Pay (double press, Back), Enter key, Tab order at 375 and 1280, assistant actions. Injected stresses: root font 200% at 320, 375 and 1280, reduced motion, forced colours (light and dark), dir=rtl, 90-character strings, £12,345,678.90 with and without data-length, viewport 320x568, and short viewports for the sticky summary. Counted accent fills, primaries and total size on all 13 screens at 320x720.",
+   "findings": [
+    {
+     "severity": "blocker",
+     "where": "screens/checkout.html, form#checkout, 375 and 1280, light; button \"Apply code\" (formaction=checkout.html formnovalidate) and every text field",
+     "problem": "Enter in any checkout field presses \"Apply code\", not Pay, and in this build both Enter and a click on \"Apply code\" reload the page with every typed value gone and no word about the code. \"Apply code\" is the form's default button because it is the first submit button in the form. Six fields carry enterkeyhint=\"next\", so a phone keyboard promises \"next\" for a key that submits the form (iOS behaviour inferred, not run). The charter LOCK row \"a person is not asked to re-enter information\" is broken on the real screen.",
+     "evidence": "Script: first submit in form.elements = \"Apply code\". Filled the five required fields, focus in #postcode, pressed Enter: one navigation to /screens/checkout.html?email=sam%40example.com&name=Sam+Lee&...&code= ; afterwards all field values \"\" (country GB). Enter in #email with the rest empty: same navigation, error summary stays hidden. Click on \"Apply code\" after typing email, line2 \"Flat 3\", town \"Leeds\", code \"WELCOME\": same navigation, all values \"\", no aria-invalid, no message about the code, data-theme lost.",
+     "fix": "Take \"Apply code\" out of the paying form: give the code its own form (or form=\"…\" on the field and button) so Pay is the only and default submit of form#checkout. Add a lint rule: in a form, no formnovalidate submit may come before the primary submit. Add an Enter-key assertion to check-noscript.mjs and a JS-on twin. Say in docs/components/button.md which button a form's Enter key presses. For the static screens, have the code form return to checkout.html#code and state that the page is not wired."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/cost-summary/cost-summary.css, total row dd; screens/checkout.html and checkout-errors.html at 320 and 375, light and dark",
+     "problem": "The total can leave its display, and what leaves is drawn in the display's light ink on the light panel, so the last digits cannot be read and the page scrolls sideways. Two triggers: text at 200 percent, and a long total without data-length=\"long\". The charter row \"text can be enlarged to 200%, no text clipped\" fails on the real checkout.",
+     "evidence": "Root font 200% at 375 and at 320: scrollWidth 387 against 375 and 320; dd \"£60.75\" at 72px spans x=97 to 387 while the display ends at 311; screenshot shows the final \"5\" and \"VAT\" pale on pale. £12,345,678.90 at 320 without data-length: amount 281px wide in a 222px display, right edge 330, scrollWidth 330; the \"0\" falls outside. With data-length=\"long\": 220 of 222px, so a 15-character total overflows again. At 375 it fits without the attribute (281 of 293).",
+     "fix": "In cost-summary.css let the total shrink or wrap instead of overflowing: a fluid size token (clamp between display-long and display against the display's own inline size, via a container query unit) and min-inline-size 0 with overflow-wrap on the dd as last resort, so data-length is no longer a manual step for live data. Add a 200% pass and a long-total fixture to check-screens.mjs."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/error-summary/error-summary.css; screens/checkout-errors.html at 320 and 375 with text at 200%",
+     "problem": "At 200 percent text the error summary's title and links run out of the summary box and past the viewport; the field error line spills too. The fix for earlier finding S1 holds only at 100 percent.",
+     "evidence": "Root font 200% at 375 and 320: scrollWidth 454; h2, ul, li and both links report right edge 454; p.sv-field__error scrollWidth 374 against clientWidth 245. Screenshot shows \"name@example.com.\" crossing the box edge. The summary is display:grid with no minmax(0,1fr) column and no overflow-wrap.",
+     "fix": "Give .sv-error-summary grid-template-columns: minmax(0, 1fr) and its links and .sv-field__error overflow-wrap: anywhere (they quote addresses). Cover it in the same 200% pass of check-screens.mjs."
+    },
+    {
+     "severity": "major",
+     "where": "src/base/base.css .sv-list__main; src/components/proposal/proposal.css draft and dd; screens/checkout.html and assistant.html at 320, 375, 1280",
+     "problem": "A long unbroken string in data the screen author does not write (a catalogue item name, an event name, a link inside a drafted message) pushes the page sideways. data-user-content only works inside .sv-chat-message, so there is no way to mark such text elsewhere.",
+     "evidence": "90 characters, no spaces, as the first item name: scrollWidth 655 at 320 and 375, 1295 at 1280; the name runs from x=33 to 655 through the panel edge (304 at 320). Same string as the proposal draft and the Event value: scrollWidth 693 at 320 and 375. The person's chat message with the same string wraps correctly (scrollWidth equals clientWidth). dist/souvenir.css has the rule only as \".sv-chat-message [data-user-content]\".",
+     "fix": "Move [data-user-content]{overflow-wrap:anywhere} to base.css; apply it by default to .sv-list__main, .sv-proposal__draft and .sv-proposal__fields dd (min-inline-size 0 where they are flex or grid items). Add a long-string fixture per component to check-screens.mjs and say in docs/layout.md that data from outside the page is user content."
+    },
+    {
+     "severity": "major",
+     "where": "screens/assistant.html and screens/assistant-done.html, span.sv-status[data-tone=busy] \"Checking both calendars…\", all widths and themes",
+     "problem": "A turning busy mark says \"Checking both calendars…\" directly above the finished answer, and is still turning on the done page after \"Event moved. Message sent to Priya.\" The status does not show the real state (charter LOCK row; docs/components/status.md says busy is only for \"right now, while the person waits\"). The done page also keeps \"Here is the change I will make:\".",
+     "evidence": "Both pages: computed animation-name sv-status-turn, 0.8s, infinite, role=status; next sibling text \"Thursday at 3pm is free for both of you…\". assistant-done.html innerText contains \"Checking both calendars…\" and \"Event moved. Message sent to Priya.\" together. Visible in assistant-375-dark.png and assistant-done-375-light.png.",
+     "fix": "Remove the busy status from both screens (keep it in demo-status.html), and put the done page's lead-in in the past tense. Add a screen rule to check-screens.mjs: a busy status may not sit in the same message as a proposal or a success message."
+    },
+    {
+     "severity": "major",
+     "where": "screens/assistant.html, button \"Move event and send message\"; docs/components/proposal.md markup and \"Busy\" row; docs/components/button.md",
+     "problem": "The one action on the assistant screen that sends something to another person has no busy state and no guard against a second press. proposal.md describes a busy state but says \"No script\" and its markup has no sv-button; button.md says the button that sends something goes inside sv-button. An agent following proposal.md reproduces the gap.",
+     "evidence": "Script, 375: button not inside sv-button, data-busy-label null. Two clicks 60 ms apart with the response held 800 ms: two submits not prevented, two requests to assistant-done.html, aria-busy null, label unchanged. The same test on Pay gives one request and \"Paying £60.75…\".",
+     "fix": "Wrap the proposal's primary in sv-button with data-busy-label=\"Moving event and sending…\" in assistant.html, demo-proposal.html and the proposal.md markup; replace \"No script\" with the dependency. Lint: a primary submit inside .sv-proposal__actions must be inside sv-button."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/field/field.js and error-summary.js; screens/checkout.html at 375 with JavaScript on",
+     "problem": "An error that appears when a person leaves a field is not announced, and the summary can contradict the field. The error line has no live-region role, so a screen reader user who tabs on hears nothing until submit (charter row \"status messages are announced without moving focus\"). The page title also stays \"Checkout\" after a failed submit, while the server-rendered error page is titled \"Error: Checkout\". The busy label on Pay changes the button's name outside any live region.",
+     "evidence": "Typed \"sam@\" in #email, Tab: focus on #name; #email aria-invalid=true; error text \"Enter an email address with an @, like name@example.com.\"; p#email-error role null, aria-live null. Summary still lists \"Enter your email address.\" After empty submit document.title is \"Checkout\". What is right: summary role=alert, tabindex -1, aria-labelledby, takes focus; each control has aria-describedby with hint and error; fixing the email removes its summary item.",
+     "fix": "In field.js keep the error line in the page as a polite live region (or set role=alert when a blur check fails); in error-summary.js update a listed link's text on sv-field-invalid and prefix the title with \"Error: \" while the summary shows. Add these three assertions to the JS-on check."
+    },
+    {
+     "severity": "major",
+     "where": "screens/checkout-result.html, assistant.html (suggestions, Send message), every form; 375",
+     "problem": "The static screens tell a person things that are not so, or do nothing visible. The result page names a fixed address whatever was typed. Suggestions and \"Send message\" reload the same page at the top with nothing added, and an empty message can be sent. Every form submit drops ?theme and ?accent, so a dark or teal walk-through flips back mid-task.",
+     "evidence": "Typed priya@example.org, pressed Pay: URL carries email=priya%40example.org, page says \"Order placed. Receipt sent to sam@example.com.\" Each of \"Show my week\", \"Draft a reply\", \"Find a free hour\": navigation to assistant.html?message=…, conversation text unchanged, scrollY 0, data-theme null. \"Send message\" with empty textarea: navigation to assistant.html?message= (textarea not required). After Pay from ?theme=light the result page has no data-theme.",
+     "fix": "Word the result without the address (\"Receipt sent to the email address you gave\") or let the sanctioned head script fill it from the query. Make the textarea required. Have the head script keep theme and accent across pages (sessionStorage), and add the \"test page\" info message to assistant.html saying replies are not wired."
+    },
+    {
+     "severity": "major",
+     "where": "screens/checkout.html at 320 by 720, light and dark; button \"Pay £60.75\"",
+     "problem": "Earlier finding L1 repeats in two of its parts. The total does not fit the first 720-pixel screen at 320: the fold cuts through the figure, where the Instrument prototype had it fully in view. The Pay label is body size, down from the prototype's 20 pixels. The part of L1 about type size is fixed.",
+     "evidence": "320x720: total row top 688, bottom 772; the amount's line box runs 701 to 744, fold at 720 (review of 14 November measured 656 to 717 for Instrument). On checkout-errors.html the row starts at 936. Pay label 16px weight 600 on a 56px button; total 36px against a largest other text of 24px (ratio 1.5). At 320x568 the total starts at 688, on the second screen.",
+     "fix": "On a phone put the cost summary before the item list (or collapse the items), so the total is in the first screen at 320x720, and add that position as an assertion in check-screens.mjs. Give the primary button label font.size.lead through a component token."
+    },
+    {
+     "severity": "minor",
+     "where": "src/base/base.css .sv-page__aside (position: sticky); checkout.html in short or enlarged viewports",
+     "problem": "When the order summary is taller than the window it sticks with its lower part, the total, cut off for almost the whole scroll. The comment says \"the aside stays in view\".",
+     "evidence": "853x480 (a 1280x720 window at 150% browser zoom): aside 568px tall, total row fully visible for 6% of the scroll range, not visible beside the email or postcode field. 1280x800 with text at 200%: aside 1227px, 5%. At 1280x800 normal text: 100%. The total is repeated above Pay, so nobody is misled.",
+     "fix": "Stick only when it fits: a min-height media condition or max-block-size with its own scroll, or stick the cost summary alone."
+    },
+    {
+     "severity": "minor",
+     "where": "forced-colors: active, checkout.html, checkout-errors.html, assistant.html at 375",
+     "problem": "Three things disappear in forced colours: the danger mark before a field's error text, the busy mark on Pay in a light theme, and the difference between primary and secondary (Pay and \"Apply code\" are the same outlined key; quiet \"Cancel\" gains a border). Everything else keeps a boundary and its mark.",
+     "evidence": ".sv-field__error::before: background forced to Canvas (white on white), forced-color-adjust auto; screenshot shows an empty gap. Busy ::before: background oklch(0.99 0.004 250) with forced-color-adjust none on a white button. Pay: background Canvas, 2px CanvasText border, identical to secondary. Kept: 1px border on the cost display and messages, marks on message and status tabs, 8px error edge, 3px focus ring.",
+     "fix": "In the forced-colors blocks: give .sv-field__error::before forced-color-adjust none with CanvasText; paint the busy mark ButtonText; give the primary a thick border or Highlight and HighlightText. Add a forced-colours screenshot pass."
+    },
+    {
+     "severity": "minor",
+     "where": "dir=\"rtl\" on html; checkout.html, checkout-errors.html, assistant.html at 375 and 1280",
+     "problem": "Nothing breaks structurally in right-to-left, but a negative amount shows its minus sign on the wrong side because amounts are not isolated from the page direction.",
+     "evidence": "No sideways scroll (scrollWidth equals clientWidth in all six states); tabs, error edge (border-right 8px), select chevron, person's plate and split columns all mirror. Cost summary row renders \"£5.00−\" for \"−£5.00\".",
+     "fix": "Set unicode-bidi: plaintext (or isolate with dir=ltr) on amounts: .sv-cost-summary dd, .sv-list__trail, button amounts."
+    },
+    {
+     "severity": "minor",
+     "where": "screens/checkout-result.html and assistant-done.html after a submit; 320x568 and 375x800",
+     "problem": "After Pay or \"Move event and send message\" the next page opens at the top with focus on the body. On the assistant the confirmation sits below the first screen on a small phone, so the page looks unchanged until the person scrolls.",
+     "evidence": "Both pages: activeElement body, scrollY 0. assistant-done.html at 320x568: \"Event moved. Message sent to Priya.\" at y=683 to 755; at 375x800 at 659 to 731.",
+     "fix": "Add to docs/patterns.md: a result page links to and focuses its result (action URL ends #result, target has tabindex=-1), as the saved-page pattern already puts its message first."
+    },
+    {
+     "severity": "minor",
+     "where": "copy on checkout.html, checkout-result.html, assistant.html, agent-test/orders.html at 320",
+     "problem": "Small wording and wrapping slips. \"Discount code\" is both the section heading and the label directly under it. \"Order placed\" is the title and the first words of the message below. The assistant's error says \"Try again.\" with nothing to press, while the failed-load pattern gives a \"Try again\" link. The result page offers \"Back to checkout\" after the order is placed. At 320 the example postcode splits as \"SW1A / 1AA\" and counts split from nouns (\"4 / items\").",
+     "evidence": "Visible in checkout-375-light.png, checkout-result-375-light.png, assistant-375-dark.png, checkout-errors-320-light.png, agent-test-orders-320-light.png.",
+     "fix": "Rename the section or drop its heading; drop the repeat in the result message; add the link or cut \"Try again.\"; use a no-break space in example postcodes and between a count and its noun, and state that in the wording rules of docs/patterns.md."
+    },
+    {
+     "severity": "minor",
+     "where": "Pay fill against its panel, dark theme, blue and teal",
+     "problem": "Earlier finding I3 persists as a thin margin: the accent fill passes 3 to 1 against the dark panel but by less than before.",
+     "evidence": "Rendered: blue 3.29 to 1 on the dark panel (4.72 light); teal 3.51 (4.41 light). The review of 14 November measured 3.57 dark. Label on fill: blue 5.01, teal 4.69.",
+     "fix": "Either accept and record the margin beside the token, or lighten the dark panel step under the accent; no change to the 3 to 1 rule."
+    },
+    {
+     "severity": "minor",
+     "where": "JUDGMENT, not measured: agent-test/delete-account.html, pattern-confirm.html, agent-test/orders.html, assistant-done.html, accent shots",
+     "problem": "My reading of the screens against the five materials. Expectation: \"Delete my account\" is the accent-filled, first and largest button, the same blue as Pay and Save, so the system's one loud colour invites the choice that cannot be undone. Attention: \"Being prepared\", \"On its way\" and \"Cancelled\" share one grey mark, so three different states look alike. Expectation: once sent, the drafted message vanishes and no record of what Priya received remains. Hierarchy: title 24, section 20, label 16 bold is a shallow ladder but reads in order. Accent: the swap changes exactly one element per screen, so blue against teal tells the CEO little; teal would sit close to the green success tab on a saved page (not rendered).",
+     "evidence": "agent-test-delete-account-375-light.png, pattern-confirm-375-light.png, agent-test-orders-375-light.png, assistant-done-375-light.png, digests/2026-11-15/accent/*.png. No script result; taste and inference only.",
+     "fix": "Consider for the human test plan: a neutral or danger-marked confirm for irreversible actions with \"Keep\" as the filled choice; distinct marks for in-progress and cancelled; keeping the sent text, without the dashed edge, in the done state."
+    }
+   ],
+   "good": [
+    "Checkout with JavaScript on does what the spec says: an empty submit stays on the page, focus goes to the role=alert summary, each of its links moves focus to its field with the label scrolled into view, typed values survive, a fixed field clears its error and its summary line, Pay shows \"Paying £60.75…\" with aria-busy, a second press and a re-submit make no second request (one request counted), and Back restores the label.",
+    "Tab order follows the visual order at 375 and 1280 on checkout (11 stops), checkout-errors (13, summary links first) and assistant (8); every stop shows a 3px ink ring, is in view and is not covered.",
+    "Reduced motion stops both busy marks: animation-name none, zero running animations, transition 0s, with the busy label still shown.",
+    "Earlier findings fixed: I1 (warning now an amber tab on a plate), I2 and the speaker-label note (visible \"You\" and \"Souvenir\", edged plate), I4 (inverse cost display), I5 at 375 (one line), L2, L3 (wrapped primary keeps padding, 68px at 320), S1 at normal text size, S3 (5px ring reach, 12px gaps).",
+    "Counts hold on all 13 screens: at most one accent fill and one primary per screen, the total is 36px against 24px for the largest other text, no text below 16px; right-to-left mirrors with no overflow."
+   ],
+   "not_checked": [
+    "npm run check was not run by me. Other reviewers ran it in parallel: git status shows modified digest PNGs, gates/raw/2026-11-15-screens.json and size.json, a deleted scripts/.tmp-check-out.txt and an untracked dist/ui-sdk/. None of that is mine.",
+    "No screen reader was run; announcements are inferred from roles and aria attributes only.",
+    "Only headless Chromium. Firefox, Safari, real iOS and Android keyboards were not run, so the phone Enter-key behaviour is inferred from the desktop result.",
+    "Forced colours used Chromium's emulation, not real Windows contrast themes.",
+    "The demo-*.html pages, and the 320 dark shots, were not reviewed; teal was not rendered on the agent-test or pattern screens.",
+    "Text spacing (WCAG 1.4.12) and true browser zoom were not tested; 200% was root font-size only.",
+    "Housekeeping: a path-encoding bug in my first script wrote its screenshots to a new folder outside the repository (~/Library/Application%20Support/…). I moved them into my scratch folder and removed that folder; scripts/.tmp/person is deleted. scripts/.tmp still holds other reviewers' folders."
+   ]
+  },
+  {
+   "lens": "system",
+   "verdict": "pass with fixes",
+   "checked": "Read every file in src/, the token file, all scripts, AGENTS.md, docs, checkout and assistant screens. Validated tokens against the fetched 2025.10 format and colour pages with my own validator; recomputed 11 contrast pairs with separately written OKLCH maths. Rebuilt a scratch copy (byte-identical to dist) and swapped the accent three ways. Drove Chromium (playwright-core) for 11 behaviour tests, forced colours and right-to-left. Wrote 16 bad pages and ran lint and check-screens on them. Ran the three self-tests, lint and \"npm run check\" (all exit 0); that rewrote gates/raw size and screens JSON and 29 screenshots. Rebuilt UI SDK bundles to verify the README. Scratch folder deleted; no source file changed.",
+   "findings": [
+    {
+     "severity": "major",
+     "where": "screens/checkout.html:131 (Apply code) and :138 (Pay); same in screens/checkout-errors.html:134/141; guidance in briefs/v0.2-build-spec.md \"Buttons and links\"",
+     "problem": "\"Apply code\" is a submit button with formaction and formnovalidate that comes before \"Pay\" in the same form, so it is the form's default button. Pressing Enter in any field submits through it: no validation, no busy state, the page reloads and everything typed is gone. Same with scripts off.",
+     "evidence": "Playwright, 375px: filled the five required fields, pressed Enter in Postcode -> \"now at checkout.html ; query has 9 keys ; email field now holds \\\"\\\"\" (JS on and JS off). With only the email typed: Enter -> checkout.html?email=sam%40example.com&name=&line1=..., error summary hidden=true, aria-invalid count 0.",
+     "fix": "System, not the screen: a secondary submit that skips validation must never be the form's first submit button. Put the code field and its button in a form of their own (or associate them with a second form by the form attribute), say so in button.md and patterns.md, and add a lint rule: the first submit button in a form may not carry formnovalidate or formaction."
+    },
+    {
+     "severity": "major",
+     "where": "src/base/base.css (no [hidden] rule); every component that sets display: message, field, button, status, checkbox, cost-summary, proposal, sv-stack, sv-row, sv-list",
+     "problem": "The hidden attribute is ignored on ten parts, although spec section 3 lists [hidden] as a state. Only field__error and error-summary have their own [hidden] rule. A hidden success message is shown.",
+     "evidence": "Scratch page, computed display of elements carrying hidden: \"m:grid(VISIBLE 48px) fld:grid(VISIBLE 80px) btn:flex(VISIBLE 48px) st:flex(VISIBLE 24px) stk:grid row:flex cb:flex(VISIBLE 48px) cs:grid(VISIBLE 92px) pr:grid ls:grid pn:none plain:none\". A page with hidden \"Your changes are saved.\" and \"We couldn't save your changes.\" messages, both visible, passed lint and check-screens in all six states.",
+     "fix": "One rule in src/base/base.css: [hidden] { display: none !important; } and drop the two per-component copies. Add a check-screens fixture that fails when an element with hidden has a box."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/field/field.js:59 (form.noValidate = true) and :14-28 (onSubmit checks only sv-field elements); docs/components/checkbox.md (\"invalid: required ...\")",
+     "problem": "As soon as one sv-field runs, the form gets novalidate, and the script then validates only controls inside sv-field. Any other required control, such as the required terms checkbox the checkbox note describes, is no longer checked by anyone. With scripts on the form submits; with scripts off the browser stops it.",
+     "evidence": "Scratch form: one sv-field (valid email), a required unticked label.sv-checkbox, sv-button. JS on -> \"at done.html?email=sam%40example.com\". JS off -> \"at req-checkbox.html\" (blocked).",
+     "fix": "In field.js onSubmit and in error-summary.js, after checking the sv-fields, also test every other control of the form (form.elements, willValidate && !checkValidity()) and stop the submit, or leave novalidate off unless every validatable control is inside an sv-field. Give the checkbox an error line the summary can list. Add this case to the tests."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/button/button.js:30-56 (handleEvent, start); restore only on pageshow with persisted",
+     "problem": "Once busy, the button stays busy for ever if the page is not replaced: the server answers 204 or a download, the form has a target, or the navigation is stopped. Every later press, Enter, and even \"Apply code\" is cancelled, so the person cannot retry without reloading and losing the form.",
+     "evidence": "Playwright, checkout.html with the result URL answered 204: \"requests=1 url=checkout.html aria-busy=true label=Paying £60.75…\"; after a second press of Pay, Enter in a field and Apply code: \"requests=1\"; 5 s later still aria-busy=true.",
+     "fix": "In button.js: release the busy state when the document is still there after a set time (a token-free constant, for example 10 s) and on any pageshow; do not go busy when form.target is not the same window; say in the busy state's note what happens on failure. Add a 204 test to the checks."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/error-summary/error-summary.js:56 (if (!this.box.hidden) this.box.focus())",
+     "problem": "On a page with a server-rendered summary, the script takes focus whenever it arrives. If it arrives late, focus is pulled out of the field the person is typing in and the following keystrokes go nowhere.",
+     "evidence": "checkout-errors.html with dist/souvenir.js delayed 2.5 s: person focuses Postcode and types \"LS1\" (focus=postcode); after the script arrives focus=sv-error-summary; person types \" 4AP\"; field holds \"LS1\".",
+     "fix": "Focus the summary on connect only when nothing else has focus (document.activeElement is body), or drop that line and rely on the autofocus attribute the screen already carries."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/chat-message/chat-message.css:40 versus AGENTS.md:26 (rule 9)",
+     "problem": "Rule 9 tells builders to put data-user-content on any text a person typed so long strings can break. The only CSS for it is scoped to .sv-chat-message, so anywhere else the attribute does nothing, and the checker then exempts that text from its word-break rule.",
+     "evidence": "Scratch page, p.sv-list__detail[data-user-content] holding an 84-character email in a panel at 320px: \"overflow-wrap=normal; page scrollWidth 721 in a 320 viewport\". grep: the selector appears once, in chat-message.css.",
+     "fix": "Move the rule to src/base/base.css as [data-user-content] { overflow-wrap: anywhere; } and add a fixture outside a chat message."
+    },
+    {
+     "severity": "major",
+     "where": "AGENTS.md:16; scripts/lint.mjs (pageRules, lintHtml); scripts/check-screens.mjs",
+     "problem": "AGENTS.md says the checks enforce rules 1, 2, 4, 6, 7 and 8 \"and will fail your screen if you break them\". Of 16 bad pages, 11 passed both lint and the screen checker in every state. MISSED: 01 a div with role=button and an a.sv-button with no href (rule 6); 02b 32px text coloured with a font element (rules 1, 3); 03 headings faked with p.sv-error-summary__title, strong and role=heading (rule 8); 04 inputs with only aria-label, a visually hidden label, or aria-labelledby to a missing id (rule 7); 05 a message with data-tone=\"busy\" or no tone, a button with data-tone and data-size (rule 2); 08 no viewport meta, lang or title; 09 a primary type=button outside any form and a form with action=\"#\" (rule 6); 10 hidden messages that show; 11 a required sv-field with no error line; 12b sv-field__error, sv-list__detail and sv-proposal__draft on stray text; 13 img without alt, a bordered table, dialog open, an invented sv-tabs element and a progress bar. CAUGHT: 06 second primary inside details (lint html-many-primary, checker many-accent-fills); 07 native radio and checkbox in plain labels (checker focus-outline only; lint and target size pass); 12 sv-cost-summary and sv-chat-message on a p (checker only); a link inside the cost summary (checker, 1.08:1); 02 body-size font colour (checker text-contrast, dark theme only).",
+     "evidence": "Lint via lintFile() printed \"LINT PASSES\" for all but 06; \"node scripts/check-screens.mjs --dir <bad>\" table showed pass in all six columns for 01, 03, 04, 05, 08, 09, 10, 11, 13, 02b, 12b. Screenshot of 13 shows the dialog over the h1 and a native blue progress bar.",
+     "fix": "Lint: an allow-list of elements and attributes (no font, center, color, bgcolor, border, align, size; no img without alt, dialog, table, progress; only the three defined sv- elements); role=button or tabindex on a non-control; a.sv-button without href; type=button outside a named wrapper; each sv- class allowed only on its element and inside its parent; option values checked per component, and data-tone required on sv-message; a label must be visible (aria-label alone, a visually hidden label and an unresolved aria-labelledby fail); viewport, lang and title required. Until then, reword AGENTS.md:16 to say which forms of each rule are checked."
+    },
+    {
+     "severity": "major",
+     "where": "src/components/cost-summary/ beside the nine general parts; tokens: semantic.*.color.inverse, semantic.font.size.display and display-long; dist/souvenir.css",
+     "problem": "src/base itself holds nothing commerce-only. But the one commerce-only part, cost-summary (\"what an order costs\"), sits in the core component folder and core bundle with no separate domain layer, and four semantic tokens are defined by it, so the semantic layer is not domain-neutral.",
+     "evidence": "Token descriptions: semantic.light.color.inverse \"Surface of the cost display\"; semantic.font.size.display \"The total in a cost summary\"; display-long \"A cost summary total too long for the display size\". build.mjs concatenates every src/components/* into the one souvenir.css. grep of src/base for cost, order, pay, price, basket found only two comments.",
+     "fix": "Move cost-summary to a domain folder with its own stylesheet and layer (for example src/domains/commerce, dist/souvenir-commerce.css), and describe inverse, display and display-long by purpose (inverse display surface, largest reading on a page) so a non-commerce part can use them."
+    },
+    {
+     "severity": "major",
+     "where": "docs/components/button.md:12 versus docs/components/proposal.md:45 and src/components/proposal/proposal.css:66; screens/assistant.html",
+     "problem": "button.md says the one submit that commits money or sends something goes inside sv-button. proposal.md says \"No script\" and needs the primary as a direct child of the actions; its Busy row names no script that sets aria-busy. Following button.md inside a proposal breaks the layout, and the assistant screen's \"Move event and send message\" has no guard against a second press.",
+     "evidence": "Scratch page at 375px: primary as direct child 309px wide; the same button inside sv-button 196px of a 309px row. At 1280px the wrapped primary shares its row with \"Edit message\" (the note promises a row of its own).",
+     "fix": "Style the wrapper in the system: .sv-proposal__actions > sv-button gets the full-row basis and its button the full width; wrap the proposal's primary in sv-button in proposal.md and the screens; state in one place which buttons take the wrapper."
+    },
+    {
+     "severity": "minor",
+     "where": "docs/components/field.md:35, checkbox.md:38, select.md:48; AGENTS.md \"What does not exist yet\"",
+     "problem": "Three notes tell the reader to \"use radios\". No radio part exists and the list of missing parts does not name it, so an agent is sent to invent one.",
+     "evidence": "grep -rn -i radio docs AGENTS.md src: three hits in the notes, none in src or AGENTS.md. Bad page 07 (native radios in labels) passes lint.",
+     "fix": "Add radio to the missing-parts list and point the three notes at the select until a radio part exists."
+    },
+    {
+     "severity": "minor",
+     "where": "tokens/souvenir.tokens.json:585 and :656 (semantic.light.color.accent, semantic.dark.color.accent); scripts/lint.mjs:479; the inline script in all 24 screens",
+     "problem": "In the built CSS the accent is one custom property and nothing else changes. In the source it is two tokens that must be edited together, and a third accent also needs the name added to the inline script of every screen and to the lint's string allow-list.",
+     "evidence": "Scratch rebuilds. Light copy only -> \"build-tokens: the dark theme redeclares the accent\" exit 1, check-tokens solids-same FAIL. Both copies to teal -> diff of dist/souvenir.css is exactly --sv-color-accent and the data-accent block; check-tokens passes. grep -c 'a===\"blue\"||a===\"teal\"' finds one copy in each of 24 screens.",
+     "fix": "Hold theme-invariant colours (accent, the status fills, on-solid, neutral-solid) once, outside the light and dark groups, and let the page script accept any accent the build lists rather than two literals."
+    },
+    {
+     "severity": "minor",
+     "where": "gates/raw/2026-11-15-size.json at HEAD; scripts/size.mjs; charter/budget.md rows",
+     "problem": "The committed size record is one commit older than the committed CSS. The \"all CSS\" row measures dist/souvenir.min.css, which no screen or note loads; screens link the unminified file. The 15 kB slice script row and the 100 kB page row are not measured by any script. All are within budget.",
+     "evidence": "Committed record: all CSS 26,985 minified, 4,792 gzip; rerun on the unchanged tree: 27,048 and 4,809 (only differing row of 19). git log: size.json last changed d83f4be 03:05, souvenir.min.css ce02d11 03:08. My gzip -9: souvenir.css 8,235; three component scripts 2,179; checkout.html + souvenir.css + souvenir.js 11,841.",
+     "fix": "Commit the size record with the build it measures; measure the file pages load or make the skeleton link the minified one; add the slice and page rows to size.mjs."
+    },
+    {
+     "severity": "minor",
+     "where": "src/components/button/button.css:84-92; src/components/field/field.css:31-38; src/components/select/select.css:56-61",
+     "problem": "Forced colours: the busy mark on the primary button is invisible on a light forced palette; the danger mark before a field error disappears; the select restores its native arrow but keeps the drawn chevron, so two arrows show.",
+     "evidence": "Chromium forcedColors=active screenshots: \"Paying £60.75…\" with a blank where the mark is while the secondary shows it; error lines in demo-error-summary start with a 24px gap; select crop shows two chevrons, computed appearance auto with background-image still set.",
+     "fix": "In each file's forced-colors block: mark background ButtonText for the button, CanvasText with forced-color-adjust none for the field error mark, background-image none for the select."
+    },
+    {
+     "severity": "minor",
+     "where": "src/components/field/field.js:82-85 (check) with :59",
+     "problem": "A required sv-field written without its p.sv-field__error has its submit stopped with no words at all: novalidate removes the browser's bubble and there is no line to fill.",
+     "evidence": "Scratch page, empty submit, JS on: \"stays on no-error-line.html; aria-invalid=true; novalidate=true; all visible text: Sign up | Email address | Create account\". The page passes lint and check-screens.",
+     "fix": "Have sv-field create the error line when it is missing, and add a lint rule that a control with required, type or pattern inside sv-field has one."
+    },
+    {
+     "severity": "minor",
+     "where": "src/base/base.css:66-80 (a, a:focus-visible) and status, button colours inside .sv-cost-summary",
+     "problem": "On the inverse display a link, and its focus ring, are ink on a dark surface. The checker catches it, but a builder has no permitted way to fix it, and the note's own \"unknown\" row invites a link.",
+     "evidence": "check-screens on a scratch page: \"Enter your postcode\" is 1.08:1 (needs 4.5:1) — rgb(21,27,34) on rgb(28,34,41); focus outline is 1.08:1.",
+     "fix": "Inside .sv-cost-summary re-point --sv-color-text and --sv-color-focus to the on-inverse colour, or say in cost-summary.md that it holds no link, status or button."
+    },
+    {
+     "severity": "minor",
+     "where": "src/components/field/field.js:31-34, button.js:8-10, error-summary.js:11-13",
+     "problem": "An element connected before its children exist (created by script, or parsed while the module is already defined) returns early and never tries again. For sv-field, check() then reports an empty required input as valid.",
+     "evidence": "createElement(\"sv-field\"), insert, then add the markup: \"enhanced=false, label for=\\\"\\\", aria-describedby=null, check() says valid=true for an empty required input\". Loading the scripts twice was safe: page errors=0, 5 invalid events for 5 fields.",
+     "fix": "Retry once children arrive (a microtask or a MutationObserver that disconnects after setup), and have the lint reject async on the module script."
+    },
+    {
+     "severity": "minor",
+     "where": "scripts/lint.mjs:261-262 (css-physical); src/components/select/select.css:19,22,32; src/base/icons.css:15; src/ui-sdk, package.json, dist/ui-sdk",
+     "problem": "Housekeeping the lint does not see: physical keywords in values (right, left, to top right) pass css-physical; --sv-icon-chevron is defined and never used; the clay UI SDK entries live in src/, are built by the main build into dist/ui-sdk, which is neither committed nor ignored though the trial page links it, and the packages sit under dependencies rather than devDependencies.",
+     "evidence": "lint: 0 findings while select.css:22 reads \"background-position: right calc(...)\". Var scan: --sv-icon-chevron unused. git status after any build: \"?? dist/ui-sdk/\"; git ls-files dist lists no ui-sdk file; explore/ui-sdk-trial/index.html:10 loads ../../dist/ui-sdk/all.js.",
+     "fix": "Extend css-physical to values; delete the unused icon; move the trial entries under explore/, build them from there, ignore or commit their output, and list the packages as dev dependencies."
+    },
+    {
+     "severity": "minor",
+     "where": "src/components/button/button.css:66-71",
+     "problem": "A disabled secondary button differs from an enabled one only by its label colour.",
+     "evidence": "Both have the 2px edge and no fill. My contrast between text and text-soft: 2.33 to 1 light, 1.99 to 1 dark.",
+     "fix": "Give disabled a shape change as the field has (thin or dashed edge)."
+    },
+    {
+     "severity": "minor",
+     "where": "tokens/souvenir.tokens.json component.* colour tokens; scripts/build-tokens.mjs themed()",
+     "problem": "The file is valid 2025.10, but nine component colours alias semantic.light.color.* and mean \"the active theme\" only through this repository's build. Any other token tool resolves them to the light value in every theme.",
+     "evidence": "component.cost-summary.surface = {semantic.light.color.inverse}; the dark value is reached only by themed() in build-tokens.mjs.",
+     "fix": "Record the convention in the file's $description and $extensions now; adopt the format's resolver module for themes when tooling supports it."
+    },
+    {
+     "severity": "minor",
+     "where": "explore/ui-sdk-trial/README.md",
+     "problem": "The recommendation to stay native is supported by the sizes, which I reproduced to the byte. Its functional comparison was made against plain HTML, not against the sv- scripts as built, and two figures are stale. It lists \"a required control outside a field takes focus\" as a UI SDK fault while sv-field does not validate such a control at all.",
+     "evidence": "My rebuild: all four 74,857; alone 22,405 / 63,343 / 19,212 / 15,628; shares 6,869 / 46,988 / 3,106 / 1,180; shared core 16,714 — all equal to the README. README says field script 843 B and \"26 times\"; size.mjs now prints 910 (24.6 times). Exception terms hold: package.json pins exactly 0.1.0-beta.3 for both; git grep finds @ui-sdk in no file under src/components, src/base, screens, docs or tracked dist.",
+     "fix": "Update the two figures and add one line that the behaviour comparison predates sv-field and sv-button."
+    },
+    {
+     "severity": "minor",
+     "where": "scorecard.md:5 and :9; screens/checkout.html:136 (outside this lens, seen in passing)",
+     "problem": "The scorecard still says \"Last updated: 2026-11-14 ... nothing built yet\" and \"0 components exist\" although its spend table lists the 0.2 build. The checkout screen sets a total as bold text, which AGENTS.md rule 10 forbids.",
+     "evidence": "scorecard.md lines 5 and 9 as quoted; checkout.html:136 <p><strong>Total £60.75</strong></p>.",
+     "fix": "Update the scorecard cells from this run's outputs; remove the styled total or allow a named pattern for it."
+    },
+    {
+     "severity": "minor",
+     "where": "Judgment, not measured: dist/tokens.css layer order; page skeleton in docs/layout.md",
+     "problem": "Two design choices I would revisit. Every rule sits in a cascade layer, so any unlayered stylesheet in a host product overrides the whole system regardless of specificity. The theme script is pasted into every page, which is one more thing to drift.",
+     "evidence": "Taste and architecture only: dist/tokens.css line 2 \"@layer sv.tokens, sv.base, sv.components;\"; 24 identical inline scripts.",
+     "fix": "Decide and write down how a host page's own CSS is meant to rank against the system, and consider serving the theme script from one file."
+    }
+   ],
+   "good": [
+    "Tokens: valid against 2025.10 (144 tokens, no shape problem), 22 component tokens alias semantics, 68 semantics alias primitives, light and dark come from the one file, two builds are byte-identical, and all 20 hex values and every contrast figure I recomputed match check-tokens to within 0.03.",
+    "In the built CSS the accent is one custom property; no component reads a primitive and no var() is undefined; a scratch rebuild reproduces dist/souvenir.css, souvenir.min.css, souvenir.js and tokens.css exactly.",
+    "Logical properties throughout: a right-to-left test page mirrored every part correctly, including the select chevron and the error edge.",
+    "The scripts never touch a value, are safe to load twice, wait for other listeners before going busy, and the no-script path works (check-noscript: 0 failures).",
+    "The checks are real: three self-tests and npm run check exit 0 with every listed rule seen failing; UI SDK sizes reproduce to the byte and the exact pin is honoured."
+   ],
+   "not_checked": [
+    "A real phone keyboard: the Enter finding was run with a desktop Enter key only.",
+    "The browser Stop button and back-forward cache restore for the busy button: my stopped-navigation test hung and was abandoned; only the 204 case was measured.",
+    "Real Windows high-contrast themes, Safari, Firefox and screen readers: forced colours were Chromium emulation only, and it rendered the select demo page without forcing colours.",
+    "Text enlarged to 200%, and the charter's timing budgets (largest contentful paint, blocking time, layout shift, interaction time).",
+    "explore/ui-sdk-trial/check.mjs was not rerun; its behaviour claims were read, not reproduced. Only its sizes were rebuilt.",
+    "The 70 lint fixtures and 21 screen fixtures were run, not audited one by one.",
+    "Whether the screenshots in digests/ look intended: left to the screens lens."
+   ]
+  },
+  {
+   "lens": "docs",
+   "verdict": "fail",
+   "checked": "Ran `npm run check` (exit 0: lint 49 files, 0 findings; 24 screens x 6 states, 0 findings; no-script 0 failures; size 0 over) plus the lint and screen self-tests. Scripted a two-way cross-check of every sv- name, data- option and value in the 13 notes against dist/souvenir.css and souvenir.js. Probed the lint with 30 rule-breaking fragments and the screen checker with 10 pages I built from the notes alone (the seven jobs). Measured in Chromium: sticky aside, total position, long email, busy mark. Read every record named and compared it with read-only git history, file times and saved evidence. Scanned screen strings against the Words rules. Scratch folder deleted.",
+   "findings": [
+    {
+     "severity": "blocker",
+     "where": "screens/assistant.html:41 and screens/assistant-done.html:41, span.sv-status data-tone=\"busy\" \"Checking both calendars…\", every width and theme",
+     "problem": "Part 6. A turning busy mark says Souvenir is checking calendars now, directly above the finished answer (\"Thursday at 3pm is free for both of you\") and, on the done screen, above \"Event moved. Message sent to Priya.\" AGENTS.md Words says \"never fake progress\"; status.md says busy is for \"happening right now, while the person waits\". A person reads the turn as still working.",
+     "evidence": "Markup lines 41-42 of both files; src/components/status/status.css:73 `animation: sv-status-turn var(--sv-status-busy-duration) linear infinite`; screenshots digests/2026-11-15/screens/assistant-done-375-light.png and assistant-320-dark.png show the ring beside the result.",
+     "fix": "Remove the busy status from both screens (keep it only in demo-status and demo-chat-message as a separate, unfinished turn). Add to chat-message.md: \"A busy status is replaced by the answer when it arrives; a turn never holds both.\""
+    },
+    {
+     "severity": "blocker",
+     "where": "PROGRESS.md line 73 (V.2 evidence)",
+     "problem": "Part 4. Two statements are false. \"Lint, build, size and screen-check tooling built, each with a self-test\": build and size have none (nor has check-noscript), and `npm run check` never runs the screen checker's self-test. \"`npm run tokens` passes 26 rule groups\": it prints 25.",
+     "evidence": "`grep -c -i self-test scripts/*.mjs` gives build.mjs 0, size.mjs 0, check-noscript.mjs 0, build-tokens.mjs 0 (lint 7, check-tokens 5, check-screens 6). package.json: \"screens\": \"node scripts/check-screens.mjs\". My run of `npm run check` printed 25 PASS lines in the tokens step; scripts/check-tokens.mjs is unchanged since commit cd01501, so it was 25 then too. The size check's failing path has never been seen failing, against the spec's own line \"A check that has never been seen failing does not count\".",
+     "fix": "Correct the row to \"25 rule groups\" and \"lint, token check and screen check have self-tests; build, size and the no-script check do not\". Add a size self-test (one fixture over budget must exit 1) and add `node scripts/check-screens.mjs --self-test` to `npm run check`."
+    },
+    {
+     "severity": "blocker",
+     "where": "gates/raw/2026-11-15-agent-test.md line 26",
+     "problem": "Part 4. \"ten new checks, so that the rules AGENTS.md states are enforced\" is wrong twice: eight rules were added, and they do not enforce the rules as stated (see the rules finding).",
+     "evidence": "Rule names in scripts/lint.mjs at bd07a4a versus HEAD: 18 then 24; new: html-many-primary, html-form-no-action, html-button-no-type, html-control-no-label, html-placeholder-label, html-heading-order. scripts/check-screens.mjs: 14 then 16; new: overflow-inside-part, many-accent-fills. The spec's own change list (briefs/v0.2-build-spec.md line 146) names the same six and two.",
+     "fix": "Write \"eight new checks (six lint rules, two screen rules)\" and \"which enforce part of rules 4, 6, 7 and 8\"."
+    },
+    {
+     "severity": "major",
+     "where": "AGENTS.md line 16 (\"The checks enforce rules 1, 2, 4, 6, 7 and 8 and will fail your screen if you break them. Rules 3 and 5 are built into the parts\") and line 82",
+     "problem": "Part 3. The sentence is right about which rules have a check and too strong about what the checks catch. Rule by rule: 1 enforced (html-style-element, html-style-attr, html-inline-svg, html-class-prefix, html-custom-element, html-stylesheet, html-inline-script); hole: `<font color>`, `bgcolor`. 2 partly (html-unknown-class, html-unknown-value): checked against the built CSS, not the notes; only 11 listed data- attributes; a real value on the wrong part passes; any element named sv-anything passes. 3 no check; not built in against `<font color>`. 4 enforced (html-many-primary, many-accent-fills), except files named demo-*. 5 no check; not built in when the author leaves out the label, the mark span or the tone. 6 partly (html-form-no-action, html-button-no-type; check-noscript covers checkout.html only). 7 partly (html-control-no-label, html-placeholder-label): \"visible\" is not checked. 8 enforced (html-heading-order), except a page with no heading at all. 9 and 10 not enforced, as stated.",
+     "evidence": "30 probe fragments through lint.mjs's exported lintHtml. PASSED the lint: data-tone=\"busy\" on sv-message; data-size=\"large\"; a status inside sv-list__trail; a submit button outside any form; type=\"button\" with no script; a.sv-button with no href; an input with only aria-label; a label with class sv-visually-hidden; an empty label; a page with no h1; an empty sv-status; an sv-message with no mark span; `<font color>`. lint.mjs:520 tests only that a custom element name starts sv-. The same probes in the screen checker: the empty status, the message with no mark or no tone, the aria-label-only input, the orphan submit and the link with no href all passed in 6 of 6 states; the grey font text failed text-contrast in light only. screens/demo-button.html has 12 type=\"button\" buttons and passes. Line 82 says the lint finds \"a form or button that would not work without script\"; it finds a form missing method or action and a button missing type.",
+     "fix": "Rewrite line 16: \"The checks catch the common breaks of rules 1, 2, 4, 6, 7 and 8; passing them does not prove you kept the rule.\" Add lint rules: submit button with no form ancestor; type=\"button\" outside an sv- element whose script handles it; a.sv-button without href; label that is empty or visually hidden; aria-label as the only name on a text control; sv-status with no text; sv-message without data-tone or without its mark span; a data- option on a part whose CSS has no selector for it; custom element names limited to the three registered; `<font>` and presentational attributes."
+    },
+    {
+     "severity": "major",
+     "where": "docs/components/field.md:35, select.md:48, checkbox.md:38; AGENTS.md line 54 list",
+     "problem": "Part 2, a form with radio choices: the notes are not enough. Three notes tell the builder to \"use radios\"; no radio part exists and \"What does not exist yet\" does not list it. The nearest thing passes every check and misleads: a radio inside label.sv-checkbox is drawn as a square tick box.",
+     "evidence": "`grep -n radio dist/souvenir.css` finds nothing. Probe page: two `<input type=\"radio\">` in `label.sv-checkbox` gave lint clean and screen check pass in 6 of 6 states, and the screenshot shows two square boxes, one ticked. Bare radios in a plain label failed focus-outline (\"outline auto 1px\") in 6 of 6 states. field.md says radios for two to five options, select.md for two or three.",
+     "fix": "Build a radio part, or add to AGENTS.md's list: \"Radio buttons. Until a radio part exists, use a select for one choice from two to fifteen options and report the gap. Never put type=\\\"radio\\\" inside label.sv-checkbox: it is drawn as a tick box.\" Change the three \"use radios\" phrases to match, and make the lint reject a radio inside .sv-checkbox."
+    },
+    {
+     "severity": "major",
+     "where": "docs/components/proposal.md (actions row) against AGENTS.md rule 4",
+     "problem": "Part 2, Souvenir proposes two alternative actions: the notes are not enough. The proposal note requires \"Primary first, a submit button\"; rule 4 allows one primary per screen. Two proposals built to the note fail both checks, and the same clash arises whenever an older unanswered proposal is still in the thread.",
+     "evidence": "Probe with two proposals, each with a primary submit: lint html-many-primary; screen check many-accent-fills in 6 of 6 states. The same page with secondary submits passed both. proposal.css gives the full-width row only to [data-variant=\"primary\"].",
+     "fix": "Add to proposal.md: \"When Souvenir offers alternatives, each is a proposal of its own whose heading names what differs, and every submit button is secondary: the page may hold one primary and Souvenir does not pick for the person. In a conversation only the newest single proposal carries the primary; an older one shows its done state or loses its actions.\""
+    },
+    {
+     "severity": "major",
+     "where": "screens/checkout-result.html:17, p in .sv-message",
+     "problem": "Parts 3 and 6. The real result page breaks AGENTS.md rule 9: the email address a person typed is shown as plain text with no data-user-content, so a long address cannot break. The page also states a receipt went to sam@example.com whatever was typed, beside \"This is a test page\".",
+     "evidence": "Line 17: `<p>Order placed. Receipt sent to sam@example.com.</p>`. In Chromium at 320 wide, with the text changed to a 61-character address, the page became 333 pixels wide (sideways scroll) and the paragraph ran 29 pixels past its plate (right edge 333 against 304). Computed overflow-wrap on the paragraph: normal.",
+     "fix": "Wrap the address: `Receipt sent to <span data-user-content>sam@example.com</span>.` Add a fixture screen with a long address so the check sees it, and a lint rule or note line that a message repeating an input's value needs the attribute."
+    },
+    {
+     "severity": "major",
+     "where": "screens/checkout.html:136 and screens/checkout-errors.html (same line), panel above Pay",
+     "problem": "Part 3. The real checkout breaks AGENTS.md rule 10 (\"An amount is never text you styled. A total goes in a cost-summary\"): the total is repeated as bold paragraph text.",
+     "evidence": "`<p><strong>Total £60.75</strong></p>`; visible in digests/2026-11-15/screens/checkout-320-light.png above the Pay button.",
+     "fix": "Remove the line (the button already says \"Pay £60.75\"), or add a documented compact total to cost-summary and use it. Either way the screens must not do what the rules forbid."
+    },
+    {
+     "severity": "major",
+     "where": "screens/checkout.html:15 and :131, screens/assistant.html:52, against the notes",
+     "problem": "Parts 1 and 2. The real screens use things no note names, so the notes are not the whole contract: `formaction` plus `formnovalidate` on \"Apply code\" (the field and error-summary scripts have special handling for it); `role=\"note\"` on a message (message.md allows status or alert); `aria-label=\"Drafted message\"` on the draft; `inputmode`, `enterkeyhint`, `autocapitalize`, `spellcheck` on every field. A builder with a second submit button in a form has to guess.",
+     "evidence": "`grep -rn formnovalidate AGENTS.md docs` finds nothing; it appears in screens/checkout.html:131, src/components/field/field.js and error-summary.js, and only in the spec's change list. `grep -o 'role=\"[a-z]*\"' screens/*.html` gives note x3. field.md shows only `autocomplete`.",
+     "fix": "Add to button.md: \"A second submit button in the same form that must not validate or pay, such as Apply code, carries formaction and formnovalidate; the field and error-summary scripts skip their checks for it.\" Add to message.md: \"A standing notice that reports nothing new takes no role.\" and drop role=\"note\" from the screens. Add the four input attributes to field.md's example with one line on when to use each."
+    },
+    {
+     "severity": "major",
+     "where": "docs/layout.md \"Split page\" and the sv-page__aside row of the table",
+     "problem": "Part 2, an order with fourteen items: the list rows are covered; the page is not. The note says the aside \"stays in view while the main scrolls\" and to put it first on a phone. With fourteen rows neither holds, and nothing says what to do with a long list.",
+     "evidence": "Probe page (14 rows in the aside, passes lint and all 6 states). At 1280 by 800: aside 1,267 pixels tall, total at y=1,272, not visible until the page is scrolled to its end (580). At 375: the first field starts at y=1,469, after all fourteen rows.",
+     "fix": "Add: \"The aside stays in view only while it is shorter than the screen. When an order has more than five rows, keep the cost-summary in the aside with one line above it, '14 items', and a link 'See all 14 items'; put the full sv-list after the form or on a page of its own.\" Give the aside a rule for when it is taller than the viewport."
+    },
+    {
+     "severity": "major",
+     "where": "docs/layout.md (no section on running text); src/base/base.css `ul { padding: 0; list-style: none }`",
+     "problem": "Part 2, a long article: partly covered (column width, h1 to h3, links). A builder must guess that paragraphs have no margin, that a `ul` shows no bullets, and that blockquote, h4 and small have no style.",
+     "evidence": "Probe article screenshot at 375: three `ul` items render as three bare lines with no marker or indent; the blockquote is identical to a paragraph; the h4 takes browser margins; `<small>` fails text-too-small (13.33px) in 6 of 6 states. Lint clean throughout.",
+     "fix": "Add a \"Running text\" section: \"Put running text in an sv-stack: paragraphs and headings have no margin of their own. Give each section its own sv-stack and separate sections with data-gap=\\\"6\\\". A ul shows no bullets: it is for rows. For a list inside prose use an ol. blockquote, h4 to h6, small, code, tables and images have no style yet; do not use them, and report the gap.\" Then decide whether prose lists need bullets."
+    },
+    {
+     "severity": "major",
+     "where": "docs/components/button.md \"Never use it for\"; AGENTS.md rule 4; docs/components/error-summary.md",
+     "problem": "Part 2, a sign-in form with a \"forgot password\" link: the fields and form are covered. Three guesses remain: what a link standing alone is; whether \"Sign in\" may be the primary (rule 4 says pays, sends or changes); where an error goes that belongs to no single field.",
+     "evidence": "Probe: `<p><a href=\"/forgot\">Forgot your password?</a></p>` fails control-too-small (166x18, needs 24x24) in 6 of 6 states; the same link inside p.sv-field__hint fails the same way. button.md points the builder at a plain `a` for navigation in text.",
+     "fix": "Add to button.md: \"A link on a line of its own, such as 'Forgot your password?', is a quiet a.sv-button placed after the field it belongs to; a plain a is only for the middle of a sentence and alone is too small to tap.\" Add to rule 4: \"On a page whose one purpose is its form (sign in, search), that form's submit is the primary.\" Add to patterns.md: \"When the server rejects the form as a whole, show a danger message with role=\\\"alert\\\" above the form and mark no field: 'That email and password do not match. Check both and try again.'\""
+    },
+    {
+     "severity": "major",
+     "where": "docs/patterns.md \"An empty list\"; docs/components/field.md:35; docs/layout.md sv-row",
+     "problem": "Part 2, search results with nothing found: partly covered. field.md rules out \"a search box in a toolbar\" and names nothing in its place; the empty-list pattern is about \"what will appear and how to add it\", which does not fit a search; a field and a button in an sv-row do not line up.",
+     "evidence": "Probe search form in sv-row: at 1280 the button sits at y=97 to 145 and the input at 113 to 161 (16 pixels apart, because the row centres the button on label plus input); the input stays 203 pixels wide; at 320 the button wraps under it. Lint and screen check pass.",
+     "fix": "Add to patterns.md: \"A search that finds nothing: keep the h1 'Search results'; under the search form show an info message with role=\\\"status\\\" that repeats the words searched for in a span with data-user-content and says what to try: 'Nothing found for …. Check the spelling or use fewer words.'\" Add to layout.md: \"A field never goes in an sv-row; put its button under it in the stack.\" Say in field.md what a search box is: a field with type=\"search\" and a visible label."
+    },
+    {
+     "severity": "major",
+     "where": "docs/patterns.md (no pattern for a failed payment); AGENTS.md line 63",
+     "problem": "Part 2, a payment that failed on the result page: the notes give the tone, the role and one sentence. A builder must guess the h1 and title, whether the way back is a quiet \"Try again\" link or a new primary Pay, whether the cost summary stays, what to say when we do not know if money was taken, and how to word a card the bank declined.",
+     "evidence": "Only AGENTS.md:63, patterns.md:54 and error-summary.md:41 mention payment. My probe page passed lint and all 6 states with a quiet \"Try again\" link, and would equally have passed with a second Pay form.",
+     "fix": "Add \"After a failed payment\" to patterns.md: \"The h1 is 'Payment not taken'. Under it a danger message with role=\\\"alert\\\" says what happened and, only if the payment service told us, 'You have not been charged.' If we do not know: 'We don't know yet whether you were charged. Check with your bank before you try again.' If the bank declined the card: 'Your bank declined this card. Use another card or contact your bank.' Keep the cost summary. The way back is a secondary link, 'Return to checkout', which keeps what was typed; this page has no primary button.\""
+    },
+    {
+     "severity": "major",
+     "where": "git commit 3d19b15 (HEAD), \"Screenshots of checkout and assistant in blue and in teal\"",
+     "problem": "Part 4. The commit also removed the five built UI SDK files from the repository and added a reviewer's scratch file, neither mentioned in its message. The spec says dist/ is committed. Cause: the commit staged everything while a check run was rebuilding dist/ui-sdk. The scratch file is mine: I wrote scripts/.tmp-check-out.txt outside my scratch folder for the length of one command, in error, and it was swept in before I moved it.",
+     "evidence": "`git show --stat 3d19b15` lists dist/ui-sdk/all.js, button.js, checkbox.js, field.js, select.js as deleted and scripts/.tmp-check-out.txt as added (90 lines). `git status` now shows `?? dist/ui-sdk/` and ` D scripts/.tmp-check-out.txt`. scripts/build.mjs:93 removes dist/ui-sdk before rebuilding it. I changed nothing in git.",
+     "fix": "One commit that restores dist/ui-sdk/*.js and removes scripts/.tmp-check-out.txt. Stage named paths, never everything, while reviewers are running. Have build.mjs write to a temporary folder and rename, so a half-built dist is never visible."
+    },
+    {
+     "severity": "major",
+     "where": "PROGRESS.md lines 73-77; scorecard.md lines 5 and 9; gates/raw/2026-11-15-size.json at HEAD; DECISIONS.md line 136",
+     "problem": "Part 4. Records are stale against the repository. PROGRESS: V.5 is \"next\" though two commits record the agent test; \"130 tokens\" (now 144); \"largest script 895\" (now 910); \"all CSS 4,459\" (now 4,809); \"16 screens\" (now 24). The \"Not met\" note gives the total row at 320 only; at 375 it also crosses 720. Scorecard still says \"nothing built yet\" and \"0 components exist\" above spend rows dated tonight. The committed size file says all CSS 4,792; the source at HEAD builds to 4,809. A-16 point 2 still says \"No figure exists yet for an app that bundles the packages\", though D-015 promises the figure goes to the CEO and it now exists.",
+     "evidence": "`npm run check` today: field JS 910, all CSS 4,809, 24 screens x 6 states. Token count by script: 144 (54 primitive, 68 semantic, 22 component); 130 at cd01501. `git log -- PROGRESS.md` ends at bd07a4a. Measured in Chromium, screens/checkout.html: total row 688 to 772 at 320 (matches the record) and 640 to 724 at 375. explore/ui-sdk-trial/README.md and the size table hold the bundled figures (15,628 to 63,343 bytes).",
+     "fix": "Update the V.2 to V.5 rows from one fresh run and say which commit each number belongs to; rewrite the scorecard header and the components row; rerun size and commit its file; add the UI SDK figures to A-16 point 2; add 375 to the \"Not met\" line."
+    },
+    {
+     "severity": "major",
+     "where": "scripts/check-screens.mjs (screenFiles, OUT_JSON); docs/layout.md line 7; AGENTS.md \"Check your work\"",
+     "problem": "Parts 2 and 4. Two traps in the documented workflow. (a) layout.md's example path, screens/orders/list.html, is a folder the screen checker never visits: it reports nothing to check and exits 0, and `npm run check` passes without looking at the screen. (b) `--only`, which AGENTS.md tells every builder to run, overwrites gates/raw/2026-11-15-screens.json, the evidence file PROGRESS cites, with a partial result.",
+     "evidence": "`node scripts/check-screens.mjs --only orders/list` prints \"no screens to check ... nothing written\", exit 0. screenFiles() reads only screens/*.html and screens/agent-test/*.html, while the lint walks screens/ fully. OUT_JSON is the gate file whenever --dir is absent; the JSON carries `\"only\": ONLY`. The path and the digest folder also have today's date written into the code.",
+     "fix": "Walk screens/ recursively in the checker; exit non-zero when --only matches nothing. With --only, write to scripts/.tmp/ and leave the gate file alone. Take the date from the run, not the source."
+    },
+    {
+     "severity": "major",
+     "where": "scorecard.md \"Spend so far\"; gates/raw/2026-11-15-agent-test.md lines 12-13",
+     "problem": "Part 4. Stronger than the evidence: no run report in the repository holds any of the model-token figures, and neither test agent's own report is saved, so \"112,142\", \"118,834\", \"Places it said it guessed: 16 | 12, all smaller\" and \"allowed to read only AGENTS.md and the notes\" cannot be checked. Phase 2's own criterion 10 requires every number to point to saved output.",
+     "evidence": "`grep -rl \"112,142\\|118,834\\|346,132\\|610,170\\|1,284,424\\|425,399\"` over the repository finds only scorecard.md and the write-up. gates/raw/agent-test-run-2/ holds first-run.txt alone; the three 15 November JSON files hold no token counts and no guess lists.",
+     "fix": "Save each agent's returned report and the tool's usage line under gates/raw/agent-test-run-N/, and the brief each agent was given. Until then mark those cells \"as reported by the tool; not saved\"."
+    },
+    {
+     "severity": "major",
+     "where": "briefs/v0.2-build-spec.md lines 118, 129, 139; AGENTS.md line 3",
+     "problem": "Part 4. Statements written ahead of the fact. The spec dates its three change lists 01:00, 03:00 and 04:00; the file was last saved at 03:04, so \"After the agent test (15 November, 04:00)\" names a time that had not come, and the other two are about an hour off the commits. AGENTS.md says version 0.2 \"has had one review\"; it was committed at 03:08, before any review of 0.2.",
+     "evidence": "`ls -la briefs` shows v0.2-build-spec.md at Nov 15 03:04; `date` during this review: 03:13 PST. Commits: foundations 02:06, screens 02:51, agent test 03:05 and 03:08. The only earlier review, gates/raw/2026-11-14-visual-directions-review.md, is of the prototypes.",
+     "fix": "Replace the three times with the commit each list followed. Change AGENTS.md to \"It has not yet been reviewed\" until this review is recorded."
+    },
+    {
+     "severity": "major",
+     "where": "DECISIONS.md D-015 against the CEO's five points",
+     "problem": "Part 5. (1) Partly: built on Instrument; the warning was fixed in the first commit of the night and is ink text on an amber tab in 0.2; three rationale notes kept; Ledger and Signal code still present, as instructed, but no item schedules its removal; the reading of \"Ledger's plain words\" is called a morning question yet is not under Awaiting CEO. (2) Done: one file, OKLCH, neutrals at hue 250, one accent token re-pointed for teal, light and dark, 12 accent screenshots; both themes are written by hand in the file, not derived from the accent. (3) Partly: ten parts, three custom elements at 513, 756 and 910 bytes against 5,120; UI SDK measured for four parts and used in none. (4) Partly: lint clean, 144 screenshots, 0 findings; but the screens break rules 9 and 10 and fake progress (above); of the last reviewer's checks, the total row inside the first 720 pixels is not met at 320 or 375, and \"error not by colour alone\" and \"warning not the quietest\" have no automated check. (5) Done: AGENTS.md, ten notes, two runs, system changed; four gaps left open are listed only in the write-up. Missing: any shipped use of UI SDK; screens/index.html, which the spec lists.",
+     "evidence": "git log (da4aa05 01:43 touches instrument/assistant.html); tokens/souvenir.tokens.json (hue 250 on all 15 neutrals; accent blue and teal); dist/tokens.css:163; size table; `grep -c ui-sdk dist/souvenir.js` = 0; `ls screens/index.html` fails; earlier review items I1 to I6 and L1; D-015 gives a paraphrase and omits \"warning first\", \"cool neutrals\", \"UI SDK where it helps\", \"5 kilobytes\", \"the checks the last reviewer ran\".",
+     "fix": "Record the instruction in D-015 in the CEO's own words. Put under Awaiting CEO: UI SDK is in no part, with the figures; the reading of \"Ledger's plain words\"; whether \"generated\" meant derived. Add a work item to remove the Ledger and Signal code once 0.2 is accepted, and build screens/index.html so the CEO can open every screen from one page."
+    },
+    {
+     "severity": "minor",
+     "where": "screens/assistant.html lines 22, 42, 47-48 and the info message; screens/checkout-result.html:17; screens/assistant-done.html success message",
+     "problem": "Part 6. Strings that do not follow, or fall outside, the Words rules. (a) Dates: the proposal shows \"Wednesday, 3:00 pm\" and \"Thursday, 3:00 pm\" with no date, so the person approves a move without seeing which Thursday; the rule is Dates as \"12 November\". (b) One speaker, three persons in one turn: \"We couldn't reach your calendar\", \"the change I will make\", \"Souvenir has not changed anything yet\". (c) Two time formats in one turn: \"3pm\" and \"3:00 pm\"; no rule covers times. (d) \"Full sentences\": \"Order placed.\", \"Receipt sent to …\", \"Event moved. Message sent to Priya.\", \"Drafted by Souvenir.\" are not, and they are the notes' own examples. (e) \"Try again.\" in the calendar failure has no control to try with. Everything else passed: no exclamation mark, please, sorry or oops; every button has two or more words except Cancel; every amount has its sign and two decimals; every field error says what to do.",
+     "evidence": "Script over the visible text of all 24 screens: 0 hits for banned words, one-word labels or amounts without two decimals. Lines quoted from the files above. Chromium: the danger message in assistant.html holds no link or button.",
+     "fix": "Show \"Thursday 19 November, 3:00 pm\" in From and To. Add to Words: \"In a conversation Souvenir says 'I'; 'we' is for failures of the service; never name Souvenir in its own turn.\" \"Times as '3:00 pm'.\" \"A result may be a short past phrase with a full stop: 'Event moved.'\" Give the failed turn a quiet link, or drop \"Try again\"."
+    },
+    {
+     "severity": "minor",
+     "where": "docs/components/*.md and AGENTS.md against dist/souvenir.css and dist/souvenir.js",
+     "problem": "Part 1, the two lists. In the notes but not in the stylesheet: elements `sv-button` and `sv-field`; attributes `data-busy-label`, `data-error-required`, `data-error-type`, `data-error-pattern`; events `sv-field-invalid`, `sv-field-valid`. All eight exist in dist/souvenir.js, so none is invented, but the lint checks none of them: a misspelt `data-error-requird` or an invented `<sv-dialog>` passes. A field with `minlength`, `min` or `max` has no message attribute and falls back to the browser's text, which in Chromium begins \"Please\", a banned word. In the stylesheet but in no note: nothing (all 40 classes, 12 option attributes and every value are described; `data-gap=\"3\"` and `data-theme=\"dark\"` appear in a table and a sentence, never as written markup).",
+     "evidence": "My cross-check script: 40 classes, element selector sv-error-summary, attributes data-theme, data-accent, data-layout, data-width, data-gap, data-align, data-variant, data-from, data-user-content, data-state, data-row, data-length, data-surface, data-tone. field.js reads only errorRequired, errorType, errorPattern. lint.mjs CHECKED_DATA lists 11 attributes, none of the script ones.",
+     "fix": "Have the lint read the registered element names and script attributes from dist/souvenir.js (or a small manifest the build writes) and reject others. Add `data-error-too-short`, `-too-long`, `-range` to sv-field, or say in field.md that those rules must not be used."
+    },
+    {
+     "severity": "minor",
+     "where": "AGENTS.md lines 18 and 31; docs/components/proposal.md:60; select.md example; scripts/check-screens.mjs",
+     "problem": "Small things that would trip a reader or a later run. Rule 1's \"Only classes and elements that begin sv-\" reads as banning `<p>`. The parts table says a list row has \"amount, status or action at the end\"; layout.md says only the amount goes in the trail. proposal.md cites \"Voice rule 13 (a LOCK)\", a file the builder is told not to need. The select example's aria-describedby omits the error id, so with no script the error is not tied to the control. The screen rule page-load is in no self-test. 27 screenshots change on every run (pages with the turning mark, and checkout-errors), so git shows churn after each check. AGENTS.md's Words list is shorter than charter/voice-and-tone.md rule 6 (\"just\", \"simply\", \"valid\").",
+     "evidence": "Lines quoted from the files. `git status` after one `npm run check`: 27 modified PNGs under digests/2026-11-15/screens/, among them assistant-*, demo-button-*, demo-status-*, demo-proposal-*. check-screens self-test: \"15 of 15 rules\" while the code can report 16.",
+     "fix": "Reword rule 1: \"Ordinary HTML elements are fine; a class or a custom element must begin sv-.\" Reword the table row: \"an amount at the end; a status or an action under the details\". Replace the voice-rule reference with the sentence itself. Add the error id to the select example. Add a page-load fixture. Pause animations before a screenshot."
+    },
+    {
+     "severity": "minor",
+     "where": "Judgment, not measured: the notes as a whole",
+     "problem": "Taste, clearly labelled. The notes are short and read well, but they teach by one example each, and the examples are all checkout or calendar. For the seven jobs I tried, the parts were nearly always enough and the page-level decisions were not: which action is primary, where a lone link goes, what a long list does to a page, what prose looks like. The system is stronger on parts than on pages. I would spend the next hour on five more patterns in docs/patterns.md (sign in, search, failed payment, alternatives, long list) before adding any component.",
+     "evidence": "The seven probe pages: all ten passed the lint except the two-primary one, and the checks failed only the lone link, the bare radio and `<small>`; every other guess I made went unchallenged.",
+     "fix": "Add the five patterns with the sentences given in the findings above, each with a pattern-*.html screen that the checks run."
+    }
+   ],
+   "good": [
+    "The two-way cross-check is clean where it matters: all 40 classes, every option attribute and every value in dist/souvenir.css is described in a note, and nothing in the notes is invented; every number in the notes I checked against the tokens matches (34rem, 64rem, gaps 8/12/16/20/32, 24/20/16 pixel headings, 28 pixel long total, 800 ms turn).",
+    "The agent-test write-up is honest about its limits and matches the saved screens: run 1's busy \"Being prepared\", warning \"Cancelled\", one-press delete and \"you have not been charged\" are all in gates/raw/agent-test-run-1/, run 2's corrections are all in screens/agent-test/, and both first-run.txt files show 0 lint findings and 0 screen findings (24 and 36 states).",
+    "`npm run check` reproduces: exit 0, lint 0 findings over 49 files, 24 screens in 6 states with 0 findings, no-script checkout 0 failures, every component inside its budget; the lint and screen self-tests prove 24 and 15 rules failing on fixtures.",
+    "PROGRESS.md reports its own miss (the total row at 320 runs 688 to 772, measured the same by me) and explore/ui-sdk-trial/README.md's figures check out (15,628 to 63,343 bytes alone, 74,857 together, glue 211 bytes, arithmetic of the shares).",
+    "The interface strings on the real screens are clean against the mechanical Words rules: no exclamation marks or banned words, verb-plus-object buttons, errors that say what to do, amounts with sign and two decimals, and the same error wording in the summary and beside the field."
+   ],
+   "not_checked": [
+    "The CEO's instruction in the CEO's own words: the repository holds only D-015's paraphrase, so part 5 compares against the summary given in my task.",
+    "The model-token figures in scorecard.md and the agent-test write-up, the guess counts (16 and 12), which model each test agent was, and whether it really saw only the notes: no run report or agent report is saved.",
+    "The UI SDK 'share' figures (bundles of three parts are not built); I verified the alone sizes, the total, the arithmetic and the glue size only.",
+    "Likeness of 0.2 to the Instrument prototype: I opened three real screenshots (checkout 320 light, assistant 320 dark, assistant-done 375 light) and three of my probes, not all 144.",
+    "Screen readers, real devices, forced colours, hover and pressed states, and the token colour values themselves (another lens); I noted only that on-solid on success is 4.08 to 1 under a 3 to 1 rule.",
+    "Words on the demo-*.html pages beyond the mechanical scan.",
+    "Side effects of my run, left as they are: `npm run check` rewrote the tracked files gates/raw/2026-11-15-screens.json, gates/raw/2026-11-15-size.json and 27 screenshots; another reviewer's scratch folder (scripts/.tmp/system) was active at the same time, so runs may have overlapped."
+   ]
+  }
+ ],
+ "missing": []
+}

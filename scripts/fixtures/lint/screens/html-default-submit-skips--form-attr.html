@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lint fixture</title>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page">
+  <h1>Owned through the form attribute</h1>
+  <!-- The first button inside the form belongs to the pay form through form="pay", and it skips validation. -->
+  <form id="pay" method="get" action="result.html">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email">
+  </form>
+  <form id="other" method="get" action="other.html">
+    <button type="submit" class="sv-button" form="pay" formnovalidate>Skip</button>
+    <button type="submit" class="sv-button">Other</button>
+  </form>
+  <button type="submit" class="sv-button" form="pay">Pay</button>
+</main>
+</body>
+</html>

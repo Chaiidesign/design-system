@@ -12,12 +12,12 @@
 <main class="sv-page sv-stack" data-gap="6">
   <h1>Order placed</h1>
 
-  <div class="sv-message" data-tone="success" role="status">
+  <div class="sv-message" data-tone="success" role="status" id="result" tabindex="-1">
     <span class="sv-message__mark" aria-hidden="true"></span>
-    <p>Order placed. Receipt sent to sam@example.com.</p>
+    <p>Receipt sent to the email address you gave.</p>
   </div>
 
-  <div class="sv-message" data-tone="info" role="note">
+  <div class="sv-message" data-tone="info">
     <span class="sv-message__mark" aria-hidden="true"></span>
     <p>This is a test page. Nothing will be charged.</p>
   </div>
@@ -31,8 +31,6 @@
       <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£60.75<p class="sv-cost-summary__note">Includes £10.13 VAT</p></dd></div>
     </dl>
   </section>
-
-  <p><a class="sv-button" data-variant="quiet" href="checkout.html">Back to checkout</a></p>
 </main>
 </body>
 </html>

@@ -1,6 +1,8 @@
 /* cost-summary: the inverse display. Terms wrap only between words; amounts never wrap and sit
-   on the inline-end edge in tabular figures. When a term and its amount cannot share a line,
-   the amount moves below the term, still at the end. The total is the largest reading on the page. */
+   on the inline-end edge in tabular figures, in their own direction (a minus stays in front in
+   right-to-left). When a term and its amount cannot share a line, the amount moves below the term,
+   still at the end. The total is the largest reading on the page and never leaves the display:
+   its size follows the display's width between a floor and its token, and as a last resort it breaks. */
 @layer sv.components {
   .sv-cost-summary {
     display: grid;
@@ -10,6 +12,7 @@
     background-color: var(--sv-cost-summary-surface);
     color: var(--sv-cost-summary-text);
     font-variant-numeric: tabular-nums;
+    container-type: inline-size;
   }
 
   .sv-cost-summary__row {
@@ -20,9 +23,12 @@
     padding-block: var(--sv-space-1);
   }
 
-  /* The term never shrinks below its longest word (min-inline-size stays auto). */
+  /* The term never shrinks below its longest word (min-inline-size stays auto), unless that word is
+     wider than the whole row (text enlarged): then it breaks inside the word rather than spill. */
   .sv-cost-summary__row > dt {
     flex: 1 1 0;
+    max-inline-size: 100%;
+    overflow-wrap: break-word;
   }
 
   .sv-cost-summary__row > dd {
@@ -30,6 +36,7 @@
     margin-inline-start: auto;
     text-align: end;
     white-space: nowrap;
+    unicode-bidi: plaintext;
   }
 
   .sv-cost-summary__row[data-state="unknown"] > dt {
@@ -52,12 +59,16 @@
   }
 
   .sv-cost-summary__row[data-row="total"] > dd {
-    font-size: var(--sv-cost-summary-total-size);
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    font-size: clamp(var(--sv-font-size-lead), 14cqi, var(--sv-cost-summary-total-size));
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
-  /* A total of more than nine characters steps down one size so it fits a phone-width display. */
+  /* A total of more than nine characters starts from a smaller size and floor. */
   .sv-cost-summary__row[data-row="total"][data-length="long"] > dd {
-    font-size: var(--sv-cost-summary-total-size-long);
+    font-size: clamp(var(--sv-font-size-body), 11cqi, var(--sv-cost-summary-total-size-long));
   }
 
   .sv-cost-summary__note {

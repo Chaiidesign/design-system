@@ -1,0 +1,80 @@
+The screens are built and both checks pass after one small edit of my own. The first run of both checks found nothing: 0 lint findings and 0 screen-check findings (6 screens x 6 states). The two things I changed afterwards were design choices, not check fixes.
+
+Output is in screens/agent-test/ (under the repository root, /Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be): orders.html, orders-empty.html, orders-error.html, settings.html, settings-saved.html, delete-account.html (the extra page), first-run.txt.
+
+1. FILES READ, in order
+- AGENTS.md
+- A directory listing of docs/components/ (to get the file names)
+- docs/layout.md
+- docs/patterns.md
+- docs/components/button.md, field.md, select.md, checkbox.md, message.md, status.md, error-summary.md
+- I did not read cost-summary.md, chat-message.md or proposal.md. Nothing I built needed them.
+- I read layout.md and patterns.md in one command, and the seven component notes in a second. I didn't read anything else and ran no searches.
+
+2. PARTS USED, BY SCREEN
+- **orders.html:** `sv-page`, `sv-stack`, and `sv-list` with six items.
+  - Each item has an order-number link as the title, one detail line "Placed 9 November · 2 items", a status line, and the total in the trail. This follows the "one order, with all five" example in layout.md.
+  - Statuses use `sv-status`: delivered is success, on its way, being prepared and cancelled are info, payment failed is danger.
+  - The failed order has "Fix payment" as a secondary `a.sv-button` with a visually-hidden " for order 10419".
+  - One order is dated "3 December 2025" to exercise the year rule.
+- **orders-empty.html:** an `info` message with a quiet "Start shopping" link, copied from patterns.md.
+- **orders-error.html:** a `danger` message with `role="alert"` and a quiet "Try again" link.
+  - The wording is "We couldn't load your orders." It says nothing about charges, as patterns.md requires.
+- **settings.html:** one real `<form>` (action and method) with three sections, then a delete section outside the form.
+  - Name and email are `sv-field` text and email inputs. Email has a hint.
+  - Language is a select with English preselected, not required, and `lang` attributes on the French, German and Japanese options.
+  - The three notification choices are checkboxes in a `role="group"` named by the Notifications h2.
+  - "Save changes" is the only primary button.
+  - A hidden `sv-error-summary` sits above the form.
+  - "Delete account" is a secondary link to a separate page.
+- **settings-saved.html:** the same page with a `success` message (`role="status"`) directly under the h1.
+- **delete-account.html:** copied from the patterns.md pattern. It has an h1 question, a `warning` message, a primary "Delete my account" submit button and a secondary "Keep my account" link.
+
+3. HESITATIONS AND GUESSES
+- **Language: heading or label?** I first wrote an h2 "Language" over a field labelled "Language", which repeated itself in the screenshot. I moved the select into "Your details" and dropped the extra heading. The docs don't say whether a lone field needs a section heading.
+- **Should the settings form use the error summary?** error-summary.md says it lists "every field's error" after a failed submit, so I included it, hidden. Nothing says whether it is required on a two-field form, or how a server-rendered settings page should show a failed save.
+- **`data-user-content` (rule 9).** The name and email values are words a person typed. They sit in input values, where an attribute on an element makes no sense. I did not add the attribute. The rule doesn't say whether it applies to values shown in inputs, or to the name if it were displayed as text.
+- **Hint wording.** I wrote "We'll send order updates here" with no full stop, per field.md. The name field has no hint because it needed none.
+- **Which order is "the failed one", and where it sits.** The docs say nothing on ordering. I sorted newest first and put the failed order third.
+- **Order links.** Titles link to `/orders/10431` style paths that don't exist, as in the layout.md example. I used a relative `delete-account.html` link for the delete flow so it works from the file system. This is inconsistent, and the docs don't say which style to use for screens.
+- **Cancelled status.** status.md says cancelled is `info`. That was clear and I followed it.
+- **Notification labels.** checkbox.md says a label states what checking it means. I chose "Email me updates about my orders", "Text me updates about my orders" and "Email me news and offers". The docs have no wording rule for opt-in marketing boxes beyond "never a box ticked for the person" (I left it unticked).
+- **Delete section wording.** I added a short explanatory paragraph in the settings page's delete section ("Deleting your account removes your details and your order history. It cannot be undone."). patterns.md only shows the link, not whether to add text beside it. The paragraph is bare text in a stack, which I assumed was allowed.
+- **Delete page.** The list of what is lost ("name, email address, notification choices, record of orders") is invented. The docs show a different example list, so I couldn't tell how literal to be.
+- **Title tags.** The skeleton shows `<title>Checkout</title>`. I used the page's h1 text. The docs don't say how titles should differ across the states of the same page. orders-empty and orders-error share the title "Your orders".
+- **Error wording on the failed-load page.** I first added "Try again in a moment." beside the Try again link. It repeated the link, so I removed it.
+
+4. WHAT I NEEDED THAT DOESN'T EXIST
+- **Navigation:** no way back to the orders page from settings, or to settings from orders. I used nothing.
+- **A link from an order row to settings or elsewhere:** not needed in the end.
+- **A "Back to account" link on delete-account.html:** I used the "Keep my account" link, as in the pattern.
+- **A visible way to separate the delete section from the form:** I used an h2 heading and a sentence. A distinct "danger zone" treatment doesn't exist and I didn't fake one.
+- **An order detail page and a fix-payment page:** I didn't build them. The links point at paths from the layout.md example. The brief only asked for the delete page.
+
+5. FIRST RUN OF THE CHECKS (saved in screens/agent-test/first-run.txt)
+- Lint: 49 files, 0 findings.
+- Screen check: 6 screens x 6 states (320, 375 and 1280, light and dark), 0 findings.
+- There was nothing to fix. The two edits I made afterwards (merging the language section, trimming the error text) were my own design choices, and both checks still show 0 findings.
+- The "exit:" lines in first-run.txt show `$?` of the command, which is 0 for both.
+
+6. WHAT STILL FAILS
+- Nothing. Both checks find nothing.
+- I looked at the screenshots: orders at 375 light, settings at 375 light and settings at 1280 light. I did not view the other states, so I can't vouch for dark mode or the empty, error and saved screens beyond the checks passing.
+- The delete link and the "Fix payment" link look fine. The "Delete account" link stretches to full width inside the section, which I didn't expect. The docs don't say whether that is intended.
+
+7. DOC PROBLEMS
+- field.md says "Optional: write '(optional)' at the end of the label text". Nothing marks required fields. I assumed required was the default and did the same on both settings fields.
+- AGENTS.md says the checks enforce rule 7 (visible labels) and rule 6, but doesn't say whether a `role="group"` checkbox group needs its heading inside the form or can sit outside. I kept it inside.
+- The language select example in select.md has no `sv-field` wrapper, while the earlier example says "Wrap it in `sv-field`". The two examples on the same page disagree, and I followed the second (a plain `div.sv-field`). The lint accepted it.
+- patterns.md says to show "the same page again" after a save, with the message "directly under the h1". It doesn't say whether the message should reflect what changed.
+- layout.md's skeleton shows paths for a file directly in `screens/`, and the text explains the extra `../`. That was clear, but the code block is for one depth only and I had to adapt it.
+- docs/layout.md says `sv-list` titles are "a link when the row opens a page of its own". It doesn't say the link text should be unique across rows, so "Order 10431" as link text is fine, but I wasn't sure.
+
+8. REREADS
+- About 3 lookups of AGENTS.md rules (button and link rules, wording rules, rule 9).
+- About 2 lookups in docs/patterns.md (delete page markup, save message).
+- About 2 lookups in docs/layout.md (the row example).
+- About 1 lookup in docs/components/select.md.
+
+---
+Usage as the tool reported it when the agent finished: 118,834 model tokens, 12 tool uses, 108 seconds. This line was copied by the lead from the tool's notice; the notice itself is not saved.

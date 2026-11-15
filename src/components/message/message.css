@@ -1,5 +1,6 @@
 /* message: a plate with a solid tab down its whole leading edge. The tab carries the tone's
-   colour and the tone's own mark; the text beside it is always ink, never softer than the page. */
+   colour and the tone's own mark; the text beside it is always ink, never softer than the page.
+   In a narrow place with text enlarged, a word wider than the plate breaks rather than spill. */
 @layer sv.components {
   .sv-message {
     position: relative;
@@ -13,6 +14,7 @@
     border-radius: var(--sv-radius-control);
     background-color: var(--sv-color-panel);
     color: var(--sv-color-text);
+    overflow-wrap: anywhere;
   }
 
   /* On a panel the plate takes the well colour, so it stays a plate. */

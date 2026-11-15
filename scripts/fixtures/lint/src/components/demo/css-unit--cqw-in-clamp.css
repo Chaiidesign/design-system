@@ -1,0 +1,4 @@
+/* only cqi, the inline axis, is allowed */
+@layer sv.components {
+  .sv-demo { font-size: clamp(var(--sv-font-size-body), 10cqw, var(--sv-font-size-display)); }
+}
