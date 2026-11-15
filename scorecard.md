@@ -37,6 +37,7 @@ The tools report model tokens per run, not per model tier, so a split by tier is
 | Version 0.2 system fixes and screens: 3 Opus builders | 3 | 610,170 |
 | Agent test, run 1: 1 Sonnet agent with the published notes only | 1 | 112,142 |
 | Fixes from the agent test: 2 Opus builders | 2 | 346,132 |
+| Agent test, run 2: 1 Sonnet agent | 1 | 118,834 |
 
 The lead's own tokens are not reported to it and are not included. These figures are copied from the tool's run reports; the reviewers' returned verdicts are saved in `gates/`.
 
