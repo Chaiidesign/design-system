@@ -68,11 +68,11 @@
       </div>
     </form>
 
-    <ul class="sv-row" aria-label="Suggestions">
-      <li><button type="button" class="sv-button" data-variant="secondary">Show my week</button></li>
-      <li><button type="button" class="sv-button" data-variant="secondary">Draft a reply</button></li>
-      <li><button type="button" class="sv-button" data-variant="secondary">Find a free hour</button></li>
-    </ul>
+    <form class="sv-row" action="assistant.html" method="get" aria-label="Suggestions">
+      <button type="submit" class="sv-button" data-variant="secondary" name="message" value="Show my week">Show my week</button>
+      <button type="submit" class="sv-button" data-variant="secondary" name="message" value="Draft a reply">Draft a reply</button>
+      <button type="submit" class="sv-button" data-variant="secondary" name="message" value="Find a free hour">Find a free hour</button>
+    </form>
   </div>
 </main>
 </body>

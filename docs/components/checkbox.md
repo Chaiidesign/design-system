@@ -9,10 +9,11 @@ One yes-or-no choice the person makes, such as agreeing to terms or keeping a se
 </label>
 ```
 
-Several related boxes go in a group with a name:
+Several related boxes go in a group named by a visible heading: `role="group"` with `aria-labelledby` pointing at the heading's `id`. Use `aria-label` only when the group has no visible heading.
 
 ```html
-<div class="sv-stack" data-gap="2" role="group" aria-label="Delivery options">
+<h2 id="delivery-options">Delivery options</h2>
+<div class="sv-stack" data-gap="2" role="group" aria-labelledby="delivery-options">
   <label class="sv-checkbox">
     <input type="checkbox" name="safe-place">
     <span class="sv-checkbox__label">Leave the parcel in a safe place</span>

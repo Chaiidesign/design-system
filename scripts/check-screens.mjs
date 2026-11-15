@@ -19,6 +19,12 @@
 //   word-break                 a word broken across lines (outside [data-user-content], CJK ignored)
 //   cost-total-largest         on a page with .sv-cost-summary, the total's dd is not the largest text
 //   missing-speaker-label      a visible .sv-chat-message without a visible .sv-chat-message__from that has text
+//   overflow-inside-part       visible text (measured word by word with a Range) reaching more than 1 pixel beyond, on the
+//                              inline axis, the border box of an ancestor with an sv- class that is not scrollable
+//                              (overflow auto or scroll). Catches an amount spilling out of a part inside a panel, which
+//                              sideways-scroll does not see.
+//   many-accent-fills          on a page whose file name does not begin demo-, more than one visible element whose
+//                              computed background equals the computed --sv-color-accent on :root (AGENTS.md rule 4)
 // Also measured, with no pass or fail: the height of the tallest visible .sv-proposal ("proposal height" in the table,
 // proposalHeight in the JSON).
 // Screenshots: digests/2026-11-15/screens/<screen>-<width>-<theme>.png. Data: gates/raw/2026-11-15-screens.json.
@@ -39,7 +45,8 @@ const args = process.argv.slice(2);
 // --dir <folder inside the repo> checks that folder instead of screens/ and writes its output to scripts/.tmp/,
 // so the full run (screenshots and JSON) can be exercised without touching the real gate files.
 const DIR = args.includes("--dir") ? args[args.indexOf("--dir") + 1] : null;
-const TMP_OUT = join(REPO, "scripts", ".tmp", "check-screens-out");
+// --out <folder inside the repo> moves that --dir output elsewhere (default scripts/.tmp/check-screens-out).
+const TMP_OUT = args.includes("--out") ? resolve(REPO, args[args.indexOf("--out") + 1]) : join(REPO, "scripts", ".tmp", "check-screens-out");
 const SHOTS_DIR = DIR ? join(TMP_OUT, "screens") : join(REPO, "digests", "2026-11-15", "screens");
 const OUT_JSON = DIR ? join(TMP_OUT, "screens.json") : join(REPO, "gates", "raw", "2026-11-15-screens.json");
 const MAX_TAB_STOPS = 300;
@@ -294,6 +301,63 @@ const PAGE_LIB = String.raw`(() => {
     return { behind, fill, borders, appearanceAuto };
   }
 
+  // overflow-inside-part: text that spills out of an sv- part on the inline axis. Each visible text node is measured
+  // word by word (so hanging spaces at a line end do not count); its extent is then compared with the border box of
+  // every ancestor that has an sv- class and is not scrollable. Above an ancestor that clips (overflow not visible)
+  // only the part of the text inside that ancestor counts.
+  function overflowInsideParts() {
+    const worst = new Map();
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      if (!/\S/.test(n.data)) continue;
+      const el = n.parentElement;
+      if (!el || el.closest(SKIP_TEXT) || hidden(el)) continue;
+      const horizontal = getComputedStyle(el).writingMode.startsWith("horizontal");
+      let lo = Infinity, hi = -Infinity;
+      for (const m of n.data.matchAll(/\S+/g)) {
+        const r = document.createRange(); r.setStart(n, m.index); r.setEnd(n, m.index + m[0].length);
+        for (const x of r.getClientRects()) {
+          if (x.width <= 0 || x.height <= 0) continue;
+          lo = Math.min(lo, horizontal ? x.left : x.top); hi = Math.max(hi, horizontal ? x.right : x.bottom);
+        }
+      }
+      if (!(hi > lo)) continue;
+      for (let e = el; e && e !== document.documentElement; e = e.parentElement) {
+        const cs = getComputedStyle(e);
+        const b = e.getBoundingClientRect();
+        const start = horizontal ? b.left : b.top, end = horizontal ? b.right : b.bottom;
+        const ov = horizontal ? cs.overflowX : cs.overflowY;
+        const svClass = [...e.classList].find((c) => c.startsWith("sv-"));
+        if (svClass && !/(auto|scroll)/.test(ov)) {
+          const amount = Math.max(start - lo, hi - end);
+          if (amount > 1 && (!worst.has(e) || worst.get(e).amount < amount)) {
+            worst.set(e, { cls: svClass, where: describe(e), amount: Math.round(amount * 10) / 10, text: n.data.trim().replace(/\s+/g, " ").slice(0, 40) });
+          }
+        }
+        if (ov !== "visible") { lo = Math.max(lo, start); hi = Math.min(hi, end); if (!(hi > lo)) break; }
+      }
+    }
+    return [...worst.values()];
+  }
+
+  // many-accent-fills: visible elements whose computed background equals --sv-color-accent on :root.
+  // Skipped (null) when the page has no such token or it does not parse to an opaque colour.
+  function accentFills() {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue("--sv-color-accent").trim();
+    if (!raw) return null;
+    const a = rgba(raw);
+    if (a[3] < 0.999) return null;
+    const out = [];
+    for (const el of document.body.querySelectorAll("*")) {
+      const c = rgba(getComputedStyle(el).backgroundColor);
+      if (c[3] < 0.999 || [0, 1, 2].some((i) => Math.abs(c[i] - a[i]) > 1)) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width <= 0 || r.height <= 0 || hidden(el)) continue;
+      out.push({ where: describe(el), text: el.textContent.trim().replace(/\s+/g, " ").slice(0, 40) });
+    }
+    return { accent: a.slice(0, 3), elements: out };
+  }
+
   function measure() {
     const de = document.documentElement;
     const ts = texts();
@@ -329,6 +393,7 @@ const PAGE_LIB = String.raw`(() => {
     return {
       scroll: { scrollWidth: Math.max(de.scrollWidth, document.body.scrollWidth), clientWidth: de.clientWidth },
       texts: textRows, brokenWords: words, controls: ctrls, cost, chat, proposal,
+      partOverflow: overflowInsideParts(), accentFills: accentFills(),
     };
   }
 
@@ -406,6 +471,13 @@ async function checkState(browser, base, file, width, theme, shots) {
   for (const c of m.chat) {
     if (!c.from) add("missing-speaker-label", "chat message has no visible .sv-chat-message__from with text", c.where);
   }
+  for (const o of m.partOverflow) {
+    add("overflow-inside-part", `text "${o.text}" extends ${o.amount}px beyond the box of .${o.cls}`, o.where);
+  }
+  const demoPage = /^demo-/.test(posix(file).split("/").pop());
+  if (!demoPage && m.accentFills && m.accentFills.elements.length > 1) {
+    add("many-accent-fills", `${m.accentFills.elements.length} visible elements are filled with the accent rgb(${m.accentFills.accent}): ${m.accentFills.elements.map((e) => `${e.where} "${e.text}"`).join("; ")}`);
+  }
   if (m.cost) {
     if (!m.cost.totals.length) add("cost-total-largest", "page has .sv-cost-summary but no visible total row dd");
     for (const t of m.cost.totals) {
@@ -445,7 +517,7 @@ async function checkState(browser, base, file, width, theme, shots) {
     file: posix(file), width, theme, url,
     screenshot: shot ? posix(relative(REPO, shot)) : null,
     proposalHeight: m.proposal ? m.proposal.height : null,
-    measurements: { scroll: m.scroll, texts: m.texts, controls: m.controls, brokenWords: m.brokenWords, cost: m.cost, chat: m.chat, proposal: m.proposal, tabStops: stops },
+    measurements: { scroll: m.scroll, texts: m.texts, controls: m.controls, brokenWords: m.brokenWords, cost: m.cost, chat: m.chat, proposal: m.proposal, partOverflow: m.partOverflow, accentFills: m.accentFills, tabStops: stops },
     findings,
   };
 }
@@ -547,7 +619,7 @@ async function runSelfTest() {
     const example = mine.flatMap((r) => r.findings.map((f) => `${r.width} ${r.theme} ${f.rule} ${f.message}${f.where ? ` at ${f.where}` : ""}`));
     for (const e of (ok ? example.slice(0, 1) : example.slice(0, 12))) console.log(`      ${e}`);
   }
-  const RULES = ["page-error", "sideways-scroll", "text-too-small", "control-too-small", "control-too-short", "text-contrast", "control-boundary-contrast", "focus-outline", "focus-contrast", "focus-overlap", "word-break", "cost-total-largest", "missing-speaker-label"];
+  const RULES = ["page-error", "sideways-scroll", "text-too-small", "control-too-small", "control-too-short", "text-contrast", "control-boundary-contrast", "focus-outline", "focus-contrast", "focus-overlap", "word-break", "cost-total-largest", "missing-speaker-label", "overflow-inside-part", "many-accent-fills"];
   const never = RULES.filter((r) => !seen.has(r));
   if (never.length) { problems++; console.log(`FAIL  rules never seen failing: ${never.join(", ")}`); }
   console.log(`check-screens self-test: ${files.length} pages, ${seen.size} of ${RULES.length} rules seen failing, ${problems} problem${problems === 1 ? "" : "s"}`);

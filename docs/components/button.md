@@ -1,10 +1,12 @@
 # button
 
-Starts an action (`button.sv-button`) or goes somewhere that looks like an action (`a.sv-button`).
+Starts an action (`button.sv-button`) or goes somewhere that looks like an action (`a.sv-button`). A control that goes to another page is a link. A button that acts is `type="submit"` in a form; a `type="button"` does nothing without script, so use one only where a note names the script that acts on it.
 
 ```html
-<button type="button" class="sv-button" data-variant="secondary">Apply code</button>
-<a class="sv-button" data-variant="quiet" href="/basket">Back to basket</a>
+<form class="sv-row" action="/basket/code" method="post">
+  <button type="submit" class="sv-button" data-variant="secondary">Apply code</button>
+  <a class="sv-button" data-variant="quiet" href="/basket">Back to basket</a>
+</form>
 ```
 
 The one submit button that commits money or sends something goes inside `sv-button`, with the label it shows while busy:

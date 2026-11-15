@@ -28,7 +28,20 @@ It is always the control of a field. Wrap it in `sv-field` so label, hint and er
 
 Both classes are needed: `sv-field__control` gives the shared field look, `sv-select` the chevron and its room. The select sets its own height, edge and colours too, so it keeps its shape if the field styles are missing. The chevron follows the text direction.
 
-A required select starts on an empty option ("Choose a country"), so nobody submits a choice they did not make. The first option says what to choose.
+A required select starts on an empty option ("Choose a country"), so nobody submits a choice they did not make. The first option says what to choose. A choice that always has a sensible value, such as the language of a page the person already reads or a country you already know, starts on that value with `selected` and is not `required`.
+
+An option written in another language takes a `lang` attribute, and this is allowed; a screen reader then says it in that language:
+
+```html
+<div class="sv-field">
+  <label class="sv-field__label" for="language">Language</label>
+  <select class="sv-field__control sv-select" id="language" name="language">
+    <option value="en" selected>English</option>
+    <option value="fr" lang="fr">Français</option>
+    <option value="ja" lang="ja">日本語</option>
+  </select>
+</div>
+```
 
 Never use it for: more than about 15 options or a list the person must search (use a text field), two or three options that all fit on screen (use radios), or a choice that starts an action at once (use buttons).
 
@@ -37,6 +50,7 @@ Never use it for: more than about 15 options or a list the person must search (u
 Don't preselect a real option on a required choice. The person can submit without ever looking at it, and the error never fires.
 
 ```html
+<label class="sv-field__label" for="size">Size</label>
 <select class="sv-field__control sv-select" id="size" name="size" required>
   <option selected>Medium</option>
   <option>Large</option>

@@ -200,7 +200,7 @@ ul {
   min-block-size: var(--sv-size-control);
 }
 
-.sv-list__item:has(.sv-list__trail button) {
+.sv-list__item:has(.sv-list__trail .sv-button) {
   align-items: center;
 }
 
@@ -213,6 +213,16 @@ ul {
 
 .sv-list__detail {
   color: var(--sv-color-text-soft);
+}
+
+/* A status line stands a little apart from the text lines above it;
+   an action for the row, last in the main part, stands further apart. */
+.sv-list__detail:has(> .sv-status) {
+  margin-block-start: var(--sv-space-1);
+}
+
+.sv-list__main > .sv-button {
+  margin-block-start: var(--sv-space-3);
 }
 
 .sv-list__trail {

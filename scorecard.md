@@ -35,6 +35,8 @@ The tools report model tokens per run, not per model tier, so a split by tier is
 | Version 0.2 foundations: 2 Opus builders | 2 | 425,399 |
 | Version 0.2 components and UI SDK measurement: 6 Opus builders | 6 | 1,284,424 |
 | Version 0.2 system fixes and screens: 3 Opus builders | 3 | 610,170 |
+| Agent test, run 1: 1 Sonnet agent with the published notes only | 1 | 112,142 |
+| Fixes from the agent test: 2 Opus builders | 2 | 346,132 |
 
 The lead's own tokens are not reported to it and are not included. These figures are copied from the tool's run reports; the reviewers' returned verdicts are saved in `gates/`.
 

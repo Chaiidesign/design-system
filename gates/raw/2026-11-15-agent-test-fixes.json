@@ -1,0 +1,184 @@
+{
+ "results": [
+  {
+   "part": "docs",
+   "verdict": "done with gaps",
+   "summary": "All nine decisions are now in the notes. docs/patterns.md is new, at 76 lines. I built screens/pattern-confirm.html and screens/pattern-states.html, and both pass the lint and all six screen states; I looked at both at 375 pixels, light and dark. base.css now spaces a row's status line 4 pixels and its action 12 pixels below the line above. I re-checked the agent's orders screen at 375 light and \"Fix payment\" no longer sits tight. Where the agent had to guess, I fixed the system, not its screens: in demo-list, demo-status, demo-message and demo-proposal, and in proposal.md and button.md as well as the two notes the brief named. The gap: lint exits 1 on one finding in field.md's \"Don't\" snippet. It comes from a rule the other builder is adding now, not from my edits. The lint never reads layout.md or patterns.md, so I checked their snippets with a scratch script instead.",
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: dist/souvenir.css from 13 files (38195 bytes; minified 26985)\nbuild: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs (first run)",
+     "exit_code": 1,
+     "last_lines": "docs/components/field.md:44 html-placeholder-label ...\ndocs/components/select.md:53 html-control-no-label <select id=\"size\"> has no label\nlint: 47 files (12 css, 22 html, 13 md), 2 findings"
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "all CSS dist/souvenir.min.css 26985 / 4792 gz / 12288 within\nsize: 19 rows, 0 over budget"
+    },
+    {
+     "command": "node scripts/lint.mjs (after adding a label to select.md's Don't)",
+     "exit_code": 1,
+     "last_lines": "docs/components/field.md:44 html-placeholder-label <input> has a placeholder; ...\nlint: 47 files (12 css, 22 html, 13 md), 1 finding"
+    },
+    {
+     "command": "node scripts/.tmp/docs/lint-docs.mjs (scratch: runs the lint's exported lintFile on docs/layout.md and docs/patterns.md; since deleted)",
+     "exit_code": 0,
+     "last_lines": "docs/layout.md: 6 html fences, 0 findings\ndocs/patterns.md: 5 html fences, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-list | tail -4  (and the same for demo-message, demo-proposal, demo-status, agent-test/orders.html; exit code shown is tail's)",
+     "exit_code": 0,
+     "last_lines": "each: 1 screens × 6 states, 0 findings (all pass at 320/375/1280, light and dark)"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only pattern-",
+     "exit_code": 0,
+     "last_lines": "screens/pattern-confirm.html pass x6\nscreens/pattern-states.html pass x6\ncheck-screens: 2 screens × 6 states, 0 findings"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/patterns.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/layout.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/status.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/message.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/button.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/proposal.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/checkbox.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/select.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/base/base.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/pattern-confirm.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/pattern-states.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-list.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-message.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-proposal.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-status.html"
+   ],
+   "changes": [
+    "D1: docs/layout.md now gives each part of a list row one place: title, details, a status on its own line in a p.sv-list__detail, a row action last in the main part, and the amount alone in the trail. The worked example is one order row (Order 10420, Payment failed, Fix payment, £15.99). The sv-list row in the classes table is rewritten to match.",
+    "D1 CSS: in base.css, .sv-list__detail:has(> .sv-status) gets a 4-pixel top margin (--sv-space-1), .sv-list__main > .sv-button gets a 12-pixel top margin (--sv-space-3), and the centring rule for a trail action now matches .sv-button, so it covers links as well as buttons. Total CSS is still within budget (4792 of 12288 bytes gzipped).",
+    "D2: status.md has a table of tone meanings with examples from more than one domain, and says that Cancelled is info and that a state lasting days is never busy. 'Shipped' is gone from its examples: now 'Delivered' (success) and 'On its way' (info).",
+    "D3 and D4: new docs/patterns.md (76 lines) covers the action that cannot be undone (the link on the first page plus the full confirmation page), the page after a save (role=status), the failed load (role=alert, link to try again, and a never-claim rule using the 'You have not been charged' example), the empty list (a link, not a button), a buttons-and-links section, and Words.",
+    "D3 and D4 screens: new screens/pattern-confirm.html (the confirmation page only, because a page has one h1) and screens/pattern-states.html (saved, empty and failed-to-load one under another, each under an h2). Their markup is the same as the patterns.md snippets.",
+    "D5: fixed in layout.md (the empty-list link), message.md (the danger example's button is now a 'Try again' link), button.md (the opening paragraph states the rule; 'Apply code' is a submit button in a form) and proposal.md (the actions element is now a form: the primary is a submit and a direct child, and 'Edit message' and 'Cancel' are links; the Don't follows the same pattern). demo-message and demo-proposal are changed to match their notes.",
+    "D6: layout.md says the two paths are relative to the file and shows the ../../dist/ form for a file one folder deeper.",
+    "D7: checkbox.md's group example now has a visible h2 and role=group with aria-labelledby, and says aria-label is only for a group with no visible heading.",
+    "D8: select.md says a choice that always has a sensible value starts on it with selected and is not required, and that an option in another language takes lang, which is allowed. There is a language example. The Don't snippet gained a label, so it breaks only the rule it is there to show.",
+    "D9: the Words section of patterns.md gives three lines: dates, contractions, and the middle-dot separator.",
+    "Demos brought in line with the decisions: demo-list orders now carry the amount in the trail, the status in the main part and the Fix payment link last; settings actions are links in the main part; the empty-list control is a link; middle dots throughout. demo-status list rows put the status in the main part, the busy 'Packing your order…' became info 'Being prepared', and 'Shipped' was replaced."
+   ],
+   "findings_in_existing_files": [
+    "docs/components/field.md:44: html-placeholder-label fires on the snippet in field.md's Don't section. The rule is new from the other builder's uncommitted lint.mjs change. The snippet shows a placeholder on purpose, so the lint now exits 1. I did not change it.",
+    "docs/components/select.md:53: html-control-no-label fired on the Don't snippet. I fixed it by adding a label, so that snippet now breaks only the rule it is there to show.",
+    "The lint walks only docs/components/*.md, never docs/layout.md or docs/patterns.md. I checked their 11 html fences with a scratch script that called the lint's exported lintFile; it found 0. A normal lint run does not cover them."
+   ],
+   "needs_from_lead": [
+    "The real screens, which I may not edit, now disagree with the notes. assistant.html lines 61-63 has the proposal actions as type=button buttons, and 87-89 has three type=button suggestion buttons with no script named. demo-chat-message.html 49-51 and demo-button.html also still use type=button; I left demo-button.html as is because it only shows the visual states.",
+    "I went one step past D1: layout.md and status.md now say that nothing but an amount goes in the trail, so a status always sits in the main part, even on a row with no amount. That way each part of a row has one place. If you want a status allowed in the trail when a row has no amount, it is one sentence to change.",
+    "check-screens --only overwrites gates/raw/2026-11-15-screens.json with only the screens it checked; the last run left just the two pattern screens. A full run is needed before that file is used as the gate.",
+    "AGENTS.md line 47 still has the failure example 'Nothing has changed. Try again.', and line 60 uses 'You have not been charged' on a payment-service failure. Under D4 that is only right when the service has told us so. AGENTS.md could point to docs/patterns.md for these."
+   ],
+   "not_exercised": [
+    "The full npm run check, including token checks, the no-script check and a check-screens run over every screen.",
+    "The real screens (checkout*, assistant*) were not re-run after the base.css change. The new rules only match a status inside a list detail line or a button that is a direct child of a list's main part, and the checkout lists hold only amounts, but this was not measured.",
+    "Screenshots at 320 and 1280 pixels for the pattern screens. The check passed there, but I looked only at 375, light and dark, plus demo-list at 375 light.",
+    "The patterns.md rule for a form that posts the proposal was not tested with the sv-button busy script."
+   ]
+  },
+  {
+   "part": "checks",
+   "verdict": "done",
+   "summary": "I added all ten checks, and both self-tests pass with every new rule seen failing on its fixture. The lint self-test now requires all 24 of its rules to be seen failing; before, any 12 were enough. The screen self-test now covers 15 rules. In existing files the lint found one problem: the placeholder in the \"Don't\" snippet in docs/components/field.md. I left it failing. The screen check found nothing in the 22 screens, agent-test included. The new accent measure reads the real token: it counts 5 accent fills on demo-button and 1 on checkout. A scratch page using the real CSS showed overflow-inside-part catching an amount that spills out of a cost summary in a panel. I did not rebuild dist, so the lint used the dist/souvenir.css already there.",
+   "commands": [
+    {
+     "command": "node scripts/lint.mjs --self-test",
+     "exit_code": 0,
+     "last_lines": "lint self-test: 70 fixtures, 24 rules seen failing, 0 problems"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --self-test",
+     "exit_code": 0,
+     "last_lines": "PASS many-accent-fills.html expect many-accent-fills; PASS overflow-inside-part.html expect overflow-inside-part; PASS demo-accent-fills.html expect nothing; PASS clean.html expect nothing\ncheck-screens self-test: 21 pages, 15 of 15 rules seen failing, 0 problems"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 1,
+     "last_lines": "docs/components/field.md:44 html-placeholder-label <input> has a placeholder; the system does not use placeholders, put the words in the label or a hint\nlint: 47 files (12 css, 22 html, 13 md), 1 finding"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --dir screens --no-shots --out scripts/.tmp/checks/out",
+     "exit_code": 0,
+     "last_lines": "check-screens: 22 screens × 6 states, 0 findings; data in scripts/.tmp/checks/out/screens.json (every row pass, screens/agent-test/* included)"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --dir scripts/.tmp/checks/probe --no-shots --out scripts/.tmp/checks/probe-out  (scratch probe page with a 17-character total in sv-cost-summary inside sv-panel, real dist/souvenir.css)",
+     "exit_code": 1,
+     "last_lines": "320 light overflow-inside-part text \"£12,345,678,901.23\" extends 137px beyond the box of .sv-cost-summary__row ... (also .sv-cost-summary, .sv-panel, .sv-page; plus sideways-scroll)"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/lint.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/check-screens.mjs",
+    "scripts/fixtures/lint/README.md",
+    "scripts/fixtures/lint/dist/souvenir.css (added the data-variant=\"secondary\" and data-length=\"long\" selectors)",
+    "scripts/fixtures/lint/AGENTS.md",
+    "scripts/fixtures/lint/docs/layout.md",
+    "scripts/fixtures/lint/docs/patterns.md",
+    "scripts/fixtures/lint/docs/components/clean-snippet-headings.md",
+    "scripts/fixtures/lint/docs/components/html-heading-order--snippet.md",
+    "scripts/fixtures/lint/docs/components/html-many-primary--snippet.md",
+    "scripts/fixtures/lint/docs/components/html-stylesheet--doctype.md",
+    "scripts/fixtures/lint/screens/clean-page-rules.html",
+    "scripts/fixtures/lint/screens/demo-many-primary.html",
+    "scripts/fixtures/lint/screens/html-button-no-type.html",
+    "scripts/fixtures/lint/screens/html-control-no-label.html",
+    "scripts/fixtures/lint/screens/html-control-no-label--select.html",
+    "scripts/fixtures/lint/screens/html-form-no-action.html",
+    "scripts/fixtures/lint/screens/html-form-no-action--method.html",
+    "scripts/fixtures/lint/screens/html-heading-order.html",
+    "scripts/fixtures/lint/screens/html-heading-order--two-h1.html",
+    "scripts/fixtures/lint/screens/html-heading-order--first.html",
+    "scripts/fixtures/lint/screens/html-many-primary.html",
+    "scripts/fixtures/lint/screens/html-placeholder-label.html",
+    "scripts/fixtures/lint/screens/html-placeholder-label--textarea.html",
+    "scripts/fixtures/lint/screens/html-unknown-value--length.html",
+    "scripts/fixtures/screens/overflow-inside-part.html",
+    "scripts/fixtures/screens/many-accent-fills.html",
+    "scripts/fixtures/screens/demo-accent-fills.html"
+   ],
+   "changes": [
+    "The lint's HTML parser now records each element's open ancestors, so it can tell when a control sits inside a <label>.",
+    "New lint rules, applied to screens and to the html code blocks in the notes: html-many-primary (any file whose name begins demo- is exempt; each code block in a note counts as its own page), html-form-no-action, html-button-no-type, html-control-no-label, html-heading-order and html-placeholder-label.",
+    "html-control-no-label collects every label for= value in the page first, so a label written after its control still counts. An empty aria-label or aria-labelledby counts as no label.",
+    "html-heading-order allows one h1 and never a jump of more than one level going deeper. A page whose first heading is not h1 fails; a code block that is a fragment is exempt from that part. A page with no headings produces nothing.",
+    "data-length added to the option attributes whose values must appear in a selector of the built CSS.",
+    "The lint now also reads the html code blocks in docs/layout.md, docs/patterns.md (when it exists) and AGENTS.md, as well as docs/components/*.md. A code block that begins <!doctype is linted as a whole page: the theme script is allowed, the stylesheet link is required, and links resolve as if the page were in screens/.",
+    "Lint self-test changes. It now fails unless all 24 named rules are seen failing; before, any 12 were enough. A fixture whose name begins demo- must produce nothing. Fixtures that must keep a fixed name state what they expect in a <!-- lint-expect: ... --> comment. Fixture AGENTS.md and docs/patterns.md fail, which proves those files are now linted. Fixture docs/layout.md is clean, which proves a whole page in a code block is accepted.",
+    "New screen check overflow-inside-part. It measures text word by word with a Range, so a trailing space at a line end does not count, and compares it with the border box of every ancestor with an sv- class that is not scrollable. Above an ancestor that clips, only the text still inside it counts. Each part is reported once per state, with its class and the amount.",
+    "New screen check many-accent-fills. It reads --sv-color-accent on :root through the canvas and flags more than one visible element whose background matches it within 1 per channel. Pages whose file name begins demo- are exempt. The check is skipped when the token is missing or not opaque.",
+    "The screen self-test's list of rules that must be seen failing now includes the two new rules. demo-accent-fills.html proves the demo exemption.",
+    "check-screens.mjs takes a new --out <folder> option, so a --dir run can write somewhere other than scripts/.tmp/check-screens-out. I used it to keep my runs inside my own scratch folder."
+   ],
+   "findings_in_existing_files": [
+    "docs/components/field.md:44: html-placeholder-label. The 'Don't' snippet puts a placeholder on an input. The spec says every snippet in a note must pass the lint, but this note's 'Don't' has to show the broken markup, so the two requirements conflict. I left it failing; the lead decides whether to change the note or how 'Don't' snippets are marked.",
+    "All other files lint clean under the new rules: screens/*.html (demo-*, pattern-confirm and pattern-states included), screens/agent-test/*.html, the other docs/components/*.md and docs/layout.md. AGENTS.md has no html code blocks, and docs/patterns.md was absent at lint time (13 md files linted).",
+    "Screen check: 0 findings across the 22 screens × 6 states. That includes 0 overflow-inside-part and 0 many-accent-fills. Accent-filled elements per page: checkout, checkout-errors, assistant, pattern-confirm and agent-test/settings have 1 each. demo-button has 5 and demo-proposal 3; both are exempt as demo pages."
+   ],
+   "needs_from_lead": [
+    "Decide what to do with the 'Don't' snippet in docs/components/field.md. It fails html-placeholder-label, and any future 'Don't' snippet that breaks a page rule will fail the same way. One option is to rewrite these snippets; another is a marked fence type for 'Don't' examples that the lint checks the other way round, expecting the named rule to fail. The second would change the spec, so it is your call.",
+    "I did not touch AGENTS.md. Its line 78 still lists only some of what the checks find; it could now also mention page rules 4 and 6 to 8 and the two new screen rules."
+   ],
+   "not_exercised": [
+    "I did not run the default node scripts/check-screens.mjs, because it writes screenshots to digests/ and gates/raw/2026-11-15-screens.json, which are outside my brief. I ran the same set of screens with --dir screens --no-shots --out pointed at my scratch folder.",
+    "I did not run node scripts/build.mjs. The lint read the dist/souvenir.css already present, and it printed no warning that src/ was newer than that build.",
+    "overflow-inside-part has only been tested in horizontal writing; the vertical-writing branch has never run. It is also not run against overflow:hidden parts that cut text off on purpose with an ellipsis; those would be reported.",
+    "html-many-primary counts any element with data-variant=\"primary\", not only buttons.",
+    "scripts/.tmp/ may remain as an empty folder; I deleted my scripts/.tmp/checks/ folder."
+   ]
+  }
+ ]
+}

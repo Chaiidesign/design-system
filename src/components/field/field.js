@@ -12,7 +12,8 @@ const idFor = (el, part) => el.id || (el.id = `sv-field-${++count}-${part}`);
 const forms = new WeakSet();
 
 function onSubmit(event) {
-  if (event.svChecked) return;
+  // A button marked formnovalidate (such as "Apply code") skips our checks, as it skips the browser's.
+  if (event.svChecked || (event.submitter && event.submitter.formNoValidate)) return;
   let first = null;
   for (const field of event.target.querySelectorAll("sv-field")) {
     if (field.check && !field.check() && !first) first = field;

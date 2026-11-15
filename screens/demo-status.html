@@ -16,7 +16,7 @@
     <h2 id="tones">Tones</h2>
     <ul class="sv-stack" data-gap="3">
       <li><span class="sv-status" data-tone="info">Not sent yet</span></li>
-      <li><span class="sv-status" data-tone="success">Shipped</span></li>
+      <li><span class="sv-status" data-tone="success">Delivered</span></li>
       <li><span class="sv-status" data-tone="warning">Waiting for your reply</span></li>
       <li><span class="sv-status" data-tone="danger">Payment failed</span></li>
       <li><span class="sv-status" data-tone="busy" role="status">Checking both calendars…</span></li>
@@ -25,16 +25,22 @@
 
   <section class="sv-stack" aria-labelledby="inline">
     <h2 id="inline">In a line of text</h2>
-    <p>Your order of 3 items is <span class="sv-status" data-tone="success">Shipped</span> and arrives on Tuesday 18 November.</p>
+    <p>Your order of 3 items is <span class="sv-status" data-tone="info">On its way</span> and arrives on Tuesday 18 November.</p>
     <p>The message to Priya is <span class="sv-status" data-tone="warning">Waiting for your reply</span> because Souvenir drafted it and you have not checked it.</p>
   </section>
 
   <section class="sv-panel sv-stack" aria-labelledby="rows">
     <h2 id="rows">In list rows</h2>
     <ul class="sv-list">
-      <li class="sv-list__item"><p class="sv-list__main">Organic cotton bath towel</p><p class="sv-list__trail"><span class="sv-status" data-tone="success">Shipped</span></p></li>
-      <li class="sv-list__item"><p class="sv-list__main" lang="ja">抹茶セット</p><p class="sv-list__trail"><span class="sv-status" data-tone="busy">Packing your order…</span></p></li>
-      <li class="sv-list__item"><p class="sv-list__main">Soap</p><p class="sv-list__trail"><span class="sv-status" data-tone="danger">Out of stock</span></p></li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><p>Organic cotton bath towel</p><p class="sv-list__detail"><span class="sv-status" data-tone="success">Delivered</span></p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><p lang="ja">抹茶セット</p><p class="sv-list__detail"><span class="sv-status" data-tone="info">Being prepared</span></p></div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main"><p>Soap</p><p class="sv-list__detail"><span class="sv-status" data-tone="danger">Payment failed</span></p></div>
+      </li>
     </ul>
   </section>
 

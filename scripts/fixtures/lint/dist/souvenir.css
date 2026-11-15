@@ -8,4 +8,6 @@
   .sv-demo__part { display: block; }
   .sv-demo[data-variant=primary] { display: grid; }
   .sv-demo[data-tone="info"] { display: grid; }
+  .sv-demo[data-variant="secondary"] { display: grid; }
+  .sv-demo[data-length="long"] { display: grid; }
 }

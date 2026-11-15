@@ -57,11 +57,11 @@
               <span class="sv-message__mark" aria-hidden="true"></span>
               <p>Drafted by Souvenir. Check it before you send.</p>
             </div>
-            <div class="sv-proposal__actions">
-              <button type="button" class="sv-button" data-variant="primary">Move event and send message</button>
-              <button type="button" class="sv-button" data-variant="secondary">Edit message</button>
-              <button type="button" class="sv-button" data-variant="quiet">Cancel</button>
-            </div>
+            <form class="sv-proposal__actions" action="assistant-done.html" method="get">
+              <button type="submit" class="sv-button" data-variant="primary">Move event and send message</button>
+              <a class="sv-button" data-variant="secondary" href="assistant.html">Edit message</a>
+              <a class="sv-button" data-variant="quiet" href="assistant.html">Cancel</a>
+            </form>
           </section>
           <div class="sv-message" data-tone="info" role="status">
             <span class="sv-message__mark" aria-hidden="true"></span>
@@ -83,11 +83,11 @@
       </div>
     </form>
 
-    <ul class="sv-row" aria-label="Suggestions">
-      <li><button type="button" class="sv-button" data-variant="secondary">Show my week</button></li>
-      <li><button type="button" class="sv-button" data-variant="secondary">Draft a reply</button></li>
-      <li><button type="button" class="sv-button" data-variant="secondary">Find a free hour</button></li>
-    </ul>
+    <form class="sv-row" action="assistant.html" method="get" aria-label="Suggestions">
+      <button type="submit" class="sv-button" data-variant="secondary" name="message" value="Show my week">Show my week</button>
+      <button type="submit" class="sv-button" data-variant="secondary" name="message" value="Draft a reply">Draft a reply</button>
+      <button type="submit" class="sv-button" data-variant="secondary" name="message" value="Find a free hour">Find a free hour</button>
+    </form>
   </div>
 </main>
 </body>

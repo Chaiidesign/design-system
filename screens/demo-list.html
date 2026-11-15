@@ -45,26 +45,27 @@
       <li class="sv-list__item">
         <div class="sv-list__main">
           <a href="#orders">Order 10482</a>
-          <p class="sv-list__detail">Placed 12 November</p>
-          <p class="sv-list__detail">3 items, £60.75</p>
+          <p class="sv-list__detail">Placed 12 November · 3 items</p>
+          <p class="sv-list__detail"><span class="sv-status" data-tone="info">Being prepared</span></p>
         </div>
-        <p class="sv-list__trail"><span class="sv-status" data-tone="success">Shipped</span></p>
+        <p class="sv-list__trail">£60.75</p>
       </li>
       <li class="sv-list__item">
         <div class="sv-list__main">
           <a href="#orders">Order 10477</a>
-          <p class="sv-list__detail">Placed 10 November</p>
-          <p class="sv-list__detail">1 item, £1,204.50</p>
+          <p class="sv-list__detail">Placed 10 November · 1 item</p>
+          <p class="sv-list__detail"><span class="sv-status" data-tone="danger">Payment failed</span></p>
+          <a class="sv-button" data-variant="secondary" href="#orders">Fix payment<span class="sv-visually-hidden"> for order 10477</span></a>
         </div>
-        <p class="sv-list__trail"><span class="sv-status" data-tone="warning">Waiting for your reply</span></p>
+        <p class="sv-list__trail">£1,204.50</p>
       </li>
       <li class="sv-list__item">
         <div class="sv-list__main">
           <a href="#orders">Order 10391</a>
-          <p class="sv-list__detail">Placed 28 October</p>
-          <p class="sv-list__detail">2 items, £24.00</p>
+          <p class="sv-list__detail">Placed 28 October 2025 · 2 items</p>
+          <p class="sv-list__detail"><span class="sv-status" data-tone="success">Delivered</span></p>
         </div>
-        <p class="sv-list__trail"><span class="sv-status" data-tone="info">Delivered</span></p>
+        <p class="sv-list__trail">£24.00</p>
       </li>
     </ul>
   </section>
@@ -76,27 +77,14 @@
         <div class="sv-list__main">
           <p>Delivery address</p>
           <p class="sv-list__detail">12 Station Road, Leeds LS1 4DY</p>
-        </div>
-        <div class="sv-list__trail">
-          <button type="button" class="sv-button" data-variant="quiet">Change<span class="sv-visually-hidden"> delivery address</span></button>
+          <a class="sv-button" data-variant="quiet" href="#settings">Change<span class="sv-visually-hidden"> delivery address</span></a>
         </div>
       </li>
       <li class="sv-list__item">
         <div class="sv-list__main">
           <p>Payment card</p>
-          <p class="sv-list__detail">Visa ending 4242, expires 08/28</p>
-        </div>
-        <div class="sv-list__trail">
-          <button type="button" class="sv-button" data-variant="quiet">Change<span class="sv-visually-hidden"> payment card</span></button>
-        </div>
-      </li>
-      <li class="sv-list__item">
-        <div class="sv-list__main">
-          <p>Email when an order ships</p>
-          <p class="sv-list__detail">Sent to sam@example.com</p>
-        </div>
-        <div class="sv-list__trail">
-          <button type="button" class="sv-button" data-variant="quiet">Turn off<span class="sv-visually-hidden"> emails when an order ships</span></button>
+          <p class="sv-list__detail">Visa ending 4242 · expires 08/28</p>
+          <a class="sv-button" data-variant="quiet" href="#settings">Change<span class="sv-visually-hidden"> payment card</span></a>
         </div>
       </li>
     </ul>
@@ -107,7 +95,7 @@
     <div class="sv-message" data-tone="info" data-surface="well">
       <span class="sv-message__mark" aria-hidden="true"></span>
       <p>You have no saved addresses yet. An address you use at checkout can be saved here.</p>
-      <button type="button" class="sv-button" data-variant="quiet">Add an address</button>
+      <a class="sv-button" data-variant="quiet" href="#addresses">Add an address</a>
     </div>
   </section>
 </main>

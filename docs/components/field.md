@@ -36,9 +36,9 @@ Never use it for: a choice from two to five options (radios), a yes or no (check
 
 ## Don't
 
-Don't put an error, or any instruction, in the placeholder.
+Don't put an error, or any instruction, in the placeholder. (This snippet is not checked: it shows what the lint rejects.)
 
-```html
+```
 <div class="sv-field">
   <label class="sv-field__label" for="code">Discount code</label>
   <input class="sv-field__control" id="code" name="code" placeholder="Code not recognised">

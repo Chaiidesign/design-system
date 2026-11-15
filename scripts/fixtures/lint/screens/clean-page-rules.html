@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lint fixture</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page">
+  <h1>Checkout</h1>
+  <h2>Delivery</h2>
+  <form class="sv-demo" action="/pay" method="post">
+    <h3>Address</h3>
+    <label for="name">Name</label>
+    <input class="sv-demo__part" id="name" name="name" type="text" autocomplete="name">
+    <label class="sv-demo__part"><input type="checkbox" name="keep"> Keep this address</label>
+    <select class="sv-demo__part" name="size" aria-labelledby="size-label"><option>Small</option></select>
+    <p id="size-label">Size</p>
+    <textarea class="sv-demo__part" name="note" aria-label="Note for the courier"></textarea>
+    <label for="later">Delivery date</label>
+    <input type="hidden" name="token" value="x">
+    <input class="sv-demo__part" type="text" id="later" name="later">
+    <p class="sv-demo" data-length="long" data-variant="secondary">£1,234,567.89</p>
+    <button type="button" class="sv-demo" data-variant="secondary">Apply code</button>
+    <button type="submit" class="sv-demo" data-variant="primary">Pay £60.75</button>
+  </form>
+  <h2>Help</h2>
+</main>
+</body>
+</html>

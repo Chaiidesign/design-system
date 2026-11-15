@@ -1,6 +1,6 @@
 {
   "produced_by": "scripts/size.mjs",
-  "measured_at": "2026-11-15T10:49:59.600Z",
+  "measured_at": "2026-11-15T11:04:25.566Z",
   "method": "gzip level 9 of the minified file (component CSS minified by esbuild from src)",
   "budgets": {
     "component_css": 2048,
@@ -122,8 +122,8 @@
     {
       "item": "error-summary JS",
       "file": "dist/components/error-summary.js",
-      "minified": 1637,
-      "gzip": 737,
+      "minified": 1678,
+      "gzip": 756,
       "budget": 5120,
       "counts": true,
       "over": false,
@@ -132,8 +132,8 @@
     {
       "item": "field JS",
       "file": "dist/components/field.js",
-      "minified": 1875,
-      "gzip": 895,
+      "minified": 1916,
+      "gzip": 910,
       "budget": 5120,
       "counts": true,
       "over": false,
@@ -142,8 +142,8 @@
     {
       "item": "all CSS",
       "file": "dist/souvenir.min.css",
-      "minified": 26847,
-      "gzip": 4770,
+      "minified": 26985,
+      "gzip": 4792,
       "budget": 12288,
       "counts": true,
       "over": false,

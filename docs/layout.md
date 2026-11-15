@@ -4,7 +4,14 @@ How to build a page from the system. A screen holds no style of its own: no `<st
 
 ## Page skeleton
 
-Copy this whole file. The one inline script reads `?theme=` and `?accent=`; it must come before the stylesheet. Paths are relative to `screens/`.
+Copy this whole file. The one inline script reads `?theme=` and `?accent=`; it must come before the stylesheet. The two paths, to `dist/souvenir.css` and `dist/souvenir.js`, are relative to the file you are writing: `../dist/` for a file directly in `screens/`. For a file one folder deeper, such as `screens/orders/list.html`, add one `../` to each:
+
+```html
+<link rel="stylesheet" href="../../dist/souvenir.css">
+<script type="module" src="../../dist/souvenir.js"></script>
+```
+
+The skeleton, for a file directly in `screens/`:
 
 ```html
 <!doctype html>
@@ -35,7 +42,7 @@ Theme: the device setting by default; `data-theme="light"` or `"dark"` on `<html
 | `sv-panel` | Raised surface with a hairline edge. Put a `sv-message` on it with `data-surface="well"` |
 | `sv-stack` | Children one under another, 16 pixels apart. `data-gap`: `2` (8), `3` (12), `6` (32, between sections) |
 | `sv-row` | Children side by side, 12 pixels apart, wrapping. `data-align="end"` pushes them to the end |
-| `sv-list` | `ul` or `ol` of `li.sv-list__item`, each a `div.sv-list__main` (title line, then `p.sv-list__detail` lines in soft text) and an optional `.sv-list__trail` (an amount, a `sv-status` or a quiet button). Hairlines between items |
+| `sv-list` | `ul` or `ol` of `li.sv-list__item`, each a `div.sv-list__main` (title line, then `p.sv-list__detail` lines in soft text, then an optional action) and an optional `p.sv-list__trail` holding an amount. Hairlines between items |
 | `sv-chat` | `ol` of `li`, each holding one `sv-chat-message`, 20 pixels apart |
 | `sv-visually-hidden` | Kept for screen readers, hidden from view |
 
@@ -47,23 +54,45 @@ Theme: the device setting by default; `data-theme="light"` or `"dark"` on `<html
       <div class="sv-list__main"><p>Soap</p><p class="sv-list__detail">Quantity 3</p></div>
       <p class="sv-list__trail">£7.80</p>
     </li>
-    <li class="sv-list__item">
-      <div class="sv-list__main"><a href="/orders/10482">Order 10482</a><p class="sv-list__detail">Placed 12 November</p></div>
-      <p class="sv-list__trail"><span class="sv-status" data-tone="success">Shipped</span></p>
-    </li>
   </ul>
 </section>
 ```
 
-Write an amount as bare text in the trail: it never wraps. The trail takes at most half the row; a status or button in it wraps within that half. Give each repeated button a distinct name with `sv-visually-hidden`. An empty list is not an empty `ul` or a line of soft text: replace the list with an `info` message that says what will appear and how to add it.
+Each part of a row has one place:
+
+- **Title**: the first line of the main part; a link when the row opens a page of its own.
+- **Details**: each fact a `p.sv-list__detail`; two short facts share a line, joined by " · ".
+- **Status**: a line of its own in the main part, after the details: a `p.sv-list__detail` holding the `sv-status`.
+- **Action for one row**: last in the main part, a secondary or quiet `a.sv-button` (or a submit button inside a form). Give each repeated action a distinct name with `sv-visually-hidden`.
+- **Amount**: bare text in the trail. It never wraps. Nothing else goes in the trail.
+
+One order, with all five:
+
+```html
+<ul class="sv-list">
+  <li class="sv-list__item">
+    <div class="sv-list__main">
+      <a href="/orders/10420">Order 10420</a>
+      <p class="sv-list__detail">Placed 2 October · 1 item</p>
+      <p class="sv-list__detail"><span class="sv-status" data-tone="danger">Payment failed</span></p>
+      <a class="sv-button" data-variant="secondary" href="/orders/10420/payment">Fix payment<span class="sv-visually-hidden"> for order 10420</span></a>
+    </div>
+    <p class="sv-list__trail">£15.99</p>
+  </li>
+</ul>
+```
+
+A row with no amount, such as a setting, has no trail; its action ("Change") still goes last in the main part. An empty list is not an empty `ul` or a line of soft text: replace the list with an `info` message that says what will appear and how to add it. When adding happens on another page, the action is a link:
 
 ```html
 <div class="sv-message" data-tone="info" data-surface="well">
   <span class="sv-message__mark" aria-hidden="true"></span>
   <p>You have no saved addresses yet.</p>
-  <button type="button" class="sv-button" data-variant="quiet">Add an address</button>
+  <a class="sv-button" data-variant="quiet" href="/addresses/new">Add an address</a>
 </div>
 ```
+
+States after a save, after a failed load and before an action that cannot be undone are in `docs/patterns.md`.
 
 ## Split page
 

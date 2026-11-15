@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account settings</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../../dist/souvenir.css">
+<script type="module" src="../../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Account settings</h1>
+  <form class="sv-stack" data-gap="6" action="/account" method="post">
+    <section class="sv-stack" aria-labelledby="details">
+      <h2 id="details">Your details</h2>
+      <sv-field>
+        <div class="sv-field">
+          <label class="sv-field__label" for="name">Full name</label>
+          <p class="sv-field__error" id="name-error" hidden></p>
+          <input class="sv-field__control" id="name" name="name" type="text" autocomplete="name" required value="Amara Okafor"
+            aria-describedby="name-error" data-error-required="Enter your full name.">
+        </div>
+      </sv-field>
+      <sv-field>
+        <div class="sv-field">
+          <label class="sv-field__label" for="email">Email address</label>
+          <p class="sv-field__hint" id="email-hint">We send order updates here</p>
+          <p class="sv-field__error" id="email-error" hidden></p>
+          <input class="sv-field__control" id="email" name="email" type="email" autocomplete="email" required value="amara.okafor@example.com"
+            aria-describedby="email-hint email-error"
+            data-error-required="Enter your email address."
+            data-error-type="Enter an email address with an @, like name@example.com.">
+        </div>
+      </sv-field>
+      <sv-field>
+        <div class="sv-field">
+          <label class="sv-field__label" for="language">Language</label>
+          <p class="sv-field__error" id="language-error" hidden></p>
+          <select class="sv-field__control sv-select" id="language" name="language" aria-describedby="language-error">
+            <option value="en" selected>English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="ja">日本語</option>
+          </select>
+        </div>
+      </sv-field>
+    </section>
+    <section class="sv-stack" aria-labelledby="notifications">
+      <h2 id="notifications">Notifications</h2>
+      <div class="sv-stack" data-gap="2" role="group" aria-labelledby="notifications">
+        <label class="sv-checkbox">
+          <input type="checkbox" name="order-email" checked>
+          <span class="sv-checkbox__label">Email me when my order changes</span>
+        </label>
+        <label class="sv-checkbox">
+          <input type="checkbox" name="order-text">
+          <span class="sv-checkbox__label">Text me when my order changes</span>
+        </label>
+        <label class="sv-checkbox">
+          <input type="checkbox" name="news">
+          <span class="sv-checkbox__label">Send me news and offers</span>
+        </label>
+      </div>
+    </section>
+    <button type="submit" class="sv-button" data-variant="primary" data-width="full">Save changes</button>
+  </form>
+  <section class="sv-panel sv-stack" aria-labelledby="delete">
+    <h2 id="delete">Delete account</h2>
+    <div class="sv-message" data-tone="warning" data-surface="well">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>Deleting your account removes your orders and details. This cannot be undone.</p>
+    </div>
+    <form action="/account/delete" method="post">
+      <button type="submit" class="sv-button" data-variant="secondary">Delete account</button>
+    </form>
+  </section>
+</main>
+</body>
+</html>

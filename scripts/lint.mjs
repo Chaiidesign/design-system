@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 // Souvenir lint: enforces sections 3 and 5 of briefs/v0.2-build-spec.md.
-//   node scripts/lint.mjs              lint src/**/*.css, screens/**/*.html, docs/components/*.md
+//   node scripts/lint.mjs              lint src/**/*.css, screens/**/*.html, and the ```html fences of
+//                                      docs/components/*.md, docs/layout.md, docs/patterns.md and AGENTS.md
 //   node scripts/lint.mjs --self-test  every fixture in scripts/fixtures/lint must fail on exactly its named rule
+// Page rules (screens and fences): html-many-primary (more than one data-variant="primary"; demo-* files exempt),
+// html-form-no-action, html-button-no-type, html-control-no-label, html-heading-order (one h1, no level skipped
+// going deeper, a page starts with h1; fragments exempt from the last), html-placeholder-label.
 // Output: one line per finding, "file:line rule-name message", then a count. Exit 1 on any finding.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
@@ -345,17 +349,31 @@ export function lintCss(text, relPath) {
 // ---------------------------------------------------------------- HTML parsing
 
 const RAW_TEXT = new Set(["script", "style", "textarea", "title"]);
+const VOID = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
 
+// A flat list of elements in document order. Each element records the tags of its open ancestors
+// (el.ancestors, outermost first), from a simple stack: void and self-closed elements are never pushed,
+// and a closing tag pops back to its matching open element if there is one.
 function parseHtml(text) {
   const lineAt = lineIndex(text);
   const elements = [];
+  const stack = [];
   let i = 0;
   while (i < text.length) {
     const lt = text.indexOf("<", i);
     if (lt < 0) break;
     if (text.startsWith("<!--", lt)) { const e = text.indexOf("-->", lt + 4); i = e < 0 ? text.length : e + 3; continue; }
     if (text[lt + 1] === "!" || text[lt + 1] === "?") { const e = text.indexOf(">", lt); i = e < 0 ? text.length : e + 1; continue; }
-    if (text[lt + 1] === "/") { const e = text.indexOf(">", lt); i = e < 0 ? text.length : e + 1; continue; }
+    if (text[lt + 1] === "/") {
+      const e = text.indexOf(">", lt);
+      const cm = /^<\/([a-zA-Z][\w:.-]*)/.exec(text.slice(lt, lt + 200));
+      if (cm) {
+        const t = cm[1].toLowerCase();
+        const at = stack.map((x) => x.tag).lastIndexOf(t);
+        if (at >= 0) stack.length = at;
+      }
+      i = e < 0 ? text.length : e + 1; continue;
+    }
     const nm = /^<([a-zA-Z][\w:.-]*)/.exec(text.slice(lt, lt + 200));
     if (!nm) { i = lt + 1; continue; }
     let j = lt + nm[0].length, q = null;
@@ -366,14 +384,17 @@ function parseHtml(text) {
       else if (c === ">") break;
       j++;
     }
-    const attrText = text.slice(lt + nm[0].length, j).replace(/\/\s*$/, "");
+    const rawAttrs = text.slice(lt + nm[0].length, j);
+    const selfClosed = /\/\s*$/.test(rawAttrs);
+    const attrText = rawAttrs.replace(/\/\s*$/, "");
     const attrs = new Map();
     for (const m of attrText.matchAll(/([^\s"'>\/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g)) {
       const name = m[1].toLowerCase();
       if (!attrs.has(name)) attrs.set(name, m[2] ?? m[3] ?? m[4] ?? "");
     }
     const tag = nm[1].toLowerCase();
-    const el = { tag, attrs, line: lineAt(lt), index: elements.length, content: null };
+    const el = { tag, attrs, line: lineAt(lt), index: elements.length, content: null, ancestors: stack.map((x) => x.tag) };
+    if (!VOID.has(tag) && !selfClosed) stack.push(el);
     i = j + 1;
     if (RAW_TEXT.has(tag)) {
       const close = text.toLowerCase().indexOf(`</${tag}`, i);
@@ -411,7 +432,47 @@ export function readBuiltCss(cssText) {
   return { classes, values };
 }
 
-const CHECKED_DATA = ["data-variant", "data-tone", "data-width", "data-layout", "data-gap", "data-from", "data-row", "data-state", "data-surface", "data-align"];
+const CHECKED_DATA = ["data-variant", "data-tone", "data-width", "data-layout", "data-gap", "data-from", "data-row", "data-state", "data-surface", "data-align", "data-length"];
+
+// Controls that need a label (html-control-no-label): input other than these types, select, textarea.
+const UNLABELLED_INPUT_TYPES = new Set(["hidden", "submit", "button", "reset"]);
+
+// Page-level rules (AGENTS.md rules 4, 6, 7 and 8). kind "snippet" is exempt from the first-heading part;
+// a file whose name begins demo- is exempt from html-many-primary (a demo page shows every variant).
+function pageRules(els, relPath, kind, add) {
+  const demo = basename(relPath).startsWith("demo-");
+  const primaries = els.filter((el) => el.attrs.get("data-variant") === "primary");
+  if (!demo && primaries.length > 1) {
+    for (const el of primaries.slice(1)) add(el.line, "html-many-primary", `${primaries.length} elements have data-variant="primary" (first at line ${primaries[0].line}); a page has at most one primary action`);
+  }
+  const labelFor = new Set(els.filter((el) => el.tag === "label" && el.attrs.get("for")).map((el) => el.attrs.get("for")));
+  const named = (el, a) => (el.attrs.get(a) || "").trim() !== "";
+  let prevLevel = 0, h1s = 0;
+  for (const el of els) {
+    const { tag, attrs, line } = el;
+    if (tag === "form" && !(attrs.has("method") && attrs.has("action"))) {
+      add(line, "html-form-no-action", `<form> needs both method and action so it works without script (has ${["method", "action"].filter((a) => attrs.has(a)).join(" and ") || "neither"})`);
+    }
+    if (tag === "button" && !attrs.has("type")) add(line, "html-button-no-type", `<button> has no type; say type="submit" or type="button"`);
+    const isControl = (tag === "input" && !UNLABELLED_INPUT_TYPES.has((attrs.get("type") || "text").trim().toLowerCase())) || tag === "select" || tag === "textarea";
+    if (isControl) {
+      const id = attrs.get("id");
+      const ok = (id && labelFor.has(id)) || el.ancestors.includes("label") || named(el, "aria-label") || named(el, "aria-labelledby");
+      if (!ok) add(line, "html-control-no-label", `<${tag}${attrs.has("type") ? ` type="${attrs.get("type")}"` : ""}${id ? ` id="${id}"` : ""}> has no label: no <label for>, no wrapping <label>, no aria-label or aria-labelledby`);
+    }
+    if ((tag === "input" || tag === "textarea") && attrs.has("placeholder")) {
+      add(line, "html-placeholder-label", `<${tag}> has a placeholder; the system does not use placeholders, put the words in the label or a hint`);
+    }
+    const h = /^h([1-6])$/.exec(tag);
+    if (h) {
+      const level = Number(h[1]);
+      if (level === 1 && ++h1s > 1) add(line, "html-heading-order", "more than one h1 on the page");
+      if (prevLevel === 0 && level !== 1 && kind !== "snippet") add(line, "html-heading-order", `the first heading is an h${level}; a page starts with its h1`);
+      if (prevLevel > 0 && level > prevLevel + 1) add(line, "html-heading-order", `h${level} follows h${prevLevel}; a heading goes at most one level deeper than the one before it`);
+      prevLevel = level;
+    }
+  }
+}
 
 const THEME_SCRIPT_WORDS = new Set(["var", "let", "const", "new", "URLSearchParams", "location", "search", "get", "has", "if", "else",
   "document", "documentElement", "dataset", "setAttribute", "theme", "accent", "null", "undefined", "true", "false", "typeof", "includes", "indexOf"]);
@@ -500,9 +561,13 @@ export function lintHtml(text, relPath, { kind, fileAbs, rootAbs, built, lineOff
     }
   }
   if (kind === "document" && stylesheets === 0) add(1, "html-stylesheet", "a screen needs exactly one stylesheet link, to dist/souvenir.css");
+  pageRules(els, relPath, kind, (line, rule, message) => add(line, rule, message));
   return findings;
 }
 
+// Every ```html fence is linted. A fence that begins <!doctype is a whole page and is linted as a document
+// (the theme script is allowed, the stylesheet link is required), with its links resolved as if it sat in screens/,
+// because the notes say paths are relative to screens/. Any other fence is a fragment ("snippet").
 function lintMarkdown(text, relPath, ctx) {
   const lines = text.split("\n");
   const findings = [];
@@ -511,7 +576,11 @@ function lintMarkdown(text, relPath, ctx) {
     let j = i + 1;
     while (j < lines.length && !/^\s*```\s*$/.test(lines[j])) j++;
     const snippet = lines.slice(i + 1, j).join("\n");
-    findings.push(...lintHtml(snippet, relPath, { ...ctx, kind: "snippet", lineOffset: i + 1 }));
+    const whole = /^\s*<!doctype\s/i.test(snippet);
+    const opts = whole && ctx.rootAbs
+      ? { ...ctx, kind: "document", fileAbs: join(ctx.rootAbs, "screens", "_snippet.html"), lineOffset: i + 1 }
+      : { ...ctx, kind: "snippet", lineOffset: i + 1 };
+    findings.push(...lintHtml(snippet, relPath, opts));
     i = j;
   }
   return findings;
@@ -540,8 +609,12 @@ export function lintFiles(rootAbs) {
     ...walk(join(rootAbs, "src"), (p) => p.endsWith(".css")),
     ...walk(join(rootAbs, "screens"), (p) => p.endsWith(".html")),
     ...walk(join(rootAbs, "docs", "components"), (p) => p.endsWith(".md")),
+    ...DOC_FILES.map((p) => join(rootAbs, p)).filter((p) => existsSync(p)),
   ];
 }
+
+// Notes outside docs/components whose html fences are linted too (any of them may not exist yet).
+const DOC_FILES = ["docs/layout.md", "docs/patterns.md", "AGENTS.md"];
 
 function print(f) { console.log(`${f.file}:${f.line} ${f.rule} ${f.message}`); }
 
@@ -563,6 +636,12 @@ function runNormal() {
   return findings.length ? 1 : 0;
 }
 
+// Every rule the lint can report. The self-test fails unless each is seen failing on a fixture.
+const REQUIRED_RULES = ["css-syntax", "css-layer", "css-selector-scope", "css-media", "css-physical", "css-var-prefix", "css-color", "css-unit",
+  "html-style-element", "html-style-attr", "html-inline-svg", "html-custom-element", "html-inline-script", "html-class-prefix",
+  "html-unknown-class", "html-unknown-value", "html-stylesheet", "html-module-script",
+  "html-many-primary", "html-form-no-action", "html-button-no-type", "html-control-no-label", "html-heading-order", "html-placeholder-label"];
+
 function runSelfTest() {
   const root = join(REPO, "scripts", "fixtures", "lint");
   const files = lintFiles(root);
@@ -574,9 +653,13 @@ function runSelfTest() {
   console.log("lint self-test: each bad fixture must produce exactly its named rule; clean fixtures nothing");
   for (const f of files) {
     const rel = toPosix(relative(root, f));
-    const stem = basename(f, extname(f)).split("--")[0];
-    // src/base/icons.css must keep its real name for its data-URI exemption, so it is a clean fixture too
-    const clean = stem.startsWith("clean") || rel === "src/base/icons.css";
+    // Files that must keep a fixed name (AGENTS.md, docs/layout.md, docs/patterns.md) state their expectation
+    // in a comment: <!-- lint-expect: <rule> --> or <!-- lint-expect: nothing -->.
+    const marker = /<!--\s*lint-expect:\s*([\w-]+)\s*-->/.exec(readFileSync(f, "utf8"));
+    const stem = marker ? marker[1] : basename(f, extname(f)).split("--")[0];
+    // src/base/icons.css must keep its real name for its data-URI exemption, so it is a clean fixture too.
+    // A file named demo-… must produce nothing (it proves the demo exemption of html-many-primary).
+    const clean = stem.startsWith("clean") || stem === "nothing" || stem.startsWith("demo-") || rel === "src/base/icons.css";
     const got = lintFile(f, root, built);
     const rules = [...new Set(got.map((x) => x.rule))].sort();
     let ok;
@@ -594,6 +677,8 @@ function runSelfTest() {
     if (!ok) got.forEach((x) => console.log("      " + `${x.file}:${x.line} ${x.rule} ${x.message}`));
   }
   if (badRules.size < 12) { console.log(`FAIL  only ${badRules.size} distinct rules proven failing; need at least 12`); failures++; }
+  const never = REQUIRED_RULES.filter((r) => !badRules.has(r));
+  if (never.length) { console.log(`FAIL  rules never seen failing: ${never.join(", ")}`); failures++; }
   if (!cleanCss || !cleanHtml) { console.log("FAIL  need at least one clean CSS and one clean HTML fixture passing"); failures++; }
   console.log(`lint self-test: ${files.length} fixtures, ${badRules.size} rules seen failing, ${failures} problem${failures === 1 ? "" : "s"}`);
   return failures ? 1 : 0;

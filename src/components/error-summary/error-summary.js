@@ -14,6 +14,7 @@ class SvErrorSummary extends HTMLElement {
 
     this.onSubmit = (event) => {
       if (event.target !== this.form) return;
+      if (event.submitter && event.submitter.formNoValidate) return;
       event.svChecked = true;
       const invalid = [...event.target.querySelectorAll("sv-field")].filter((f) => f.check && !f.check());
       this.list.replaceChildren(...invalid.map((field) => {

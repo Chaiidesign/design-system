@@ -31,11 +31,11 @@
         <span class="sv-message__mark" aria-hidden="true"></span>
         <p>Drafted by Souvenir. Check it before you send.</p>
       </div>
-      <div class="sv-proposal__actions">
-        <button type="button" class="sv-button" data-variant="primary">Move event and send</button>
-        <button type="button" class="sv-button" data-variant="secondary">Edit message</button>
-        <button type="button" class="sv-button" data-variant="quiet">Cancel</button>
-      </div>
+      <form class="sv-proposal__actions" action="/proposals/move-planning" method="post">
+        <button type="submit" class="sv-button" data-variant="primary">Move event and send</button>
+        <a class="sv-button" data-variant="secondary" href="/proposals/move-planning/edit">Edit message</a>
+        <a class="sv-button" data-variant="quiet" href="/assistant">Cancel</a>
+      </form>
     </section>
   </div>
 
@@ -58,11 +58,11 @@
         <span class="sv-message__mark" aria-hidden="true"></span>
         <p>Drafted by Souvenir. Check it before you send.</p>
       </div>
-      <div class="sv-proposal__actions">
-        <button type="button" class="sv-button" data-variant="primary" aria-busy="true">Moving event and sending…</button>
-        <button type="button" class="sv-button" data-variant="secondary">Edit message</button>
-        <button type="button" class="sv-button" data-variant="quiet">Cancel</button>
-      </div>
+      <form class="sv-proposal__actions" action="/proposals/move-planning" method="post">
+        <button type="submit" class="sv-button" data-variant="primary" aria-busy="true">Moving event and sending…</button>
+        <a class="sv-button" data-variant="secondary" href="/proposals/move-planning/edit">Edit message</a>
+        <a class="sv-button" data-variant="quiet" href="/assistant">Cancel</a>
+      </form>
     </section>
   </div>
 
@@ -105,11 +105,11 @@
         <span class="sv-message__mark" aria-hidden="true"></span>
         <p>We couldn't reach your calendar. Nothing was changed. Try again.</p>
       </div>
-      <div class="sv-proposal__actions">
-        <button type="button" class="sv-button" data-variant="primary">Move event and send</button>
-        <button type="button" class="sv-button" data-variant="secondary">Edit message</button>
-        <button type="button" class="sv-button" data-variant="quiet">Cancel</button>
-      </div>
+      <form class="sv-proposal__actions" action="/proposals/move-planning" method="post">
+        <button type="submit" class="sv-button" data-variant="primary">Move event and send</button>
+        <a class="sv-button" data-variant="secondary" href="/proposals/move-planning/edit">Edit message</a>
+        <a class="sv-button" data-variant="quiet" href="/assistant">Cancel</a>
+      </form>
     </section>
   </div>
 </main>

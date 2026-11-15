@@ -11,13 +11,13 @@ A page message: a plate with a solid coloured tab down its leading edge, carryin
 </div>
 ```
 
-A heading and a paragraph, or a paragraph and a quiet button:
+A paragraph and a quiet link that tries again (a link, because it loads a page; see `docs/patterns.md`):
 
 ```html
 <div class="sv-message" data-tone="danger" role="alert">
   <span class="sv-message__mark" aria-hidden="true"></span>
   <p>We couldn't reach your calendar. Nothing was changed.</p>
-  <button type="button" class="sv-button" data-variant="quiet">Check calendar again</button>
+  <a class="sv-button" data-variant="quiet" href="/calendar">Try again</a>
 </div>
 ```
 
