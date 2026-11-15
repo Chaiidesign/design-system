@@ -50,7 +50,9 @@
     border-radius: var(--sv-radius-control);
   }
 
-  /* Phone: the primary takes the full width; the others share the row below it. */
+  /* The primary has a row of its own at every width, so its label (a verb and its object) is not squeezed;
+     the others share the row below it. A proposal is never wider than the page column, so one row
+     would make the primary wrap even on a desktop. */
   .sv-proposal__actions {
     display: flex;
     flex-wrap: wrap;
@@ -65,18 +67,14 @@
     flex-basis: 100%;
   }
 
-  /* From 48rem: one row, primary first; a long label wraps inside its button rather than pushing one off the row. */
+  /* From 48rem the others keep their own width rather than stretching across the column. */
   @media (min-width: 48rem) {
-    .sv-proposal__actions {
-      flex-wrap: nowrap;
-    }
-
     .sv-proposal__actions > * {
       flex: 0 0 auto;
     }
 
     .sv-proposal__actions > [data-variant="primary"] {
-      flex: 0 1 auto;
+      flex-basis: 100%;
     }
   }
 }

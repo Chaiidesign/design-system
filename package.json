@@ -9,8 +9,9 @@
     "build": "node scripts/build.mjs",
     "size": "node scripts/size.mjs",
     "screens": "node scripts/check-screens.mjs",
-    "check": "npm run tokens && npm run build && npm run lint && npm run size && npm run screens",
-    "serve": "node scripts/serve.mjs"
+    "check": "npm run tokens && npm run build && npm run lint && npm run size && npm run screens && npm run noscript",
+    "serve": "node scripts/serve.mjs",
+    "noscript": "node scripts/check-noscript.mjs"
   },
   "devDependencies": {
     "esbuild": "0.28.2",

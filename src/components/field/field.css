@@ -51,7 +51,7 @@
 }
 
 .sv-field textarea.sv-field__control {
-  min-block-size: calc(var(--sv-size-control) * 2);
+  min-block-size: var(--sv-field-textarea-min-height);
   resize: vertical;
 }
 

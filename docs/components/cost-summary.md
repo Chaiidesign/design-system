@@ -28,12 +28,19 @@ A cost not known yet is said in words, on a row with `data-state="unknown"`:
 | Attribute or part | Value | Effect |
 |---|---|---|
 | `data-row` on a row | `total` | Label at the lead size; amount at the display size, weight 600; a rule above. One per summary, last. |
+| `data-length` on the total row | `long` | Set it when the total has more than nine characters (£1,234.56 has nine; £12,345.67 has ten). The amount steps down to 28 pixels, still larger than the page title; on a phone the amount moves below "Total", at the inline end. |
 | `data-state` on a row | `unknown` | The value is plain words at body size and wraps normally. |
 | `p.sv-cost-summary__note` | inside the total's `dd`, after the amount | Small print under the total, at the inline end. |
 
 Amounts use tabular figures, sit on the inline-end edge and never wrap. A term wraps only between words; if a term's longest word and its amount cannot share a line, the amount moves below the term. It sits on the ground or on an `sv-panel` as it is.
 
-Known limit: at 320 pixels wide a total of 14 characters or more (£12,345,678.90) is wider than the display and overflows.
+A long total, which fits the display at 320 pixels wide on a panel:
+
+```html
+<dl class="sv-cost-summary">
+  <div class="sv-cost-summary__row" data-row="total" data-length="long"><dt>Total</dt><dd>£12,345,678.90</dd></div>
+</dl>
+```
 
 ## Never use it for
 

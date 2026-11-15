@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List: demo</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../dist/souvenir.css">
+<script type="module" src="../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>List</h1>
+
+  <section class="sv-panel sv-stack" aria-labelledby="items">
+    <h2 id="items">Order summary</h2>
+    <ul class="sv-list">
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <p>Organic cotton waffle-weave bath towel, extra large, undyed natural oatmeal</p>
+          <p class="sv-list__detail">Quantity 2</p>
+        </div>
+        <p class="sv-list__trail">£39.00</p>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <p lang="ja">抹茶セット</p>
+          <p class="sv-list__detail">Quantity 1</p>
+        </div>
+        <p class="sv-list__trail">£15.00</p>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <p>Soap</p>
+          <p class="sv-list__detail">Quantity 3</p>
+        </div>
+        <p class="sv-list__trail">£7.80</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sv-stack" aria-labelledby="orders">
+    <h2 id="orders">Your orders</h2>
+    <ul class="sv-list">
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <a href="#orders">Order 10482</a>
+          <p class="sv-list__detail">Placed 12 November</p>
+          <p class="sv-list__detail">3 items, £60.75</p>
+        </div>
+        <p class="sv-list__trail"><span class="sv-status" data-tone="success">Shipped</span></p>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <a href="#orders">Order 10477</a>
+          <p class="sv-list__detail">Placed 10 November</p>
+          <p class="sv-list__detail">1 item, £1,204.50</p>
+        </div>
+        <p class="sv-list__trail"><span class="sv-status" data-tone="warning">Waiting for your reply</span></p>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <a href="#orders">Order 10391</a>
+          <p class="sv-list__detail">Placed 28 October</p>
+          <p class="sv-list__detail">2 items, £24.00</p>
+        </div>
+        <p class="sv-list__trail"><span class="sv-status" data-tone="info">Delivered</span></p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sv-panel sv-stack" aria-labelledby="settings">
+    <h2 id="settings">Settings</h2>
+    <ul class="sv-list">
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <p>Delivery address</p>
+          <p class="sv-list__detail">12 Station Road, Leeds LS1 4DY</p>
+        </div>
+        <div class="sv-list__trail">
+          <button type="button" class="sv-button" data-variant="quiet">Change<span class="sv-visually-hidden"> delivery address</span></button>
+        </div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <p>Payment card</p>
+          <p class="sv-list__detail">Visa ending 4242, expires 08/28</p>
+        </div>
+        <div class="sv-list__trail">
+          <button type="button" class="sv-button" data-variant="quiet">Change<span class="sv-visually-hidden"> payment card</span></button>
+        </div>
+      </li>
+      <li class="sv-list__item">
+        <div class="sv-list__main">
+          <p>Email when an order ships</p>
+          <p class="sv-list__detail">Sent to sam@example.com</p>
+        </div>
+        <div class="sv-list__trail">
+          <button type="button" class="sv-button" data-variant="quiet">Turn off<span class="sv-visually-hidden"> emails when an order ships</span></button>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sv-panel sv-stack" aria-labelledby="addresses">
+    <h2 id="addresses">Saved addresses</h2>
+    <div class="sv-message" data-tone="info" data-surface="well">
+      <span class="sv-message__mark" aria-hidden="true"></span>
+      <p>You have no saved addresses yet. An address you use at checkout can be saved here.</p>
+      <button type="button" class="sv-button" data-variant="quiet">Add an address</button>
+    </div>
+  </section>
+</main>
+</body>
+</html>

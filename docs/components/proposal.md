@@ -37,15 +37,15 @@ What Souvenir proposes to do, with everything a person needs to check it, on one
 | `.sv-proposal__fields` | Term in soft text, value in ink at weight 600 at the end; a long value takes its own line |
 | `.sv-proposal__draft` | Dashed edge: read, not yet sent. Always under a `figcaption` naming the recipient. Leave it out when there is no message to send |
 | Warning | `sv-message`, `data-tone="warning"`, `data-surface="well"`, whenever a draft is shown before sending |
-| `.sv-proposal__actions` | Primary first. Phone: primary full width, the others share a row. From 48rem: one row |
+| `.sv-proposal__actions` | Primary first, on a row of its own at full width; the others share the row below (stretched on a phone, own width from 48rem) |
 | Busy | The primary gets `aria-busy="true"` and its label becomes "Moving event and sending…" |
-| Done | Replace the actions and the warning with a `success` message: "Event moved. Message sent to Priya." |
+| Done | Heading, fields and a `success` message ("Event moved. Message sent to Priya."); no draft, warning or actions. The dashed edge means "not yet sent", so once sent the draft is gone |
 | Failed | Add a `danger` message with `role="alert"` above the actions; keep the actions |
 
 No script. Keep to one heading, three to five fields and a short draft, so it fits one 720 pixel phone screen.
 ## Never use it for
 
-Anything already done (use a `success` message); a form the person fills in (use `sv-field`); a draft without its warning.
+Asking about something already done (show the done state, or a `success` message on its own); a form the person fills in (use `sv-field`); a draft without its warning.
 
 ## Don't
 

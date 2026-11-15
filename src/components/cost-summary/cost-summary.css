@@ -55,6 +55,11 @@
     font-size: var(--sv-cost-summary-total-size);
   }
 
+  /* A total of more than nine characters steps down one size so it fits a phone-width display. */
+  .sv-cost-summary__row[data-row="total"][data-length="long"] > dd {
+    font-size: var(--sv-cost-summary-total-size-long);
+  }
+
   .sv-cost-summary__note {
     font-size: var(--sv-font-size-body);
     font-weight: var(--sv-font-weight-regular);

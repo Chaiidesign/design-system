@@ -3,12 +3,14 @@
   "primitive": {
     "$description": "Raw values. Never used by a component or a screen directly; reached only through semantic tokens. A step is named by its value: neutrals by lightness times 100, dimensions by their size in pixels at a 16 pixel root, durations in milliseconds.",
     "neutral": {
-      "$type": "color",
-      "$description": "Cool grey scale at hue 250 with a trace of chroma, so the greys read as slightly cool rather than warm or dead.",
       "17": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.17, 0.008, 250],
+          "components": [
+            0.17,
+            0.008,
+            250
+          ],
           "alpha": 1,
           "hex": "#0d1013"
         },
@@ -17,7 +19,11 @@
       "22": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.22, 0.016, 250],
+          "components": [
+            0.22,
+            0.016,
+            250
+          ],
           "alpha": 1,
           "hex": "#151b22"
         },
@@ -26,7 +32,11 @@
       "23": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.23, 0.01, 250],
+          "components": [
+            0.23,
+            0.01,
+            250
+          ],
           "alpha": 1,
           "hex": "#191d22"
         },
@@ -35,7 +45,11 @@
       "25": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.25, 0.016, 250],
+          "components": [
+            0.25,
+            0.016,
+            250
+          ],
           "alpha": 1,
           "hex": "#1c2229"
         },
@@ -44,7 +58,11 @@
       "32": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.32, 0.01, 250],
+          "components": [
+            0.32,
+            0.01,
+            250
+          ],
           "alpha": 1,
           "hex": "#2f3338"
         },
@@ -53,7 +71,11 @@
       "45": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.45, 0.014, 250],
+          "components": [
+            0.45,
+            0.014,
+            250
+          ],
           "alpha": 1,
           "hex": "#50565d"
         },
@@ -62,7 +84,11 @@
       "53": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.53, 0.014, 250],
+          "components": [
+            0.53,
+            0.014,
+            250
+          ],
           "alpha": 1,
           "hex": "#666d74"
         },
@@ -71,7 +97,11 @@
       "56": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.56, 0.01, 250],
+          "components": [
+            0.56,
+            0.01,
+            250
+          ],
           "alpha": 1,
           "hex": "#70757a"
         },
@@ -80,7 +110,11 @@
       "62": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.62, 0.012, 250],
+          "components": [
+            0.62,
+            0.012,
+            250
+          ],
           "alpha": 1,
           "hex": "#81878d"
         },
@@ -89,7 +123,11 @@
       "74": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.74, 0.01, 250],
+          "components": [
+            0.74,
+            0.01,
+            250
+          ],
           "alpha": 1,
           "hex": "#a6abb1"
         },
@@ -98,7 +136,11 @@
       "85": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.85, 0.008, 250],
+          "components": [
+            0.85,
+            0.008,
+            250
+          ],
           "alpha": 1,
           "hex": "#caced3"
         },
@@ -107,7 +149,11 @@
       "92": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.92, 0.006, 250],
+          "components": [
+            0.92,
+            0.006,
+            250
+          ],
           "alpha": 1,
           "hex": "#e2e5e8"
         },
@@ -116,7 +162,11 @@
       "95": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.95, 0.004, 250],
+          "components": [
+            0.95,
+            0.004,
+            250
+          ],
           "alpha": 1,
           "hex": "#eceff1"
         },
@@ -125,7 +175,11 @@
       "97": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.97, 0.004, 250],
+          "components": [
+            0.97,
+            0.004,
+            250
+          ],
           "alpha": 1,
           "hex": "#f3f5f8"
         },
@@ -134,12 +188,18 @@
       "99": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.99, 0.004, 250],
+          "components": [
+            0.99,
+            0.004,
+            250
+          ],
           "alpha": 1,
           "hex": "#fafcfe"
         },
         "$description": "Near white for text and marks on solid fills, in both themes."
-      }
+      },
+      "$type": "color",
+      "$description": "Cool grey scale at hue 250 with a trace of chroma, so the greys read as slightly cool rather than warm or dead."
     },
     "accent": {
       "$type": "color",
@@ -147,7 +207,11 @@
       "blue": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.54, 0.17, 258],
+          "components": [
+            0.54,
+            0.17,
+            258
+          ],
           "alpha": 1,
           "hex": "#236bcf"
         },
@@ -156,7 +220,11 @@
       "teal": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.54, 0.09, 195],
+          "components": [
+            0.54,
+            0.09,
+            195
+          ],
           "alpha": 1,
           "hex": "#0b7f7f"
         },
@@ -169,7 +237,11 @@
       "danger": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.57, 0.19, 25],
+          "components": [
+            0.57,
+            0.19,
+            25
+          ],
           "alpha": 1,
           "hex": "#d03739"
         },
@@ -178,7 +250,11 @@
       "warning": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.58, 0.12, 70],
+          "components": [
+            0.58,
+            0.12,
+            70
+          ],
           "alpha": 1,
           "hex": "#a76c12"
         },
@@ -187,7 +263,11 @@
       "success": {
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.57, 0.14, 150],
+          "components": [
+            0.57,
+            0.14,
+            150
+          ],
           "alpha": 1,
           "hex": "#258d48"
         },
@@ -195,8 +275,6 @@
       }
     },
     "space": {
-      "$type": "dimension",
-      "$description": "Spacing steps on a 4 pixel base, named by their size in pixels.",
       "4": {
         "$value": {
           "value": 0.25,
@@ -238,11 +316,11 @@
           "unit": "rem"
         },
         "$description": "Largest spacing step, used by semantic space 6: between sections."
-      }
+      },
+      "$type": "dimension",
+      "$description": "Spacing steps on a 4 pixel base, named by their size in pixels."
     },
     "radius": {
-      "$type": "dimension",
-      "$description": "Corner radii, named by their size in pixels.",
       "6": {
         "$value": {
           "value": 0.375,
@@ -263,13 +341,13 @@
           "unit": "rem"
         },
         "$description": "Large corner, used by raised panels."
-      }
+      },
+      "$type": "dimension",
+      "$description": "Corner radii, named by their size in pixels."
     },
     "border": {
       "$description": "Line widths.",
       "width": {
-        "$type": "dimension",
-        "$description": "Line widths in device-independent pixels, named by their size in pixels.",
         "1": {
           "$value": {
             "value": 1,
@@ -290,7 +368,16 @@
             "unit": "px"
           },
           "$description": "Focus ring width: thick enough to find at a glance."
-        }
+        },
+        "4": {
+          "$value": {
+            "value": 4,
+            "unit": "px"
+          },
+          "$description": "Heavy line width, used by the error edge of a checkbox: twice the control boundary."
+        },
+        "$type": "dimension",
+        "$description": "Line widths in device-independent pixels, named by their size in pixels."
       }
     },
     "font": {
@@ -299,13 +386,17 @@
         "$type": "fontFamily",
         "$description": "Font stacks.",
         "sans": {
-          "$value": ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+          "$value": [
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
           "$description": "The platform's own sans-serif: no download, familiar on every device."
         }
       },
       "size": {
-        "$type": "dimension",
-        "$description": "Type sizes, named by their size in pixels. Nothing is smaller than 16 pixels.",
         "16": {
           "$value": {
             "value": 1,
@@ -320,12 +411,19 @@
           },
           "$description": "Lead type size, used by level 2 headings."
         },
+        "24": {
+          "$value": {
+            "value": 1.5,
+            "unit": "rem"
+          },
+          "$description": "Title type size, used by the page heading."
+        },
         "28": {
           "$value": {
             "value": 1.75,
             "unit": "rem"
           },
-          "$description": "Title type size, used by the page heading."
+          "$description": "Long display type size, used by a cost summary total too long for the display size."
         },
         "36": {
           "$value": {
@@ -333,11 +431,11 @@
             "unit": "rem"
           },
           "$description": "Display type size, used by the cost summary total."
-        }
+        },
+        "$type": "dimension",
+        "$description": "Type sizes, named by their size in pixels. Nothing is smaller than 16 pixels."
       },
       "weight": {
-        "$type": "fontWeight",
-        "$description": "Type weights, named by their numeric weight.",
         "400": {
           "$value": 400,
           "$description": "Regular weight, for body text."
@@ -345,11 +443,11 @@
         "600": {
           "$value": 600,
           "$description": "Semibold weight, for headings, labels, button labels and the total."
-        }
+        },
+        "$type": "fontWeight",
+        "$description": "Type weights, named by their numeric weight."
       },
       "line-height": {
-        "$type": "number",
-        "$description": "Line heights as a multiple of the type size, named by that multiple times 100.",
         "120": {
           "$value": 1.2,
           "$description": "Tight line height, for headings and the large total."
@@ -357,12 +455,12 @@
         "150": {
           "$value": 1.5,
           "$description": "Reading line height, for body text."
-        }
+        },
+        "$type": "number",
+        "$description": "Line heights as a multiple of the type size, named by that multiple times 100."
       }
     },
     "size": {
-      "$type": "dimension",
-      "$description": "Fixed sizes of parts and columns, named by their size in pixels.",
       "1": {
         "$value": {
           "value": 1,
@@ -377,6 +475,13 @@
         },
         "$description": "How far a key moves down when pressed."
       },
+      "20": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "$description": "Size of a mark drawn inside a small tab, leaving a margin of the tab's fill around it."
+      },
       "24": {
         "$value": {
           "value": 1.5,
@@ -389,7 +494,7 @@
           "value": 3,
           "unit": "rem"
         },
-        "$description": "Smallest height of any control."
+        "$description": "Smallest height of any control, and the width of the solid tab on the leading edge of a plate."
       },
       "56": {
         "$value": {
@@ -397,6 +502,13 @@
           "unit": "rem"
         },
         "$description": "Height of the primary control."
+      },
+      "96": {
+        "$value": {
+          "value": 6,
+          "unit": "rem"
+        },
+        "$description": "Smallest height of a multi-line text control: two control heights."
       },
       "544": {
         "$value": {
@@ -411,11 +523,11 @@
           "unit": "rem"
         },
         "$description": "Widest the two-column page grows."
-      }
+      },
+      "$type": "dimension",
+      "$description": "Fixed sizes of parts and columns, named by their size in pixels."
     },
     "duration": {
-      "$type": "duration",
-      "$description": "Durations, named by their length in milliseconds.",
       "120": {
         "$value": {
           "value": 120,
@@ -429,7 +541,9 @@
           "unit": "ms"
         },
         "$description": "One turn of the busy mark."
-      }
+      },
+      "$type": "duration",
+      "$description": "Durations, named by their length in milliseconds."
     }
   },
   "semantic": {
@@ -577,8 +691,6 @@
       }
     },
     "space": {
-      "$type": "dimension",
-      "$description": "Spacing steps for gaps and padding.",
       "1": {
         "$value": "{primitive.space.4}",
         "$description": "Smallest gap: between a label and its control."
@@ -602,7 +714,9 @@
       "6": {
         "$value": "{primitive.space.32}",
         "$description": "Gap between sections, and the inset that sets the person's message apart."
-      }
+      },
+      "$type": "dimension",
+      "$description": "Spacing steps for gaps and padding."
     },
     "radius": {
       "$type": "dimension",
@@ -629,7 +743,7 @@
       },
       "size": {
         "$type": "dimension",
-        "$description": "Four type sizes. Body text is 1rem and nothing is smaller.",
+        "$description": "Five type sizes. Body text is 1rem and nothing is smaller.",
         "body": {
           "$value": "{primitive.font.size.16}",
           "$description": "Body text, labels, controls and level 3 headings."
@@ -639,12 +753,16 @@
           "$description": "Level 2 headings and lead text."
         },
         "title": {
-          "$value": "{primitive.font.size.28}",
+          "$value": "{primitive.font.size.24}",
           "$description": "Level 1 heading: the page title."
         },
         "display": {
           "$value": "{primitive.font.size.36}",
           "$description": "The total in a cost summary: the largest reading on its page."
+        },
+        "display-long": {
+          "$value": "{primitive.font.size.28}",
+          "$description": "A cost summary total too long for the display size: still larger than the page title."
         }
       },
       "weight": {
@@ -679,6 +797,10 @@
         "$value": "{primitive.size.48}",
         "$description": "Smallest height of any control."
       },
+      "control-multiline": {
+        "$value": "{primitive.size.96}",
+        "$description": "Smallest height of a multi-line text control, so it reads as a place for more than one line."
+      },
       "control-primary": {
         "$value": "{primitive.size.56}",
         "$description": "Height of the primary action."
@@ -686,6 +808,14 @@
       "mark": {
         "$value": "{primitive.size.24}",
         "$description": "Size of an icon mark and of the checkbox box."
+      },
+      "mark-inset": {
+        "$value": "{primitive.size.20}",
+        "$description": "A mark drawn inside a small tab, so a margin of the tab's fill shows around it."
+      },
+      "tab": {
+        "$value": "{primitive.size.48}",
+        "$description": "Width of the solid tab on the leading edge of a plate, wide enough to carry a mark with space around it."
       },
       "press": {
         "$value": "{primitive.size.2}",
@@ -714,6 +844,10 @@
       "thick": {
         "$value": "{primitive.border.width.2}",
         "$description": "Boundaries of controls and link underlines."
+      },
+      "heavy": {
+        "$value": "{primitive.border.width.4}",
+        "$description": "Heavy line: an error edge where the control boundary alone must visibly change shape."
       }
     },
     "focus": {
@@ -772,6 +906,11 @@
         "$type": "dimension",
         "$value": "{semantic.space.2}",
         "$description": "Width of the leading edge of a control in error: the shape that carries the error besides the text."
+      },
+      "textarea-min-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control-multiline}",
+        "$description": "Smallest height of a textarea in a field."
       }
     },
     "select": {
@@ -788,6 +927,11 @@
         "$type": "dimension",
         "$value": "{semantic.size.mark}",
         "$description": "Size of the drawn checkbox box."
+      },
+      "error-edge-width": {
+        "$type": "dimension",
+        "$value": "{semantic.border.heavy}",
+        "$description": "Width of the edge of a checkbox in error: twice the normal edge, so the state is carried by shape as well as colour."
       }
     },
     "cost-summary": {
@@ -806,6 +950,11 @@
         "$type": "dimension",
         "$value": "{semantic.font.size.display}",
         "$description": "Size of the total: the largest type on the page."
+      },
+      "total-size-long": {
+        "$type": "dimension",
+        "$value": "{semantic.font.size.display-long}",
+        "$description": "Size of a total with more than nine characters (data-length=\"long\"), so it fits a phone-width display; still larger than the page title."
       }
     },
     "error-summary": {
@@ -814,6 +963,11 @@
         "$type": "color",
         "$value": "{semantic.light.color.danger}",
         "$description": "Fill of the error summary's tab."
+      },
+      "tab-width": {
+        "$type": "dimension",
+        "$value": "{semantic.size.tab}",
+        "$description": "Width of the solid danger tab on the error summary's leading edge, which carries the danger mark."
       }
     },
     "message": {
@@ -830,6 +984,11 @@
         "$type": "duration",
         "$value": "{semantic.duration.loop}",
         "$description": "One turn of the busy mark."
+      },
+      "mark-size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.mark-inset}",
+        "$description": "Size of the mark drawn on the status tab, smaller than the tab so its fill frames the mark."
       }
     },
     "chat-message": {

@@ -1,0 +1,270 @@
+{
+ "fixes": {
+  "verdict": "done",
+  "summary": "All seven decisions are applied and \"npm run check\" exits 0. Every check stage passes, and all 11 demo pages pass all 6 states, including the new screens/demo-list.html. The title token is now 1.5rem through a new primitive.font.size.24. The five new component tokens alias new semantic tokens, and the calc() workarounds are gone. The long-total rule (data-length=\"long\", 1.75rem) is in place. The error summary now shows its ring on :focus, and the proposal's done state has no draft. sv-list is in base.css. docs/layout.md is exactly 70 lines, and all three of its HTML snippets pass lintHtml. The page skeleton was linted as a document because a full page carries the theme script. I also put demo-status's list rows on sv-list.",
+  "commands": [
+   {
+    "command": "npm run tokens (baseline)",
+    "exit_code": 0,
+    "last_lines": "tokens 0"
+   },
+   {
+    "command": "node scripts/build.mjs (baseline)",
+    "exit_code": 0,
+    "last_lines": "build 0"
+   },
+   {
+    "command": "node scripts/.tmp/fixes/tok.mjs && npm run tokens",
+    "exit_code": 0,
+    "last_lines": "self-test: 25 of 25 fixtures failed on their named rule"
+   },
+   {
+    "command": "node scripts/check-tokens.mjs",
+    "exit_code": 0,
+    "last_lines": "check-tokens: every rule passes"
+   },
+   {
+    "command": "node scripts/.tmp/fixes/measure.mjs demo-cost-summary.html",
+    "exit_code": 0,
+    "last_lines": "320 light: long dd 51-271 (plate content box 49-271 on the panel), font 28px; amount stacks below Total"
+   },
+   {
+    "command": "node scripts/build.mjs && node scripts/lint.mjs && node scripts/size.mjs && node scripts/check-screens.mjs --only demo-list",
+    "exit_code": 0,
+    "last_lines": "lint: 33 files (12 css, 11 html, 10 md), 0 findings; size: 19 rows, 0 over budget; demo-list pass x6"
+   },
+   {
+    "command": "node scripts/check-screens.mjs",
+    "exit_code": 0,
+    "last_lines": "check-screens: 11 screens × 6 states, 0 findings"
+   },
+   {
+    "command": "node scripts/.tmp/fixes/lintdoc.mjs",
+    "exit_code": 0,
+    "last_lines": "3 snippets, 0 findings"
+   },
+   {
+    "command": "node scripts/check-screens.mjs --only demo-status",
+    "exit_code": 0,
+    "last_lines": "screens/demo-status.html pass x6"
+   },
+   {
+    "command": "node scripts/check-screens.mjs --only demo-",
+    "exit_code": 0,
+    "last_lines": "check-screens: 11 screens × 6 states, 0 findings"
+   },
+   {
+    "command": "npm run check (final)",
+    "exit_code": 0,
+    "last_lines": "check-tokens: every rule passes; self-test 25/25; lint 0 findings; lint self-test 0 problems; size 0 over budget; check-screens: 11 screens × 6 states, 0 findings"
+   }
+  ],
+  "files_changed": [
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/tokens/souvenir.tokens.json",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/base/base.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/checkbox/checkbox.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/cost-summary/cost-summary.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/error-summary/error-summary.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/field/field.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/message/message.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/status/status.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/cost-summary.md",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/error-summary.md",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/proposal.md",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/layout.md",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-list.html",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-cost-summary.html",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-proposal.html",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/demo-status.html",
+   "dist/ (rebuilt), gates/raw/2026-11-15-screens.json and -size.json, digests/2026-11-15/screens/*.png (written by the checks)"
+  ],
+  "system_changes": [
+   "Tokens, new primitives: font.size.24 (1.5rem), size.20 (1.25rem), size.96 (6rem) and border.width.4 (4px). The descriptions of font.size.28 (now the long total) and size.48 (now also the tab width) are rewritten so they stay true.",
+   "Tokens, semantics: font.size.title now aliases font.size.24 (decision 1). New semantics: font.size.display-long (for the 1.75rem long total), size.tab (3rem), size.control-multiline (6rem), size.mark-inset (1.25rem) and border.heavy (4px). The font.size group description now says five sizes.",
+   "Tokens, component (decision 2): checkbox.error-edge-width → border.heavy; error-summary.tab-width → size.tab; field.textarea-min-height → size.control-multiline; status.mark-size → size.mark-inset; cost-summary.total-size-long → font.size.display-long.",
+   "checkbox.css: the error edge now uses the new error-edge-width token. Before, it borrowed a spacing token as a border width.",
+   "field.css: the textarea min-height uses the new token instead of calc(control*2).",
+   "status.css: the mark mask size uses the new token instead of calc(mark - space-1).",
+   "error-summary.css: the tab width uses the new token. The mark is placed with inset-inline-end: 100% across the tab's width, so the negative calc is gone. The focus ring now shows on :focus (decision 4). Screenshots confirm the mark is still centred.",
+   "message.css: its tab is the same 3rem, so it now uses the shared semantic size.tab and drops one calc. Computed values are unchanged.",
+   "cost-summary.css: [data-row=total][data-length=long] > dd uses total-size-long. No extra stacking CSS was needed, because the existing flex-wrap already puts the amount below 'Total' at the inline end. Measured at 320 on a panel: the amount spans 51-271px and the display's content box is 49-271px, so it fits in both themes.",
+   "base.css, sv-list (decision 6):\n- Structure: ul/ol.sv-list of li.sv-list__item. Each item is a flex row that wraps.\n- Gaps and lines: a column gap of space-4 and a row gap of space-2, so no focus ring overlaps after a wrap. A divider hairline sits between items.\n- Height: min-block-size is the control height when an item holds an a or a button. Items with a trailing button are centred.\n- Main part: sv-list__main is a grid with justify-items start. It is never narrower than its longest word.\n- Detail lines: sv-list__detail is soft text.\n- Trailing part: sv-list__trail sits at the inline end and takes at most 50% of the row. It uses tabular figures and nowrap, and its child elements wrap normally with start alignment.\n- How I got there: I tried a 'main keeps half the row' variant. It pushed 'Out of stock' below 'Soap' for no reason, so I reverted it in favour of the 50% cap on the trailing part.",
+   "Docs:\n- cost-summary.md: adds the data-length row with the nine-character rule and a long-total snippet, and removes the 'Known limit' line.\n- proposal.md: the done state and the 'Never use it for' line are reworded. The note explains that a dashed edge means 'not yet sent'.\n- error-summary.md: says the focus ring shows on :focus.\n- docs/layout.md is new, at 70 lines. Its theme script is byte-identical to the demo pages' script."
+  ],
+  "needs_from_others": [
+   "Spec section 2 (briefs/v0.2-build-spec.md) still says font.size.title is 1.75rem; it is now 1.5rem (decision 1). It also lists only four type sizes, and there are now five (display-long).",
+   "Spec section 3 (focus) needs this wording: a part that is focused by script, such as the error summary, shows the ring on :focus, not only :focus-visible.",
+   "Spec section 4 should list sv-list among the layout classes from base.css.",
+   "lint.mjs: CHECKED_DATA does not include data-length, so a mistyped value such as data-length=\"lng\" would pass the lint.",
+   "lint.mjs only walks docs/components/, so docs/layout.md is not linted by npm run check. I checked its snippets with a throwaway script that calls lintHtml. The page skeleton was linted as a document, because the snippet rules ban the theme script the decision asks the page to show.",
+   "check-screens.mjs cannot see an overflow inside a component, such as an amount spilling past the cost display inside a panel, because it only measures page-level sideways scroll. The long-total fit was proven by a separate measurement and is not gated. The margin at 320 on a panel is 2 pixels with this Chromium's system font, so another platform font could overflow."
+  ],
+  "judgment": "I read demo-list at 320 light, 375 dark and 1280 dark, cost-summary at 320 light and 375 dark, proposal at 375 dark, error-summary at 320 light, and status at 320 light (twice).\n- **List: good.** Item lines read as a receipt, with amounts aligned at the end in tabular figures. The order links are clear targets, with statuses beside them. The settings rows keep quiet 'Change' and 'Turn off' at the end, centred on the two-line row. The empty state is an info plate with an action, not soft text. At 1280 it looks intended within the 34rem column.\n- **List: almost right, and accepted.** At 320 a long status such as 'Waiting for your reply' wraps within its half of the row, and 'Placed 10 November' then wraps in the main part. That is ordinary word wrapping, not a defect.\n- **Cost summary: good.** The long total at 28px stacks under 'Total' and stays the largest text, above the 24px h1. On the panel at 320 it fits with only about 2px to spare.\n- **Proposal: good.** The done state is now short: heading, fields and a success plate.\n- **Error summary: good.** Its mark sits centred in the tab.\n- **Status and checkbox: unchanged.** Their sizes look the same, as expected, because the computed values did not change.\n- **Status demo: fixed.** The 'In list rows' section used ad-hoc sv-row markup. I moved it onto sv-list, so the statuses now align at the end.",
+  "not_exercised": [
+   "The error-summary :focus ring after a real failed submit: check-screens does not trigger a submit, and I did not screenshot the focused state.",
+   "The long total at the teal accent, and on platforms with a different system-ui font (only the Playwright Chromium on macOS was measured).",
+   "The sv-list ol variant: the demo uses ul only. Its styles come from .sv-list, which sets padding 0 and list-style none.",
+   "Right-to-left rendering of sv-list and the repositioned error-summary mark: only logical properties are used, but RTL was not rendered.",
+   "The assistant and checkout screens (screens/checkout.html and assistant.html) do not exist in screens/ yet, so they are not checked here."
+  ]
+ },
+ "screens": [
+  {
+   "part": "checkout",
+   "verdict": "done with gaps",
+   "summary": "I built the three checkout screens from the system only. They pass the lint and all 18 states of check-screens with 0 findings. scripts/check-noscript.mjs exits 0 with JavaScript off. With JavaScript on (SV_NOSCRIPT_ALLOW_JS=1) its two no-script assertions fail, so the check has been seen failing. Three changes went into the system: a split-page main and aside in base.css, a weight of 600 for b and strong, and an error-summary wrapper that takes no space while hidden. The notes in docs/layout.md and docs/components/error-summary.md now describe them. One gap: at 320 pixels the total row starts at y=688 but ends at y=772, so it is not fully inside the first 720 pixels. Command for the lead to add to npm run check: node scripts/check-noscript.mjs",
+   "commands": [
+    {
+     "command": "node scripts/build.mjs",
+     "exit_code": 0,
+     "last_lines": "build: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 0,
+     "last_lines": "lint: 38 files (12 css, 16 html, 10 md), 0 findings"
+    },
+    {
+     "command": "node scripts/lint.mjs --self-test",
+     "exit_code": 0,
+     "last_lines": "lint self-test: 49 fixtures, 18 rules seen failing, 0 problems"
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "size: 19 rows, 0 over budget; written to gates/raw/2026-11-15-size.json"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only checkout",
+     "exit_code": 0,
+     "last_lines": "check-screens: 3 screens × 6 states, 0 findings; all 18 states pass"
+    },
+    {
+     "command": "node scripts/check-noscript.mjs",
+     "exit_code": 0,
+     "last_lines": "15 PASS lines; check-noscript: 0 failures"
+    },
+    {
+     "command": "SV_NOSCRIPT_ALLOW_JS=1 node scripts/check-noscript.mjs",
+     "exit_code": 1,
+     "last_lines": "FAIL no script ran: data-theme=dark; FAIL form has novalidate; check-noscript: 2 failures (expected: proves the check can fail)"
+    },
+    {
+     "command": "node scripts/.tmp/checkout/y.mjs (scratch measurement of the total row, since deleted; the first attempt failed to launch an old cached Chromium and was rerun with the newest one)",
+     "exit_code": 0,
+     "last_lines": "checkout 320 total row top 688 bottom 772; 375 top 640 bottom 724; 1280 top 592 bottom 676"
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/checkout.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/checkout-errors.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/checkout-result.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/scripts/check-noscript.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/base/base.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/error-summary/error-summary.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/layout.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/error-summary.md",
+    "dist/* (regenerated by build.mjs)",
+    "gates/raw/2026-11-15-screens.json and digests/2026-11-15/screens/checkout*.png (written by check-screens)"
+   ],
+   "system_changes": [
+    "base.css, split layout: from 48rem every child of .sv-page[data-layout=split] spans both columns (the title and notices). The new .sv-page__main goes in column 1. The new .sv-page__aside goes in column 2 and is sticky at --sv-space-4. The grid uses grid-auto-flow: row dense, so an aside written first in the document (the order summary, first on a phone) still sits beside the main. Why: the screen needed the summary first in the document but second on screen, and kept in view, with no CSS in the screen. Nothing else used split. Nothing in it is specific to checkout.",
+    "base.css: b and strong use --sv-font-weight-strong. Why: the restated 'Total £60.75' needs emphasis. The browser's 'bolder' would add a third weight, 700, to a system that has two (400 and 600).",
+    "error-summary.css: sv-error-summary:has(> .sv-error-summary[hidden]) { display: none }. Why: the resting wrapper was an empty item in the page grid and doubled the 32-pixel gap above the order summary on checkout.html.",
+    "docs/layout.md: the split row now covers __main and __aside, and a 'Split page' section adds an example. docs/components/error-summary.md: the Hidden row now says the wrapper takes no space."
+   ],
+   "needs_from_others": [
+    "Lead: add 'node scripts/check-noscript.mjs' to npm run check, after screens.",
+    "Lead, a decision: at 320 pixels the total row runs from y=688 to y=772, and the amount and VAT note cross the 720-pixel line. At 375 it runs from 640 to 724. Getting it fully inside 720 at 320 means tightening spacing tokens (page block padding, list item padding, the 32-pixel section gap) or shortening the shared item name. I may not edit the token file, and I did not reorder the fixed content.",
+    "Lead, a decision: the task's 'United Kingdom chosen' conflicts with the select note's Don't (no preselected real option on a required choice). I left the country select not required and without a 'Choose a country' option, so a value is always sent. Either confirm this or change the note."
+   ],
+   "judgment": "I read the screenshots at 320 light, 375 light and dark (checkout-errors), 1280 light (checkout) and 1280 dark (checkout-errors), and the result page at 375 light.\n\nWhat works:\n- Hierarchy and attention: the total is the clearest thing on checkout. It is £60.75 at 36 pixels in the inverse display, against a 24-pixel h1 and 20-pixel h2s, and it is the largest text in every state.\n- Pay is the only accent fill in all six states. From the JSON, it is the only control with fill rgb(35,107,207) and the only text on that background. It is 56 pixels tall: 254 wide at 320, 309 at 375 and 446 at 1280.\n- Language: every string comes from the shared content or the voice guide. The error summary links and the field error lines match word for word. There are no new marketing words.\n- Interaction: the error state is shown by shape as well as colour: the danger mark, ink text at weight 600 and a thick leading edge. On the errors page everything the person typed is kept ('sam.example.com', the name, address and town), and the postcode is empty as typed.\n- 1280: the split reads as intended, not as a stretched phone. The form is on the left; the order summary is on the right, top-aligned with Contact, and stays in view. The title, the test notice and the error summary span both columns.\n- Dark: the inverse display flips to a light plate and stays distinct, so finding I4 does not come back. No mid-word breaks: 'name@example.com.' wraps whole at 320.\n\nAlmost right, reported rather than hidden:\n- (1) Pressing Enter in 'Discount code' submits the whole form, which means Pay. That is the browser's implicit submission, and enterkeyhint='done' only labels the key. The system fix is a discount-code pattern in its own form, or a script that turns Enter there into Apply. That is outside 'one form', so it is left for the lead.\n- (2) The total row at 320 crosses the 720-pixel line by about 52 pixels (bottom at y=772). The long towel name takes 4 lines.\n- (3) The 'Discount code' heading and the field label repeat each other, because the shared content does. I would drop the heading.\n- (4) Many panels make a long phone page (2185 pixels at 320). It is consistent with Instrument, but a lighter treatment for the Contact and Discount sections is worth a look.\n- (5) The restated 'Total £60.75' above Pay is body size at weight 600. It is quiet, which is right next to a display total, but it is barely more than a label.\n\ninputmode and enterkeyhint are on every text input. The select has autocomplete 'shipping country' only. The checkbox and buttons have neither, because neither attribute applies to them.",
+   "not_exercised": [
+    "The sticky aside while actually scrolling at 1280. The screenshots are full-page, so the sticky behaviour itself was not seen. On a viewport shorter than the order summary (about 540 pixels at 1280), the bottom of the aside would stay out of view until the end of the form.",
+    "The scripted paths with JavaScript on: sv-field blur checks, the error summary filling itself on a failed submit, and sv-button's busy label 'Paying £60.75…' were not driven in a browser this run.",
+    "The accent set to teal, forced colours, 200% zoom, a screen reader, right-to-left text.",
+    "Hover and pressed states.",
+    "Whether the error summary's autofocus showed its focus ring in the checkout-errors screenshots: none is visible at 1280 dark. Focus on load was not asserted."
+   ]
+  },
+  {
+   "part": "assistant",
+   "verdict": "done",
+   "summary": "I built screens/assistant.html and screens/assistant-done.html from sv- classes only. Both pass the lint and all 12 states of the screen checker with 0 findings. The proposal is 629px tall at 320 wide, under the 720px limit. The \"Move event and send message\" button is the only accent fill. I set \"Send message\" to the secondary variant on both screens, so the done screen has no accent fill, on purpose. I made one system change, in proposal.css plus its note. At 1280 the primary label wrapped to two lines, repeating review finding I5. The primary now has a full-width row of its own at every width. The brief asked for the label \"Send\", but I used \"Send message\": that is the shared content's wording, and voice rule 2 bans one-word labels except Cancel, Close and Done.",
+   "commands": [
+    {
+     "command": "node scripts/build.mjs (first run, before the proposal change; piped to tail, exit not captured)",
+     "exit_code": 0,
+     "last_lines": "build: dist/souvenir.css from 13 files (36869 bytes; minified 26531)\nbuild: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs (first run, output redirected)",
+     "exit_code": 0,
+     "last_lines": "lint: 35 files (12 css, 13 html, 10 md), 0 findings"
+    },
+    {
+     "command": "node scripts/build.mjs (after the proposal.css change)",
+     "exit_code": 0,
+     "last_lines": "build: dist/souvenir.css from 13 files (36964 bytes; minified 26494)\nbuild: 10 component stylesheets, 3 component scripts, dist/souvenir.js, 5 UI SDK bundles"
+    },
+    {
+     "command": "node scripts/lint.mjs",
+     "exit_code": 0,
+     "last_lines": "lint: 35 files (12 css, 13 html, 10 md), 0 findings"
+    },
+    {
+     "command": "node scripts/size.mjs",
+     "exit_code": 0,
+     "last_lines": "proposal CSS 1248 minified / 464 gzip of 2048: within; all CSS 26494 / 4693 of 12288: within\nsize: 19 rows, 0 over budget; written to gates/raw/2026-11-15-size.json"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only assistant (after the proposal change)",
+     "exit_code": 0,
+     "last_lines": "screens/assistant-done.html: pass in all 6 states, proposal 301px (320 and 375), 253px (1280)\nscreens/assistant.html: pass in all 6 states, proposal 629px (320), 593px (375), 497px (1280)\ncheck-screens: 2 screens × 6 states, 0 findings"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-proposal",
+     "exit_code": 0,
+     "last_lines": "screens/demo-proposal.html: pass in all 6 states; proposal 701/677/581px"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only demo-chat",
+     "exit_code": 0,
+     "last_lines": "screens/demo-chat-message.html: pass in all 6 states; proposal 593/569/497px"
+    },
+    {
+     "command": "node scripts/check-screens.mjs --only assistant (final run, so the shared JSON ends on these screens)",
+     "exit_code": 0,
+     "last_lines": "gates/raw/2026-11-15-screens.json: findings_total 0, pass true, only \"assistant\""
+    }
+   ],
+   "files_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/assistant.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/screens/assistant-done.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/src/components/proposal/proposal.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/docs/components/proposal.md",
+    "dist/ (regenerated by scripts/build.mjs)",
+    "gates/raw/2026-11-15-screens.json and gates/raw/2026-11-15-size.json (regenerated by the scripts)",
+    "digests/2026-11-15/screens/assistant-*.png, assistant-done-*.png, demo-proposal-*.png, demo-chat-message-*.png (regenerated by the checker)"
+   ],
+   "system_changes": [
+    "proposal.css: the primary action now has a full-width row of its own at every width, and the other actions share the row below it. From 48rem the other actions keep their own width instead of stretching. The old rule put all actions on one row from 48rem, with the primary allowed to shrink. A proposal is never wider than the page column (544px), so at 1280 'Move event and send message' wrapped to two lines, which repeats review finding I5. Now it sits on one line at 375 and 1280. Its two-line wrap at 320 keeps its padding. The proposal grew from 449px to 497px at 1280; 320 and 375 are unchanged. I rechecked demo-proposal and demo-chat-message: both pass. The proposal CSS is 464 bytes gzipped, under its 2048 budget.",
+    "docs/components/proposal.md: the actions row now says 'Primary first, on a row of its own at full width; the others share the row below (stretched on a phone, own width from 48rem)'. This replaces the lead's 'From 48rem: one row', so the lead should know the layout rule changed."
+   ],
+   "needs_from_others": [
+    "base.css owner, optional: at 320 the three suggestion buttons in a .sv-row sit one per line. 'Show my week' plus 'Draft a reply' plus the gap need about 290px of a 288px line. This fails no check. If the lead wants them to pair up, a slightly smaller .sv-row gap in base.css would do it. I did not touch base.css."
+   ],
+   "judgment": "I looked at these screenshots: assistant at 320 light, 375 light, 375 dark, 1280 light and 1280 dark; assistant-done at 375 light and 1280 dark.\n\nWhat works:\n- Visual hierarchy: three things are plain at a glance on every screenshot.\n  - The person's message is an inset plate with a visible edge border, one squared corner and the label 'You'. In dark it stays distinct with colour removed, because the border and the inset remain.\n  - The proposal is the one raised panel with a heading.\n  - The machine-draft warning has ink text, measured at 13.7:1 in light and 16.52:1 in dark, on a solid amber tab with a triangle mark. Review finding I1 is not repeated.\n- Speaker labels: every chat message has a visible label ('Souvenir', 'You', 'Souvenir') in all 12 states. The earlier failed turn carries a 'Souvenir' label too.\n- Proposal height at 320 is 629px, under the 720px limit. Heading, fields, draft, warning and primary action all show on one phone screen.\n- Accent: the action that commits is 'Move event and send message', because it changes a shared calendar and messages Priya. Sending a message to Souvenir commits nothing, and the screen itself says 'Souvenir has not changed anything yet.' So I made 'Send message' secondary by choosing its variant, with no new CSS. That leaves one accent fill on the screen. On the done screen it is secondary too, so there are no accent fills, on purpose: a control that changes weight between two states of one conversation would break expectation.\n- At 1280 the page is a centred 544px reading column, as sv-page gives. After the proposal change the primary sits on one line on its own row, with Edit and Cancel at their own width below. It looks intended, not like a stretched phone.\n- Language: I used the shared content's wording exactly, including the longer draft and the full primary label. The brief and the shared file disagreed on the composer button. The brief said 'Send', the shared file says 'Send message', and voice rule 2 allows one-word labels only for Cancel, Close and Done. I used 'Send message'.\n- Interaction: the form is method=\"get\" with action=\"assistant.html\". The textarea is labelled 'Message Souvenir'. Edit message and Cancel read as clearly lower ranks than the primary.\n\nStill almost right, left for the lead because it is content, not system:\n1. 'Checking both calendars…' keeps turning next to a finished result on both screens, which is close to voice rule 12. I kept it because the brief and the shared content include it. The lead should decide whether a finished turn drops the busy status.\n2. 'Try again.' has no control to retry with.\n3. At 320 the primary label still wraps to two lines, with its padding kept, as the spec allows.\n4. At 320 the suggestion buttons stack one per line, as noted under needs_from_others.\n\nThe proposal's h2 heading 'Move the event to Thursday and tell Priya' is my plain-words wording; the shared content gives none.",
+   "not_exercised": [
+    "Hover, pressed, focus-ring screenshots and busy states: I did not inspect them by eye. The checker measured the focus outline and overlap on every Tab stop and found nothing.",
+    "The teal accent (?accent=teal): not run.",
+    "Forced colours and reduced motion: not run.",
+    "Real form submission: I did not press Send.",
+    "Screen-reader output: not tested.",
+    "Screenshots of assistant-done at 320 light, and of 320 dark: not opened. I relied on the checker's pass and on the 375 and 1280 shots.",
+    "Housekeeping: I briefly wrote three output files to /tmp and then deleted them. They should have gone in scripts/.tmp/assistant/, which I never created.",
+    "My --only runs overwrote the shared gates/raw/2026-11-15-screens.json and the demo-proposal and demo-chat-message screenshots. The final run left the JSON on the assistant screens. The lead's full run needs to regenerate both."
+   ]
+  }
+ ]
+}

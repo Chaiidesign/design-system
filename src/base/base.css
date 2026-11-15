@@ -57,6 +57,12 @@ h3 {
   font-size: var(--sv-font-size-body);
 }
 
+/* The system has two weights; the browser's "bolder" would make a third. */
+b,
+strong {
+  font-weight: var(--sv-font-weight-strong);
+}
+
 a {
   color: var(--sv-color-text);
   text-decoration-line: underline;
@@ -94,13 +100,31 @@ ul {
   padding-block: var(--sv-space-5) var(--sv-space-6);
 }
 
+/* Split: one column on a phone, in document order. From 48rem every child spans both columns
+   (title, notices) except .sv-page__main, in the first column, and .sv-page__aside, in the second,
+   side by side whichever comes first in the document. The aside stays in view while the main scrolls. */
 @media (min-width: 48rem) {
   .sv-page[data-layout="split"] {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-auto-flow: row dense;
     gap: var(--sv-space-6);
     align-items: start;
     max-inline-size: var(--sv-size-column-wide);
+  }
+
+  .sv-page[data-layout="split"] > * {
+    grid-column: 1 / -1;
+  }
+
+  .sv-page[data-layout="split"] > .sv-page__main {
+    grid-column: 1;
+  }
+
+  .sv-page[data-layout="split"] > .sv-page__aside {
+    position: sticky;
+    inset-block-start: var(--sv-space-4);
+    grid-column: 2;
   }
 }
 
@@ -147,6 +171,62 @@ ul {
   gap: var(--sv-space-5);
   padding: 0;
   list-style: none;
+}
+
+/* A list of rows (item lines, orders, settings). Each item: a main part (a title line, then soft
+   detail lines) and an optional trailing part at the inline end, at most half the row. Bare text
+   in the trailing part (an amount) never wraps; a status or button inside it wraps within its half.
+   If the main part's longest word cannot fit beside it, the trailing part moves below, at the end. */
+.sv-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0;
+  list-style: none;
+}
+
+.sv-list__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sv-space-2) var(--sv-space-4);
+  padding-block: var(--sv-space-3);
+}
+
+.sv-list__item + .sv-list__item {
+  border-block-start: var(--sv-border-thin) solid var(--sv-color-divider);
+}
+
+.sv-list__item:has(a, button) {
+  min-block-size: var(--sv-size-control);
+}
+
+.sv-list__item:has(.sv-list__trail button) {
+  align-items: center;
+}
+
+/* Never narrower than its longest word, so a word is never broken. */
+.sv-list__main {
+  display: grid;
+  flex: 1 1 0;
+  justify-items: start;
+}
+
+.sv-list__detail {
+  color: var(--sv-color-text-soft);
+}
+
+.sv-list__trail {
+  flex: 0 1 auto;
+  max-inline-size: 50%;
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.sv-list__trail > * {
+  text-align: start;
+  white-space: normal;
 }
 
 .sv-visually-hidden {

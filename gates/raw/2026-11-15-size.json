@@ -1,6 +1,6 @@
 {
   "produced_by": "scripts/size.mjs",
-  "measured_at": "2026-11-15T10:24:39.237Z",
+  "measured_at": "2026-11-15T10:49:59.600Z",
   "method": "gzip level 9 of the minified file (component CSS minified by esbuild from src)",
   "budgets": {
     "component_css": 2048,
@@ -32,8 +32,8 @@
     {
       "item": "checkbox CSS",
       "file": "src/components/checkbox/*.css",
-      "minified": 1320,
-      "gzip": 518,
+      "minified": 1338,
+      "gzip": 521,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -42,8 +42,8 @@
     {
       "item": "cost-summary CSS",
       "file": "src/components/cost-summary/*.css",
-      "minified": 1362,
-      "gzip": 491,
+      "minified": 1470,
+      "gzip": 508,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -52,8 +52,8 @@
     {
       "item": "error-summary CSS",
       "file": "src/components/error-summary/*.css",
-      "minified": 1072,
-      "gzip": 428,
+      "minified": 1088,
+      "gzip": 421,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -62,7 +62,7 @@
     {
       "item": "field CSS",
       "file": "src/components/field/*.css",
-      "minified": 1696,
+      "minified": 1699,
       "gzip": 607,
       "budget": 2048,
       "counts": true,
@@ -72,8 +72,8 @@
     {
       "item": "message CSS",
       "file": "src/components/message/*.css",
-      "minified": 1714,
-      "gzip": 530,
+      "minified": 1678,
+      "gzip": 523,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -82,8 +82,8 @@
     {
       "item": "proposal CSS",
       "file": "src/components/proposal/*.css",
-      "minified": 1285,
-      "gzip": 475,
+      "minified": 1248,
+      "gzip": 464,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -102,8 +102,8 @@
     {
       "item": "status CSS",
       "file": "src/components/status/*.css",
-      "minified": 1732,
-      "gzip": 583,
+      "minified": 1713,
+      "gzip": 577,
       "budget": 2048,
       "counts": true,
       "over": false,
@@ -142,8 +142,8 @@
     {
       "item": "all CSS",
       "file": "dist/souvenir.min.css",
-      "minified": 25136,
-      "gzip": 4459,
+      "minified": 26847,
+      "gzip": 4770,
       "budget": 12288,
       "counts": true,
       "over": false,

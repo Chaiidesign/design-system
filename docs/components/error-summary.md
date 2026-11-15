@@ -19,8 +19,8 @@ Place it at the top of the page content, before the form, on the ground (not ins
 | Option or state | How |
 |---|---|
 | Form | `for="<form id>"`; without it, the form it is inside, else the form directly after it |
-| Hidden | `hidden` on `div.sv-error-summary`: the resting state |
-| Shown by the script | on a submit with invalid fields: stops the submit, asks each `sv-field` for its error, fills the list, removes `hidden`, takes focus; `role="alert"` announces it |
+| Hidden | `hidden` on `div.sv-error-summary`: the resting state; the `sv-error-summary` wrapper then takes no space either |
+| Shown by the script | on a submit with invalid fields: stops the submit, asks each `sv-field` for its error, fills the list, removes `hidden`, takes focus and shows the focus ring (on `:focus`, since script moves focus there); `role="alert"` announces it |
 | Links | each link's text is the field's error word for word; `href="#<control id>"`; a click moves focus to the control and scrolls its label into view |
 | Hides | when every field is valid, on submit or as the person fixes each field (that field's link is removed) |
 | Server-rendered | no `hidden`, links written out, and each field in its error state; the script moves focus to it on load |

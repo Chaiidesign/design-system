@@ -31,7 +31,7 @@
     inset-block-start: 0;
     inset-inline-start: 0;
     background-color: var(--sv-color-on-solid);
-    mask: var(--sv-icon-info) center / calc(var(--sv-size-mark) - var(--sv-space-1)) no-repeat;
+    mask: var(--sv-icon-info) center / var(--sv-status-mark-size) no-repeat;
   }
 
   .sv-status[data-tone="info"]::before,

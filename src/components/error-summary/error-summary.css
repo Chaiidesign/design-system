@@ -6,7 +6,7 @@
   display: grid;
   gap: var(--sv-space-3);
   padding: var(--sv-space-4);
-  border-inline-start: calc(var(--sv-size-mark) + var(--sv-space-3) * 2) solid var(--sv-error-summary-tab);
+  border-inline-start: var(--sv-error-summary-tab-width) solid var(--sv-error-summary-tab);
   border-radius: var(--sv-radius-control);
   background-color: var(--sv-color-panel);
 }
@@ -15,18 +15,24 @@
   display: none;
 }
 
+/* While the summary rests hidden, its wrapper is no box either, so a stack around it keeps one gap. */
+sv-error-summary:has(> .sv-error-summary[hidden]) {
+  display: none;
+}
+
 .sv-error-summary::before {
   content: "";
   position: absolute;
   inset-block-start: var(--sv-space-4);
-  inset-inline-start: calc(var(--sv-size-mark) * -1 - var(--sv-space-3));
-  inline-size: var(--sv-size-mark);
+  inset-inline-end: 100%;
+  inline-size: var(--sv-error-summary-tab-width);
   block-size: var(--sv-size-mark);
   background-color: var(--sv-color-on-solid);
-  mask: var(--sv-icon-danger) center / contain no-repeat;
+  mask: var(--sv-icon-danger) center / var(--sv-size-mark) no-repeat;
 }
 
-.sv-error-summary:focus-visible {
+/* Focused by script after a failed submit, so the ring shows on :focus, not only :focus-visible. */
+.sv-error-summary:focus {
   outline: var(--sv-focus-width) solid var(--sv-color-focus);
   outline-offset: var(--sv-focus-offset);
 }
