@@ -1,6 +1,6 @@
 {
   "produced_by": "scripts/size.mjs",
-  "measured_at": "2026-11-15T12:05:32.193Z",
+  "measured_at": "2026-11-15T12:09:50.998Z",
   "method": "gzip level 9 of the minified file (component CSS minified by esbuild from src)",
   "budgets": {
     "component_css": 2048,
