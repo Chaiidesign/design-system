@@ -1,0 +1,1 @@
+{"expect": "solids-same", "about": "The dark theme points the accent at teal while light keeps blue.", "patch": [{"set": ["semantic", "dark", "color", "accent", "$value"], "value": "{primitive.accent.teal}"}]}

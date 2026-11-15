@@ -1,0 +1,11 @@
+/* Stand-in for the built CSS, used only by the lint self-test. */
+@layer sv.base {
+  .sv-page { display: grid; }
+  .sv-visually-hidden { position: absolute; }
+}
+@layer sv.components {
+  .sv-demo { display: grid; }
+  .sv-demo__part { display: block; }
+  .sv-demo[data-variant=primary] { display: grid; }
+  .sv-demo[data-tone="info"] { display: grid; }
+}

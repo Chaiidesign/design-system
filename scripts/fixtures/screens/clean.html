@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="expect" content="">
+<title>Screen fixture: clean</title>
+<script>var t=new URLSearchParams(location.search).get("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t</script>
+<style>
+/* Clean on every rule, in both themes. Colours are oklch so the checker's colour reading is exercised. */
+:root{color-scheme:light;--ground:oklch(0.93 0.008 250);--panel:oklch(0.985 0.004 250);--text:oklch(0.23 0.012 250);--soft:oklch(0.45 0.014 250);--edge:oklch(0.53 0.014 250);--accent:oklch(0.55 0.17 255);--inverse:oklch(0.25 0.02 250);--on:oklch(1 0 0);--danger:oklch(0.55 0.19 25)}
+:root[data-theme=dark]{color-scheme:dark;--ground:oklch(0.17 0.008 250);--panel:oklch(0.22 0.01 250);--text:oklch(0.95 0.005 250);--soft:oklch(0.78 0.01 250);--edge:oklch(0.68 0.012 250);--inverse:oklch(0.93 0.01 250);--on:oklch(0.17 0.008 250)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--text);font:16px/1.5 system-ui,sans-serif}
+main{max-width:512px;margin:auto;padding:20px 16px;display:grid;gap:16px}
+h1{margin:0;font-size:28px;line-height:1.2}
+h2{margin:0;font-size:20px;line-height:1.2}
+p,dl,dd{margin:0}
+.panel{padding:20px;background:var(--panel);border-radius:20px;display:grid;gap:12px}
+.hint{color:var(--soft)}
+input{width:100%;min-height:48px;padding:0 12px;font:inherit;color:inherit;background:var(--ground);border:2px solid var(--edge);border-radius:12px}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+button{min-height:48px;padding:4px 16px;font:inherit;font-weight:600;color:var(--text);background:var(--panel);border:2px solid var(--edge);border-radius:12px}
+button.primary{width:100%;min-height:56px;background:var(--accent);border-color:var(--accent);color:oklch(1 0 0);font-size:20px}
+a{color:inherit;display:inline-block;padding-block:4px}
+.check{display:flex;align-items:center;gap:12px;min-height:48px}
+.check input{appearance:none;width:24px;min-height:24px;height:24px;margin:0;padding:0;border:2px solid var(--edge);border-radius:4px;background:var(--panel)}
+.check input:checked{background:var(--text)}
+.mark{display:inline-block;width:24px;height:24px;background-color:var(--danger);-webkit-mask-image:radial-gradient(circle,#000 60%,transparent 61%);mask-image:radial-gradient(circle,#000 60%,transparent 61%)}
+.err{display:flex;gap:8px;align-items:flex-start;font-weight:600}
+.cost{padding:16px;border-radius:12px;background:var(--inverse);color:var(--on);font-variant-numeric:tabular-nums}
+.sv-cost-summary__row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+.sv-cost-summary__row dt{flex:1}
+.sv-cost-summary__row[data-row=total] dd{margin-inline-start:auto;font-size:36px;font-weight:600}
+.user{overflow-wrap:anywhere}
+.sv-visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Checkout</h1>
+  <section class="panel">
+    <h2>Order summary</h2>
+    <p>Organic cotton waffle-weave bath towel, extra large, undyed natural oatmeal</p>
+    <p lang="ja">抹茶セットと和菓子の詰め合わせ、季節限定の特別なギフトボックス入り</p>
+    <div class="cost">
+      <dl class="sv-cost-summary">
+        <div class="sv-cost-summary__row"><dt>Items</dt><dd>£61.80</dd></div>
+        <div class="sv-cost-summary__row"><dt>Delivery</dt><dd>£3.95</dd></div>
+        <div class="sv-cost-summary__row" data-row="total"><dt>Total</dt><dd>£60.75</dd></div>
+      </dl>
+    </div>
+  </section>
+  <form class="panel" action="#" method="get">
+    <label for="email">Email address</label>
+    <p class="hint" id="email-hint">We'll send your receipt here</p>
+    <p class="err"><span class="mark" aria-hidden="true"></span>Enter an email address with an @.</p>
+    <input id="email" name="email" type="email" value="sam@example.com" aria-describedby="email-hint">
+    <p>Receipt goes to <span class="user" data-user-content>someone.with.a.remarkably.long.address@subdomain.example.co.uk</span></p>
+    <label class="check"><input type="checkbox" name="keep"> Keep me signed in</label>
+    <div class="row">
+      <button type="button">Apply code</button>
+      <button type="button">Remove</button>
+    </div>
+    <p><a href="#email">Change email address</a></p>
+    <span class="sv-visually-hidden">Hidden helper text at a tiny size</span>
+    <button type="submit" class="primary">Pay £60.75</button>
+  </form>
+</main>
+</body>
+</html>

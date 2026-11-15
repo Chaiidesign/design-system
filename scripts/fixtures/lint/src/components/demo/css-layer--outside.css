@@ -1,0 +1,4 @@
+@layer sv.components {
+  .sv-demo { display: grid; }
+}
+.sv-demo__part { display: block; }

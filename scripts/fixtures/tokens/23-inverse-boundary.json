@@ -1,0 +1,1 @@
+{"expect": "inverse-boundary", "about": "Light cost display almost the colour of the panel.", "patch": [{"set": ["semantic", "light", "color", "inverse", "$value"], "value": "{primitive.neutral.92}"}]}

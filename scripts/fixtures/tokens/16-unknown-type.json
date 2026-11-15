@@ -1,0 +1,1 @@
+{"expect": "type", "about": "Durations declared with a type the format does not have.", "patch": [{"set": ["primitive", "duration", "$type"], "value": "time"}]}

@@ -1,0 +1,1 @@
+{"expect": "component-aliases-semantic", "about": "The primary fill skips the semantic layer and points at a primitive.", "patch": [{"set": ["component", "button", "primary-fill", "$value"], "value": "{primitive.accent.blue}"}]}

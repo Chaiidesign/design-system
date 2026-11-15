@@ -1,0 +1,1 @@
+{"expect": "semantic-aliases-primitive", "about": "A semantic token that aliases a component token instead of a primitive.", "patch": [{"set": ["semantic", "space", "1", "$value"], "value": "{component.field.error-edge-width}"}]}

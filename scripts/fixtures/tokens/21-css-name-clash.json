@@ -1,0 +1,1 @@
+{"expect": "unique-css-names", "about": "Two tokens that would build to the same custom property --sv-p-space-4.", "patch": [{"copy": ["primitive", "space", "4"], "to": ["primitive", "space-4"]}]}

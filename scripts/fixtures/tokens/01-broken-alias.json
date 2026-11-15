@@ -1,0 +1,1 @@
+{"expect": "alias-resolves", "about": "Light text points at a primitive that does not exist.", "patch": [{"set": ["semantic", "light", "color", "text", "$value"], "value": "{primitive.neutral.missing}"}]}

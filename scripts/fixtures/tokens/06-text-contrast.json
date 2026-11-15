@@ -1,0 +1,1 @@
+{"expect": "text-contrast", "about": "Light text uses the soft grey: about 6 to 1, below 7.", "patch": [{"set": ["semantic", "light", "color", "text", "$value"], "value": "{primitive.neutral.45}"}]}

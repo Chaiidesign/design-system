@@ -1,0 +1,1 @@
+{"expect": "on-accent", "about": "Label on the accent uses the light divider grey: below 4.5 to 1 on blue.", "patch": [{"set": ["semantic", "light", "color", "on-solid", "$value"], "value": "{primitive.neutral.85}"}]}

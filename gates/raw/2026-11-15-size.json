@@ -1,0 +1,25 @@
+{
+  "produced_by": "scripts/size.mjs",
+  "measured_at": "2026-11-15T10:05:44.885Z",
+  "method": "gzip level 9 of the minified file (component CSS minified by esbuild from src)",
+  "budgets": {
+    "component_css": 2048,
+    "component_js": 5120,
+    "all_css": 12288,
+    "ui_sdk_reported_against": 5120
+  },
+  "rows": [
+    {
+      "item": "all CSS",
+      "file": "dist/souvenir.min.css",
+      "minified": 9768,
+      "gzip": 2280,
+      "budget": 12288,
+      "counts": true,
+      "over": false,
+      "result": "within"
+    }
+  ],
+  "over_budget": [],
+  "pass": true
+}

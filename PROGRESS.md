@@ -69,8 +69,8 @@ Set by the CEO's instruction of 15 November (DECISIONS.md D-015). It runs ahead 
 | Item | Owner | Status | Evidence |
 |---|---|---|---|
 | V.0 Record the UI SDK exception | Fable | done | charter/exceptions.md; DECISIONS.md D-014 |
-| V.1 Direction: Instrument; fix its quiet machine-draft warning | Fable | in progress | |
-| V.2 Tokens: one file, OKLCH, blue and teal accent, light and dark | Opus builds; scripts check | next | |
+| V.1 Direction: Instrument; fix its quiet machine-draft warning | Fable | done | explore/visual-directions/instrument/assistant.html: the warning is ink text on an amber status tab (measured in the browser, dark theme) |
+| V.2 Tokens: one file, OKLCH, blue and teal accent, light and dark | Opus builds; scripts check | done | tokens/souvenir.tokens.json (130 tokens); `npm run tokens` passes 26 rule groups for light and dark with blue and teal, and its self-test shows 25 of 25 broken fixtures failing on the named rule. Lint, build, size and screen-check tooling built, each with a self-test |
 | V.3 Ten components, plain HTML and CSS plus web components; sizes measured | Opus builds; scripts check | next | |
 | V.4 Checkout and assistant screens from components only, checked at 320, 375 and 1280, light and dark | Opus builds; scripts check | next | |
 | V.5 AGENTS.md and a note per component; a fresh agent builds three screens from them alone | Sonnet builds the screens; Fable fixes the system | next | |

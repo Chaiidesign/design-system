@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="expect" content="page-error">
+<title>Screen fixture: page-error</title>
+<style>body{margin:0;padding:16px;background:#fff;color:#1a1a1a;font:16px/1.5 system-ui,sans-serif}</style>
+</head>
+<body>
+<p>The script on this page throws, which the checker reports.</p>
+<script>throw new Error("fixture: a script on the page failed")</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+/* A clean component file: every rule the lint checks is exercised and met. */
+@layer sv.components {
+  .sv-demo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-area: mark;
+    gap: var(--sv-space-3);
+    padding-block: var(--sv-space-2);
+    margin-inline-start: 0;
+    margin-block: calc(var(--sv-space-4) * -1);
+    inline-size: 100%;
+    border: var(--sv-border-width) solid currentColor;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--sv-color-text);
+    font: var(--sv-font-weight-strong) var(--sv-font-size-body) / 1.5 var(--sv-font-family);
+    text-align: start;
+    z-index: 1;
+  }
+  .sv-demo__part,
+  .sv-demo > button[data-variant="primary"]:focus-visible {
+    outline: var(--sv-focus-width) solid var(--sv-color-focus);
+    outline-offset: var(--sv-focus-offset);
+  }
+  .sv-demo:is([aria-busy="true"]) .sv-demo__part::before {
+    content: "";
+    mask-image: var(--sv-icon-busy);
+    background-color: currentColor;
+  }
+  @media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+    .sv-demo { transition: border-color var(--sv-duration-quick); }
+  }
+  @media (forced-colors: active) {
+    .sv-demo__part { border-color: currentColor; }
+  }
+  @keyframes sv-demo-pulse {
+    from { opacity: 1; }
+    50% { opacity: 0.5; }
+    to { opacity: 1; }
+  }
+}

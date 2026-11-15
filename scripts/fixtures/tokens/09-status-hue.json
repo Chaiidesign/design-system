@@ -1,0 +1,1 @@
+{"expect": "status-hue", "about": "Success moved to hue 175 (hex recomputed), 20 degrees from teal.", "patch": [{"color": ["primitive", "status", "success"], "components": [0.57, 0.1, 175]}]}

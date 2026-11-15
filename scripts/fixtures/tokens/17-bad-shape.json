@@ -1,0 +1,1 @@
+{"expect": "shape", "about": "A dimension in em with a string value.", "patch": [{"set": ["primitive", "space", "4", "$value"], "value": {"value": "0.25", "unit": "em"}}]}

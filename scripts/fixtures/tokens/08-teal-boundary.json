@@ -1,0 +1,1 @@
+{"expect": "boundary-contrast", "about": "Teal only: teal lightened (hex recomputed) so it falls below 3 to 1 against the light panel. Blue is untouched, so this proves the second accent is measured.", "patch": [{"color": ["primitive", "accent", "teal"], "components": [0.72, 0.09, 195]}]}

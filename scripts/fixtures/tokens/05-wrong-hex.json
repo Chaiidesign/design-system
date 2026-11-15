@@ -1,0 +1,1 @@
+{"expect": "hex-matches", "about": "Panel hex off by 3 in the red channel; the tolerance is 1.", "patch": [{"set": ["primitive", "neutral", "97", "$value", "hex"], "value": "#f0f5f8"}]}

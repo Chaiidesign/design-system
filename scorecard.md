@@ -32,6 +32,7 @@ The tools report model tokens per run, not per model tier, so a split by tier is
 | UI SDK and the six skills: 8 Opus readers | 8 | 1,068,904 |
 | Review of the UI SDK and skills records: 3 Fable reviewers | 3 | 580,097 |
 | Visual directions review: 1 Fable reviewer, in the browser | 1 | 438,815 |
+| Version 0.2 foundations: 2 Opus builders | 2 | 425,399 |
 
 The lead's own tokens are not reported to it and are not included. These figures are copied from the tool's run reports; the reviewers' returned verdicts are saved in `gates/`.
 

@@ -1,0 +1,19 @@
+{
+  "name": "souvenir-design-system",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs && node scripts/check-tokens.mjs && node scripts/check-tokens.mjs --self-test",
+    "lint": "node scripts/lint.mjs && node scripts/lint.mjs --self-test",
+    "build": "node scripts/build.mjs",
+    "size": "node scripts/size.mjs",
+    "screens": "node scripts/check-screens.mjs",
+    "check": "npm run tokens && npm run lint && npm run build && npm run size && npm run screens",
+    "serve": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright-core": "1.65.1"
+  }
+}

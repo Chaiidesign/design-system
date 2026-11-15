@@ -1,0 +1,1 @@
+{"expect": "text-soft-contrast", "about": "Dark only: soft text uses the control-edge grey of the light theme, below 4.5 to 1 on the dark panel. Proves the dark theme is measured.", "patch": [{"set": ["semantic", "dark", "color", "text-soft", "$value"], "value": "{primitive.neutral.53}"}]}

@@ -1,0 +1,862 @@
+{
+  "$description": "Souvenir design tokens, version 0.2. Format: Design Tokens Community Group 2025.10. Three layers: primitive (raw values), semantic (purposes, each an alias to a primitive), component (a decision of one component that differs from a semantic default, each an alias to a semantic token).",
+  "primitive": {
+    "$description": "Raw values. Never used by a component or a screen directly; reached only through semantic tokens. A step is named by its value: neutrals by lightness times 100, dimensions by their size in pixels at a 16 pixel root, durations in milliseconds.",
+    "neutral": {
+      "$type": "color",
+      "$description": "Cool grey scale at hue 250 with a trace of chroma, so the greys read as slightly cool rather than warm or dead.",
+      "17": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.17, 0.008, 250],
+          "alpha": 1,
+          "hex": "#0d1013"
+        },
+        "$description": "Darkest grey: the ground and the well of the dark theme, and the ink on the light cost display in the dark theme."
+      },
+      "22": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.22, 0.016, 250],
+          "alpha": 1,
+          "hex": "#151b22"
+        },
+        "$description": "Ink of the light theme: all text and the focus ring."
+      },
+      "23": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.23, 0.01, 250],
+          "alpha": 1,
+          "hex": "#191d22"
+        },
+        "$description": "Raised panel of the dark theme, one step lighter than its ground."
+      },
+      "25": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.25, 0.016, 250],
+          "alpha": 1,
+          "hex": "#1c2229"
+        },
+        "$description": "Dark display surface used for the cost display in the light theme."
+      },
+      "32": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.32, 0.01, 250],
+          "alpha": 1,
+          "hex": "#2f3338"
+        },
+        "$description": "Hairline divider of the dark theme."
+      },
+      "45": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.45, 0.014, 250],
+          "alpha": 1,
+          "hex": "#50565d"
+        },
+        "$description": "Soft ink of the light theme: hints and secondary text."
+      },
+      "53": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.53, 0.014, 250],
+          "alpha": 1,
+          "hex": "#666d74"
+        },
+        "$description": "Control boundary of the light theme."
+      },
+      "56": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.56, 0.01, 250],
+          "alpha": 1,
+          "hex": "#70757a"
+        },
+        "$description": "Hueless solid fill for the information and busy tabs, in both themes."
+      },
+      "62": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.62, 0.012, 250],
+          "alpha": 1,
+          "hex": "#81878d"
+        },
+        "$description": "Control boundary of the dark theme."
+      },
+      "74": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.74, 0.01, 250],
+          "alpha": 1,
+          "hex": "#a6abb1"
+        },
+        "$description": "Soft ink of the dark theme: hints and secondary text."
+      },
+      "85": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.85, 0.008, 250],
+          "alpha": 1,
+          "hex": "#caced3"
+        },
+        "$description": "Hairline divider of the light theme."
+      },
+      "92": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.92, 0.006, 250],
+          "alpha": 1,
+          "hex": "#e2e5e8"
+        },
+        "$description": "Ground and well of the light theme, and the light display surface in the dark theme."
+      },
+      "95": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.95, 0.004, 250],
+          "alpha": 1,
+          "hex": "#eceff1"
+        },
+        "$description": "Ink of the dark theme: all text and the focus ring."
+      },
+      "97": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.97, 0.004, 250],
+          "alpha": 1,
+          "hex": "#f3f5f8"
+        },
+        "$description": "Raised panel of the light theme, and the ink on the dark cost display."
+      },
+      "99": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.99, 0.004, 250],
+          "alpha": 1,
+          "hex": "#fafcfe"
+        },
+        "$description": "Near white for text and marks on solid fills, in both themes."
+      }
+    },
+    "accent": {
+      "$type": "color",
+      "$description": "Accent fills. Only one is in use at a time, chosen by the semantic accent token or by data-accent on the root element. Each keeps 4.5 to 1 under near-white text and 3 to 1 against both themes' panels and grounds.",
+      "blue": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.54, 0.17, 258],
+          "alpha": 1,
+          "hex": "#236bcf"
+        },
+        "$description": "Default accent: a solid blue fill for the one primary action."
+      },
+      "teal": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.54, 0.09, 195],
+          "alpha": 1,
+          "hex": "#0b7f7f"
+        },
+        "$description": "Alternative accent: a solid teal fill, selected with data-accent=\"teal\"."
+      }
+    },
+    "status": {
+      "$type": "color",
+      "$description": "Status fills for tabs, the same in both themes. Hues are kept at least 30 degrees from every accent hue so a status is never mistaken for the accent.",
+      "danger": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.57, 0.19, 25],
+          "alpha": 1,
+          "hex": "#d03739"
+        },
+        "$description": "Red fill for the danger tab: something failed or needs fixing."
+      },
+      "warning": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.58, 0.12, 70],
+          "alpha": 1,
+          "hex": "#a76c12"
+        },
+        "$description": "Amber fill for the warning tab: check this before going on."
+      },
+      "success": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.57, 0.14, 150],
+          "alpha": 1,
+          "hex": "#258d48"
+        },
+        "$description": "Green fill for the success tab: it worked."
+      }
+    },
+    "space": {
+      "$type": "dimension",
+      "$description": "Spacing steps on a 4 pixel base, named by their size in pixels.",
+      "4": {
+        "$value": {
+          "value": 0.25,
+          "unit": "rem"
+        },
+        "$description": "Smallest spacing step, used by semantic space 1: a label to its control."
+      },
+      "8": {
+        "$value": {
+          "value": 0.5,
+          "unit": "rem"
+        },
+        "$description": "Tight spacing step, used by semantic space 2: a mark to its words, and the error edge of a field."
+      },
+      "12": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "$description": "Spacing step used by semantic space 3: the gap between neighbouring controls."
+      },
+      "16": {
+        "$value": {
+          "value": 1,
+          "unit": "rem"
+        },
+        "$description": "Spacing step used by semantic space 4: the default stack gap and the padding of pages and panels."
+      },
+      "20": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "$description": "Spacing step used by semantic space 5: between chat messages and above the page content."
+      },
+      "32": {
+        "$value": {
+          "value": 2,
+          "unit": "rem"
+        },
+        "$description": "Largest spacing step, used by semantic space 6: between sections."
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "$description": "Corner radii, named by their size in pixels.",
+      "6": {
+        "$value": {
+          "value": 0.375,
+          "unit": "rem"
+        },
+        "$description": "Small corner, used by the standalone status tab."
+      },
+      "12": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "$description": "Medium corner, used by controls, message plates and the cost display."
+      },
+      "20": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "$description": "Large corner, used by raised panels."
+      }
+    },
+    "border": {
+      "$description": "Line widths.",
+      "width": {
+        "$type": "dimension",
+        "$description": "Line widths in device-independent pixels, named by their size in pixels.",
+        "1": {
+          "$value": {
+            "value": 1,
+            "unit": "px"
+          },
+          "$description": "Hairline width, used by dividers and the edge of a panel."
+        },
+        "2": {
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          },
+          "$description": "Control boundary width; also the gap between a part and its focus ring."
+        },
+        "3": {
+          "$value": {
+            "value": 3,
+            "unit": "px"
+          },
+          "$description": "Focus ring width: thick enough to find at a glance."
+        }
+      }
+    },
+    "font": {
+      "$description": "Type primitives.",
+      "family": {
+        "$type": "fontFamily",
+        "$description": "Font stacks.",
+        "sans": {
+          "$value": ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+          "$description": "The platform's own sans-serif: no download, familiar on every device."
+        }
+      },
+      "size": {
+        "$type": "dimension",
+        "$description": "Type sizes, named by their size in pixels. Nothing is smaller than 16 pixels.",
+        "16": {
+          "$value": {
+            "value": 1,
+            "unit": "rem"
+          },
+          "$description": "Body type size: the smallest type anywhere."
+        },
+        "20": {
+          "$value": {
+            "value": 1.25,
+            "unit": "rem"
+          },
+          "$description": "Lead type size, used by level 2 headings."
+        },
+        "28": {
+          "$value": {
+            "value": 1.75,
+            "unit": "rem"
+          },
+          "$description": "Title type size, used by the page heading."
+        },
+        "36": {
+          "$value": {
+            "value": 2.25,
+            "unit": "rem"
+          },
+          "$description": "Display type size, used by the cost summary total."
+        }
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$description": "Type weights, named by their numeric weight.",
+        "400": {
+          "$value": 400,
+          "$description": "Regular weight, for body text."
+        },
+        "600": {
+          "$value": 600,
+          "$description": "Semibold weight, for headings, labels, button labels and the total."
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$description": "Line heights as a multiple of the type size, named by that multiple times 100.",
+        "120": {
+          "$value": 1.2,
+          "$description": "Tight line height, for headings and the large total."
+        },
+        "150": {
+          "$value": 1.5,
+          "$description": "Reading line height, for body text."
+        }
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "$description": "Fixed sizes of parts and columns, named by their size in pixels.",
+      "1": {
+        "$value": {
+          "value": 1,
+          "unit": "px"
+        },
+        "$description": "The size of content kept for screen readers but hidden from view."
+      },
+      "2": {
+        "$value": {
+          "value": 0.125,
+          "unit": "rem"
+        },
+        "$description": "How far a key moves down when pressed."
+      },
+      "24": {
+        "$value": {
+          "value": 1.5,
+          "unit": "rem"
+        },
+        "$description": "Size of an icon mark and of the checkbox box."
+      },
+      "48": {
+        "$value": {
+          "value": 3,
+          "unit": "rem"
+        },
+        "$description": "Smallest height of any control."
+      },
+      "56": {
+        "$value": {
+          "value": 3.5,
+          "unit": "rem"
+        },
+        "$description": "Height of the primary control."
+      },
+      "544": {
+        "$value": {
+          "value": 34,
+          "unit": "rem"
+        },
+        "$description": "Widest the single-column page grows."
+      },
+      "1024": {
+        "$value": {
+          "value": 64,
+          "unit": "rem"
+        },
+        "$description": "Widest the two-column page grows."
+      }
+    },
+    "duration": {
+      "$type": "duration",
+      "$description": "Durations, named by their length in milliseconds.",
+      "120": {
+        "$value": {
+          "value": 120,
+          "unit": "ms"
+        },
+        "$description": "Quick state change: hover, press, border colour."
+      },
+      "800": {
+        "$value": {
+          "value": 800,
+          "unit": "ms"
+        },
+        "$description": "One turn of the busy mark."
+      }
+    }
+  },
+  "semantic": {
+    "$description": "Purposes. Each token is an alias to a primitive. Colours live in light and dark sub-groups with the same keys; everything that does not change by theme sits here directly.",
+    "light": {
+      "$description": "Light theme.",
+      "color": {
+        "$type": "color",
+        "$description": "Colour roles of the light theme. The same keys exist in both themes.",
+        "ground": {
+          "$value": "{primitive.neutral.92}",
+          "$description": "Page background."
+        },
+        "panel": {
+          "$value": "{primitive.neutral.97}",
+          "$description": "Raised surface, one step lighter than the ground."
+        },
+        "well": {
+          "$value": "{primitive.neutral.92}",
+          "$description": "Inside of a field: the ground showing through."
+        },
+        "text": {
+          "$value": "{primitive.neutral.22}",
+          "$description": "All text, links included."
+        },
+        "text-soft": {
+          "$value": "{primitive.neutral.45}",
+          "$description": "Hints and secondary text."
+        },
+        "edge": {
+          "$value": "{primitive.neutral.53}",
+          "$description": "Boundary of a control: at least 3 to 1 against panel, well and ground."
+        },
+        "divider": {
+          "$value": "{primitive.neutral.85}",
+          "$description": "Hairlines and the edge of a panel; decorative."
+        },
+        "accent": {
+          "$value": "{primitive.accent.blue}",
+          "$description": "The one swappable token: a solid fill only, never text."
+        },
+        "on-solid": {
+          "$value": "{primitive.neutral.99}",
+          "$description": "Text and marks on the accent and on status fills."
+        },
+        "focus": {
+          "$value": "{primitive.neutral.22}",
+          "$description": "The focus ring; equals text."
+        },
+        "inverse": {
+          "$value": "{primitive.neutral.25}",
+          "$description": "Surface of the cost display: dark in the light theme, light in the dark theme."
+        },
+        "on-inverse": {
+          "$value": "{primitive.neutral.97}",
+          "$description": "Text on the inverse surface."
+        },
+        "danger": {
+          "$value": "{primitive.status.danger}",
+          "$description": "Solid danger tab; the same in both themes."
+        },
+        "warning": {
+          "$value": "{primitive.status.warning}",
+          "$description": "Solid warning tab; the same in both themes."
+        },
+        "success": {
+          "$value": "{primitive.status.success}",
+          "$description": "Solid success tab; the same in both themes."
+        },
+        "neutral-solid": {
+          "$value": "{primitive.neutral.56}",
+          "$description": "Hueless solid tab for information and busy."
+        }
+      }
+    },
+    "dark": {
+      "$description": "Dark theme.",
+      "color": {
+        "$type": "color",
+        "$description": "Colour roles of the dark theme. The same keys exist in both themes.",
+        "ground": {
+          "$value": "{primitive.neutral.17}",
+          "$description": "Page background."
+        },
+        "panel": {
+          "$value": "{primitive.neutral.23}",
+          "$description": "Raised surface, one step lighter than the ground."
+        },
+        "well": {
+          "$value": "{primitive.neutral.17}",
+          "$description": "Inside of a field: the ground showing through."
+        },
+        "text": {
+          "$value": "{primitive.neutral.95}",
+          "$description": "All text, links included."
+        },
+        "text-soft": {
+          "$value": "{primitive.neutral.74}",
+          "$description": "Hints and secondary text."
+        },
+        "edge": {
+          "$value": "{primitive.neutral.62}",
+          "$description": "Boundary of a control: at least 3 to 1 against panel, well and ground."
+        },
+        "divider": {
+          "$value": "{primitive.neutral.32}",
+          "$description": "Hairlines and the edge of a panel; decorative."
+        },
+        "accent": {
+          "$value": "{primitive.accent.blue}",
+          "$description": "The one swappable token: a solid fill only, never text."
+        },
+        "on-solid": {
+          "$value": "{primitive.neutral.99}",
+          "$description": "Text and marks on the accent and on status fills."
+        },
+        "focus": {
+          "$value": "{primitive.neutral.95}",
+          "$description": "The focus ring; equals text."
+        },
+        "inverse": {
+          "$value": "{primitive.neutral.92}",
+          "$description": "Surface of the cost display: dark in the light theme, light in the dark theme."
+        },
+        "on-inverse": {
+          "$value": "{primitive.neutral.17}",
+          "$description": "Text on the inverse surface."
+        },
+        "danger": {
+          "$value": "{primitive.status.danger}",
+          "$description": "Solid danger tab; the same in both themes."
+        },
+        "warning": {
+          "$value": "{primitive.status.warning}",
+          "$description": "Solid warning tab; the same in both themes."
+        },
+        "success": {
+          "$value": "{primitive.status.success}",
+          "$description": "Solid success tab; the same in both themes."
+        },
+        "neutral-solid": {
+          "$value": "{primitive.neutral.56}",
+          "$description": "Hueless solid tab for information and busy."
+        }
+      }
+    },
+    "space": {
+      "$type": "dimension",
+      "$description": "Spacing steps for gaps and padding.",
+      "1": {
+        "$value": "{primitive.space.4}",
+        "$description": "Smallest gap: between a label and its control."
+      },
+      "2": {
+        "$value": "{primitive.space.8}",
+        "$description": "Tight gap: between a mark and its words."
+      },
+      "3": {
+        "$value": "{primitive.space.12}",
+        "$description": "Gap between neighbouring controls, wide enough that a focus ring never touches the next control."
+      },
+      "4": {
+        "$value": "{primitive.space.16}",
+        "$description": "Default gap in a stack, and the inline padding of a page and a panel."
+      },
+      "5": {
+        "$value": "{primitive.space.20}",
+        "$description": "Gap between messages in a chat and the top padding of a page."
+      },
+      "6": {
+        "$value": "{primitive.space.32}",
+        "$description": "Gap between sections, and the inset that sets the person's message apart."
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "$description": "Corner radii, one per kind of part.",
+      "control": {
+        "$value": "{primitive.radius.12}",
+        "$description": "Corner of a control, a message plate and the cost display."
+      },
+      "panel": {
+        "$value": "{primitive.radius.20}",
+        "$description": "Corner of a raised panel."
+      },
+      "tab": {
+        "$value": "{primitive.radius.6}",
+        "$description": "Corner of a standalone status tab."
+      }
+    },
+    "font": {
+      "$description": "Type.",
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{primitive.font.family.sans}",
+        "$description": "The one font stack for all text."
+      },
+      "size": {
+        "$type": "dimension",
+        "$description": "Four type sizes. Body text is 1rem and nothing is smaller.",
+        "body": {
+          "$value": "{primitive.font.size.16}",
+          "$description": "Body text, labels, controls and level 3 headings."
+        },
+        "lead": {
+          "$value": "{primitive.font.size.20}",
+          "$description": "Level 2 headings and lead text."
+        },
+        "title": {
+          "$value": "{primitive.font.size.28}",
+          "$description": "Level 1 heading: the page title."
+        },
+        "display": {
+          "$value": "{primitive.font.size.36}",
+          "$description": "The total in a cost summary: the largest reading on its page."
+        }
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$description": "Two weights.",
+        "regular": {
+          "$value": "{primitive.font.weight.400}",
+          "$description": "Body text."
+        },
+        "strong": {
+          "$value": "{primitive.font.weight.600}",
+          "$description": "Headings, labels, button labels and the total."
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$description": "Line heights.",
+        "body": {
+          "$value": "{primitive.font.line-height.150}",
+          "$description": "Line height of body text."
+        },
+        "tight": {
+          "$value": "{primitive.font.line-height.120}",
+          "$description": "Line height of headings and the total."
+        }
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "$description": "Sizes of parts and columns.",
+      "control": {
+        "$value": "{primitive.size.48}",
+        "$description": "Smallest height of any control."
+      },
+      "control-primary": {
+        "$value": "{primitive.size.56}",
+        "$description": "Height of the primary action."
+      },
+      "mark": {
+        "$value": "{primitive.size.24}",
+        "$description": "Size of an icon mark and of the checkbox box."
+      },
+      "press": {
+        "$value": "{primitive.size.2}",
+        "$description": "How far a key moves down when pressed."
+      },
+      "column": {
+        "$value": "{primitive.size.544}",
+        "$description": "Widest a single-column page may grow."
+      },
+      "column-wide": {
+        "$value": "{primitive.size.1024}",
+        "$description": "Widest a two-column page may grow, from the 48rem breakpoint."
+      },
+      "visually-hidden": {
+        "$value": "{primitive.size.1}",
+        "$description": "Size of content kept for screen readers but hidden from view."
+      }
+    },
+    "border": {
+      "$type": "dimension",
+      "$description": "Line widths.",
+      "thin": {
+        "$value": "{primitive.border.width.1}",
+        "$description": "Decorative hairlines: dividers and the edge of a panel."
+      },
+      "thick": {
+        "$value": "{primitive.border.width.2}",
+        "$description": "Boundaries of controls and link underlines."
+      }
+    },
+    "focus": {
+      "$type": "dimension",
+      "$description": "The focus ring.",
+      "width": {
+        "$value": "{primitive.border.width.3}",
+        "$description": "Width of the focus outline."
+      },
+      "offset": {
+        "$value": "{primitive.border.width.2}",
+        "$description": "Gap between a part and its focus outline."
+      }
+    },
+    "duration": {
+      "$type": "duration",
+      "$description": "Motion timing. Motion is removed when reduced motion is asked for.",
+      "quick": {
+        "$value": "{primitive.duration.120}",
+        "$description": "State changes: hover, press, border colour."
+      },
+      "loop": {
+        "$value": "{primitive.duration.800}",
+        "$description": "One turn of the busy mark."
+      }
+    }
+  },
+  "component": {
+    "$description": "Component decisions that differ from a semantic default. Each aliases a semantic token, never a primitive. A colour aliases its key under semantic.light.color; it resolves to the same key of whichever theme is active.",
+    "button": {
+      "$description": "Button.",
+      "primary-fill": {
+        "$type": "color",
+        "$value": "{semantic.light.color.accent}",
+        "$description": "Fill of the primary button: the accent, the only place it appears on a page."
+      },
+      "primary-text": {
+        "$type": "color",
+        "$value": "{semantic.light.color.on-solid}",
+        "$description": "Label and busy mark on the primary button."
+      },
+      "primary-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control-primary}",
+        "$description": "Height of the primary button: taller than other controls."
+      },
+      "press-depth": {
+        "$type": "dimension",
+        "$value": "{semantic.size.press}",
+        "$description": "How far a button moves down when pressed or busy."
+      }
+    },
+    "field": {
+      "$description": "Text field.",
+      "error-edge-width": {
+        "$type": "dimension",
+        "$value": "{semantic.space.2}",
+        "$description": "Width of the leading edge of a control in error: the shape that carries the error besides the text."
+      }
+    },
+    "select": {
+      "$description": "Select.",
+      "arrow-size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.mark}",
+        "$description": "Size of the select's own arrow mark."
+      }
+    },
+    "checkbox": {
+      "$description": "Checkbox.",
+      "box-size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.mark}",
+        "$description": "Size of the drawn checkbox box."
+      }
+    },
+    "cost-summary": {
+      "$description": "Cost summary.",
+      "surface": {
+        "$type": "color",
+        "$value": "{semantic.light.color.inverse}",
+        "$description": "Surface of the cost display: the inverse of the theme."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.light.color.on-inverse}",
+        "$description": "Text on the cost display."
+      },
+      "total-size": {
+        "$type": "dimension",
+        "$value": "{semantic.font.size.display}",
+        "$description": "Size of the total: the largest type on the page."
+      }
+    },
+    "error-summary": {
+      "$description": "Error summary.",
+      "tab": {
+        "$type": "color",
+        "$value": "{semantic.light.color.danger}",
+        "$description": "Fill of the error summary's tab."
+      }
+    },
+    "message": {
+      "$description": "Message.",
+      "surface-on-panel": {
+        "$type": "color",
+        "$value": "{semantic.light.color.well}",
+        "$description": "Plate of a message placed on a panel (data-surface=\"well\"), so the plate stays visible."
+      }
+    },
+    "status": {
+      "$description": "Status.",
+      "busy-duration": {
+        "$type": "duration",
+        "$value": "{semantic.duration.loop}",
+        "$description": "One turn of the busy mark."
+      }
+    },
+    "chat-message": {
+      "$description": "Chat message.",
+      "person-inset": {
+        "$type": "dimension",
+        "$value": "{semantic.space.6}",
+        "$description": "How far the person's plate is inset from the leading edge."
+      },
+      "person-surface": {
+        "$type": "color",
+        "$value": "{semantic.light.color.panel}",
+        "$description": "Plate of the person's message."
+      },
+      "person-edge": {
+        "$type": "color",
+        "$value": "{semantic.light.color.edge}",
+        "$description": "Boundary of the person's plate, so it stays distinct in the dark theme."
+      }
+    },
+    "proposal": {
+      "$description": "Proposal.",
+      "draft-edge": {
+        "$type": "color",
+        "$value": "{semantic.light.color.edge}",
+        "$description": "Dashed boundary of the drafted message: read, not yet sent."
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"expect": "description", "about": "A token without a stated purpose.", "patch": [{"delete": ["primitive", "space", "4", "$description"]}]}

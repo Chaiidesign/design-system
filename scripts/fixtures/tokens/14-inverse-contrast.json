@@ -1,0 +1,1 @@
+{"expect": "inverse-contrast", "about": "Dark only: ink on the light cost display is mid grey, below 7 to 1.", "patch": [{"set": ["semantic", "dark", "color", "on-inverse", "$value"], "value": "{primitive.neutral.56}"}]}

@@ -1,0 +1,3 @@
+@layer sv.components {
+  .sv-demo { color: var(--sv-p-neutral-20); }
+}

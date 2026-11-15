@@ -1,0 +1,1 @@
+{"expect": "focus-equals-text", "about": "The focus ring uses the edge grey instead of the ink.", "patch": [{"set": ["semantic", "light", "color", "focus", "$value"], "value": "{primitive.neutral.53}"}]}

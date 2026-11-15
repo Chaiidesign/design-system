@@ -1,0 +1,4 @@
+@layer sv.base {
+  body { margin: 0; color: var(--sv-color-text); background: var(--sv-color-ground); }
+  .sv-page { margin-inline: auto; max-inline-size: var(--sv-size-column); }
+}

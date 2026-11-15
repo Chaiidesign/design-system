@@ -1,0 +1,1 @@
+{"expect": "in-gamut", "about": "Danger chroma raised beyond what sRGB can show.", "patch": [{"set": ["primitive", "status", "danger", "$value", "components"], "value": [0.57, 0.32, 25]}]}

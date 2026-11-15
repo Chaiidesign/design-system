@@ -1,0 +1,5 @@
+@layer sv.components {
+  @media (min-width: 600px) {
+    .sv-demo { display: flex; }
+  }
+}

@@ -1,0 +1,1 @@
+{"expect": "no-cycles", "about": "A primitive aliases the semantic panel that aliases it: a loop.", "patch": [{"set": ["primitive", "neutral", "97", "$value"], "value": "{semantic.light.color.panel}"}]}

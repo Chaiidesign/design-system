@@ -1,0 +1,1 @@
+{"expect": "component-color-slot", "about": "A component colour pinned to the dark theme would not follow the active theme.", "patch": [{"set": ["component", "cost-summary", "surface", "$value"], "value": "{semantic.dark.color.inverse}"}]}

@@ -1,0 +1,162 @@
+/* Element defaults and layout classes. Tokens only; logical properties only.
+   The one raw value allowed here is the breakpoint inside the media query. */
+@layer sv.base {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--sv-color-ground);
+  color: var(--sv-color-text);
+  font-family: var(--sv-font-family);
+  font-size: var(--sv-font-size-body);
+  font-weight: var(--sv-font-weight-regular);
+  line-height: var(--sv-font-line-height-body);
+}
+
+/* Headings, paragraphs and lists carry no outer margin: a stack's gap spaces them,
+   so nothing is pushed down above its first use. */
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+blockquote,
+figure {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--sv-font-weight-strong);
+}
+
+h1 {
+  font-size: var(--sv-font-size-title);
+  line-height: var(--sv-font-line-height-tight);
+}
+
+h2 {
+  font-size: var(--sv-font-size-lead);
+  line-height: var(--sv-font-line-height-tight);
+}
+
+h3 {
+  font-size: var(--sv-font-size-body);
+}
+
+a {
+  color: var(--sv-color-text);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--sv-border-thin);
+  text-underline-offset: var(--sv-space-1);
+}
+
+a:hover {
+  text-decoration-thickness: var(--sv-border-thick);
+}
+
+a:focus-visible {
+  outline: var(--sv-focus-width) solid var(--sv-color-focus);
+  outline-offset: var(--sv-focus-offset);
+}
+
+hr {
+  margin: 0;
+  border: 0;
+  border-block-start: var(--sv-border-thin) solid var(--sv-color-divider);
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+/* Layout */
+
+.sv-page {
+  inline-size: 100%;
+  max-inline-size: var(--sv-size-column);
+  margin-inline: auto;
+  padding-inline: var(--sv-space-4);
+  padding-block: var(--sv-space-5) var(--sv-space-6);
+}
+
+@media (min-width: 48rem) {
+  .sv-page[data-layout="split"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--sv-space-6);
+    align-items: start;
+    max-inline-size: var(--sv-size-column-wide);
+  }
+}
+
+.sv-panel {
+  padding: var(--sv-space-4);
+  border: var(--sv-border-thin) solid var(--sv-color-divider);
+  border-radius: var(--sv-radius-panel);
+  background-color: var(--sv-color-panel);
+}
+
+.sv-stack,
+.sv-chat {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: var(--sv-space-4);
+}
+
+.sv-stack[data-gap="2"] {
+  gap: var(--sv-space-2);
+}
+
+.sv-stack[data-gap="3"] {
+  gap: var(--sv-space-3);
+}
+
+.sv-stack[data-gap="6"] {
+  gap: var(--sv-space-6);
+}
+
+.sv-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sv-space-3);
+}
+
+.sv-row[data-align="end"] {
+  justify-content: flex-end;
+}
+
+/* The message list: one message after another, with more air than a stack. */
+.sv-chat {
+  gap: var(--sv-space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.sv-visually-hidden {
+  position: absolute;
+  inline-size: var(--sv-size-visually-hidden);
+  block-size: var(--sv-size-visually-hidden);
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+}

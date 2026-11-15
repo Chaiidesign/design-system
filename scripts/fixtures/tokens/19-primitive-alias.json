@@ -1,0 +1,1 @@
+{"expect": "primitive-raw", "about": "A primitive that aliases another primitive.", "patch": [{"set": ["primitive", "neutral", "99", "$value"], "value": "{primitive.neutral.97}"}]}
