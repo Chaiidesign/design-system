@@ -40,7 +40,7 @@ Theme: the device setting by default; `data-theme="light"` or `"dark"` on `<html
 |---|---|
 | `sv-page` | Centred column, 34rem at most, with page padding. `data-layout="split"`: two equal columns from 48rem, 64rem at most; one column below. In split, children span both columns, except `sv-page__main` (first column) and `sv-page__aside` (second column, stays in view while the main scrolls), which sit side by side whatever their order in the document |
 | `sv-panel` | Raised surface with a hairline edge. Put a `sv-message` on it with `data-surface="well"` |
-| `sv-stack` | Children one under another, 16 pixels apart. `data-gap`: `2` (8), `3` (12), `6` (32, between sections) |
+| `sv-stack` | Children one under another, 16 pixels apart. `data-gap`: `2` (8), `3` (12), `6` (32, between sections). A button in a stack keeps its own width; `data-width="full"` on the button makes it fill the column |
 | `sv-row` | Children side by side, 12 pixels apart, wrapping. `data-align="end"` pushes them to the end |
 | `sv-list` | `ul` or `ol` of `li.sv-list__item`, each a `div.sv-list__main` (title line, then `p.sv-list__detail` lines in soft text, then an optional action) and an optional `p.sv-list__trail` holding an amount. Hairlines between items |
 | `sv-chat` | `ol` of `li`, each holding one `sv-chat-message`, 20 pixels apart |

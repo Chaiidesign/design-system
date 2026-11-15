@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete your account?</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../../dist/souvenir.css">
+<script type="module" src="../../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Delete your account?</h1>
+  <div class="sv-message" data-tone="warning">
+    <span class="sv-message__mark" aria-hidden="true"></span>
+    <p>Your name, your email address, your notification choices and the record of your orders will be deleted. This cannot be undone.</p>
+  </div>
+  <form class="sv-stack" action="/account/delete" method="post">
+    <button type="submit" class="sv-button" data-variant="primary" data-width="full">Delete my account</button>
+    <a class="sv-button" data-variant="secondary" data-width="full" href="settings.html">Keep my account</a>
+  </form>
+</main>
+</body>
+</html>

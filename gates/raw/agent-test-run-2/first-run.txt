@@ -1,0 +1,16 @@
+$ node scripts/lint.mjs
+lint: 49 files (12 css, 24 html, 13 md), 0 findings
+exit: 0
+
+$ node scripts/check-screens.mjs --only agent-test
+check-screens: Chromium 145.0.7632.6 (Playwright-managed (cached revision)); contrast from scripts/lib/color.mjs (relativeLuminance, contrastRatio; verified 21:1 and 3.03:1 at start)
+| Screen                                 | 320 light | 320 dark | 375 light | 375 dark | 1280 light | 1280 dark |
+|----------------------------------------|-----------|----------|-----------|----------|------------|-----------|
+| screens/agent-test/delete-account.html | pass      | pass     | pass      | pass     | pass       | pass      |
+| screens/agent-test/orders-empty.html   | pass      | pass     | pass      | pass     | pass       | pass      |
+| screens/agent-test/orders-error.html   | pass      | pass     | pass      | pass     | pass       | pass      |
+| screens/agent-test/orders.html         | pass      | pass     | pass      | pass     | pass       | pass      |
+| screens/agent-test/settings-saved.html | pass      | pass     | pass      | pass     | pass       | pass      |
+| screens/agent-test/settings.html       | pass      | pass     | pass      | pass     | pass       | pass      |
+check-screens: 6 screens × 6 states, 0 findings; data in gates/raw/2026-11-15-screens.json, screenshots in digests/2026-11-15/screens/
+exit: 0

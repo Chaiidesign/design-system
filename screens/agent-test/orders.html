@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your orders</title>
+<script>var p=new URLSearchParams(location.search),t=p.get("theme"),a=p.get("accent");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;if(a==="blue"||a==="teal")document.documentElement.dataset.accent=a</script>
+<link rel="stylesheet" href="../../dist/souvenir.css">
+<script type="module" src="../../dist/souvenir.js"></script>
+</head>
+<body>
+<main class="sv-page sv-stack" data-gap="6">
+  <h1>Your orders</h1>
+  <ul class="sv-list">
+    <li class="sv-list__item">
+      <div class="sv-list__main">
+        <a href="/orders/10431">Order 10431</a>
+        <p class="sv-list__detail">Placed 9 November · 2 items</p>
+        <p class="sv-list__detail"><span class="sv-status" data-tone="info">Being prepared</span></p>
+      </div>
+      <p class="sv-list__trail">£48.20</p>
+    </li>
+    <li class="sv-list__item">
+      <div class="sv-list__main">
+        <a href="/orders/10427">Order 10427</a>
+        <p class="sv-list__detail">Placed 4 November · 1 item</p>
+        <p class="sv-list__detail"><span class="sv-status" data-tone="info">On its way</span></p>
+      </div>
+      <p class="sv-list__trail">£15.99</p>
+    </li>
+    <li class="sv-list__item">
+      <div class="sv-list__main">
+        <a href="/orders/10419">Order 10419</a>
+        <p class="sv-list__detail">Placed 27 October · 3 items</p>
+        <p class="sv-list__detail"><span class="sv-status" data-tone="danger">Payment failed</span></p>
+        <a class="sv-button" data-variant="secondary" href="/orders/10419/payment">Fix payment<span class="sv-visually-hidden"> for order 10419</span></a>
+      </div>
+      <p class="sv-list__trail">£60.75</p>
+    </li>
+    <li class="sv-list__item">
+      <div class="sv-list__main">
+        <a href="/orders/10402">Order 10402</a>
+        <p class="sv-list__detail">Placed 12 October · 1 item</p>
+        <p class="sv-list__detail"><span class="sv-status" data-tone="success">Delivered</span></p>
+      </div>
+      <p class="sv-list__trail">£7.80</p>
+    </li>
+    <li class="sv-list__item">
+      <div class="sv-list__main">
+        <a href="/orders/10388">Order 10388</a>
+        <p class="sv-list__detail">Placed 29 September · 4 items</p>
+        <p class="sv-list__detail"><span class="sv-status" data-tone="info">Cancelled</span></p>
+      </div>
+      <p class="sv-list__trail">£92.00</p>
+    </li>
+    <li class="sv-list__item">
+      <div class="sv-list__main">
+        <a href="/orders/10260">Order 10260</a>
+        <p class="sv-list__detail">Placed 3 December 2025 · 2 items</p>
+        <p class="sv-list__detail"><span class="sv-status" data-tone="success">Delivered</span></p>
+      </div>
+      <p class="sv-list__trail">£31.40</p>
+    </li>
+  </ul>
+</main>
+</body>
+</html>

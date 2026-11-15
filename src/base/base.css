@@ -143,6 +143,11 @@ ul {
   gap: var(--sv-space-4);
 }
 
+/* A button in a stack keeps its own width unless it asks for the full width. */
+.sv-stack > .sv-button:not([data-width="full"]) {
+  justify-self: start;
+}
+
 .sv-stack[data-gap="2"] {
   gap: var(--sv-space-2);
 }

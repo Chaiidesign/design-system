@@ -23,7 +23,7 @@ The checks enforce rules 1, 2, 4, 6, 7 and 8 and will fail your screen if you br
 6. **Everything works without script.** A form is a real `<form>` with `method` and `action`. Something that goes to another page is a link, `<a>`, which may look like a button (`a.sv-button`). Every `<button>` has a `type`; one that submits is `type="submit"`. A `type="button"` does nothing without script, so use one only where a note names the script that acts on it.
 7. **Every control has a visible label.** No placeholder used as a label.
 8. **Headings go in order.** One `h1`, then `h2` for sections, then `h3`. Never choose a heading for its size.
-9. **Words a person typed** go in an element with the attribute `data-user-content`, so that long strings can break.
+9. **Words a person typed,** when you show them as text on the page, go in an element with the attribute `data-user-content`, so that long strings can break. A value inside an input needs nothing.
 10. **An amount is never text you styled.** A total goes in a `cost-summary`; an amount in a list goes in the list's trail.
 
 ## Which part for which job

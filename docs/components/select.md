@@ -30,6 +30,8 @@ Both classes are needed: `sv-field__control` gives the shared field look, `sv-se
 
 A required select starts on an empty option ("Choose a country"), so nobody submits a choice they did not make. The first option says what to choose. A choice that always has a sensible value, such as the language of a page the person already reads or a country you already know, starts on that value with `selected` and is not `required`.
 
+The `sv-field` element around the `div.sv-field` is what adds the script's checks and messages. A select that cannot be wrong, like the one below, does not need it.
+
 An option written in another language takes a `lang` attribute, and this is allowed; a screen reader then says it in that language:
 
 ```html
