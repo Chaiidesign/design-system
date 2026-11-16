@@ -326,7 +326,7 @@
           "background": "surface/overlay",
           "paddingInline": "static/160",
           "paddingBlock": "static/160",
-          "duration": "duration/base",
+          "duration": "duration/enter",
           "easing": "ease/standard"
         },
         "content": {
@@ -339,7 +339,7 @@
           "borderColor": "transparent",
           "width": "full",
           "maxWidth": "dialog/md",
-          "duration": "duration/base",
+          "duration": "duration/enter",
           "easing": "ease/standard"
         },
         "header": {

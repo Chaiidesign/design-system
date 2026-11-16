@@ -7,19 +7,19 @@
     "overrides": "ds-tokens/overrides.json"
   },
   "agreement": "Agree means: in both Figma and code, the same value in every mode, the CSS name matches the Figma WEB code syntax, and tokens.css matches tokens.json. Descriptions are not part of agreement. A token whose override is no longer needed still agrees. The total is every token in Figma or in code.",
-  "agree": 261,
+  "agree": 258,
   "total": 308,
   "failed": false,
   "counts": {
     "missingInCode": 0,
     "notInFigma": 0,
     "drift": 0,
-    "intendedOverrides": 77,
+    "intendedOverrides": 73,
     "overridesToRemove": 0,
     "cssNameDiffers": 0,
     "cssFileMismatch": 0,
     "descriptionDiffers": 290,
-    "proposedNotInFigma": 23
+    "proposedNotInFigma": 25
   },
   "lists": {
     "missingInCode": [],
@@ -313,6 +313,21 @@
       },
       {
         "collection": "Themes",
+        "token": "border/success",
+        "mode": "light",
+        "figmaValue": "#16a34a",
+        "repoValue": "#15803d",
+        "figmaAlias": "green/600",
+        "overrideTo": "green/700",
+        "reason": "The edge of a success message or field must reach 3 to 1 on all three surface tiers. green/600 is 2.91 to 1 on the third tier; green/700 is the nearest step that passes.",
+        "rule": "status-and-brand-borders",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
         "token": "border/warning",
         "mode": "light",
         "figmaValue": "#d97706",
@@ -374,27 +389,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/teal/bold",
-        "mode": "light",
-        "figmaValue": "#5eead4",
-        "repoValue": "#ccfbf1",
-        "figmaAlias": "teal/300",
-        "overrideTo": "teal/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/teal/bold",
         "mode": "dark",
         "figmaValue": "#134e4a",
-        "repoValue": "#ccfbf1",
+        "repoValue": "#5eead4",
         "figmaAlias": "teal/900",
-        "overrideTo": "teal/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "teal/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -449,27 +449,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/blue/bold",
-        "mode": "light",
-        "figmaValue": "#93c5fd",
-        "repoValue": "#dbeafe",
-        "figmaAlias": "blue/300",
-        "overrideTo": "blue/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/blue/bold",
         "mode": "dark",
         "figmaValue": "#1e3a8a",
-        "repoValue": "#dbeafe",
+        "repoValue": "#93c5fd",
         "figmaAlias": "blue/900",
-        "overrideTo": "blue/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "blue/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -524,27 +509,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/violet/bold",
-        "mode": "light",
-        "figmaValue": "#c4b5fd",
-        "repoValue": "#ede9fe",
-        "figmaAlias": "violet/300",
-        "overrideTo": "violet/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/violet/bold",
         "mode": "dark",
         "figmaValue": "#4c1d95",
-        "repoValue": "#ede9fe",
+        "repoValue": "#c4b5fd",
         "figmaAlias": "violet/900",
-        "overrideTo": "violet/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "violet/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -614,27 +584,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/amber/bold",
-        "mode": "light",
-        "figmaValue": "#fcd34d",
-        "repoValue": "#fef3c7",
-        "figmaAlias": "amber/300",
-        "overrideTo": "amber/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/amber/bold",
         "mode": "dark",
         "figmaValue": "#78350f",
-        "repoValue": "#fef3c7",
+        "repoValue": "#fcd34d",
         "figmaAlias": "amber/900",
-        "overrideTo": "amber/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "amber/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -689,27 +644,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/pink/bold",
-        "mode": "light",
-        "figmaValue": "#f9a8d4",
-        "repoValue": "#fce7f3",
-        "figmaAlias": "pink/300",
-        "overrideTo": "pink/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/pink/bold",
         "mode": "dark",
         "figmaValue": "#831843",
-        "repoValue": "#fce7f3",
+        "repoValue": "#f9a8d4",
         "figmaAlias": "pink/900",
-        "overrideTo": "pink/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "pink/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -764,27 +704,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/green/bold",
-        "mode": "light",
-        "figmaValue": "#86efac",
-        "repoValue": "#dcfce7",
-        "figmaAlias": "green/300",
-        "overrideTo": "green/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/green/bold",
         "mode": "dark",
         "figmaValue": "#14532d",
-        "repoValue": "#dcfce7",
+        "repoValue": "#86efac",
         "figmaAlias": "green/900",
-        "overrideTo": "green/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "green/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -839,27 +764,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/orange/bold",
-        "mode": "light",
-        "figmaValue": "#fdba74",
-        "repoValue": "#ffedd5",
-        "figmaAlias": "orange/300",
-        "overrideTo": "orange/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/orange/bold",
         "mode": "dark",
         "figmaValue": "#7c2d12",
-        "repoValue": "#ffedd5",
+        "repoValue": "#fdba74",
         "figmaAlias": "orange/900",
-        "overrideTo": "orange/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "orange/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -914,27 +824,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/red/bold",
-        "mode": "light",
-        "figmaValue": "#fca5a5",
-        "repoValue": "#fee2e2",
-        "figmaAlias": "red/300",
-        "overrideTo": "red/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/red/bold",
         "mode": "dark",
         "figmaValue": "#7f1d1d",
-        "repoValue": "#fee2e2",
+        "repoValue": "#fca5a5",
         "figmaAlias": "red/900",
-        "overrideTo": "red/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "red/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -989,27 +884,12 @@
       {
         "collection": "Themes",
         "token": "icon/accent/rose/bold",
-        "mode": "light",
-        "figmaValue": "#fd8cb0",
-        "repoValue": "#ffdbe7",
-        "figmaAlias": "rose/300",
-        "overrideTo": "rose/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-        "rule": "accent-bold-icon-on-bold-surface",
-        "sources": [
-          "overrides.json",
-          "tokens.json"
-        ]
-      },
-      {
-        "collection": "Themes",
-        "token": "icon/accent/rose/bold",
         "mode": "dark",
         "figmaValue": "#5f0c23",
-        "repoValue": "#ffdbe7",
+        "repoValue": "#fd8cb0",
         "figmaAlias": "rose/900",
-        "overrideTo": "rose/100",
-        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "overrideTo": "rose/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
         "rule": "accent-bold-icon-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -1018,13 +898,43 @@
       },
       {
         "collection": "Themes",
+        "token": "surface/accent/teal/bold/default",
+        "mode": "light",
+        "figmaValue": "#0f766e",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/700",
+        "overrideTo": "teal/800",
+        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+        "rule": "accent-bold-text-on-bold-surface",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/default",
+        "mode": "dark",
+        "figmaValue": "#0f766e",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/700",
+        "overrideTo": "teal/800",
+        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+        "rule": "accent-bold-text-on-bold-surface",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
         "token": "surface/accent/teal/bold/hover",
         "mode": "light",
         "figmaValue": "#0d9488",
-        "repoValue": "#115e59",
+        "repoValue": "#0f766e",
         "figmaAlias": "teal/600",
-        "overrideTo": "teal/800",
-        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
+        "overrideTo": "teal/700",
+        "reason": "Hover of the bold teal surface: one step lighter than rest, as in the other accent families.",
         "rule": "accent-bold-text-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -1036,10 +946,40 @@
         "token": "surface/accent/teal/bold/hover",
         "mode": "dark",
         "figmaValue": "#0d9488",
-        "repoValue": "#115e59",
+        "repoValue": "#0f766e",
         "figmaAlias": "teal/600",
-        "overrideTo": "teal/800",
-        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
+        "overrideTo": "teal/700",
+        "reason": "Hover of the bold teal surface: one step lighter than rest, as in the other accent families.",
+        "rule": "accent-bold-text-on-bold-surface",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/default",
+        "mode": "light",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1e40af",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/800",
+        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+        "rule": "accent-bold-text-on-bold-surface",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/default",
+        "mode": "dark",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1e40af",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/800",
+        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
         "rule": "accent-bold-text-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -1051,10 +991,10 @@
         "token": "surface/accent/blue/bold/hover",
         "mode": "light",
         "figmaValue": "#2563eb",
-        "repoValue": "#1e40af",
+        "repoValue": "#1d4ed8",
         "figmaAlias": "blue/600",
-        "overrideTo": "blue/800",
-        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
+        "overrideTo": "blue/700",
+        "reason": "Hover of the bold blue surface: one step lighter than rest, as in the other accent families.",
         "rule": "accent-bold-text-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -1066,10 +1006,10 @@
         "token": "surface/accent/blue/bold/hover",
         "mode": "dark",
         "figmaValue": "#2563eb",
-        "repoValue": "#1e40af",
+        "repoValue": "#1d4ed8",
         "figmaAlias": "blue/600",
-        "overrideTo": "blue/800",
-        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
+        "overrideTo": "blue/700",
+        "reason": "Hover of the bold blue surface: one step lighter than rest, as in the other accent families.",
         "rule": "accent-bold-text-on-bold-surface",
         "sources": [
           "overrides.json",
@@ -3415,8 +3355,8 @@
       },
       {
         "collection": "Motion",
-        "token": "duration/base",
-        "cssVar": "--duration-base",
+        "token": "duration/enter",
+        "cssVar": "--duration-enter",
         "type": "duration",
         "values": {
           "default": "160ms"
@@ -3424,7 +3364,7 @@
         "alias": {
           "default": null
         },
-        "why": "Motion is not started in Figma."
+        "why": "Motion is not started in Figma. Named for its job, because the standard keeps size words such as base out of names."
       },
       {
         "collection": "Motion",
@@ -3503,14 +3443,14 @@
         "cssVar": "--color-border-strong",
         "type": "color",
         "values": {
-          "light": "#8c8f97",
+          "light": "#7d818a",
           "dark": "#7e8188"
         },
         "alias": {
-          "light": "neutral/light/500",
+          "light": "neutral/light/600",
           "dark": "neutral/dark/500"
         },
-        "why": "border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. The naming standard's own example is 'add border/strong at 3:1'."
+        "why": "border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. This step reaches 3 to 1 on all three surface tiers, not only the first two. The naming standard's own example is 'add border/strong at 3:1'."
       },
       {
         "collection": "Themes",
@@ -3526,9 +3466,35 @@
           "dark": "neutral/dark/700"
         },
         "why": "Goes with border/strong/default."
+      },
+      {
+        "collection": "Layer",
+        "token": "overlay",
+        "cssVar": "--layer-overlay",
+        "type": "number",
+        "values": {
+          "default": "1000"
+        },
+        "alias": {
+          "default": null
+        },
+        "why": "A page element with any z-index painted over an open dialog: nothing set the dialog's level."
+      },
+      {
+        "collection": "Layer",
+        "token": "popover",
+        "cssVar": "--layer-popover",
+        "type": "number",
+        "values": {
+          "default": "1100"
+        },
+        "alias": {
+          "default": null
+        },
+        "why": "A page element with any z-index painted over an open menu."
       }
     ]
   },
   "warnings": [],
-  "summary": "Figma and code agree on 261 of 308 tokens; 0 drift, 77 intended overrides, 0 overrides to remove; 23 proposed in the repo, not in Figma"
+  "summary": "Figma and code agree on 258 of 308 tokens; 0 drift, 73 intended overrides, 0 overrides to remove; 25 proposed in the repo, not in Figma"
 }

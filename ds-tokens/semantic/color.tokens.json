@@ -968,7 +968,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.teal.100}",
+            "$value": "{color.teal.300}",
             "$description": "A stronger teal icon on a teal accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -980,13 +980,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-teal-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "teal/300",
-                  "to": "teal/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1012,7 +1006,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.blue.100}",
+            "$value": "{color.blue.300}",
             "$description": "A stronger blue icon on a blue accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1024,13 +1018,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-blue-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "blue/300",
-                  "to": "blue/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1056,7 +1044,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.violet.100}",
+            "$value": "{color.violet.300}",
             "$description": "A stronger violet icon on a violet accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1068,13 +1056,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-violet-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "violet/300",
-                  "to": "violet/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1106,7 +1088,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.amber.100}",
+            "$value": "{color.amber.300}",
             "$description": "A stronger amber icon on an amber accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1118,13 +1100,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-amber-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "amber/300",
-                  "to": "amber/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1150,7 +1126,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.pink.100}",
+            "$value": "{color.pink.300}",
             "$description": "A stronger pink icon on a pink accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1162,13 +1138,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-pink-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "pink/300",
-                  "to": "pink/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1194,7 +1164,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.green.100}",
+            "$value": "{color.green.300}",
             "$description": "A stronger green icon on a green accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1206,13 +1176,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-green-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "green/300",
-                  "to": "green/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1238,7 +1202,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.orange.100}",
+            "$value": "{color.orange.300}",
             "$description": "A stronger orange icon on an orange accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1250,13 +1214,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-orange-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "orange/300",
-                  "to": "orange/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1282,7 +1240,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.red.100}",
+            "$value": "{color.red.300}",
             "$description": "A stronger red icon on a red accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1294,13 +1252,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-red-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "red/300",
-                  "to": "red/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1326,7 +1278,7 @@
           },
           "bold": {
             "$type": "color",
-            "$value": "{color.rose.100}",
+            "$value": "{color.rose.300}",
             "$description": "A stronger rose icon on a rose accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
@@ -1338,13 +1290,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-rose-bold)"
                 },
-                "descriptionSource": "drafted",
-                "override": {
-                  "from": "rose/300",
-                  "to": "rose/100",
-                  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-                  "rule": "accent-bold-icon-on-bold-surface"
-                }
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1780,7 +1726,7 @@
           "bold": {
             "default": {
               "$type": "color",
-              "$value": "{color.teal.700}",
+              "$value": "{color.teal.800}",
               "$description": "A strong teal background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
@@ -1793,13 +1739,19 @@
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-teal-bold)"
                   },
-                  "descriptionSource": "drafted"
+                  "descriptionSource": "drafted",
+                  "override": {
+                    "from": "teal/700",
+                    "to": "teal/800",
+                    "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+                    "rule": "accent-bold-text-on-bold-surface"
+                  }
                 }
               }
             },
             "hover": {
               "$type": "color",
-              "$value": "{color.teal.800}",
+              "$value": "{color.teal.700}",
               "$description": "A strong teal background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
@@ -1815,8 +1767,8 @@
                   "descriptionSource": "drafted",
                   "override": {
                     "from": "teal/600",
-                    "to": "teal/800",
-                    "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
+                    "to": "teal/700",
+                    "reason": "Hover of the bold teal surface: one step lighter than rest, as in the other accent families.",
                     "rule": "accent-bold-text-on-bold-surface"
                   }
                 }
@@ -1908,7 +1860,7 @@
           "bold": {
             "default": {
               "$type": "color",
-              "$value": "{color.blue.700}",
+              "$value": "{color.blue.800}",
               "$description": "A strong blue background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
@@ -1921,13 +1873,19 @@
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-blue-bold)"
                   },
-                  "descriptionSource": "drafted"
+                  "descriptionSource": "drafted",
+                  "override": {
+                    "from": "blue/700",
+                    "to": "blue/800",
+                    "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+                    "rule": "accent-bold-text-on-bold-surface"
+                  }
                 }
               }
             },
             "hover": {
               "$type": "color",
-              "$value": "{color.blue.800}",
+              "$value": "{color.blue.700}",
               "$description": "A strong blue background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
@@ -1943,8 +1901,8 @@
                   "descriptionSource": "drafted",
                   "override": {
                     "from": "blue/600",
-                    "to": "blue/800",
-                    "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
+                    "to": "blue/700",
+                    "reason": "Hover of the bold blue surface: one step lighter than rest, as in the other accent families.",
                     "rule": "accent-bold-text-on-bold-surface"
                   }
                 }
@@ -3485,7 +3443,7 @@
       },
       "success": {
         "$type": "color",
-        "$value": "{color.green.600}",
+        "$value": "{color.green.700}",
         "$description": "The edge of a success message.",
         "$extensions": {
           "com.souvenir.figma": {
@@ -3497,7 +3455,13 @@
             "codeSyntax": {
               "WEB": "var(--color-border-success)"
             },
-            "descriptionSource": "drafted"
+            "descriptionSource": "drafted",
+            "override": {
+              "from": "green/600",
+              "to": "green/700",
+              "reason": "The edge of a success message or field must reach 3 to 1 on all three surface tiers. green/600 is 2.91 to 1 on the third tier; green/700 is the nearest step that passes.",
+              "rule": "status-and-brand-borders"
+            }
           }
         }
       },
@@ -3546,11 +3510,11 @@
       "strong": {
         "default": {
           "$type": "color",
-          "$value": "{color.neutral.light.500}",
+          "$value": "{color.neutral.light.600}",
           "$description": "The edge of an input, checkbox or radio at rest: the only thing that shows where the control is.",
           "$extensions": {
             "com.souvenir.proposed": true,
-            "com.souvenir.why": "border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. The naming standard's own example is 'add border/strong at 3:1'.",
+            "com.souvenir.why": "border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. This step reaches 3 to 1 on all three surface tiers, not only the first two. The naming standard's own example is 'add border/strong at 3:1'.",
             "com.souvenir.codeSyntax": {
               "WEB": "var(--color-border-strong)"
             },

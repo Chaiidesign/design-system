@@ -18,7 +18,7 @@
           "com.souvenir.descriptionSource": "proposed"
         }
       },
-      "base": {
+      "enter": {
         "$type": "duration",
         "$value": {
           "value": 160,
@@ -27,9 +27,9 @@
         "$description": "A menu or dialog appearing or leaving.",
         "$extensions": {
           "com.souvenir.proposed": true,
-          "com.souvenir.why": "Motion is not started in Figma.",
+          "com.souvenir.why": "Motion is not started in Figma. Named for its job, because the standard keeps size words such as base out of names.",
           "com.souvenir.codeSyntax": {
-            "WEB": "var(--duration-base)"
+            "WEB": "var(--duration-enter)"
           },
           "com.souvenir.descriptionSource": "proposed"
         }

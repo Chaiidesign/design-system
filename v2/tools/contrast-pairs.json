@@ -260,14 +260,15 @@
     {
       "id": "control-boundary",
       "min": 3,
-      "why": "The edge of an input, checkbox or radio is the only thing that shows where the control is, so WCAG 1.4.11 asks 3 to 1 against what is beside it. border/strong is the token for that job. border/primary and border/secondary divide content and are exempt (see 'exempt').",
+      "why": "The edge of an input, checkbox or radio is the only thing that shows where the control is, so WCAG 1.4.11 asks 3 to 1 against what is beside it. border/strong is the token for that job. border/primary and border/secondary divide content and are exempt (see 'exempt'). Measured on all three surface tiers and on the hover and pressed fills of the outline button, which sit inside the same edge.",
       "fg": [
         "border/strong/default",
         "border/strong/hover"
       ],
       "bg": [
-        "surface/primary/default",
-        "surface/secondary/default"
+        "<baseDefault>",
+        "surface/primary/hover",
+        "surface/primary/active"
       ]
     },
     {
@@ -294,8 +295,7 @@
         "border/brand"
       ],
       "bg": [
-        "surface/primary/default",
-        "surface/secondary/default"
+        "<baseDefault>"
       ]
     },
     {
@@ -312,6 +312,18 @@
         "<g>/base-end",
         "<g>/glow-warm",
         "<g>/glow"
+      ]
+    },
+    {
+      "id": "danger-soft-text",
+      "min": 4.5,
+      "why": "The label of the soft destructive button: error text on the error surface and on its hover step.",
+      "fg": [
+        "text/error"
+      ],
+      "bg": [
+        "surface/error",
+        "surface/accent/red/subtlest/hover"
       ]
     }
   ],
@@ -373,6 +385,12 @@
       "why": "Brand text and error text must not be mistaken for each other.",
       "a": "text/brand",
       "b": "text/error"
+    },
+    {
+      "id": "link-vs-brand-text",
+      "why": "A link and brand text: reported so it is known when colour does not separate them and the underline has to.",
+      "a": "text/link/default",
+      "b": "text/brand"
     },
     {
       "id": "link-vs-error-text",

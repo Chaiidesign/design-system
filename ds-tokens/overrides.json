@@ -392,182 +392,6 @@
   "rule": "one-job"
  },
  {
-  "token": "surface/accent/teal/bold/hover",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "teal/800",
-  "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
-  "rule": "accent-bold-text-on-bold-surface"
- },
- {
-  "token": "surface/accent/teal/bold/hover",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "teal/800",
-  "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
-  "rule": "accent-bold-text-on-bold-surface"
- },
- {
-  "token": "surface/accent/blue/bold/hover",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "blue/800",
-  "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
-  "rule": "accent-bold-text-on-bold-surface"
- },
- {
-  "token": "surface/accent/blue/bold/hover",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "blue/800",
-  "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
-  "rule": "accent-bold-text-on-bold-surface"
- },
- {
-  "token": "icon/accent/teal/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "teal/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/teal/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "teal/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/blue/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "blue/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/blue/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "blue/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/violet/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "violet/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/violet/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "violet/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/amber/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "amber/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/amber/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "amber/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/pink/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "pink/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/pink/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "pink/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/green/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "green/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/green/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "green/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/orange/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "orange/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/orange/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "orange/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/red/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "red/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/red/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "red/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/rose/bold",
-  "collection": "Themes",
-  "mode": "light",
-  "to": "rose/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
-  "token": "icon/accent/rose/bold",
-  "collection": "Themes",
-  "mode": "dark",
-  "to": "rose/100",
-  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
-  "rule": "accent-bold-icon-on-bold-surface"
- },
- {
   "token": "surface/accent/neutral/subtle/default",
   "collection": "Themes",
   "mode": "dark",
@@ -614,5 +438,149 @@
   "to": "neutral/light/700",
   "reason": "Contrast on the subtle neutral surfaces.",
   "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "surface/accent/teal/bold/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "teal/800",
+  "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/teal/bold/hover",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "teal/700",
+  "reason": "Hover of the bold teal surface: one step lighter than rest, as in the other accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/teal/bold/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "teal/800",
+  "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/teal/bold/hover",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "teal/700",
+  "reason": "Hover of the bold teal surface: one step lighter than rest, as in the other accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/blue/bold/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "blue/800",
+  "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/blue/bold/hover",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "blue/700",
+  "reason": "Hover of the bold blue surface: one step lighter than rest, as in the other accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/blue/bold/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/800",
+  "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/blue/bold/hover",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/700",
+  "reason": "Hover of the bold blue surface: one step lighter than rest, as in the other accent families.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/teal/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "teal/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/blue/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/violet/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "violet/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/amber/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "amber/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/pink/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/green/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "green/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/orange/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "orange/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/red/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "red/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/rose/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "rose/300",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "border/success",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "green/700",
+  "reason": "The edge of a success message or field must reach 3 to 1 on all three surface tiers. green/600 is 2.91 to 1 on the third tier; green/700 is the nearest step that passes.",
+  "rule": "status-and-brand-borders"
  }
 ]

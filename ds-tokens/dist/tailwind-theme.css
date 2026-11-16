@@ -6,7 +6,7 @@
    utility, and the unlayered tokens.css value wins over the copy Tailwind may emit in its theme layer.
    Gradient stops are mapped as --color-gradient-* so from-*, via-* and to-* utilities work.
    Proposed tokens (ds-tokens/proposed/tokens.json): colours, shadows (--shadow-*) and easings (--ease-*) are mapped to themselves.
-   Border widths, sizes and durations have no Tailwind v4 namespace and are not mapped (17 tokens);
+   Border widths, sizes and durations have no Tailwind v4 namespace and are not mapped (19 tokens);
    use them through the variable, for example h-(--size-control-md) or duration-(--duration-fast).
 */
 @theme inline {

@@ -712,15 +712,15 @@ function selfTest() {
     expect(!sameValue(100, '100ms', 'number'), 'outside a Motion duration, 100 and 100ms must still differ');
     const msnap = structuredClone(snap);
     const mv = (name, n) => ({ file: 'semantic', collection: 'Motion', name, type: 'number', values: [String(n)], syntax: `var(--${name.replace('/', '-')})`, scopes: [], description: 'Planted.', line: 0 });
-    msnap.semantic.push({ file: 'semantic', name: 'Motion', modes: ['default'], declared: 2, variables: [mv('duration/fast', 100), mv('duration/base', 160)] });
+    msnap.semantic.push({ file: 'semantic', name: 'Motion', modes: ['default'], declared: 2, variables: [mv('duration/fast', 100), mv('duration/enter', 160)] });
     const mfx = cleanFixture();
-    for (const [name, v] of [['duration/fast', '100ms'], ['duration/base', '170ms']]) {
+    for (const [name, v] of [['duration/fast', '100ms'], ['duration/enter', '170ms']]) {
       mfx.tokens.push({ name, collection: 'Motion', category: 'motion', type: 'duration', cssVar: `--${name.replace('/', '-')}`, description: 'Planted.', values: { default: v }, alias: { default: null }, scopes: [], overridden: null });
       mfx.blocks.get('root').set(`--${name.replace('/', '-')}`, v);
     }
     const mr = run(mfx, 'motion', msnap);
     const md = mr.lists.drift;
-    expect(md.length === 1 && md[0].token === 'duration/base' && md[0].figmaValue === '160ms' && md[0].repoValue === '170ms' && mr.counts.cssFileMismatch === 0,
+    expect(md.length === 1 && md[0].token === 'duration/enter' && md[0].figmaValue === '160ms' && md[0].repoValue === '170ms' && mr.counts.cssFileMismatch === 0,
       `Motion: 100 against "100ms" should agree and 160 against "170ms" should be the only drift; drift ${JSON.stringify(md)}, counts ${JSON.stringify(mr.counts)}`);
     lines.push(`Caught Motion duration: Figma 100 = repo 100ms agrees; ${md[0] ? describe('drift', md[0]) : 'nothing'} is the only drift`);
 

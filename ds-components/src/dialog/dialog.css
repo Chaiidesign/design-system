@@ -8,7 +8,7 @@
     padding-inline: var(--spacing-static-160);
     padding-block: var(--spacing-static-160);
     transition-property: background-color, border-color, color, box-shadow, opacity;
-    transition-duration: var(--duration-base);
+    transition-duration: var(--duration-enter);
     transition-timing-function: var(--ease-standard);
   }
   [data-slot~="dialog-content"] {
@@ -22,7 +22,7 @@
     inline-size: 100%;
     max-inline-size: var(--size-dialog-md);
     transition-property: background-color, border-color, color, box-shadow, opacity;
-    transition-duration: var(--duration-base);
+    transition-duration: var(--duration-enter);
     transition-timing-function: var(--ease-standard);
   }
   [data-slot~="dialog-header"] {

@@ -1,0 +1,458 @@
+{
+ "reviews": [
+  {
+   "lens": "claims",
+   "verdict": "pass with fixes",
+   "checked": "Read digests/2026-11-16-v2.md line by line. Ran every command in its last table once (v2:test, v2:lint, v2:selftest, v2:specs, npm run check, figma-verify, both contrast audits, lint, both diffs, read-back check, gzip). Viewed 12 of the 13 embedded pictures (all 13 files exist). Checked git history of the snapshot files and main. Ran one read-only script on the sandbox Figma file. Served the three URLs. Checked AGENTS.md paths, commands and rules. Compared comparison.json, growth-map.json and the report page with audit-inputs.json, digests/2026-11-15.md and the tools' output. Read the open items in the integration returns.",
+   "findings": [
+    {
+     "severity": "blocker",
+     "where": "digests/2026-11-16-v2.md lines 58-65: \"with your V2 tokens as Figma holds them ... All 24 measured page states pass text contrast and control-edge contrast\" and the \"V2 as given\" column",
+     "problem": "The \"as given\" screens are not built from the tokens Figma holds. Their token file is built with --no-overrides but still merges the repo's proposed tokens, and the bridge maps every control edge to the proposed border/strong (3.24 to 1). Figma's only edge token is border/primary at 1.35 to 1, which the same summary lists as a harm. So the owner is shown their direction passing a check it fails, and the \"honest result\" that as-given and merged look the same is partly produced by this.",
+     "evidence": "v2/screens/bridge.css: `--sv-color-edge: var(--color-border-strong)`, plus --size-control-lg, --border-width-sm, --border-ring-width, --duration-fast. `grep -n border-strong v2/screens/tokens-as-given/tokens.css` -> line 242 `--color-border-strong: #8c8f97`. v2/screens/measurements.json: as-given lowestControl 3.24, identical to merged. v2/tools/build-compare.mjs line 8: built by `build-tokens.mjs --no-overrides`. v2/screens/index.html line 38 says \"exactly as Figma holds them today\".",
+     "fix": "Either rebuild B with no proposed tokens (edge on border/primary, Figma's own sizes) and re-measure, or relabel B as \"Figma's values plus the proposed tokens, without the contrast fixes\" and say the control-edge pass comes from a token Figma does not have. Rewrite the \"honest result\" paragraph to match."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md line 28: \"The full grid, before and after, is `ds-tokens/audit/contrast.html`\"",
+     "problem": "The file holds one view only, whichever audit mode ran last. The committed copy is the after view (0 fails). Running the table's own `--report-only` command replaces it with the before view.",
+     "evidence": "`git show HEAD:ds-tokens/audit/contrast.html`: \"Source: built file ds-tokens/dist/tokens.json ... 734 pairs measured, 682 pass, 0 fail\"; the word \"before\" occurs 0 times. Both audit runs print \"Wrote ds-tokens/audit/contrast.json, ds-tokens/audit/contrast.html\".",
+     "fix": "Point to the report page section that has both columns, or write the two modes to two files (contrast-as-given.html, contrast-built.html)."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md line 125, command `SOUVENIR_SNAPSHOT_DIR=v2/figma/sandbox node v2/tools/diff-figma.mjs --report-only`",
+     "problem": "Running this command, as the table invites, overwrites ds-tokens/audit/figma-patch-list.md and diff.json with the sandbox result. That removes the 77 alias changes from the list decision 1 tells the owner to read. `--report-only` still writes. The sandbox lint run overwrites ds-tokens/audit/lint.json the same way.",
+     "evidence": "After the command: \"Wrote ds-tokens/audit/diff.json and ds-tokens/audit/figma-patch-list.md\"; `git diff --stat` showed figma-patch-list.md 416 lines changed and diff.json 2,749; every \"change alias\" line was deleted. Rerunning `node v2/tools/diff-figma.mjs` brought both back.",
+     "fix": "When SOUVENIR_SNAPSHOT_DIR is set, write to that folder (v2/figma/sandbox/results/) or write nothing; make --report-only not write the patch list."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md line 16: \"The Figma file breaks its naming standard in 24 places\"",
+     "problem": "24 is the number of grouped findings, not places. They cover about 530 token instances, and only 8 of the 24 concern renames (about 101 names). The other 16 are descriptions, scopes, raw values and duplicate state values. The owner is asked to decide on a breaking rename from a figure that understates it and mixes in non-rename items.",
+     "evidence": "ds-tokens/audit/lint.json, severity \"breaks the standard\": name-case 1; size-scale 22 and 8; primitive-hygiene 35; alias 2 and 18; collection-names 4; description 171, 36, 12, 26, 45; scopes 35, 18, 35; tailwind-namespace 15, 15, 1; one-job 6 findings of 2.",
+     "fix": "Say \"24 kinds of breach\" and give the rename count on its own: about 101 names (30 size or radius names, 31 typography prefixes, 4 collections, 35 primitives, 1 case)."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md line 88: \"the choice of first components (the five the app uses most)\"; v2/report/comparison.json Components row",
+     "problem": "The recorded usage counts do not support it. Tooltip (87 files) and Badge (70) are used in more files than Dialog (49 plus about 20), Input (26) and Tabs (24); Tooltip is above DropdownMenu (83).",
+     "evidence": "notes/sources/raw/2026-11-16-v2-audit-inputs.json, handoff.component_priorities: \"10 Tooltip: 87, 50% ... 11 Badge: 70, 69%\". v2/report/growth-map.json itself lists \"Tooltip, Badge ... 87 and 70 files\".",
+     "fix": "Write \"five of the most used, chosen because their Figma colour is already 75 to 98 percent on semantic tokens\"; drop \"uses most\" from comparison.json too."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md line 15: \"a soft destructive variant differs in shape\"; comparison.json Brand colour row",
+     "problem": "Nothing in the spec or the rendered Button gives the soft destructive variant a different shape. It has the same radius and outline as every other variant and differs by colour only (pale red fill, red text). This is the mitigation offered for decision 2.",
+     "evidence": "digests/2026-11-16-v2/components/button--all.png: \"Remove member\" is the same rounded rectangle as \"Cancel\". `grep -rn -i shape ds-components/specs/button.spec.json` -> no match. button.css lines 170-181 for dangerSoft hold colour rules only.",
+     "fix": "Remove the claim, or build the difference (for example a leading icon or an outline) and test it."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md line 45: \"It drives each state the spec lists and compares the rendered colour with the token the spec names\"",
+     "problem": "For 340 of the 532 passing state checks no colour is compared. The check passes once the selector matches, with the note \"no colour rule names this state\". Examples: all focus states, Dialog and menu open, Tabs unselected, Input placeholder and filled.",
+     "evidence": "ds-components/generated/test-report.json after `npm run v2:test`: detail strings \"matches <selector>; no colour rule names this state\" on 340 checks with status pass; state checks total 572, of which 40 not reached.",
+     "fix": "Say \"and, where the spec names a colour for that state, compares the rendered colour\"; consider reporting these 340 as a separate count."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md lines 29-30 and 96: \"Your own figures reproduce: ... teal and blue bold text on hover 3.32 and 4.24\", \"What your weak-spot list did not have\", \"'Everything is v0.1.0 until 1.0' contradicts the standard's own table\"",
+     "problem": "The repository has no record of the owner's one-page direction or the naming standard these statements quote. The only owner document recorded is the handoff, which has 3.83 and 3.24 but not 3.32 or 4.24, and which says the document \"never mentions v0.1.0\". The same applies in comparison.json to \"ten rules\", \"Two rules from Nathan Curtis\" and the standard's example \"add border/strong at 3:1\". A reader cannot check any of them.",
+     "evidence": "`grep -rn \"3\\.32\\|until 1\\.0\" notes/` -> no source file. audit-inputs.json conflicts_with_one_pager: \"Versioning: the doc never mentions v0.1.0 or any version number\"; handoff.contrast_results has no 3.32 or 4.24. notes/sources/ has no 2026-11-16 summary.",
+     "fix": "Add a dated source note with the one-pager and the naming standard as given (or exact quotes), and cite it beside each of these statements."
+    },
+    {
+     "severity": "major",
+     "where": "v2/report/comparison.json, v2/report/growth-map.json, v2/report/index.html, ds-tokens/README.md, v2/screens/index.html",
+     "problem": "The hand-written data behind the report page is out of date and contradicts the tools and the summary: (1) \"22 tokens proposed\" where the build says 23; the report page prints both numbers. (2) \"86 of 171 colour roles\" unused; the handoff says 86 of 167. (3) Pink and red \"about 25 degrees\" apart against 27 elsewhere (measured 26.7). (4) Growth map lists as next or later things the summary says exist: descriptions drafted, the package AGENTS.md, specs built into a sandbox Figma file. (5) Composer: \"Six of the open UI fixes\"; the handoff has 9 open and none on the composer (6 of the 26 logged). (6) Tooltip and Badge \"half their Figma colour\" from HeroUI; Badge is 69 percent on semantic tokens.",
+     "evidence": "`node v2/tools/build-tokens.mjs`: \"proposed tokens merged: 23 of 23\". ds-tokens/README.md: \"proposed tokens merged (22)\", \"22 proposed tokens\". v2/screens/index.html line 38: \"22 proposed tokens\". Report page text holds both \"22 tokens proposed\" and \"23 tokens proposed\". audit-inputs.json: \"86 of the 167 Themes roles\"; UI fixes section lists 9 open: model selector 4, sidebar 2, thinking 2, settings 1. git log: comparison and growth map committed in 2aa1774, before the sandbox, AGENTS.md and descriptions.",
+     "fix": "Update the two JSON files and the README, then run `npm run v2:report`; have build-report.mjs fail when a number in comparison.json or growth-map.json disagrees with the tools' output."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 95: \"no token has a description\"",
+     "problem": "18 Surface Gradients variables already have a description in the owner's file.",
+     "evidence": "build-tokens output: \"descriptions by source: figma 18, owner 0, proposed 23, drafted 290\"; lint.json: \"45 of 63 tokens in Surface Gradients have no description\".",
+     "fix": "Write \"290 of 308 tokens have no description\"."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 23: \"Pairs exempt, each with a reason (disabled, dividers) | 52\"",
+     "problem": "The 52 also include 8 focus-ring pairs beside fills, as low as 1.07 to 1 against the destructive fill. The summary does not name this exemption.",
+     "evidence": "ds-tokens/audit/contrast.json exempt by rule: disabled 28, dividers 16, focus-ring-beside-fills 8; `--built` output: \"border/focus on interactive/error/default 1.07\".",
+     "fix": "Name the third group and its reason (the 2 pixel offset gap)."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 28 and ds-components/AGENTS.md line 43: \"each fix is the nearest step on the same colour ramp\"; \"77 colour values differ from Figma on purpose, to pass contrast\"",
+     "problem": "24 of the 77 overrides are not nearest-step contrast fixes: 18 bold-icon changes go straight to the 100 step to match bold text, 2 give pressed a different colour from hover, and 4 are link steps chosen to keep three states apart.",
+     "evidence": "ds-tokens/overrides.json reasons classified: 53 mention contrast, 18 \"The bold surface is the same in both modes\", 2 \"One job per token\", 4 other link reasons.",
+     "fix": "Say \"most fixes are the nearest passing step; 24 follow other stated reasons\"."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 30: \"bold accent icons in dark were the 900 step on a 900 surface, 1 to 1\"",
+     "problem": "True for six hues (amber, pink, green, orange, red, rose). Teal, blue and violet are the 900 step on a 700 surface, 1.54 to 1.73 to 1; neutral passes.",
+     "evidence": "contrast.json --report-only, dark: icon/accent/teal/bold on bold/default 1.73, blue 1.55, violet 1.54; the other six 1.",
+     "fix": "\"on a 700 to 900 surface, as low as 1 to 1\", as the patch list already says."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 96: \"Radix adds 10 to 33 kilobytes of script per compound component\"",
+     "problem": "10 to 33 are the totals with Radix bundled, not what Radix adds. The added amount is 9.3 to 30.6.",
+     "evidence": "ds-components/generated/size-report.json: tabs own 1,333 and with Radix 10,654; dialog 1,582 and 15,214; dropdown-menu 2,339 and 32,914.",
+     "fix": "\"With Radix, a compound component's script is 11 to 33 kilobytes\"."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 131, command cell",
+     "problem": "The cell is written with `\\\\|`, so the rendered command carries a backslash before the pipe and fails when pasted.",
+     "evidence": "od -c of the line: `t o k e n s . c s s  \\ \\ |  w c  - c`. The command without the backslash returns 4702.",
+     "fix": "Use a single `\\|` or write the pipe as `&#124;` and check the render."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 14 and 125: \"agree on 329 of 329 tokens\"; live sandbox variable VariableID:4030:114",
+     "problem": "The same run reports one description difference: Border width/md reads `the active tab&#39;s underline` in the sandbox. My live read returned the same entity, so designers may see it in Figma. I could not tell whether Figma stores it or the connector escapes it on the way out.",
+     "evidence": "Sandbox diff output: \"8. Description differs: 1 - Border width/md: Figma \\\"...tab&#39;s underline.\\\"\". Live read of VariableID:4030:114 description returned `...active tab&#39;s underline.`",
+     "fix": "Open the variable in Figma and look; if the entity is stored, rewrite the description without an apostrophe."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 107: \"every Figma-to-code state mapping is marked unconfirmed\"; line 48 points to ds-components/docs/state-map.md",
+     "problem": "The specs carry `\"confirmed\": false`, but the state map page the summary points to shows a \"Figma value\" column with no such mark.",
+     "evidence": "`grep -c -i \"unconfirmed\\|confirm\" ds-components/docs/state-map.md` -> 0; ds-components/specs/button.spec.json line 11 `\"confirmed\": false`.",
+     "fix": "Have build-components.mjs print the unconfirmed mark in the state map heading or column."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md line 78 and 129: \"A read-back found all 3,623 bindings on the variable the spec names\"",
+     "problem": "The figure comes from a saved read made before two later changes to the sandbox (the paint refresh script and the rename of two variables). The command re-checks the saved file, not the live file.",
+     "evidence": "v2/figma/sandbox/CHANGES.md: \"Read-back ... ran with ONLY = null, after 05 and the screens, before the paint fix\"; the rename is the \"third step\". readback-parts/01-all.json is dated 08:59.",
+     "fix": "Rerun readback.figma.js on the live file and save it, or say when the read was taken."
+    }
+   ],
+   "held": [
+    "Every number in the last table reproduced: 314 and 229 lines; 726/459/215/52; 734/682/0/52; 18 rules, 66 findings, 24; 261 of 308 with 77 and 23; 329 of 329; 5 specs, 70 checks; 174 variants, 3,623 bindings; 4,702 bytes; selftest and npm run check exit 0.",
+    "npm run v2:test: 81 examples, 3,140 checks, 3,022 pass, 60 fail, 58 not reached; the per-component table matches exactly, and the rerun left test-report.json identical to the committed copy.",
+    "The 60 failures are one axe rule (aria-hidden-focus) on 12 menu examples in 5 configurations; Dialog's 40 not reached are closed and overlayClosed; 129 requirements name a test.",
+    "Sandbox table: 49 naming findings, 14 breaking; 47 distinct tokens carry the 77 overrides.",
+    "Decision 2: pink/600 and red/600 measure OKLCH L 0.592 and 0.577, C 0.218 and 0.215, hue 0.6 and 27.3.",
+    "Quoted ratios hold: 3.83, 3.32, 4.24, 3.24, 1.35, accent text 1.26, neutral subtle 1 to 1.",
+    "Decision 3 default: nothing renamed; the build checks CSS names against Figma's code syntax.",
+    "v2/figma/semantic.txt, primitives.txt and both hash files have one commit each (c79dc13); main equals origin/main at 26abd15.",
+    "Live sandbox: 8 collections ending (DS V2) with 329 variables, 4 ending (DS V2 primitives) with 192; three pages named as stated; Button 114, Input 21, TabsTrigger 20, DropdownMenuItem 14, DialogContent 2; three menu parts; nine icons; two effect styles.",
+    "Live sandbox: the 8 earlier collections still hold 40, 29, 15, 118, 167, 35, 10 and 26 variables; 961 in all; 8 text styles.",
+    "Live sandbox: every semantic variable has a description, WEB code syntax and no ALL_SCOPES; all primitives hidden with empty scopes; ring/width and ring/offset renamed; Background/Inverse is #000000 in light.",
+    "All 13 embedded pictures exist; the 12 viewed match their captions and none is visibly broken.",
+    "The three URLs return 200 under npm run serve; the report page loads nothing external.",
+    "AGENTS.md: every path exists, the three commands run, theme and density attributes and the CSS naming rule match tokens.css and tokens.json, 23 proposed and 77 overrides match.",
+    "Version 0.2 statements match digests/2026-11-15.md: 144 tokens, 68 semantic, blue 108 degrees, text at 7 to 1, 5 kilobyte row, ten parts.",
+    "The target-size fault reported for Tabs in the raw returns is fixed: tabs are now measured (3 to 6 targets per example).",
+    "Storybook and Tailwind are not installed; Geist has 0 of 5 Japanese glyphs; 35 of 36 typography variables are ALL_SCOPES; 10 pixel roles exist; Input uses 16 pixels and 44 pixel targets under pointer: coarse."
+   ],
+   "not_checked": [
+    "Whether the owner's Semantic Tokens and Primitives files are unchanged now: not read live; figma-verify compares the snapshot with hashes stored at snapshot time.",
+    "Live variable bindings on the sandbox components and screens: my one script counted and named things, it did not re-read bindings.",
+    "\"About 9.5 million model tokens\": no record of the V2 runs in scorecard.md or the raw returns.",
+    "The failure narrative (Button spec wrong twice, four dialects, runner too generous then too strict): not traced through the raw returns.",
+    "Whether focus can actually reach the menu trigger in Radix modal mode; the returns cite the axe rule only, with no focus probe.",
+    "merged-assistant-375-dark.png was not viewed (as-given and version 0.2 were).",
+    "Chinese and Korean glyph coverage of Geist (only Japanese was measured).",
+    "Pre-existing sandbox variables' values (counts only; CHANGES.md itself says content was not hashed before the run).",
+    "v2:gallery and v2:report were not run on their own; the gallery was built inside v2:test.",
+    "Other reviewers were running tools in the same folder; ds-tokens/audit/lint.json changed under me once and I regenerated it."
+   ],
+   "files_left_modified": [
+    "ds-tokens/audit/contrast.html",
+    "ds-tokens/audit/contrast.json",
+    "gates/raw/2026-11-15-screens.json",
+    "gates/raw/2026-11-15-size.json"
+   ]
+  },
+  {
+   "lens": "components",
+   "verdict": "pass with fixes",
+   "checked": "Built the gallery, copied the bundle to scratch and drove it with playwright-core in Chromium: CDP accessibility trees and axe on 30 examples; keyboard, touch taps, RTL; all 81 examples under 200% text, forced colours (light, dark), coarse pointer with dark compact, RTL. Ran 55 mutation and test pairs by calling the repo's own test functions against patched bundles or injected CSS. Bundled a scratch harness of uses no example covers (asChild disabled, dialog from a menu, refs, removed tabs), plus server render and hydration. Compared 30 computed non-colour styles with tokens.json. Scripts and screenshots: /private/tmp/claude-501/-Users-chaitanyalandge-Library-Application-Support-Claude-scratch-workspaces-ebabe688-c813-4d37-95fc-498a492cc12d-5e00ea11-9ff3-4643-b571-765ec27a06ab-scratch-2026-11-13-02c7be/b28519ae-d5a9-4657-800a-f0c0e2b58dcd/scratchpad/review/break-components/",
+   "findings": [
+    {
+     "severity": "major",
+     "where": "ds-components/src/dialog/dialog.extensions.css (header and footer flex-shrink: 0, content and overlay overflow visible); test dialog-body-scrolls in ds-components/src/dialog/dialog.tests.mjs:588",
+     "problem": "With text at 200 percent (root font size 200%, the same method input.tests.mjs uses) the Dialog loses its actions on common phone sizes. Header and footer never shrink, so the body collapses to 0 px and the footer spills out of the dialog and below the screen; the page is scroll-locked and neither overlay nor content scrolls. In the not-dismissible example this traps a touch user: no action is visible, Escape and the overlay press are blocked. It becomes a release blocker the moment a Dialog ships. The MUST dialog-body-scrolls (\"footer with the actions stay fully visible\") is tested at 100% text only.",
+     "evidence": "node /private/tmp/claude-501/-Users-chaitanyalandge-Library-Application-Support-Claude-scratch-workspaces-ebabe688-c813-4d37-95fc-498a492cc12d-5e00ea11-9ff3-4643-b571-765ec27a06ab-scratch-2026-11-13-02c7be/b28519ae-d5a9-4657-800a-f0c0e2b58dcd/scratchpad/review/break-components/sizes200.mjs -> default 360x640: bodyHeight 0, \"Use this address: cut by the screen edge\"; not-dismissible 360x640: bodyHeight 0, \"Use a different card: cut\", \"I have confirmed it: wholly below the screen\"; not-dismissible 375x667: second action wholly below; confirm-step 360x640: \"Add express delivery: wholly below\". All fit only from 390x844. dialogfit.mjs in the same folder: default 320x568 at 200%: content 32-536, header 33-473, body 473-473, footer 473-893, overlay overflow visible, pageScrollable false. Also at 100% in a 320x256 viewport (1280x1024 zoomed 400%) confirm-step: body 141-141 (0 px), footer 141-277 against content 16-240. Screenshot: shots/dialogfit-not-dismissible-320x568-text-200-.png shows title and description only.",
+     "fix": "When header plus footer exceed the box, let the whole content scroll (for example overflow-y auto on the content with a minimum block size on the body, or overflow on the overlay). Add 200% text cases at 360x640 and a 320x256 case to dialog-body-scrolls and dialog-not-dismissible-has-way-out; until fixed, list it in the summary's not-proven section."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/dropdown-menu/dropdown-menu.css:13 (min-inline-size: var(--size-menu-min)); ds-components/src/tabs/tabs.extensions.css (vertical list flex: none, content flex: 1 1 0); tests dropdown-menu-fits-viewport and tabs-no-page-scroll-320",
+     "problem": "At 200 percent text two more components leave the screen. The menu's minimum width (12rem, 384 px at 200%) beats the available-width cap, so the open menu runs off the right edge on every viewport up to 390 px wide and its shortcut hints are cut off; in modal mode the page cannot scroll to them. Vertical Tabs squeeze the panel to 1 px at 320 wide and the page scrolls sideways. Both MUST requirements (menu \"lies wholly inside the viewport\", tabs \"page has no horizontal scroll\") are tested at 100% only.",
+     "evidence": "Same sizes200.mjs run: \"actions 320: content [8,392], viewport 320, minWidth 384px, maxWidth 304px\"; same span at 360, 375 and 390; \"with-shortcuts 320 and 360: textCutByScreenEdge [⌘C, ⌘V, ⌘A]\", pageCanScrollSideways false. \"vertical 320: listWidth 207, panelWidth 1, panelTextRight 364, pageScrollWidth 364\"; \"vertical 360: panelWidth 41, pageScrollWidth 364\". Control at 100%, 320: list 103, panel 161, no scroll. stress.mjs text200 flagged all 15 open menu examples and tabs vertical, vertical-pill, no-loop. Screenshots shots/text200-320--dropdown-menu--with-shortcuts.png and shots/text200-320--tabs--vertical.png.",
+     "fix": "Menu: cap the minimum too, min-inline-size: min(var(--size-menu-min), var(--radix-dropdown-menu-content-available-width)). Vertical tabs: let the list shrink or stack above the panel when the panel would fall under a minimum width. Add a 200% text case to both tests."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/dialog/dialog.css and dropdown-menu.css (no z-index anywhere: grep -n z-index ds-components/src returns nothing); ds-components/docs/dialog.md:200; ds-components/AGENTS.md:39-44",
+     "problem": "The dialog overlay, the dialog and the menu have z-index auto, so any page element with a positive z-index (a sticky header with z-index 1) paints over an open modal dialog and an open menu. The spec's notCarried list says stacking is \"left to Radix's portal order\", but the agent guide's Known and open list and the morning summary do not mention it, and no test covers it.",
+     "evidence": "node .../break-components/misc.mjs (full folder path as in the first finding): \"stacking dialog/default: zIndexOfSurface auto, zIndexOfOverlayOrWrapper auto\"; same for dropdown-menu/actions. Screenshots /private/tmp/claude-501/-Users-chaitanyalandge-Library-Application-Support-Claude-scratch-workspaces-ebabe688-c813-4d37-95fc-498a492cc12d-5e00ea11-9ff3-4643-b571-765ec27a06ab-scratch-2026-11-13-02c7be/b28519ae-d5a9-4657-800a-f0c0e2b58dcd/scratchpad/review/break-components/shots/stacking-dialog.png and stacking-dropdown-menu.png: a position: fixed; z-index: 1 bar added to the page covers the dialog's title and the menu's first items.",
+     "fix": "Add layer tokens and a z-index on the overlay and on the menu's popper wrapper, or require isolation: isolate on the app root and say so in AGENTS.md; add a test that plants a z-indexed page element. Add the gap to Known and open now."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/dialog/dialog.tsx:209-232 (handleOpenAutoFocus records document.activeElement; handleCloseAutoFocus focuses it only if still connected)",
+     "problem": "A Dialog opened from a DropdownMenu item (the open prop, no DialogTrigger: the usual \"Delete chat\" flow) drops focus on the page body when it closes, by keyboard and by pointer. The element recorded on open is the menu item, which is gone by then. The MUST dialog-focus-returns-without-trigger and the adapter's header comment promise the opposite; the test covers only an opener that stays on the page.",
+     "evidence": "node .../break-components/probe1.mjs \"dialog opened from\" (harness case dialog-from-menu in harness/harness.tsx): Tab to the menu trigger, Enter, End, Enter -> \"dialog open; focus: Cancel\"; Escape -> \"after Escape: focus body\", events [dialog.openChange:false]. Pointer path: click trigger, click Delete chat, click Cancel -> \"focus body\".",
+     "fix": "When the recorded element is no longer connected, fall back to the menu's trigger (the element the menu's aria-labelledby names, read while the item is still attached), then to the content's opener; add a spec example and a test for the menu-to-dialog flow."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/button/button.tsx:98-105 and 149 (handleClick merged through Radix Slot); test button-disabled-inert and button-loading-inert in button.tests.mjs",
+     "problem": "With asChild, disabled or loading does not stop the child's own onClick: Slot runs the child's handler first and Button's guard second. A router link that navigates in its own onClick would still navigate (inferred from the measured order; no router was run). The tests have no asChild disabled or loading case, so removing the asChild-disabled guard entirely still passes.",
+     "evidence": "probe1.mjs \"button asChild + disabled (link)\": attributes aria-disabled true, tabIndex 0; \"after Enter: events [child.onClick]\", \"after click: events [child.onClick]\"; same for asChild + loading. Mutation run: node .../break-components/mutate.mjs button-aschild -> \"SURVIVED button-aschild-disabled-not-inert -> test:button-disabled-inert; baseline: passed; mutated: passed\" (bundle line \"const inert = loading || asChild && disabled;\" replaced by \"const inert = loading;\").",
+     "fix": "Block in the capture phase when inert (onClickCapture: preventDefault and stopPropagation) so the child's handler never runs; add as-link disabled and as-link loading examples and assert the child's handler count."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/tabs/tabs.tsx:139-142 and 154-160; ds-components/src/dialog/dialog.tsx:63-66, 184-191, 292-298 (setRef)",
+     "problem": "TabsList, DialogContent and DialogBody mishandle React 19 callback refs that return a cleanup function: the cleanup is never called and the callback is called again with null. A ref written the React 19 way (observe the node, return disconnect) leaks, or throws on unmount when it uses the null. TabsTrigger, which passes ref straight to Radix, behaves correctly, so the package is inconsistent.",
+     "evidence": "probe1.mjs \"ref callbacks with cleanup\" (harness cases tabs-ref-cleanup and dialog-ref-cleanup, strict mode off): mount [trigger.ref:node, list.ref:node]; unmount [list.ref:null, trigger.cleanup] (no list.cleanup). Dialog: mount [body.ref:node, content.ref:node]; close [content.ref:null, body.ref:null], no cleanup call.",
+     "fix": "Replace setRef with a composer that keeps the value a callback ref returns and calls it on detach instead of calling the ref with null (or use @radix-ui/react-compose-refs); add a test."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/input/input.tsx:82-86 and 138-166; test input-invalid-only-with-error (input.tests.mjs:147); requirement input-invalid-needs-message",
+     "problem": "invalid with an empty-string errorMessage type-checks (the type excludes only null, undefined and booleans) and then renders no error state at all: no aria-invalid, no data-invalid, the neutral 1 px edge; the only signal is a development console.warn. The requirement says invalid without a message is a type error. The test reads only the gallery's examples, none of which is invalid without a message, so a mutation that makes aria-invalid follow invalid with no message shown still passes.",
+     "evidence": "probe1.mjs \"input invalid with empty / missing message\" (harness case input-invalid-empty-message, which the bundler compiled): {ariaInvalid: null, dataInvalid: false, errorShown: false, border \"1px rgb(140, 143, 151)\"}, console \"Input: invalid needs errorMessage. Without it the field is not marked invalid.\" mutate.mjs input-invalid -> \"SURVIVED input-invalid-without-message -> test:input-invalid-only-with-error\" (bundle: \"aria-invalid\": showError replaced by invalid).",
+     "fix": "Decide the fail-safe: when invalid is true and no message has content, still set aria-invalid and the invalid look (the safer choice), or keep the rule and make the test mount an invalid field without a message through a fixture hook, as dialog.tests.mjs does."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/dialog/dialog.tests.mjs:213-244 (dialog-focus-on-open); ds-components/src/dialog/dialog.tsx:73",
+     "problem": "The requirement says focus goes to \"the first control that is not a link\". No dialog example contains a link, so the clause is untested: removing the link exclusion leaves the test passing.",
+     "evidence": "mutate.mjs dialog-links -> \"SURVIVED dialog-links-take-focus -> test:dialog-focus-on-open; baseline: passed; mutated: passed\" (bundle: el.matches(\":disabled, a[href]\") replaced by el.matches(\":disabled\")). grep -n \"<a \\|href\" ds-components/src/dialog/dialog.examples.tsx prints nothing. The real component does skip the link: probe1.mjs \"dialog: a link before the first control\" -> focus on open: Close.",
+     "fix": "Add an example or fixture hook with a link ahead of the first button and assert focus lands on the button."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md, \"The 60 failures are one finding\": \"while the trigger inside it can still take focus\" and \"Switching the default to non-modal removes it but uncovers a naming mismatch on items that have a description\"",
+     "problem": "Both halves read worse or different from what the browser does. Confirmed: all 60 failures are axe aria-hidden-focus on #root (12 open modal examples x 5 configurations). But while the menu is open the trigger cannot actually receive focus, so a keyboard or screen-reader user meets nothing wrong: the page behind is simply gone until the menu closes, as with a dialog. And the naming mismatch is not caused by non-modal mode: the identical item markup ships today in modal mode; axe passes it there and fails it in non-modal.",
+     "evidence": "node .../break-components/menu1.mjs on example closed, opened with Tab then Enter: #root aria-hidden true, body pointer-events none; Tab, Tab, Shift+Tab x3 -> focus stays on \"Rename chat\"; script trigger.focus() -> active element is the menu content, activeInsideAriaHidden false; mouse click at the trigger -> menu closes, focus on trigger; Escape -> aria-hidden removed, focus on trigger. report-head.json (git show HEAD:ds-components/generated/test-report.json): 60 fails, all \"axe | violations: aria-hidden-focus\". node .../break-components/lcnm2.mjs: same item (aria-labelledby \"Model settings\", innerText \"Model settings | Opens in a new tab\") -> modal: label-content-name-mismatch in passes; modal false: violation.",
+     "fix": "Reword: \"axe flags the modal menu because the hidden page still holds a focusable trigger; measured, focus cannot reach it while the menu is open (Tab is cancelled, script focus is pulled back, the pointer is blocked), so nobody meets a fault. Items with a description are named by their label only in both modes; axe objects to that only in non-modal.\" Leaving it failing and reported is sound; a scoped, written exception for this rule on the modal menu, with those three measurements as its proof, would be more exact than 60 red checks or a switch to non-modal."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-components/specs/tabs.spec.json requirement tabs-one-selected (\"Exactly one tab has aria-selected true at all times\"); tabs.tests.mjs:202",
+     "problem": "When the selected tab is removed from an uncontrolled Tabs, no tab is selected and no panel is shown until the person focuses or presses a tab; focus falls to the body. The test covers static examples only.",
+     "evidence": "probe1.mjs \"tabs: focused/selected tab removed\" (harness case tabs-remove): after removing tab b -> active body, selected [Tab a:false, Tab c:false, Tab d:false], visible panels 0. probe2.mjs: Tab back into the list then lands on Tab a and selects it.",
+     "fix": "Either select a neighbour when the selected tab unmounts, or reword the requirement to \"while the set of tabs is unchanged\" and say in the docs that the product must select and focus a neighbour."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-components/docs/tabs.md:33, ds-components/docs/dropdown-menu.md:43; ds-components/AGENTS.md (no mention); ds-components/src/index.ts (no direction provider exported)",
+     "problem": "On a page with dir=rtl on the html element, Tabs and DropdownMenu still render left to right unless every instance gets dir=\"rtl\": Radix writes dir=\"ltr\" on them. The prop tables say this in passing; the agent guide does not, and the package exports no provider.",
+     "evidence": "node .../break-components/rtl.mjs: \"tabs/line on a page with <html dir=rtl>: computed direction of list: ltr\", tabs left to right starting at x=20; \"dropdown-menu/closed on <html dir=rtl>: dirAttr ltr, cssDirection ltr, trigger [669,784], content [600,792], sharesEdge neither\". With the dir prop (examples rtl and right-to-left) both mirror correctly.",
+     "fix": "Re-export Radix's DirectionProvider (or read the document direction as the default) and add one line to AGENTS.md."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-components/src/dropdown-menu/dropdown-menu.tsx:237-259 (keyShortcutsOf)",
+     "problem": "Two plausible hints produce invalid aria-keyshortcuts values: a plus key and a two-step chord.",
+     "evidence": "probe1.mjs \"menu shortcut hints\" (harness case menu-shortcuts): \"⌘+ => Meta+\" (no key after the plus), \"⌘K ⌘S => Meta+K+Meta+S\". Others are right: \"⌘C => Meta+C\", \"⌥⇧→ => Alt+Shift+ArrowRight\", \"Del => Delete\".",
+     "fix": "Treat a trailing + as the key, and omit aria-keyshortcuts for a chord (the attribute has no chord form); add both to dropdown-menu-shortcut-exposed."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-components/src/dialog/dialog.tsx:299-308 (DialogBody layout effect with an empty dependency list)",
+     "problem": "The scrolling-body check observes only the body and the children present at mount. Content added later that overflows a body whose own box does not change size leaves the body without tabindex, so a body with no focusable child cannot be scrolled by keyboard.",
+     "evidence": "probe1.mjs \"dialog body filled after mount\" (harness case dialog-async-body, body held at 200 px): after 60 rows scrollHeight 2054, clientHeight 200, tabindex null; axe scrollable-region-focusable violation on div[data-slot=\"dialog-body\"]; Tab x3 reaches only Close. With a body of natural height the same fill sets tabindex 0 (held).",
+     "fix": "Add a MutationObserver for child changes (or re-measure on every render) alongside the ResizeObserver."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-components/src/dropdown-menu/dropdown-menu.css (disabled item rules); forced colours",
+     "problem": "In forced colours a disabled menu item looks the same as an enabled one (normal text colour), while disabled Button, tab and Input take the system grey text colour.",
+     "evidence": "misc.mjs: \"forced light dropdown-menu/disabled-items: enabled Rename chat color rgb(0, 0, 0) | disabled Share color rgb(0, 0, 0)\"; dark: both rgb(255, 255, 255). Compare \"tabs/disabled-tab: enabled rgb(0, 0, 0) | disabled rgb(96, 0, 0)\" and button/disabled rgb(96, 0, 0).",
+     "fix": "Add a forced-colors rule setting color: GrayText on disabled items, through the spec's forced-colors media rules."
+    },
+    {
+     "severity": "minor",
+     "where": "button.tests.mjs button-focus-visible; tabs.tests.mjs:690 tabs-selected-not-colour-alone and tabs-indicator-contrast; dialog.tests.mjs dialog-title-required, dialog-visible-close, dialog-not-dismissible-has-way-out; ds-components/specs/button.spec.json keyboard row Space",
+     "problem": "Smaller gaps between requirement and test. (1) button-focus-visible never reads outline-offset, so a ring drawn inside the button on its own fill passes. (2) The two tabs tests read the indicator's computed border, so a hidden indicator passes them (tabs-indicator-edge does catch it). (3) Three dialog MUSTs are usage rules checked only against the gallery's own examples; they cannot fail for a product screen, which the summary's \"a browser test for every requirement that names one\" does not make clear. (4) The Button keyboard table says Space runs the action on the root; with asChild on a link Space does nothing.",
+     "evidence": "mutate.mjs: \"SURVIVED button-ring-inset-on-fill -> test:button-focus-visible\" (outline-offset: -2px); \"SURVIVED tabs-no-indicator -> test:tabs-selected-not-colour-alone\" and \"-> test:tabs-indicator-contrast\" (indicator display: none), \"caught ... -> test:tabs-indicator-edge\". dialog.tests.mjs:116-131, 430-451, 386-410 loop over ALL_EXAMPLES or named examples only. misc.mjs: \"as-link: Space -> hash empty, no click\"; \"Enter -> clicks as-link 1, hash #settings\".",
+     "fix": "Assert outline-offset is not negative; measure the indicator's box in the two tabs tests; label the three dialog tests as checks of the examples and add a lint for product code; note the link exception in the Button keyboard table."
+    }
+   ],
+   "held": [
+    "Accessibility tree (Chromium, CDP) on 30 examples: every control has a name; busy, disabled, required, invalid, expanded, haspopup, selected, checked, modal, keyshortcuts and describedby are exposed; icons, spinner, prefix, suffix, required mark, indicator and shortcut hint are hidden.",
+    "Tab label width-reservation copy (::after with attr(data-label)) does not double the tab's accessible name: tab \"Details\".",
+    "Menu keyboard: Enter, Space and ArrowDown open with the first item focused; ArrowUp on the trigger does nothing as the spec says; Tab is held; Escape returns focus to the trigger.",
+    "Type-ahead with two letters: \"se\" lands on Send, \"set\" on Settings, repeated s cycles Share, Send, Settings; a label with markup matches by its text; Space during a search does not choose.",
+    "Menu inside a dialog: first Escape closes only the menu; in a non-dismissible dialog the second Escape does nothing; Tab and Shift+Tab stay inside the dialog.",
+    "Tabs: arrows, Home and End with dir prop rtl, vertical, and controlled; one onValueChange per press in strict mode and without it; the duplicate-call guard is needed (two calls per mouse press without it) and works in Chromium.",
+    "Highlighted menu item removed: highlight and focus move to the next item; highlighted item disabled: Enter does nothing.",
+    "A loading submit Button does not submit the form on Enter in a field or on click.",
+    "Real touch taps (coarse pointer): menu opens, item selects, outside tap closes; dialog overlay tap closes; tabs select; a tap on an Input prefix focuses the input; items and tabs are 44 px tall; input text is 16 px.",
+    "Forced colours, light and dark, all 81 examples: every button, input control, menu, dialog, selected tab and highlighted item keeps a border, outline, indicator or glyph; focus rings are 2 px solid.",
+    "Coarse pointer with dark theme and compact density, and dark compact at 1280: no target under 24 px, none under 44 px tall on touch, no text under 4.5 to 1.",
+    "30 non-colour style rules across the five components (padding, gap, radius, heights, widths, font sizes, border widths): computed value equals the token in ds-tokens/dist/tokens.json, 30 of 30.",
+    "Mutation: 45 of 55 mutation and test pairs were caught by the named test; the 10 survivors are the ones reported, plus four where the mutation did not actually break that requirement.",
+    "No test asserts nothing: all 129 test functions hold at least one assertion on measured values; every test: requirement has an implementation.",
+    "The 60 reported failures are one axe rule: 12 open modal menu examples times 5 configurations, read from the committed report.",
+    "Server render and hydration of all five components: no hydration warning, no recoverable error, ids identical on server and client, every aria-describedby id present.",
+    "Strict mode: the gallery and my harness render under StrictMode; the dialog's trigger counter, group label registration and title warning behave."
+   ],
+   "not_checked": [
+    "No real screen reader, no Safari or Firefox, no real phone. The Tabs duplicate-call guard depends on event and microtask order, and the tab label uses the content alt-text syntax; both were seen only in Chromium.",
+    "Whether a touch screen-reader user can leave an open modal menu without choosing an item (the escape gesture reaching the page) was not tested; it needs VoiceOver and TalkBack.",
+    "Large text was emulated as root font size 200% and as smaller viewports; real browser zoom and the Android font-scale setting were not driven.",
+    "The claim that a router link's own onClick would navigate under a disabled asChild Button is inferred from the measured handler order; no router was run. The same holds for form libraries that pass an empty error message.",
+    "I did not rerun npm run v2:test, v2:lint or v2:selftest, so the summary's totals (3,140 checks, 3,022 pass) are confirmed only for the 60 failures, from the committed report.",
+    "Figma files and the sandbox copy were not read; outside this lens.",
+    "Version 0.2 parts were not examined."
+   ],
+   "files_left_modified": [
+    "None attributable to my runs: I ran only node v2/tools/build-gallery.mjs, which writes the git-ignored ds-components/gallery/dist/, and scripts under the scratch folder.",
+    "For the lead's restore list, git status --short at the end shows four tracked files modified, all four already modified in the status snapshot from before I started: ds-tokens/audit/contrast.html, ds-tokens/audit/contrast.json, gates/raw/2026-11-15-screens.json, gates/raw/2026-11-15-size.json.",
+    "During my session other processes changed the tree: ds-components/generated/test-report.json was modified at the start and is clean now, and ds-tokens/audit/proposed-overrides.json appeared as modified midway and is clean now."
+   ]
+  },
+  {
+   "lens": "tokens-and-build",
+   "verdict": "pass with fixes",
+   "checked": "Recomputed all 77 overrides and every audited pair with scripts/lib/color.mjs against v2/figma snapshots and ds-tokens/dist/tokens.json; derived the five specs' real colour pairs and measured the unlisted ones; parsed tokens.css with postcss; validated 17 DTCG files and the resolver against the fetched 2025.10 format page; compiled tailwind-theme.css with Tailwind 4.3.5 in scratch and rendered both load orders in Chromium; ran the naming lint on owner, sandbox and a planted snapshot, plus its self-test; computed specificity of every component selector; re-measured gzip sizes with esbuild; checked the handoff asks. Scripts: /private/tmp/claude-501/-Users-chaitanyalandge-Library-Application-Support-Claude-scratch-workspaces-ebabe688-c813-4d37-95fc-498a492cc12d-5e00ea11-9ff3-4643-b571-765ec27a06ab-scratch-2026-11-13-02c7be/b28519ae-d5a9-4657-800a-f0c0e2b58dcd/scratchpad/review/tokens/",
+   "findings": [
+    {
+     "severity": "major",
+     "where": "ds-tokens/overrides.json: surface/accent/teal/bold/hover and surface/accent/blue/bold/hover, light and dark (4 entries); repeated in ds-tokens/audit/figma-patch-list.md",
+     "problem": "The fix reverses hover direction for two of ten accent families, and its stated reason is false. Before the override every bold accent surface got lighter on hover. Now teal and blue get darker (700 to 800) while violet (700 to 600), amber, pink, green, orange, red, rose and neutral (900 to 800) still get lighter. The reason says hover now goes darker 'as it already does for the six hues whose bold surface is 900'; those six go 900 to 800, which is lighter.",
+     "evidence": "node intent.mjs (scratch): 'surface/accent/teal/bold [light] built D (teal/700, teal/800) owner L CHANGED', same for blue and for dark; 'surface/accent/violet/bold built L (violet/700, violet/600)', 'surface/accent/amber/bold built L (amber/900, amber/800)' and likewise pink, green, orange, red, rose, neutral. Text cannot fix it instead: teal/50 on teal/600 is 3.59, white 3.74.",
+     "fix": "Keep the direction: set teal and blue bold default to 800 and hover to 700 (teal/100 text measures 6.73 and 4.86; blue/100 7.15 and 5.49; icons at step 100 pass). Correct the reason text in overrides.json and regenerate the patch list before the owner applies it."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md line 28: \"each fix is the nearest step on the same colour ramp that passes every pair the token is in\"",
+     "problem": "True for 46 of the 77 overrides. 15 change a value that already passed every declared pair, and 16 move further than the nearest passing step. The largest group is avoidable: the nine light icon/accent/<hue>/bold values (step 300) passed 3 to 1 and were still moved to step 100, and the nine dark ones could take the owner's own light value instead of step 100. That is 9 changes where 18 were made, and the owner's light design is altered for no contrast reason.",
+     "evidence": "node overrides.mjs (scratch): OWNER-PASSES-ALL-PAIRS on entries 44, 46, 47, 48, 49, 54, 56, 58, 60, 62, 64, 66, 68, 70, 75; NOT-NEAREST on 43, 50-53, 55, 57, 59, 61, 63, 65, 67, 69, 71, 72, 74. node alts.mjs: icon step 300 on the built bold default/hover surfaces: teal 3.70/5.13, blue 3.72/4.84, violet 3.85/3.09, amber 6.29/4.92, pink 5.32/4.35, green 6.49/5.08, orange 5.56/4.33, red 5.28/4.38, rose 6.11/4.43. Only 41 of 77 reasons in overrides.json say 'Nearest step'; all 41 of those do hold.",
+     "fix": "Reword line 28 to say 46 are the nearest passing step and 31 are design choices (one colour per job, icon matching text, links), each with its reason. Drop the nine light icon/accent/<hue>/bold overrides and point the nine dark ones at step 300, or tell the owner plainly that this is a design change, not a contrast fix. text/accent/neutral/default dark could also stop at neutral/dark/800 (4.69 and 5.85) instead of 900."
+    },
+    {
+     "severity": "major",
+     "where": "ds-tokens/overrides.json: text/link/default (light to pink/800, dark to pink/300) and text/brand dark (to pink/300)",
+     "problem": "After the fixes a link is the same colour as brand text in both themes, and in light also the same as pink accent text and the primary button fill. The owner kept them apart (light link pink/600 against brand pink/800; dark link pink/400 against brand pink/600). The pair list checks link against error and brand against error, but has no link-against-brand check, so nothing reported it. The light value is forced by one pair that misses by 0.012.",
+     "evidence": "node intent.mjs: 'light #9d174d text/link/default(pink/800) == text/brand(pink/800) == text/accent/pink/default(pink/800) == icon/brand == border/brand == interactive/primary/default'; 'dark #f9a8d4 text/link/default(pink/300) == text/brand(pink/300)'. node alts.mjs: pink/700 on the nine base surfaces is 6.04 down to 4.925, and 4.488 only on surface/tertiary/active. Link against error text stays close as well: 1.22 to 1 in light, 1.05 in dark (audit 'distinct' section, flagged 'hard to tell apart under simulation' in dark).",
+     "fix": "Add a link-vs-brand entry under 'distinct' in v2/tools/contrast-pairs.json. Then either keep the link one step from brand (light pink/700 with surface/tertiary/active recorded as a known 4.49 gap, or move text/brand instead) or say in the summary that links now rely on an underline, since colour no longer separates link, brand and error text."
+    },
+    {
+     "severity": "major",
+     "where": "v2/tools/contrast-pairs.json rule 'control-boundary' (bg: surface/primary/default, surface/secondary/default only); ds-tokens/proposed/tokens.json border/strong/default",
+     "problem": "The new control edge was sized against two of the three base surfaces. On surface/tertiary/default, which the same file uses as a base for text, icons and the focus ring, border/strong/default measures 2.86 to 1 in light. The pair is not in the list, so '0 of 734 fail' never tested it. The same value is the pressed fill of the outline Button (surface/primary/active), so its edge is 2.86 against its own fill when pressed. Passing margin on the listed pair is also thin: 3.046 on surface/secondary/default.",
+     "evidence": "node unlisted.mjs: 'UNLISTED border/strong/default on surface/tertiary/default :: light #8c8f97 on #f0f1f2 = 2.86 FAIL<3 ; dark 3.58'; 'UNLISTED border/strong/default on surface/primary/active :: light 2.86 FAIL<3'. Specs: input.spec.json styles[0] control.borderColor=border/strong/default; button.spec.json styles[21] and [23]. Other unlisted pairs I measured pass: text/error on surface/accent/red/subtlest/hover (dangerSoft hover) 5.30 and 5.28; border/error on tertiary 4.27 and 3.71; border/brand on tertiary 6.97 and 3.04.",
+     "fix": "Use <baseDefault> as the background set of control-boundary and status-and-brand-borders, and add text/error on surface/accent/red/subtlest/hover. Move border/strong/default light to neutral/light/600 (3.90, 3.68, 3.45 on the three tiers); hover at 700 still steps darker."
+    },
+    {
+     "severity": "major",
+     "where": "v2/tools/lint-tokens.mjs (RULES, lines 97-480); header line 3 'checks the ten naming rules'",
+     "problem": "Four kinds of breach of the standard pass the lint with no finding: a semantic token named by value, a state word outside the six allowed, a variant placed before the role, and a size word outside the scale other than the seven old words it knows. No rule is mapped to standard rule 2; the rule numbers covered are 1, 3, 4, 5, 6, 7, 8, 9, 10. The self-test passes 18 of 18 because each plant exercises one branch of a rule that exists.",
+     "evidence": "Planted five variables in a scratch copy of the snapshot and ran SOUVENIR_SNAPSHOT_DIR=<scratch>/snap node v2/tools/lint-tokens.mjs --report-only: 'text/pink-600 -> NOT REPORTED BY ANY RULE', 'primary/text/planted -> NOT REPORTED', 'text/focused -> NOT REPORTED', 'text/huge -> NOT REPORTED'; 'surface/primary/pressed' drew only a shared-value 'decide' note. grep standardRule v2/tools/lint-tokens.mjs shows no '2'.",
+     "fix": "Add rules for role-variant-state order, for hue or step words in semantic names (decide whether accent and gradient hues are allowed), and for state and size words outside the allowed lists, each with a planted case. Until then say the lint covers nine of the ten rules."
+    },
+    {
+     "severity": "major",
+     "where": "ds-tokens/proposed/README.md: \"Each follows the naming standard, carries a description and a reason\"; ds-tokens/proposed/tokens.json",
+     "problem": "The lead's own lint, run on the sandbox copy where these tokens exist, reports 19 of the 23 as breaking the standard: they hold raw values instead of aliasing a primitive (rule 6), and duration/base also uses the size word 'base' that decision 3 asks the owner to rename elsewhere. None of the 23 carries scopes in proposed/tokens.json or dist/tokens.json, although the standard asks for every token to be scoped; scopes exist only in the sandbox Figma file. The summary's '14 break it' for the sandbox does not say that three of those groups now contain the lead's own tokens.",
+     "evidence": "SOUVENIR_SNAPSHOT_DIR=v2/figma/sandbox node v2/tools/lint-tokens.mjs --report-only: '[breaks the standard] size-scale ... Motion: duration/base (base -> md)'; '[breaks the standard] alias n=11' includes Border width/md, ring/width, ring/offset, Size control/sm, md, lg, target/min, icon/sm, icon/md; '[breaks the standard] alias n=28' includes surface/overlay, Border width/sm, Size dialog/sm, dialog/md, menu/min, menu/max, Motion duration/fast, base, spin, ease/standard. dist/tokens.json: all 23 proposed entries have \"scopes\": [].",
+     "fix": "Rename duration/base (for example duration/md or duration/default), add a scopes field to each proposed token so the patch list carries it, and either add primitives for the raw numbers or change the README to say rule 6 is not met and why. Note that the lint's suggested primitives for sizes ('Space 2 or Radius 2', 'font-size/32') are coincidences of number, not real matches."
+    },
+    {
+     "severity": "major",
+     "where": "ds-components/src/styles.css line 2; ds-tokens/dist/tailwind-theme.css header; ds-components/AGENTS.md, ds-tokens/README.md (no load-order instruction)",
+     "problem": "Every component rule has specificity 0,1,0 inside @layer ds, so its place in the layer order decides whether it survives a host app's CSS, and no document says how to load it. Loaded before Tailwind, Tailwind's preflight (layer base) strips the Button and Input. Any unlayered reset in the app does the same in any order. src/styles.css also declares a layer ds.tokens that nothing ever fills, while the Tailwind header says tokens must be unlayered.",
+     "evidence": "Chromium render, scratch tw/layer-test.mjs. Tailwind then DS: button background rgb(157, 23, 77), padding-left 16px, radius 8px, weight 600. DS then Tailwind: button background rgba(0, 0, 0, 0), color rgb(0, 0, 0), padding-left 0px, radius 0px, weight 400; input control border-top-width 0px, padding-left 0px. DS plus an unlayered 'button,input{background:none;border:0;padding:0}': same breakage. grep '@layer' ds-components/gallery/dist/gallery.css: ds.tokens appears only in the declaration.",
+     "fix": "Document one supported order in AGENTS.md and README (for Tailwind v4: '@layer theme, base, ds, components, utilities;' before the imports, tokens.css unlayered), remove the unused ds.tokens name, and add a browser check that loads the components after Tailwind preflight."
+    },
+    {
+     "severity": "major",
+     "where": "Branch v2-direction against the handoff brief (notes/sources/raw/2026-11-16-v2-audit-inputs.json, handoff.claude_code_brief)",
+     "problem": "The branch meets four of the handoff's asks and misses the ones an engineer needs first. Met: names generated from Figma with nothing renamed, light and dark as modes, no raw hex in component code, AGENTS.md under 60 lines. Not met: there is no pull request; ds-tokens and ds-components have no package.json, exports or peer dependencies, so nothing can be installed or imported; the build is a custom 54 KB script, not Style Dictionary or Terrazzo as asked; no Storybook; components are new Radix builds where the brief said to use the existing app components; dist/tokens.json is the one generated file with no 'do not edit' header; AGENTS.md does not point to the naming standard.",
+     "evidence": "gh pr list --state all --head v2-direction: empty. ls ds-tokens/package.json ds-components/package.json: No such file. Root package.json: name souvenir-design-system, private, React and Radix under devDependencies, no exports. git diff --stat main...v2-direction: 574 files changed, 198,245 insertions. head -c 400 ds-tokens/dist/tokens.json | grep -ci 'do not edit': 0 (every other generated file checked: 1). wc -l ds-components/AGENTS.md: 44. grep for hex or rgb( in ds-components/src and gallery: 0 in code.",
+     "fix": "Before the owner forwards this: add a package manifest per package (exports for tokens.css, tailwind-theme.css, tokens.json, styles.css and the components; react and @radix-ui as peer dependencies), open one draft pull request holding only ds-tokens, ds-components and the tools they need, and state in the summary which handoff asks are not met. Expect the engineer to push back first on: cannot install it, load order with Tailwind, no z-index on Dialog and menu, and the size of the diff."
+    },
+    {
+     "severity": "major",
+     "where": "digests/2026-11-16-v2.md decision 3: \"The Figma file breaks its naming standard in 24 places: radius named by height, type roles named small and base, typography prefixes ..., collections\"",
+     "problem": "24 is the number of grouped lint findings, not places, and only 8 of the groups concern names. The other 16 are missing descriptions (5), scopes (3), raw values (2) and identical state values (6), none of which a rename fixes. The 8 naming groups cover about 100 names. One group is counted twice: the same 35 Typography tokens appear under 'scoped to ALL_SCOPES' and under 'scopes contradict the name'. The owner is asked to size a rename decision with a number that does not measure renames.",
+     "evidence": "node v2/tools/lint-tokens.mjs --report-only: '18 rules, 66 findings: 24 break the standard'. Groups marked 'breaks the standard': name-case 1, size-scale 2 (22 and 8 names), primitive-hygiene 1 (35), collection-names 1 (4), tailwind-namespace 3 (15, 15, 1), alias 2, description 5, scopes 3, one-job 6.",
+     "fix": "Say: 8 naming findings covering about 65 variable names, 31 CSS prefixes and 4 collection names; list descriptions, scopes and duplicate values separately since they need no rename."
+    },
+    {
+     "severity": "minor",
+     "where": "v2/tools/contrast-pairs.json 'exempt'; digest table row 'Pairs exempt, each with a reason (disabled, dividers)'",
+     "problem": "28 of the 52 are sound: WCAG 1.4.3 and 1.4.11 both exclude inactive components. The 16 'divider' pairs are not an exemption in WCAG; a line is out of scope only while it is not needed to identify a control. Eight of them are border/primary/hover and border/primary/active, tokens with interactive states, which cannot be 'a line that only divides content'. The remaining 8 are focus-ring-beside-fills, 'reported only', which the digest's parenthesis omits. The focus-ring reasoning holds for the five components: every ring uses ring/offset 2px except forced-colours menu items.",
+     "evidence": "Committed audit: exempt by rule {disabled: 28, dividers: 16, focus-ring-beside-fills: 8}. Specs: outlineOffset is ring/offset on Button, Input, Tabs and Dialog; 'none' only under media forced-colors in dropdown-menu.spec.json styles[7-9]. border/primary/default is used only by the menu separator; border/primary/hover and /active are used by no spec.",
+     "fix": "Rename the group to 'not a control edge' with the condition stated, move border/primary/hover and /active to a 'not used by any component, unmeasured' list, and name all three groups in the digest."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-tokens/overrides.json rule 'one-job' (4 entries) against the merged token set",
+     "problem": "The one-colour-per-job rule was applied to interactive/primary/active and to links, but four other pairs the lead's own lint marks as breaking it are left in the merged set. One shows in the five components: a hovered secondary Button and a disabled Button have the same fill in both themes.",
+     "evidence": "Sandbox lint, 'breaks the standard' one-job: surface/primary/hover = surface/primary/disabled (#f8f8f8, #242528); surface/secondary/hover = disabled; surface/tertiary/active = disabled; interactive/secondary/hover = interactive/secondary/disabled. button.spec.json: hover background interactive/secondary/hover, disabled background interactive/primary/disabled; both resolve to neutral/light/200 #f0f1f2 and neutral/dark/200 #2b2c2f in dist/tokens.json.",
+     "fix": "Either fix the four the same way or list them for the owner under decision 1 as left on purpose, with the Button case named."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-tokens/README.md lines 12 and 26",
+     "problem": "The README says 22 proposed tokens twice; there are 23.",
+     "evidence": "node v2/tools/build-tokens.mjs: 'proposed tokens merged: 23 of 23'; dist/tokens.json holds 331 entries, 23 with proposed: true.",
+     "fix": "Change both to 23."
+    },
+    {
+     "severity": "minor",
+     "where": "ds-components/src/dialog/dialog.css rules for [data-state=\"closed\"] on dialog-content and dialog-overlay; dialog.spec.json",
+     "problem": "Two generated rules can never have a visible effect. They shorten a transition on the closed state, but no animation is defined and Radix removes a closed dialog at once, so the state lasts zero frames. The base transition on overlay and content does nothing for the same reason, so duration/base ('a menu or dialog appearing or leaving') is not yet used in effect. Dialog and menu also set no z-index (no layer token), so they depend on DOM order under any app header that has one.",
+     "evidence": "dialog.extensions.css line 4: 'No animation: the fade and scale are not carried yet.' grep animation|keyframes|forceMount in ds-components/src/dialog: none in CSS; forceMount is omitted from the props types. grep z-index in ds-components/src: no match.",
+     "fix": "Remove the two closed-state rules until an exit animation exists, or add the keyframes so Radix keeps the node mounted. Propose a layer token for overlays."
+    },
+    {
+     "severity": "minor",
+     "where": "v2/figma/sandbox/semantic.txt line 319 (Border width/md); v2/figma/sandbox/CHANGES.md line 34",
+     "problem": "One description in the sandbox Figma file reads \"the active tab&#39;s underline\": an HTML-escaped apostrophe. The snapshot was adjusted to match it instead of the text being corrected.",
+     "evidence": "grep '&#39;' v2/figma/sandbox/semantic.txt: 1 match. SOUVENIR_SNAPSHOT_DIR=v2/figma/sandbox node v2/tools/diff-figma.mjs --report-only: '8. Description differs: 1 - Border width/md'.",
+     "fix": "Rewrite that description in the sandbox without an apostrophe ('the underline of the selected tab', which also avoids 'active' for a selected tab), and re-export."
+    },
+    {
+     "severity": "minor",
+     "where": "digests/2026-11-16-v2.md: \"Radix adds 10 to 33 kilobytes of script per compound component\"",
+     "problem": "10 to 33 kilobytes is the whole bundle of each compound component with Radix, not what Radix adds. The added amount is 9.3 to 30.6 kilobytes.",
+     "evidence": "My esbuild plus gzip -9 run equals ds-components/generated/size-report.json exactly: tabs 1,333 own and 10,654 with Radix; dialog 1,582 and 15,214; dropdown-menu 2,339 and 32,914.",
+     "fix": "Say 'with Radix a compound component is 11 to 33 kilobytes, of which 9 to 31 is Radix'."
+    }
+   ],
+   "held": [
+    "Audit counts reproduce from my own pair expansion: owner 726 measured, 459 pass, 215 fail, 52 exempt; built 734, 682, 0, 52.",
+    "No override leaves a declared pair failing, and all 41 overrides whose reason says 'nearest step' are the nearest passing step by my calculation.",
+    "Names and values: 308 of 308 CSS names equal the Figma code syntax; 0 colour values differ from Figma outside the 77 overrides, which touch 47 tokens.",
+    "Hierarchy and mirroring held: light secondary text is 7.81 against primary 16.49 (dark 7.66 against 15.60); link, primary and surface states step one way in each theme; the dark neutral subtle surface now mirrors light.",
+    "The summary's reproduced figures are right: 3.83, 3.32, 4.24, 3.24, and accent text as low as 1.26 in dark.",
+    "tokens.css parses; 331 tokens each present once per mode; the dark block and the prefers-color-scheme block are identical (239 declarations); no var() and no primitive name; gzip -9 is 4,702 bytes, under 5 kilobytes as stated.",
+    "DTCG: 17 files, 821 tokens, 0 problems against the fetched 2025.10 format page for names, $type, value shapes and extension keys; the resolver's four contexts each resolve 556 tokens with no unresolved alias.",
+    "Tailwind 4.3.5 compiled tailwind-theme.css without error; every namespace used is in the docs table; bg-surface-primary, text-text-primary, text-heading-1 (with its line height), font-label, rounded-height-40 and p-scaled-400 are generated and compute to the token values in Chromium when Tailwind loads first.",
+    "Generated component CSS is flat: 158 selectors, all 0,1,0 except two ::placeholder rules at 0,1,1; no raw colour; disabled, invalid, selected and reduced-motion rules sit after the rules they must beat.",
+    "Sizes: all 15 figures in size-report.json match my own measurement to the byte.",
+    "Lint counts reproduce (66 findings with 24 breaking; sandbox 49 with 14); self-test 18 of 18; a token rebuild is byte-identical to the committed files.",
+    "The 28 disabled exemptions are valid under WCAG 1.4.3 and 1.4.11; text/disabled is used only in disabled states in the five specs."
+   ],
+   "not_checked": [
+    "No Figma file was read; the sandbox snapshot is, per CHANGES.md, a predicted file proved by checksums, and I did not re-verify it against the live file.",
+    "The naming standard's own text is not in the repository; I used the rules in the task brief, so I cannot say whether hue-named semantic tokens (accent and gradient) breach 'named by purpose'.",
+    "DTCG page: the fetch succeeded but the reader covered the first 100,000 of 114,563 characters, so the end of the shadow section, gradient and typography were not confirmed; the separate colour module was not fetched.",
+    "The browser test suite (npm run v2:test), audit-contrast.mjs and its self-test were not run; I recomputed contrast independently instead. Component behaviour and the other tools' planted cases were not reviewed.",
+    "Gallery bundle measured (gallery.js 1,845,723 bytes raw, 299,076 gzip; gallery.css 85,147 raw, 10,075 gzip, unminified) but the summary states no figure to compare with.",
+    "contrast.html was not inspected as a page.",
+    "Tailwind was compiled only with version 4.3.5, installed into the scratch folder, not into the repository; the app's own Tailwind setup is unseen.",
+    "Working tree: ds-tokens/audit/contrast.html, ds-tokens/audit/contrast.json, gates/raw/2026-11-15-screens.json and gates/raw/2026-11-15-size.json were already modified when I started and were rewritten by other processes during the review (contrast.json timestamp 19:08:59Z is not from my runs). My own runs (lint-tokens four times, diff-figma twice, build-tokens once) ended with lint.json, diff.json, figma-patch-list.md and dist/ identical to HEAD.",
+    "The scratch folder also holds files written by another process using the same lens name (alt.mjs, css.mjs, equal.mjs, hinge.mjs, lib.mjs, missing.mjs, real.mjs, size.mjs, ov.out, lint-dump.txt); they are not mine and I did not use them."
+   ],
+   "files_left_modified": []
+  }
+ ],
+ "missing": []
+}

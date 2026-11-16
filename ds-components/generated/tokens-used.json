@@ -397,9 +397,9 @@
         "rules": 1
       },
       {
-        "token": "duration/base",
+        "token": "duration/enter",
         "collection": "Motion",
-        "cssVar": "--duration-base",
+        "cssVar": "--duration-enter",
         "origin": "proposed",
         "rules": 1
       },

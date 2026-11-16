@@ -35,6 +35,9 @@
         },
         {
           "$ref": "semantic/motion.tokens.json"
+        },
+        {
+          "$ref": "semantic/layer.tokens.json"
         }
       ]
     }

@@ -857,7 +857,7 @@
             },
             {
               "collection": "Motion",
-              "name": "duration/base",
+              "name": "duration/enter",
               "uses": 2
             },
             {
