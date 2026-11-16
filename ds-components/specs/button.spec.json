@@ -1,0 +1,151 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "schemaVersion": "0.1.0",
+  "name": "Button",
+  "slug": "button",
+  "stage": "alpha",
+  "summary": "Runs an action. One primary button per view; everything else is secondary, neutral or ghost.",
+  "figma": { "component": "Button", "wasCalled": "Button", "confirmed": false },
+  "primitive": { "package": "@radix-ui/react-slot", "native": "The button element does everything a button needs. The Slot package is used only for asChild, which lets a link take the button's look." },
+  "anatomy": {
+    "root": { "kind": "control", "role": "button", "slot": "button", "element": "button", "primitivePart": null, "description": "The pressable control. It carries every prop and every state." },
+    "iconStart": { "kind": "glyph", "role": "indicator", "slot": "button-icon-start", "element": "span", "required": false, "description": "An optional icon before the label. Hidden from assistive technology." },
+    "label": { "kind": "text", "role": null, "slot": "button-label", "element": "span", "description": "The words. They are the button's accessible name unless ariaLabel is given." },
+    "iconEnd": { "kind": "glyph", "role": "indicator", "slot": "button-icon-end", "element": "span", "required": false, "description": "An optional icon after the label. Hidden from assistive technology." },
+    "spinner": { "kind": "glyph", "role": "indicator", "slot": "button-spinner", "element": "span", "required": false, "description": "Shown in place of iconStart while loading. Hidden from assistive technology; the busy state is announced by the root." }
+  },
+  "props": {
+    "variant": { "on": "root", "type": "enum", "values": ["primary", "neutral", "secondary", "ghost", "error", "success", "warning"], "default": "secondary", "reflects": "data-variant", "figmaProperty": "variant", "description": "How much weight the action has. The values are the names of the interactive tokens, plus ghost. The default is secondary so that a primary button is always a deliberate choice." },
+    "size": { "on": "root", "type": "enum", "values": ["sm", "md", "lg"], "default": "md", "reflects": "data-size", "figmaProperty": "size", "description": "Height: 32, 40 or 44 pixels. On a touch screen sm and md grow to at least 44." },
+    "iconOnly": { "on": "root", "type": "boolean", "default": false, "reflects": "data-icon-only", "figmaProperty": "iconOnly", "description": "A square button holding one icon and no visible label. ariaLabel is then required." },
+    "fullWidth": { "on": "root", "type": "boolean", "default": false, "reflects": "data-full-width", "figmaProperty": "fullWidth", "description": "Fills the width of its container." },
+    "loading": { "on": "root", "type": "boolean", "default": false, "reflects": "data-loading", "figmaProperty": "loading", "description": "The action is running. The button stays focusable, ignores further presses and is announced as busy." },
+    "disabled": { "on": "root", "type": "boolean", "default": false, "reflects": null, "figmaProperty": "disabled", "description": "The action is not available. Sets the native disabled attribute." },
+    "iconStart": { "on": "iconStart", "type": "node", "figmaProperty": "iconStart", "description": "The icon before the label." },
+    "iconEnd": { "on": "iconEnd", "type": "node", "figmaProperty": "iconEnd", "description": "The icon after the label." },
+    "children": { "on": "label", "type": "node", "required": true, "figmaProperty": "label", "description": "The label. A verb that names the result, such as Save changes." },
+    "type": { "on": "root", "type": "enum", "values": ["button", "submit", "reset"], "default": "button", "reflects": null, "figmaProperty": null, "description": "The native button type. The default is button, never submit, so a button inside a form cannot submit it by accident." },
+    "ariaLabel": { "on": "root", "type": "string", "figmaProperty": null, "description": "The accessible name when there is no visible label. Required with iconOnly." },
+    "asChild": { "on": "root", "type": "boolean", "default": false, "reflects": null, "figmaProperty": null, "description": "Renders the child element with the button's look and props, for a link that should look like a button." },
+    "onClick": { "on": "root", "type": "handler", "figmaProperty": null, "description": "Called on press by pointer, Enter or Space. Not called while disabled or loading." }
+  },
+  "states": {
+    "hover": { "on": "root", "selector": ":hover", "source": "native", "figma": { "property": "state", "value": "hover" }, "reach": "hover", "description": "The pointer is over the button." },
+    "active": { "on": "root", "selector": ":active", "source": "native", "figma": { "property": "state", "value": "active" }, "reach": "press", "description": "The button is being pressed." },
+    "focus": { "on": "root", "selector": ":focus-visible", "source": "native", "figma": { "property": "state", "value": "focus" }, "reach": "focus-by-keyboard", "description": "The button has keyboard focus. Hover and focus are states in Figma and never props in code." },
+    "disabled": { "on": "root", "selector": ":is(:disabled, [aria-disabled=\"true\"])", "source": "native", "figma": { "property": "state", "value": "disabled" }, "reach": "prop:disabled=true", "description": "Not available." },
+    "loading": { "on": "root", "selector": "[data-loading]", "source": "prop", "figma": { "property": "state", "value": "loading" }, "reach": "prop:loading=true", "description": "The action is running." }
+  },
+  "precedence": ["disabled", "loading", "active", "hover"],
+  "styles": [
+    { "when": {}, "parts": {
+        "root": { "height": "size/control/md", "paddingInline": "static/160", "gap": "static/80", "radius": "height/40", "borderWidth": "width/sm", "borderStyle": "solid", "borderColor": "transparent", "background": "interactive/secondary/default", "color": "text/primary", "typography": "label-base", "cursor": "pointer", "duration": "duration/fast", "easing": "easing/standard", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" },
+        "iconStart": { "iconSize": "size/icon/md", "color": "current" },
+        "iconEnd": { "iconSize": "size/icon/md", "color": "current" },
+        "spinner": { "iconSize": "size/icon/md", "color": "current" }
+    } },
+    { "when": { "states": ["hover"] }, "parts": { "root": { "background": "interactive/secondary/hover" } } },
+    { "when": { "states": ["active"] }, "parts": { "root": { "background": "interactive/secondary/active" } } },
+
+    { "when": { "props": { "variant": "primary" } }, "parts": { "root": { "background": "interactive/primary/default", "color": "text/on" } } },
+    { "when": { "props": { "variant": "primary" }, "states": ["hover"] }, "parts": { "root": { "background": "interactive/primary/hover" } } },
+    { "when": { "props": { "variant": "primary" }, "states": ["active"] }, "parts": { "root": { "background": "interactive/primary/active" } } },
+
+    { "when": { "props": { "variant": "neutral" } }, "parts": { "root": { "background": "interactive/neutral/default", "color": "text/inverse" } } },
+    { "when": { "props": { "variant": "neutral" }, "states": ["hover"] }, "parts": { "root": { "background": "interactive/neutral/hover" } } },
+    { "when": { "props": { "variant": "neutral" }, "states": ["active"] }, "parts": { "root": { "background": "interactive/neutral/active" } } },
+
+    { "when": { "props": { "variant": "ghost" } }, "parts": { "root": { "background": "transparent", "color": "text/primary" } } },
+    { "when": { "props": { "variant": "ghost" }, "states": ["hover"] }, "parts": { "root": { "background": "surface/primary/hover" } } },
+    { "when": { "props": { "variant": "ghost" }, "states": ["active"] }, "parts": { "root": { "background": "surface/primary/active" } } },
+
+    { "when": { "props": { "variant": "error" } }, "parts": { "root": { "background": "interactive/error/default", "color": "text/on" } } },
+    { "when": { "props": { "variant": "error" }, "states": ["hover"] }, "parts": { "root": { "background": "interactive/error/hover" } } },
+    { "when": { "props": { "variant": "error" }, "states": ["active"] }, "parts": { "root": { "background": "interactive/error/hover" } }, "why": "Figma has no interactive/error/active yet; the hover step is reused until it does." },
+
+    { "when": { "props": { "variant": "success" } }, "parts": { "root": { "background": "interactive/success/default", "color": "text/on" } } },
+    { "when": { "props": { "variant": "success" }, "states": ["hover"] }, "parts": { "root": { "background": "interactive/success/hover" } } },
+    { "when": { "props": { "variant": "success" }, "states": ["active"] }, "parts": { "root": { "background": "interactive/success/hover" } }, "why": "Figma has no interactive/success/active yet." },
+
+    { "when": { "props": { "variant": "warning" } }, "parts": { "root": { "background": "interactive/warning/default", "color": "text/on" } } },
+    { "when": { "props": { "variant": "warning" }, "states": ["hover"] }, "parts": { "root": { "background": "interactive/warning/hover" } } },
+    { "when": { "props": { "variant": "warning" }, "states": ["active"] }, "parts": { "root": { "background": "interactive/warning/hover" } }, "why": "Figma has no interactive/warning/active yet." },
+
+    { "when": { "props": { "size": "sm" } }, "parts": { "root": { "height": "size/control/sm", "paddingInline": "static/120", "gap": "static/60", "radius": "height/32" }, "iconStart": { "iconSize": "size/icon/sm" }, "iconEnd": { "iconSize": "size/icon/sm" }, "spinner": { "iconSize": "size/icon/sm" } } },
+    { "when": { "props": { "size": "lg" } }, "parts": { "root": { "height": "size/control/lg", "paddingInline": "static/200", "radius": "height/44", "typography": "label-large" } } },
+    { "when": { "media": "coarse-pointer" }, "parts": { "root": { "minHeight": "size/target/min" } }, "why": "On a touch screen every size is at least 44 pixels tall." },
+    { "when": { "props": { "iconOnly": true } }, "parts": { "root": { "paddingInline": "static/0", "width": "size/control/md" } } },
+    { "when": { "props": { "iconOnly": true, "size": "sm" } }, "parts": { "root": { "width": "size/control/sm" } } },
+    { "when": { "props": { "iconOnly": true, "size": "lg" } }, "parts": { "root": { "width": "size/control/lg" } } },
+    { "when": { "props": { "fullWidth": true } }, "parts": { "root": { "width": "full" } } },
+
+    { "when": { "states": ["focus"] }, "parts": { "root": { "outlineWidth": "focus/width" } } },
+    { "when": { "states": ["loading"] }, "parts": { "root": { "cursor": "progress" } } },
+    { "when": { "states": ["disabled"] }, "parts": { "root": { "background": "interactive/primary/disabled", "color": "text/disabled", "cursor": "not-allowed" } }, "why": "One disabled look for every variant, so a disabled button never borrows the weight of a live one." },
+    { "when": { "props": { "variant": "ghost" }, "states": ["disabled"] }, "parts": { "root": { "background": "transparent" } } },
+    { "when": { "media": "reduced-motion" }, "parts": { "root": { "duration": "none" } } }
+  ],
+  "accessibility": {
+    "pattern": "WAI-ARIA Authoring Practices: Button",
+    "reference": "https://www.w3.org/WAI/ARIA/apg/patterns/button/",
+    "name": { "from": "The label. With iconOnly, the ariaLabel prop.", "note": "An icon never gives the name." },
+    "keyboard": [
+      { "key": "Enter", "on": "root", "does": "Runs the action.", "test": "button-enter-activates" },
+      { "key": "Space", "on": "root", "does": "Runs the action.", "test": "button-space-activates" },
+      { "key": "Tab", "on": "root", "does": "Moves focus to and from the button, including while loading.", "test": "button-loading-stays-focusable" }
+    ],
+    "focus": { "order": "In page order.", "ring": "root" },
+    "announcements": ["While loading, the root has aria-busy and aria-disabled set to true, so a screen reader says the button is busy and unavailable."]
+  },
+  "requirements": [
+    { "id": "button-native-element", "level": "MUST", "text": "The root is a button element, or with asChild a link. It is never a div or a span.", "wcag": "4.1.2", "check": "test:button-native-element" },
+    { "id": "button-type-default", "level": "MUST", "text": "The type attribute is button unless the type prop says otherwise.", "check": "test:button-type-default" },
+    { "id": "button-name", "level": "MUST", "text": "The button has an accessible name.", "wcag": "4.1.2", "check": "axe:button-name" },
+    { "id": "button-icon-only-needs-label", "level": "MUST", "text": "With iconOnly, ariaLabel is required: the type of the props says so, and the component warns in development when it is missing.", "wcag": "4.1.2", "check": "type:button-icon-only-needs-label" },
+    { "id": "button-icons-hidden", "level": "MUST", "text": "iconStart, iconEnd and the spinner carry aria-hidden.", "wcag": "1.1.1", "check": "test:button-icons-hidden" },
+    { "id": "button-enter-activates", "level": "MUST", "text": "Enter calls onClick once.", "wcag": "2.1.1", "check": "test:button-enter-activates" },
+    { "id": "button-space-activates", "level": "MUST", "text": "Space calls onClick once.", "wcag": "2.1.1", "check": "test:button-space-activates" },
+    { "id": "button-disabled-inert", "level": "MUST", "text": "While disabled, a press does not call onClick.", "check": "test:button-disabled-inert" },
+    { "id": "button-loading-inert", "level": "MUST", "text": "While loading, a press does not call onClick.", "check": "test:button-loading-inert" },
+    { "id": "button-loading-stays-focusable", "level": "MUST", "text": "While loading, the button keeps keyboard focus and stays in the Tab order, with aria-busy and aria-disabled set to true and the native disabled attribute absent.", "wcag": "2.4.3", "check": "test:button-loading-stays-focusable" },
+    { "id": "button-focus-visible", "level": "MUST", "text": "With keyboard focus the root shows a ring at least 2 pixels thick with at least 3 to 1 contrast against what is beside it.", "wcag": "2.4.7", "check": "test:button-focus-visible" },
+    { "id": "button-label-contrast", "level": "MUST", "text": "In every variant and state except disabled, the label has at least 4.5 to 1 contrast against the fill, in light and dark.", "wcag": "1.4.3", "check": "test:button-label-contrast" },
+    { "id": "button-target-size", "level": "MUST", "text": "The root is at least 24 by 24 pixels at every size.", "wcag": "2.5.8", "check": "test:button-target-size" },
+    { "id": "button-touch-target", "level": "SHOULD", "text": "Where the pointer is coarse the root is at least 44 pixels tall.", "check": "test:button-touch-target", "label": "pattern" },
+    { "id": "button-label-wraps", "level": "MUST", "text": "A label too long for one line wraps inside the button and keeps its padding; it is never cut off.", "wcag": "1.4.10", "check": "test:button-label-wraps" },
+    { "id": "button-one-primary", "level": "SHOULD", "text": "A view has at most one primary button.", "check": "lint:one-primary-per-view", "label": "pattern" },
+    { "id": "button-loading-label", "level": "COULD", "text": "While loading, the label says what is happening, such as Saving, and keeps any amount.", "check": "manual:button-loading-label", "label": "assumption" },
+    { "id": "button-error-not-colour-alone", "level": "SHOULD", "text": "An error-variant button states the destructive action in its label, such as Delete project, because in the dark theme its fill is close in colour to the primary fill.", "wcag": "1.4.1", "check": "manual:button-error-not-colour-alone", "label": "pattern" }
+  ],
+  "content": [
+    "Start with a verb and name the result: Save changes, not OK.",
+    "Sentence case. No full stop.",
+    "An ellipsis only while loading."
+  ],
+  "examples": [
+    { "id": "secondary", "title": "Secondary", "props": {}, "content": "Cancel" },
+    { "id": "primary", "title": "Primary", "props": { "variant": "primary" }, "content": "Save changes" },
+    { "id": "neutral", "title": "Neutral", "props": { "variant": "neutral" }, "content": "Continue" },
+    { "id": "ghost", "title": "Ghost", "props": { "variant": "ghost" }, "content": "Skip" },
+    { "id": "error", "title": "Error", "props": { "variant": "error" }, "content": "Delete project" },
+    { "id": "success", "title": "Success", "props": { "variant": "success" }, "content": "Approve" },
+    { "id": "warning", "title": "Warning", "props": { "variant": "warning" }, "content": "Archive" },
+    { "id": "small", "title": "Small", "props": { "size": "sm" }, "content": "Edit" },
+    { "id": "large", "title": "Large", "props": { "variant": "primary", "size": "lg" }, "content": "Get started" },
+    { "id": "with-icons", "title": "With icons", "props": { "variant": "primary", "iconStart": "plus", "iconEnd": "arrow-right" }, "content": "New chat" },
+    { "id": "icon-only", "title": "Icon only", "props": { "iconOnly": true, "ariaLabel": "Send message", "iconStart": "arrow-up", "variant": "primary" }, "content": null },
+    { "id": "loading", "title": "Loading", "props": { "variant": "primary", "loading": true }, "content": "Saving…" },
+    { "id": "disabled", "title": "Disabled", "props": { "variant": "primary", "disabled": true }, "content": "Save changes" },
+    { "id": "full-width", "title": "Full width", "props": { "variant": "primary", "fullWidth": true }, "content": "Continue" },
+    { "id": "long-label", "title": "Long label", "props": { "variant": "primary" }, "content": "Move the event to Thursday and send the message to Priya", "note": "Worst case for wrapping at 320 pixels." },
+    { "id": "as-link", "title": "As a link", "props": { "asChild": true, "variant": "secondary", "href": "#" }, "content": "Open settings" }
+  ],
+  "dependencies": [],
+  "notCarried": [
+    "The Figma component's own property values: the Components file was not shared, so every figma mapping here is unconfirmed.",
+    "Motion beyond a colour transition.",
+    "Button groups and split buttons.",
+    "A toggle (pressed) button: that is a different role and a different component.",
+    "The send button's hover and shadow fixes listed in the UI fixes tracker."
+  ]
+}

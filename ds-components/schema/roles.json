@@ -1,0 +1,28 @@
+{
+  "$description": "The role list. A role is one word on a part that stands for a bundle of obligations: the element to render, keyboard handling, what is announced, where the name comes from and which states must be exposed. The idea is Nathan Curtis's ('Component and part roles as composites of behavior and accessibility', September 2026). His published list stops before tabs, menus and dialogs; those entries are Souvenir's, written from the WAI-ARIA Authoring Practices. 'aria' is the ARIA role to emit on the web, or null when the native element already has it. A role name that is not a legal ARIA role is never written into a role attribute.",
+  "roles": {
+    "button": { "element": "button", "aria": null, "keys": ["Enter", "Space"], "name": "content or aria-label", "exposes": ["disabled", "aria-busy"], "apg": "https://www.w3.org/WAI/ARIA/apg/patterns/button/" },
+    "indicator": { "element": "span", "aria": null, "keys": [], "name": "none: hidden with aria-hidden because the control already says what it shows", "exposes": [] },
+    "textbox": { "element": "input", "aria": null, "keys": ["native text editing"], "name": "a label element tied by id, or aria-label", "exposes": ["disabled", "readonly", "required", "aria-invalid", "aria-describedby"] },
+    "label": { "element": "label", "aria": null, "keys": [], "name": "its own text; tied to the control with for", "exposes": [] },
+    "description": { "element": "p", "aria": null, "keys": [], "name": "its own text; its id is listed in the control's aria-describedby", "exposes": [] },
+    "errormessage": { "element": "p", "aria": null, "keys": [], "name": "its own text; its id is listed in aria-describedby and aria-invalid is true only while it is shown", "exposes": [] },
+    "tablist": { "element": "div", "aria": "tablist", "keys": ["ArrowRight", "ArrowLeft", "Home", "End"], "name": "aria-label or aria-labelledby", "exposes": ["aria-orientation"], "apg": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/" },
+    "tab": { "element": "button", "aria": "tab", "keys": ["Enter", "Space"], "name": "content", "exposes": ["aria-selected", "aria-controls", "disabled"], "apg": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/" },
+    "tabpanel": { "element": "div", "aria": "tabpanel", "keys": ["Tab"], "name": "aria-labelledby its tab", "exposes": [], "apg": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/" },
+    "menubutton": { "element": "button", "aria": null, "keys": ["Enter", "Space", "ArrowDown"], "name": "content or aria-label", "exposes": ["aria-haspopup", "aria-expanded", "aria-controls"], "apg": "https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/" },
+    "menu": { "element": "div", "aria": "menu", "keys": ["ArrowDown", "ArrowUp", "Home", "End", "Escape", "type-ahead"], "name": "aria-labelledby its trigger", "exposes": ["aria-orientation"], "apg": "https://www.w3.org/WAI/ARIA/apg/patterns/menu/" },
+    "menuitem": { "element": "div", "aria": "menuitem", "keys": ["Enter", "Space"], "name": "content", "exposes": ["aria-disabled"] },
+    "menuitemcheckbox": { "element": "div", "aria": "menuitemcheckbox", "keys": ["Enter", "Space"], "name": "content", "exposes": ["aria-checked", "aria-disabled"] },
+    "menuitemradio": { "element": "div", "aria": "menuitemradio", "keys": ["Enter", "Space"], "name": "content", "exposes": ["aria-checked", "aria-disabled"] },
+    "group": { "element": "div", "aria": "group", "keys": [], "name": "aria-labelledby its label", "exposes": [] },
+    "grouplabel": { "element": "div", "aria": null, "keys": [], "name": "its own text", "exposes": [] },
+    "separator": { "element": "div", "aria": "separator", "keys": [], "name": "none", "exposes": ["aria-orientation"] },
+    "dialogtrigger": { "element": "button", "aria": null, "keys": ["Enter", "Space"], "name": "content or aria-label", "exposes": ["aria-haspopup", "aria-expanded", "aria-controls"] },
+    "scrim": { "element": "div", "aria": null, "keys": [], "name": "none: not in the accessibility tree", "exposes": [] },
+    "dialog": { "element": "div", "aria": "dialog", "keys": ["Escape", "Tab", "Shift+Tab"], "name": "aria-labelledby its title", "exposes": ["aria-modal", "aria-describedby"], "apg": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/" },
+    "dialogtitle": { "element": "h2", "aria": null, "keys": [], "name": "its own text; it names the dialog", "exposes": [] },
+    "dialogdescription": { "element": "p", "aria": null, "keys": [], "name": "its own text; it describes the dialog", "exposes": [] },
+    "dialogclose": { "element": "button", "aria": null, "keys": ["Enter", "Space"], "name": "content or aria-label", "exposes": [] }
+  }
+}
