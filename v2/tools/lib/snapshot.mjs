@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
-export const SNAPSHOT_DIR = join(here, '..', '..', 'figma');
+// SOUVENIR_SNAPSHOT_DIR points every tool at another snapshot, for example the sandbox copy in v2/figma/sandbox/.
+export const SNAPSHOT_DIR = process.env.SOUVENIR_SNAPSHOT_DIR || join(here, '..', '..', 'figma');
 
 // One snapshot line:  name [T] value | value ~ web code syntax ~ scopes ~ "description"
 const LINE = /^(.*?) \[([CFSB])\] (.*) ~ (.*?) ~ (.*?) ~ (".*")$/;

@@ -5,12 +5,15 @@
 //   An alias is written {collection-less variable name}. A colour is #rrggbb, or #rrggbbaa when not opaque.
 // A collection starts with a line:  ## name | modes: a, b | vars: N
 const hex = c => { const h = v => Math.round(v * 255).toString(16).padStart(2, '0'); return '#' + h(c.r) + h(c.g) + h(c.b) + (c.a !== undefined && c.a < 1 ? h(c.a) : ''); };
-const cols = await figma.variables.getLocalVariableCollectionsAsync();
+// SUFFIX: '' takes every local collection. Otherwise only collections whose name ends with SUFFIX are taken, and the suffix is removed from the name,
+// so a sandbox file can hold a copy such as "Themes (DS V2)" beside older collections.
+const SUFFIX = '';
+const cols = (await figma.variables.getLocalVariableCollectionsAsync()).filter(c => c.name.endsWith(SUFFIX));
 const all = await figma.variables.getLocalVariablesAsync();
 const byId = {}; for (const v of all) byId[v.id] = v;
 const out = [];
 for (const c of cols) {
-  out.push(`## ${c.name} | modes: ${c.modes.map(m => m.name).join(', ')} | vars: ${c.variableIds.length}`);
+  out.push(`## ${SUFFIX ? c.name.slice(0, -SUFFIX.length) : c.name} | modes: ${c.modes.map(m => m.name).join(', ')} | vars: ${c.variableIds.length}`);
   for (const id of c.variableIds) {
     const v = byId[id] || await figma.variables.getVariableByIdAsync(id); if (!v) continue;
     const vals = [];
