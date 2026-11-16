@@ -1,0 +1,97 @@
+/* The gallery's own look. Colour, type, spacing, radius, borders and focus rings are tokens only (var() from
+   ds-tokens/dist/tokens.css, or a keyword). Layout widths and the 48rem breakpoint are plain rem values: no layout
+   token exists and a media query cannot read var(). Mobile first; usable from 320 pixels wide. Classes start with g-. */
+
+html {
+  background: var(--color-surface-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-body);
+}
+/* The body, not html, takes the type size: a font size on html changes what 1rem is, and every token is in rem. */
+body { margin: 0; background: var(--color-surface-primary); color: var(--color-text-primary); font-size: var(--font-size-body-base); line-height: var(--line-height-body-base); }
+
+/* Single-example page: a quiet frame with room around the example. */
+main[data-gallery] { display: block; padding: var(--spacing-static-160); }
+
+.g-header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-static-120);
+  padding: var(--spacing-static-120) var(--spacing-static-160);
+  border-block-end: var(--border-width-sm) solid var(--color-border-primary);
+  background: var(--color-surface-secondary);
+}
+.g-brand { margin: 0; font-size: var(--font-size-label-large); line-height: var(--line-height-label-large); font-weight: var(--font-weight-label); }
+.g-nav { display: flex; flex-wrap: wrap; gap: var(--spacing-static-40) var(--spacing-static-120); flex: 1 1 100%; }
+.g-header a { color: var(--color-text-link); display: inline-flex; align-items: center; min-block-size: var(--spacing-static-320); }
+.g-header a:hover { color: var(--color-text-link-hover); }
+.g-controls { display: flex; flex-wrap: wrap; gap: var(--spacing-static-120); }
+.g-control { display: inline-flex; align-items: center; gap: var(--spacing-static-80); font-size: var(--font-size-label-base); line-height: var(--line-height-label-base); font-weight: var(--font-weight-label); }
+.g-control select {
+  min-block-size: var(--spacing-static-400);
+  padding-inline: var(--spacing-static-80);
+  border: var(--border-width-sm) solid var(--color-border-secondary);
+  border-radius: var(--radius-height-40);
+  background: var(--color-surface-primary);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+.g-header a:focus-visible, .g-control select:focus-visible {
+  outline: var(--border-focus-width) solid var(--color-border-focus);
+  outline-offset: var(--border-focus-offset);
+}
+@media (min-width: 48rem) { .g-nav { flex: 1 1 auto; } }
+
+.g-title { margin: 0 0 var(--spacing-static-160); font-size: var(--font-size-heading-3); line-height: var(--line-height-heading-3); font-weight: var(--font-weight-heading); }
+.g-group-title { margin: var(--spacing-static-320) 0 var(--spacing-static-120); font-size: var(--font-size-heading-4); line-height: var(--line-height-heading-4); font-weight: var(--font-weight-heading); }
+.g-group { margin-block-end: var(--spacing-static-240); }
+.g-lede { margin: 0 0 var(--spacing-static-160); color: var(--color-text-secondary); max-inline-size: 40rem; }
+.g-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-static-160); }
+@media (min-width: 48rem) { .g-grid { grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); } }
+.g-cell {
+  min-inline-size: 0;
+  padding: var(--spacing-static-160);
+  border: var(--border-width-sm) solid var(--color-border-primary);
+  border-radius: var(--radius-container-medium);
+  background: var(--color-surface-primary);
+}
+.g-cell-title { margin: 0 0 var(--spacing-static-120); font-size: var(--font-size-label-base); line-height: var(--line-height-label-base); font-weight: var(--font-weight-label); color: var(--color-text-secondary); overflow-wrap: anywhere; }
+.g-cell > section { overflow-x: auto; }
+.g-code { font-variant-numeric: tabular-nums; font-size: var(--font-size-body-small); line-height: var(--line-height-body-small); color: var(--color-text-secondary); overflow-wrap: anywhere; }
+.g-flag { color: var(--color-text-warning); font-size: var(--font-size-label-small); line-height: var(--line-height-label-small); font-weight: var(--font-weight-label); }
+.g-problem { color: var(--color-text-error); margin: 0; }
+
+/* Token page */
+.g-token-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--spacing-static-80); }
+.g-token-list-wrap { grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); }
+.g-token {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-static-80) var(--spacing-static-160);
+  padding: var(--spacing-static-80) 0;
+  border-block-end: var(--border-width-sm) solid var(--color-border-primary);
+}
+.g-token-small { flex-direction: column; align-items: flex-start; border: 0; }
+.g-token-names { display: flex; flex-direction: column; min-inline-size: 0; flex: 1 1 12rem; }
+.g-token-name { font-weight: var(--font-weight-label); overflow-wrap: anywhere; }
+.g-mode { color: var(--color-text-secondary); font-size: var(--font-size-body-small); line-height: var(--line-height-body-small); }
+.g-swatches { display: flex; flex-wrap: wrap; gap: var(--spacing-static-80); }
+.g-swatch-cell {
+  display: flex; align-items: center; gap: var(--spacing-static-80);
+  padding: var(--spacing-static-60) var(--spacing-static-80);
+  border-radius: var(--radius-container-small);
+  background: var(--color-surface-primary);
+  color: var(--color-text-primary);
+  border: var(--border-width-sm) solid var(--color-border-primary);
+}
+.g-swatch-cell .g-mode, .g-swatch-cell .g-code { color: var(--color-text-secondary); }
+.g-swatch {
+  inline-size: var(--spacing-static-400); block-size: var(--spacing-static-400);
+  border-radius: var(--radius-height-40);
+  border: var(--border-width-sm) solid var(--color-border-primary);
+}
+.g-type-sample { margin: 0; flex: 1 1 16rem; min-inline-size: 0; overflow-wrap: anywhere; }
+.g-radius-box {
+  inline-size: var(--spacing-static-400); block-size: var(--spacing-static-400);
+  background: var(--color-surface-tertiary);
+  border: var(--border-width-sm) solid var(--color-border-secondary);
+}
+.g-space-track { display: block; flex: 1 1 16rem; min-inline-size: 0; }
+.g-space-bar { display: block; block-size: var(--spacing-static-120); background: var(--color-interactive-primary); min-inline-size: var(--spacing-static-20); }

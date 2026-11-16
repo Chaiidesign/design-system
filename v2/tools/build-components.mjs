@@ -84,6 +84,9 @@ export const DECLARATIONS = {
   cursor: { enum: ['pointer', 'default', 'not-allowed', 'text', 'progress'], css: ['cursor'] },
   textDecoration: { enum: ['none', 'underline'], css: ['text-decoration-line'] },
   layer: { collection: null, css: ['z-index'], keywords: { inherit: 'inherit' } },
+  // pseudo: written in a rule of its own on that pseudo-element of the part (the schema: a colour set on an
+  // input does not reach its placeholder).
+  placeholderColor: { collection: 'Themes', css: ['color'], keywords: COLOUR_KEYWORDS, pseudo: '::placeholder' },
 };
 
 // Which declarations each part kind may take. The same lists as v2/tools/check-specs.mjs:
@@ -257,11 +260,13 @@ export function compileStyles(spec, file, ctx) {
       if (!has(parts, styled)) { fail(where, `${q(styled)} is not a part.`); continue; }
       const kind = obj(parts[styled]).kind;
       const allowed = KIND_ALLOWS[kind];
-      const decls = [];
+      const mainDecls = [];
+      const pseudoDecls = {}; // pseudo-element -> declarations, for declarations such as placeholderColor
       for (const [property, value] of Object.entries(obj(declsRaw))) {
         const w = `${at} (${styled}.${property})`;
         const def = DECLARATIONS[property];
         if (!def) { fail(w, `${property} is not a declaration the schema allows.`); continue; }
+        const decls = def.pseudo ? (pseudoDecls[def.pseudo] ??= []) : mainDecls;
         if (allowed && !allowed.includes(property)) {
           fail(w, kind === 'slot' ? `${styled} is a slot part and takes no declarations.` : `${styled} is a ${kind} part and takes only ${allowed.join(', ')}; it may not take ${property}.`);
           continue;
@@ -308,7 +313,10 @@ export function compileStyles(spec, file, ctx) {
       }
       const compound = (p) => slotSel(p) + (pieces.get(p) || []).join('');
       const selector = [...others.map(compound), compound(styled)].join(' ');
-      if (decls.length) out.push({ index: i, part: styled, media, selector, decls, why: str(obj(rule).why) });
+      if (mainDecls.length) out.push({ index: i, part: styled, media, selector, decls: mainDecls, why: str(obj(rule).why) });
+      for (const pseudo of Object.keys(pseudoDecls).sort()) {
+        out.push({ index: i, part: styled, media, selector: selector + pseudo, decls: pseudoDecls[pseudo], why: str(obj(rule).why) });
+      }
     }
   });
   if (!arr(spec.styles).length) fail('styles', 'the spec has no style rules.');
@@ -617,6 +625,9 @@ function selfTest() {
   check('an invalid spec is reported, not thrown', !r[0].ok && r[0].errors.some((e) => e.includes('schema')) && !r[1].ok, r.map((x) => x.errors.join('; ')).join(' / '));
   check('a prefixed Size token gets its CSS name by rule', css.includes('block-size: var(--size-control-md);') && !css.includes('--size-size-'), 'wrong Size name');
   check('reduced motion writes 0s and the transition properties', css.includes('@media (prefers-reduced-motion: reduce) {\n    [data-slot="button"] {\n      transition-property: background-color, border-color, color, box-shadow, opacity;\n      transition-duration: 0s;'), 'block not found');
+  s = clone(); s.styles[0].parts.root.placeholderColor = 'text/secondary';
+  const placeholderCss = cssOf(s);
+  check('placeholderColor is written on ::placeholder, not on the part', placeholderCss.includes('[data-slot="button"]::placeholder {\n    color: var(--color-text-secondary);') && !/\[data-slot="button"\] \{[^}]*--color-text-secondary/.test(placeholderCss), 'rule not found');
 
   const caught = checks.filter(Boolean).length;
   console.log(`Self-test: ${caught} of ${checks.length} planted checks passed${caught === checks.length ? '.' : '; the build tool is not safe to use.'}`);

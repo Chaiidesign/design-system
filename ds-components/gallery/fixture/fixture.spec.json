@@ -1,0 +1,70 @@
+{
+  "$schema": "../../schema/component.schema.json",
+  "schemaVersion": "0.1.0",
+  "name": "Fixture",
+  "slug": "fixture",
+  "stage": "alpha",
+  "summary": "Test-only component for the gallery and the component test runner. Not shipped. Planted faults live in its examples and stylesheet.",
+  "figma": { "component": null, "wasCalled": null, "confirmed": false },
+  "primitive": { "package": null, "native": "A button element inside a div." },
+  "anatomy": {
+    "root": { "kind": "container", "role": null, "slot": "fixture", "element": "div", "description": "The wrapper." },
+    "control": { "kind": "control", "role": "button", "slot": "fixture-control", "element": "button", "description": "The pressable control." },
+    "label": { "kind": "text", "role": null, "slot": "fixture-label", "element": "span", "description": "The words on the control." },
+    "hint": { "kind": "text", "role": null, "slot": "fixture-hint", "element": "p", "required": true, "description": "PLANTED FAULT: required, but no example renders it." }
+  },
+  "props": {
+    "tone": { "on": "control", "type": "enum", "values": ["calm", "off"], "default": "calm", "reflects": "data-tone", "figmaProperty": null, "description": "Which fill the control uses on hover." },
+    "disabled": { "on": "control", "type": "boolean", "default": false, "reflects": null, "figmaProperty": null, "description": "Sets the native disabled attribute." },
+    "busy": { "on": "control", "type": "boolean", "default": false, "reflects": "data-busy", "figmaProperty": null, "description": "No example sets it, so the busy state cannot be reached." },
+    "children": { "on": "label", "type": "node", "required": true, "figmaProperty": null, "description": "The label." }
+  },
+  "states": {
+    "hover": { "on": "control", "selector": ":hover", "source": "native", "figma": null, "reach": "hover", "description": "The pointer is over the control." },
+    "pressed": { "on": "control", "selector": ":active", "source": "native", "figma": null, "reach": "press", "description": "The control is being pressed." },
+    "focus": { "on": "control", "selector": ":focus-visible", "source": "native", "figma": null, "reach": "focus-by-keyboard", "description": "Keyboard focus." },
+    "disabled": { "on": "control", "selector": ":disabled", "source": "native", "figma": null, "reach": "prop:disabled=true", "description": "Not available." },
+    "busy": { "on": "control", "selector": "[data-busy]", "source": "prop", "figma": null, "reach": "prop:busy=true", "description": "PLANTED FAULT: no example has busy=true, so this state is not reached." }
+  },
+  "precedence": ["disabled", "busy", "pressed", "hover"],
+  "styles": [
+    { "when": {}, "parts": {
+        "root": { "gap": "static/80" },
+        "control": { "minHeight": "control/md", "paddingInline": "static/160", "radius": "height/40", "borderWidth": "width/sm", "borderStyle": "solid", "borderColor": "transparent", "background": "interactive/secondary/default", "color": "text/primary", "typography": "label-base", "cursor": "pointer", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" }
+    } },
+    { "when": { "states": ["hover"] }, "parts": { "control": { "background": "interactive/secondary/hover" } } },
+    { "when": { "states": ["pressed"] }, "parts": { "control": { "background": "interactive/secondary/active" } } },
+    { "when": { "props": { "tone": "off" }, "states": ["hover"] }, "parts": { "control": { "background": "interactive/primary/hover" } }, "why": "PLANTED FAULT: fixture.css paints interactive/error/hover instead." },
+    { "when": { "states": ["focus"] }, "parts": { "control": { "outlineWidth": "focus/width" } } },
+    { "when": { "states": ["disabled"] }, "parts": { "control": { "background": "interactive/primary/disabled", "color": "text/disabled", "cursor": "not-allowed" } } }
+  ],
+  "accessibility": {
+    "pattern": "WAI-ARIA Authoring Practices: Button",
+    "name": { "from": "The label." },
+    "keyboard": [ { "key": "Enter", "on": "control", "does": "Presses the control.", "test": "fixture-enter-activates" } ],
+    "focus": { "order": "In page order.", "ring": "control" }
+  },
+  "requirements": [
+    { "id": "fixture-native-button", "level": "MUST", "text": "The control is a button element of type button.", "check": "test:fixture-native-button" },
+    { "id": "fixture-enter-activates", "level": "MUST", "text": "PLANTED FAULT: the tests file has no test of this id.", "check": "test:fixture-enter-activates" },
+    { "id": "fixture-planted-failure", "level": "MUST", "text": "PLANTED FAULT: this test exists and fails.", "check": "test:fixture-planted-failure" },
+    { "id": "fixture-name", "level": "MUST", "text": "The control has an accessible name.", "check": "axe:button-name" },
+    { "id": "fixture-image-alt", "level": "MUST", "text": "Every image has a text alternative. The image-no-alt example breaks this on purpose.", "check": "axe:image-alt" },
+    { "id": "fixture-one-per-view", "level": "SHOULD", "text": "Checked by a lint rule, so this tool lists it as not run.", "check": "lint:fixture-one-per-view" },
+    { "id": "fixture-label-words", "level": "COULD", "text": "Checked by a person, so this tool lists it as not run.", "check": "manual:fixture-label-words" }
+  ],
+  "examples": [
+    { "id": "clean", "title": "Clean", "props": {}, "content": "Continue" },
+    { "id": "disabled", "title": "Disabled", "props": { "disabled": true }, "content": "Unavailable" },
+    { "id": "low-contrast", "title": "Fault: low-contrast text", "props": {}, "content": "Continue" },
+    { "id": "small-target", "title": "Fault: 16 pixel control", "props": {}, "content": "Tiny" },
+    { "id": "no-outline", "title": "Fault: no focus outline", "props": {}, "content": "No ring" },
+    { "id": "too-wide", "title": "Fault: wider than the viewport", "props": {}, "content": null },
+    { "id": "image-no-alt", "title": "Fault: image with no alt", "props": {}, "content": null },
+    { "id": "state-colour", "title": "Fault: hover colour differs from its token", "props": { "tone": "off" }, "content": "Retry" },
+    { "id": "stray-slot", "title": "Fault: a data-slot the spec does not list", "props": {}, "content": "Continue" },
+    { "id": "not-written", "title": "Fault: listed here, missing from the examples file", "props": {}, "content": "Missing" }
+  ],
+  "dependencies": [],
+  "notCarried": ["Everything a real component would say. This spec exists to exercise the gallery and the runner."]
+}

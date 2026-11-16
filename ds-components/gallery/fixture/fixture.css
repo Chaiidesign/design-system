@@ -1,0 +1,32 @@
+/* Test fixture styles. Not shipped. Everything follows fixture.spec.json except the two rules marked
+   PLANTED FAULT, which v2/tools/test-components.mjs --self-test must catch. */
+
+[data-slot="fixture"] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-static-80); }
+
+[data-slot="fixture-control"] {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-block-size: var(--size-control-md);
+  padding-inline: var(--spacing-static-160);
+  border: var(--border-width-sm) solid transparent;
+  border-radius: var(--radius-height-40);
+  background: var(--color-interactive-secondary);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: var(--font-size-label-base);
+  line-height: var(--line-height-label-base);
+  font-weight: var(--font-weight-label);
+  cursor: pointer;
+  outline: 0 solid var(--color-border-focus);
+  outline-offset: var(--border-focus-offset);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+[data-slot="fixture-control"]:hover { background: var(--color-interactive-secondary-hover); }
+[data-slot="fixture-control"]:active { background: var(--color-interactive-secondary-active); }
+[data-slot="fixture-control"]:focus-visible { outline-width: var(--border-focus-width); outline-style: solid; }
+[data-slot="fixture-control"]:disabled { background: var(--color-interactive-primary-disabled); color: var(--color-text-disabled); cursor: not-allowed; }
+
+/* PLANTED FAULT (state colour): the spec says interactive/primary/hover for tone "off" on hover. */
+[data-slot="fixture-control"][data-tone="off"]:hover { background: var(--color-interactive-error-hover); }
+
+/* PLANTED FAULT (focus indicator): this control shows no outline when focused by keyboard. */
+[data-slot="fixture-control"].fixture-no-outline:focus-visible { outline: none; }

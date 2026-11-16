@@ -31,6 +31,21 @@
             "WEB": "var(--duration-base)"
           }
         }
+      },
+      "spin": {
+        "$type": "duration",
+        "$value": {
+          "value": 800,
+          "unit": "ms"
+        },
+        "$description": "One turn of a spinner.",
+        "$extensions": {
+          "com.souvenir.proposed": true,
+          "com.souvenir.why": "The Button pilot had to multiply another duration by five to turn its spinner. A loop needs its own token.",
+          "com.souvenir.codeSyntax": {
+            "WEB": "var(--duration-spin)"
+          }
+        }
       }
     },
     "ease": {

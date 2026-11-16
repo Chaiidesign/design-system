@@ -1,2 +1,4 @@
 node_modules/
 scripts/.tmp/
+ds-components/gallery/dist*/
+ds-components/generated/shots/

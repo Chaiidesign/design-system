@@ -100,6 +100,7 @@
 | Size | menu/max | default: 320 | Long item text must wrap, not run off the screen. |
 | Motion | duration/fast | default: 100ms | Motion is not started in Figma. |
 | Motion | duration/base | default: 160ms | Motion is not started in Figma. |
+| Motion | duration/spin | default: 800ms | The Button pilot had to multiply another duration by five to turn its spinner. A loop needs its own token. |
 | Motion | ease/standard | default: cubic-bezier(0.2, 0, 0, 1) | Motion is not started in Figma. |
 | Elevation | shadow/md | light: 0 4px 16px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.08); dark: 0 4px 16px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.4) | Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it. |
 | Elevation | shadow/lg | light: 0 16px 48px rgb(0 0 0 / 0.18), 0 2px 8px rgb(0 0 0 / 0.08); dark: 0 16px 48px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.4) | Elevation is not started in Figma. |

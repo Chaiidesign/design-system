@@ -102,7 +102,7 @@
           "type": "boolean",
           "values": null,
           "default": false,
-          "reflects": null
+          "reflects": "data-disabled"
         },
         {
           "name": "iconStart",
@@ -183,7 +183,7 @@
         {
           "name": "disabled",
           "on": "root",
-          "selector": ":is(:disabled, [aria-disabled=\"true\"])",
+          "selector": ":is(:disabled, [data-disabled])",
           "source": "native",
           "reach": "prop:disabled=true"
         },
@@ -198,12 +198,12 @@
       "tokens": {
         "fromFigma": {
           "count": 38,
-          "uses": 49,
+          "uses": 52,
           "tokens": [
             {
               "collection": "Density",
               "name": "static/0",
-              "uses": 1
+              "uses": 2
             },
             {
               "collection": "Density",
@@ -223,12 +223,12 @@
             {
               "collection": "Density",
               "name": "static/60",
-              "uses": 1
+              "uses": 2
             },
             {
               "collection": "Density",
               "name": "static/80",
-              "uses": 1
+              "uses": 2
             },
             {
               "collection": "Radius",
@@ -478,7 +478,8 @@
           "button-label-contrast",
           "button-target-size",
           "button-touch-target",
-          "button-label-wraps"
+          "button-label-wraps",
+          "button-loading-keeps-look"
         ],
         "axe": [
           "button-name"
@@ -1952,8 +1953,8 @@
       ],
       "tokens": {
         "fromFigma": {
-          "count": 25,
-          "uses": 43,
+          "count": 26,
+          "uses": 45,
           "tokens": [
             {
               "collection": "Density",
@@ -2043,11 +2044,16 @@
             {
               "collection": "Themes",
               "name": "text/disabled",
-              "uses": 3
+              "uses": 4
             },
             {
               "collection": "Themes",
               "name": "text/error",
+              "uses": 1
+            },
+            {
+              "collection": "Themes",
+              "name": "text/placeholder",
               "uses": 1
             },
             {

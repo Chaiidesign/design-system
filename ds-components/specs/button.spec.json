@@ -116,9 +116,9 @@
       "on": "root",
       "type": "boolean",
       "default": false,
-      "reflects": null,
+      "reflects": "data-disabled",
       "figmaProperty": "disabled",
-      "description": "The action is not available. Sets the native disabled attribute."
+      "description": "The action is not available. Sets the native disabled attribute and data-disabled."
     },
     "iconStart": {
       "on": "iconStart",
@@ -135,9 +135,9 @@
     "children": {
       "on": "label",
       "type": "node",
-      "required": true,
+      "required": false,
       "figmaProperty": "label",
-      "description": "The label. A verb that names the result, such as Save changes."
+      "description": "The label. A verb that names the result, such as Save changes. Required unless iconOnly is set, which the exported props type enforces."
     },
     "type": {
       "on": "root",
@@ -206,14 +206,14 @@
     },
     "disabled": {
       "on": "root",
-      "selector": ":is(:disabled, [aria-disabled=\"true\"])",
+      "selector": ":is(:disabled, [data-disabled])",
       "source": "native",
       "figma": {
         "property": "state",
         "value": "disabled"
       },
       "reach": "prop:disabled=true",
-      "description": "Not available."
+      "description": "Not available. The native disabled attribute on a button; data-disabled on a link rendered with asChild, which has no disabled attribute."
     },
     "loading": {
       "on": "root",
@@ -221,7 +221,7 @@
       "source": "prop",
       "figma": null,
       "reach": "prop:loading=true",
-      "description": "The action is running."
+      "description": "The action is running. The button keeps the look of its variant, shows the spinner, and is announced as busy and unavailable through aria-busy and aria-disabled; it is not dimmed, because it is working, not unavailable."
     }
   },
   "precedence": [
@@ -235,7 +235,6 @@
       "when": {},
       "parts": {
         "root": {
-          "height": "control/md",
           "paddingInline": "static/160",
           "gap": "static/80",
           "radius": "height/40",
@@ -250,7 +249,9 @@
           "easing": "ease/standard",
           "outlineColor": "border/focus",
           "outlineWidth": "none",
-          "outlineOffset": "focus/offset"
+          "outlineOffset": "focus/offset",
+          "minHeight": "control/md",
+          "paddingBlock": "static/80"
         },
         "iconStart": {
           "iconSize": "icon/md",
@@ -264,7 +265,8 @@
           "iconSize": "icon/md",
           "color": "current"
         }
-      }
+      },
+      "why": "The height is a least height: a label that wraps makes the button taller instead of being cut off."
     },
     {
       "when": {
@@ -649,10 +651,11 @@
       },
       "parts": {
         "root": {
-          "height": "control/sm",
           "paddingInline": "static/120",
           "gap": "static/60",
-          "radius": "height/32"
+          "radius": "height/32",
+          "minHeight": "control/sm",
+          "paddingBlock": "static/60"
         },
         "iconStart": {
           "iconSize": "icon/sm"
@@ -673,10 +676,10 @@
       },
       "parts": {
         "root": {
-          "height": "control/lg",
           "paddingInline": "static/200",
           "radius": "height/44",
-          "typography": "label-large"
+          "typography": "label-large",
+          "minHeight": "control/lg"
         }
       }
     },
@@ -700,7 +703,8 @@
       "parts": {
         "root": {
           "paddingInline": "static/0",
-          "width": "control/md"
+          "width": "control/md",
+          "paddingBlock": "static/0"
         }
       }
     },
@@ -922,7 +926,7 @@
     {
       "id": "button-loading-stays-focusable",
       "level": "MUST",
-      "text": "While loading, the button keeps keyboard focus and stays in the Tab order, with aria-busy and aria-disabled set to true and the native disabled attribute absent.",
+      "text": "While loading, the button keeps keyboard focus and stays in the Tab order, with aria-busy and aria-disabled set to true and neither the native disabled attribute nor data-disabled.",
       "wcag": "2.4.3",
       "check": "test:button-loading-stays-focusable"
     },
@@ -982,6 +986,12 @@
       "wcag": "1.4.1",
       "check": "manual:button-error-not-colour-alone",
       "label": "pattern"
+    },
+    {
+      "id": "button-loading-keeps-look",
+      "level": "MUST",
+      "text": "While loading, the fill and label keep the colours of the button's variant; the button does not take the disabled look.",
+      "check": "test:button-loading-keeps-look"
     }
   ],
   "content": [

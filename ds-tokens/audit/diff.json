@@ -19,7 +19,7 @@
     "cssNameDiffers": 0,
     "cssFileMismatch": 0,
     "descriptionDiffers": 0,
-    "proposedNotInFigma": 22
+    "proposedNotInFigma": 23
   },
   "lists": {
     "missingInCode": [],
@@ -1397,6 +1397,19 @@
       },
       {
         "collection": "Motion",
+        "token": "duration/spin",
+        "cssVar": "--duration-spin",
+        "type": "duration",
+        "values": {
+          "default": "800ms"
+        },
+        "alias": {
+          "default": null
+        },
+        "why": "The Button pilot had to multiply another duration by five to turn its spinner. A loop needs its own token."
+      },
+      {
+        "collection": "Motion",
         "token": "ease/standard",
         "cssVar": "--ease-standard",
         "type": "cubicBezier",
@@ -1486,5 +1499,5 @@
     ]
   },
   "warnings": [],
-  "summary": "Figma and code agree on 261 of 308 tokens; 0 drift, 77 intended overrides, 0 overrides to remove; 22 proposed in the repo, not in Figma"
+  "summary": "Figma and code agree on 261 of 308 tokens; 0 drift, 77 intended overrides, 0 overrides to remove; 23 proposed in the repo, not in Figma"
 }

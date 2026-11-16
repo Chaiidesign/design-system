@@ -857,5 +857,6 @@
   --size-menu-max: 20rem;
   --duration-fast: 100ms;
   --duration-base: 160ms;
+  --duration-spin: 800ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }

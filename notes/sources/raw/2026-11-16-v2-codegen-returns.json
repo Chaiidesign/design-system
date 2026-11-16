@@ -1,0 +1,385 @@
+{
+ "tools": [
+  {
+   "what": "I wrote v2/tools/build-components.mjs. It is a deterministic generator: it turns every spec in ds-components/specs/ into a stylesheet inside @layer ds.components, a typed contract and a reference docs page. Across all specs it also writes state-map.md, src/styles.css and generated/tokens-used.json.\n\nEach spec is checked against the schema with its own ajv instance. The tool then checks the styles itself:\n- every token must exist;\n- every keyword must make sense for its declaration;\n- each part kind may only take the declarations allowed for it;\n- a rule may only depend on a prop that reflects an attribute.\n\nAn invalid spec is reported, naming the spec and the rule (for example `styles[1] (root.background)`), and is skipped. The other specs still build.\n\nTokens are found by their Figma path, as written. If that misses and the path starts with the collection's CSS prefix (so `size/control/md`), the tool retries without that first segment. The CSS name comes from the matched token, using cssVar in tokens.json or the naming rule in lib/snapshot.mjs (expectedSyntax). The result is `--size-control-md`, never `--size-size-control-md`.\n\nSelector, keyword and declaration mapping follow the brief:\n- **Precedence:** a state rule gets `:not()` for each stronger state on the same part.\n- **Media rules:** wrapped in `@media` inside the layer.\n- **Keyword values:**\n  - outline and border width `none` becomes 0;\n  - duration `none` becomes 0s, and transition-property is still written;\n  - `current` becomes currentColor and `full` becomes 100%.\n- **Outline style:** `outline-style: solid` is added wherever outlineColor is set.\n\nI read the generated Button stylesheet. The primary hover rule is `[data-slot=\"button\"][data-variant=\"primary\"]:hover:not(:is(:disabled, [aria-disabled=\"true\"])):not([data-loading]):not(:active) { background-color: var(--color-interactive-primary-hover); }`. Ghost plus disabled outranks the general disabled rule, and the coarse-pointer and reduced-motion `@media` blocks are correct.\n\nAll five specs currently on disk built: button, dialog, dropdown-menu, input and tabs. Two full runs gave byte-identical checksums for all 18 output files.",
+   "files_created": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-components.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.contract.ts",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/docs/button.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dialog/dialog.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dialog/dialog.contract.ts",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/docs/dialog.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dropdown-menu/dropdown-menu.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dropdown-menu/dropdown-menu.contract.ts",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/docs/dropdown-menu.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/input/input.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/input/input.contract.ts",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/docs/input.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/tabs/tabs.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/tabs/tabs.contract.ts",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/docs/tabs.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/docs/state-map.md",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/styles.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/tokens-used.json"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/build-components.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs read, 5 built, 0 not built; 18 files written."
+    },
+    {
+     "command": "node v2/tools/build-components.mjs --self-test",
+     "exit_code": 0,
+     "last_line": "Self-test: 12 of 12 planted checks passed."
+    },
+    {
+     "command": "npx tsc --noEmit --strict --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 --skipLibCheck ds-components/src/button/button.contract.ts",
+     "exit_code": 0,
+     "last_line": ""
+    },
+    {
+     "command": "npx tsc --noEmit --strict --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 --skipLibCheck ds-components/src/*/*.contract.ts",
+     "exit_code": 0,
+     "last_line": ""
+    },
+    {
+     "command": "shasum of all 18 outputs, then rebuild, then shasum again and diff",
+     "exit_code": 0,
+     "last_line": "IDENTICAL:       18 files"
+    },
+    {
+     "command": "node v2/tools/check-specs.mjs --report-only (run during orientation; see problems)",
+     "exit_code": 0,
+     "last_line": "4 specs, 56 checks run, 36 findings"
+    }
+   ],
+   "headline_numbers": [
+    "Button: 33 style entries written as 39 CSS rules; 13 props, 5 parts and 5 states in the contract and the docs page",
+    "Build: 5 specs read, 5 built, 0 not built; 18 files written",
+    "Self-test: 12 of 12 planted checks passed",
+    "Two runs: all 18 output files identical by checksum",
+    "Docs page line counts: button 135, dialog 163, tabs 159, input 174, dropdown-menu 219, state-map 47",
+    "200 Figma colour tokens are used by no component. The count covers every colour-type semantic variable, so it includes the Surface Gradients collection as well as Themes.",
+    "Tokens used per component: button 48, dialog 22, dropdown-menu 32, input 45, tabs 32"
+   ],
+   "decisions_you_made": [
+    "Token lookup tries the name as written first. Only if that misses and the name starts with `<CSS prefix of the collection>/` does it retry without that segment. The CSS name is taken from the matched token: tokens.json cssVar when listed, otherwise expectedSyntax. The docs and tokens-used.json show the matched name (control/md), not the name as written (size/control/md).",
+    "Origin: a name in the semantic Figma snapshot is 'from Figma', even if the proposed file also lists it. A name only in ds-tokens/proposed/tokens.json or only in tokens.json is 'proposed in the repo'.",
+    "Legal keywords per declaration (anything else fails):\n- **Colours:** transparent, current (written as currentColor), inherit.\n- **Widths, offsets, radius, padding and gap:** none (written as 0), inherit.\n- **Sizes:** full (written as 100%), inherit; maxWidth also takes none.\n- **Shadow:** none.\n- **Duration:** none (written as 0s).\n- **Opacity:** none (written as 0), full (written as 1), inherit.\n- **Layer:** inherit only.\n- **Typography, fontWeight and easing:** inherit only.\nOpacity and layer have no token collection, so any token value for them fails.",
+    "Allowed declarations per part kind are copied from check-specs.mjs, so there is one rule for both tools:\n- **text:** color, typography, fontWeight, textDecoration.\n- **glyph:** color, iconSize, opacity.\n- **slot:** nothing.\n- **container, control, layer:** everything.",
+    "A rule condition on a prop whose reflects is null fails, because styles cannot see that prop. This is why Button rules use the disabled state rather than the disabled prop.",
+    "If a rule styles the root but depends on a condition on another part, it fails rather than inventing :has(). None of the current specs does this.",
+    "Within a compound selector the order is: data-slot, then prop attributes in authored order, then state selectors, then the :not() precedence exclusions. Other parts come first, in anatomy order, as ancestors joined by a space.",
+    "Contract: React is imported as `import type * as React from 'react'`, and only when the spec has a node prop. Prop names that are not identifiers (dropdown-menu's 'item.tone') are written as quoted keys. Union type names are built from Name plus the PascalCase of the whole prop key (DropdownMenuItemTone). REFLECTS lists only props with a non-null reflects. A null default is emitted as null.",
+    "Docs pages list tokens as one table row per collection, with tokens separated by <br>. Requirements are one table with a Level column, ordered MUST, SHOULD, COULD. This brought the Button page from 186 lines to 135.",
+    "In tokens-used.json, 'rules' counts the spec's style entries that use the token, not the CSS rules written.",
+    "styles.css imports each component file without layer(); every generated file wraps itself in @layer ds.components. A hand-written <slug>.extensions.css must wrap itself in @layer ds.extensions.",
+    "Exit code is 1 when any spec cannot be built. The other specs and the cross-spec files are still written, covering only the specs that built.",
+    "The command line accepts slugs, for example `node v2/tools/build-components.mjs button`, to build only those specs."
+   ],
+   "problems_found_in_specs_or_tools": [
+    "**Button: a loading button can never look like it is loading.**\n- **The conflict:** the spec's announcement and requirement button-loading-stays-focusable set aria-disabled=\"true\" while loading, and the disabled state's selector is :is(:disabled, [aria-disabled=\"true\"]).\n- **What happens in a real render:** styles[29] (`[data-loading]:not(:is(:disabled, [aria-disabled=\"true\"]))`, cursor: progress) never matches. styles[30] paints the loading button with the disabled fill and text/disabled. That probably breaks button-label-contrast, which exempts only the disabled state.\n- **Where the fix belongs:** the generator is faithful to the spec, so the spec must change, either the disabled selector or the loading announcement.",
+    "**Button: the MUST requirement button-icon-only-needs-label (checked by type:) is not enforced by the generated contract.** iconOnly? and ariaLabel? are independent optional props. The schema has no field a generator could use to say 'required when another prop is true'.",
+    "**Precedence exclusion only covers stronger states on the same part, as the brief specifies.**\n- **Input example:** disabled, readOnly and invalid are on the root, while hover and focus are on the control.\n- **Why it still works today:** `[data-slot=\"input-control\"]:hover:not(:focus-within)` (input.css line 91) and `[data-slot=\"input\"][data-disabled] [data-slot=\"input-control\"]` (line 171) have equal specificity. The disabled look wins only because it comes later in source order.\n- **Risk:** reordering the spec's styles would let hover show on a disabled input.",
+    "**Specificity follows the plain :not() form the brief asks for, so 'read in order like a stylesheet' is not fully guaranteed.** A Button hover rule has specificity (0,5,0) and beats any later prop-only rule (0,2,0) that sets the same property. Button is unaffected today because every variant defines its own hover. Wrapping the exclusions in :where() would keep source order decisive; that is the lead's call.",
+    "**Dropdown-menu uses dotted prop names (item.children, checkboxItem.children, radioItem.children, all on the itemLabel part).** They become quoted keys in DropdownMenuItemLabelProps. It compiles, but a React adapter cannot use it as it stands. The spec or the schema needs a sub-component prop convention.",
+    "**check-specs.mjs disagrees with the lead's naming rule.** It reports size/control/md (and the other size/... names) as unknown tokens, so it gives errors on input, tabs and dialog that this generator treats as valid.",
+    "**Process: I ran v2/tools/check-specs.mjs --report-only once during orientation.** It always rewrites ds-components/generated/spec-index.json and test-ids.json, and neither file is on my MAY EDIT list. I confirmed spec-index.json was byte-identical to a copy taken before the run. I did not check test-ids.json.",
+    "**Process: I ran `git stash list` once, in the same command as the first check-specs run.** It only reads, but it belongs to the banned git stash family. Nothing was stashed or changed."
+   ],
+   "not_done": [
+    "Docs pages over the brief's limit of about 150 lines: dialog 163, tabs 159, input 174, dropdown-menu 219. Button is 135. I left these as they are because those specs are still being written.",
+    "The contract does not encode the button-icon-only-needs-label MUST (ariaLabel required when iconOnly is true). The schema needs a way to express a conditional requirement first.",
+    "I did not render the generated CSS in a browser. The stylesheet was checked by reading it and by self-test string assertions, not visually and not with axe.",
+    "No React adapter, stories or browser tests were generated; they were not in this task's scope.",
+    "The dialog, dropdown-menu, input and tabs specs are being written by others. They built at my final run; later edits may make them fail, and the build would then exit 1 for those specs."
+   ]
+  },
+  {
+   "what": "I built two tools. The first is a component gallery: v2/tools/build-gallery.mjs plus ds-components/gallery/src. The second is a browser test runner, v2/tools/test-components.mjs, that checks each component against its spec.\n\nThe gallery builder finds components by folder, ds-components/src/<slug>/<slug>.examples.tsx, and generates the import registry from that. It bundles a React 19 app with esbuild into ds-components/gallery/dist/: gallery.js, gallery.css, index.html and Geist-Variable.woff2.\n\nThe gallery supports these URL parameters: component, example, theme, density, dir and page=tokens. With a component and an example it renders only `<main data-gallery><section data-example data-component>`. It also has a page per component, an index page, and a token page. The token page shows every colour token in light and dark side by side, then the type, radius and spacing scales. Theme and density are visible select controls, and the page works at 320 px.\n\nThe runner serves the repo and drives headless Chromium. For each component it runs the generic checks:\n- errors, axe, overflow, contrast and target size, on every example in 5 configurations (light and dark at 320 and 1280 wide, plus light 320 compact).\n- focus visibility, using real Tab presses, in the same 5 configurations.\n\nIt also checks:\n- anatomy, across all of a component's examples.\n- the state map: each state is driven by its reach, then computed colours are compared with the values in tokens.json.\n- requirements: named test:, axe: and the rest.\n\nIt prints a table per component, writes ds-components/generated/test-report.json, and supports --shots, --component, --example, --headed and --gallery-shots.\n\nThe fixture lives in ds-components/gallery/fixture/ and is labelled in the gallery as a test fixture that is not shipped. It plants 7 required faults plus 6 extra ones.\n\nGallery screenshots are saved and I looked at them: ds-components/gallery/dist/gallery-index.png and ds-components/gallery/dist/gallery-tokens.png. There are also 320 px versions: gallery-index-320.png and gallery-tokens-320.png.",
+   "files_created": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-gallery.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/test-components.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/src/main.tsx",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/src/gallery.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/src/registry.generated.ts",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/fixture/fixture.tsx",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/fixture/fixture.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/fixture/fixture.examples.tsx",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/fixture/fixture.spec.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/fixture/fixture.tests.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/gallery.js",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/gallery.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/index.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/Geist-Variable.woff2",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/gallery-index.png",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/gallery-index-320.png",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/gallery-tokens.png",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist/gallery-tokens-320.png",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/test-report.json"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/build-gallery.mjs",
+     "exit_code": 0,
+     "last_line": "build-gallery: 1 components (1 fixture), wrote ds-components/gallery/dist/gallery.js, ds-components/gallery/dist/gallery.css, ds-components/gallery/dist/index.html, ds-components/gallery/dist/Geist-Variable.woff2"
+    },
+    {
+     "command": "node v2/tools/build-gallery.mjs --self-test",
+     "exit_code": 0,
+     "last_line": "build-gallery self-test: 8 of 8 planted cases handled"
+    },
+    {
+     "command": "node v2/tools/test-components.mjs --self-test",
+     "exit_code": 0,
+     "last_line": "test-components self-test: 23 of 23 expectations met (13 planted faults, clean examples, required passes, invalid spec)"
+    },
+    {
+     "command": "node v2/tools/test-components.mjs --gallery-shots",
+     "exit_code": 0,
+     "last_line": "0 components, 0 examples, 5 checks, 0 passed, 0 failed, 5 not reached or not run"
+    },
+    {
+     "command": "node v2/tools/test-components.mjs --component fixture --example clean",
+     "exit_code": 1,
+     "last_line": "1 components, 1 examples, 46 checks, 40 passed, 2 failed, 4 not reached or not run (exit 1 is expected: the fixture's planted requirement faults fail)"
+    }
+   ],
+   "headline_numbers": [
+    "Runner self-test: 23 of 23 expectations met. One line is printed per planted fault: 7 required faults (low contrast, 16 px control, outline none, missing required data-slot, element wider than the viewport, image with no alt, state colour that differs from its token) and 6 extras (unlisted data-slot, spec example missing from the examples file, unimplemented test, failing test, axe requirement broken, unreachable state). Further lines cover the clean and disabled examples passing every check (36 and 17), the required passes, and an invalid spec being reported rather than crashing the run.",
+    "Fixture run inside the self-test: 1 components, 9 examples, 283 checks, 240 passed, 40 failed, 3 not reached or not run",
+    "Normal run: 0 components, 0 examples, 5 checks, 0 passed, 0 failed, 5 not reached or not run. button, dialog, dropdown-menu, input and tabs have specs but no examples files yet, so each is listed as not run.",
+    "Build self-test: 8 of 8. Two builds produced identical gallery.js, gallery.css and registry (same shasum), and two normal runs produced identical test-report.json (same shasum)."
+   ],
+   "decisions_you_made": [
+    "The state-colour check follows the cascade. After driving a state, it finds every spec state that now matches the part, takes the rules whose states are a subset of those and whose props match the example (with defaults filled in), and uses the last declaring rule per property as the expected value. A property is compared only if a rule naming the driven state declares it. This is needed because Button's primary-hover rule overrides the generic hover rule.",
+    "For a non-prop state, a candidate example is skipped if the part is already in a state ranked stronger in precedence, for example hovering a disabled button. If every candidate is skipped, the state is reported as not reached.",
+    "The state check runs on every example that renders the part, in light and dark at 1280 wide, rather than only the first such example.",
+    "Token lookup for the colour check: the exact Themes name in tokens.json, then the name with /default appended, then ds-tokens/proposed/tokens.json. A token that is missing or has no value is a failure, never a skip. Colours match if each channel is within 1 and alpha within 0.01.",
+    "ds-components/src/styles.css is bundled through esbuild so that its @imports are inlined. It appeared mid-task and uses @import; pasted into the middle of the bundle, browsers would ignore every component stylesheet. The build self-test covers this.",
+    "CSS bundle order: Geist @font-face, tokens.css, styles.css (imports inlined), CSS imported by examples files, then gallery.css. The task's order is kept; the font face and example-imported CSS are additions.",
+    "The fixture always appears in the gallery dist, labelled 'test fixture, not shipped'. A normal runner run tests only components that have both a spec in ds-components/specs and an examples file; --component fixture runs the fixture.",
+    "test-report.json is written only on unfiltered normal runs, not on --self-test, --component or --example, so fixture results never overwrite the real report. Server URLs are normalised in the report and it has no timestamps, so repeated runs are byte-identical.",
+    "Specs with no examples file are recorded as not-run checks, so they are never mistaken for passing.",
+    "The axe check fails only on serious or critical violations; moderate and minor ones are listed in the detail. It runs on the whole single-example document. axe:<rule> requirements pass only when no example in any configuration violates the rule; an unknown rule id fails.",
+    "Contrast, target-size and focus-visible checks are recorded only when there is something to measure, which avoids passes with nothing checked. The contrast check skips text inside :disabled or [aria-disabled=true], ignores text runs of 1 px or smaller, and starts from white when no opaque ancestor is found.",
+    "Chromium launching copies the approach of scripts/check-screens.mjs but drops its npx install fallback, because downloads are banned. launchChromium and runAll are exported from test-components.mjs.",
+    "The gallery uses React development mode so that React warnings reach the errors check. index.html gets a data: favicon so a 404 does not count as a console error. Its do-not-edit comment is on line 2, after the doctype, to stay in standards mode.",
+    "Colour, type, spacing, radius, borders and focus rings in gallery.css are tokens only. Layout widths and the 48rem breakpoint are plain rem values, because no layout token exists and a media query cannot read var(). The file's header comment says so.",
+    "Named tests each run on a fresh page with a 30 second timeout. Tests in a tests file that no requirement names are still run and reported as not linked to a requirement."
+   ],
+   "problems_found_in_specs_or_tools": [
+    "HEAD's v2/tools/build-gallery.mjs, committed in bec216b, is an older copy of my file. It lacks the favicon line and the esbuild bundling of styles.css, so it pastes the @import lines mid-file and browsers would drop every component stylesheet. Whoever commits next must take the working copy.",
+    "ds-components/src/styles.css, generated by v2/tools/build-components.mjs, uses @import. Any tool that concatenates it must inline those imports.",
+    "The Playwright cache has a broken chromium-1148 (its framework is missing), and playwright-core 1.65's own revision, chromium-1255, is not installed. The launcher walks past both and finds a working cached build.",
+    "v2/tools/check-specs.mjs still reports errors in the real specs: Size tokens written with a size/ prefix (size/control/md, while the token is control/md), null defaults on boolean and enum props (dialog open, input inputMode), and Tabs keyboard entries naming tests that no requirement lists. For Size names the gallery and runner do not care, because the state check compares only colours.",
+    "All five real specs (button, dialog, dropdown-menu, input, tabs) pass schema validation in the runner, and running the pipeline against each did not crash."
+   ],
+   "not_done": [
+    "No real component has an examples file yet: ds-components/src/* holds only contract.ts and css files. So no real component has been tested in the browser; the only end-to-end proof is on the fixture.",
+    "The 'click' and 'key:<Key>' reaches are implemented, but no fixture state drives them, so they have not been run. Tabs and dropdown-menu will be the first to use them.",
+    "States driven by keyboard keys check whether any instance of a repeating part matches; their colour compare uses that instance. This logic is untested until Tabs has examples.",
+    "Portaled content (dialog, menu) is covered by checks that scan the whole document, but no fixture example uses a portal, so that path is unverified.",
+    "The focus-visible check measures only the computed outline. A focus ring drawn with box-shadow fails it by design.",
+    "Contrast ignores background images and gradients, and element opacity, beyond the visibility test.",
+    "The dir=rtl parameter is applied to the page but is not part of the test matrix."
+   ]
+  },
+  {
+   "what": "I wrote v2/tools/lint-components.mjs. It runs ten static checks on ds-components/src/, each reporting the check id, file:line and a plain-English message. It has three more modes: --size (an esbuild and gzip size report written to ds-components/generated/size-report.json), --types (writes ds-components/tsconfig.json and runs \"npx tsc -p ds-components/tsconfig.json\") and --self-test. The self-test exits 0: each of the ten checks caught its planted fault and no other check fired. The plain run does NOT exit 0 on the current tree. It exits 1 with three real \"layer\" errors: the generated button.css, button.contract.ts and dialog.contract.ts on disk differ from what v2/tools/build-components.mjs produces from the current specs when run in memory. For Button, the spec now has the variants danger, dangerSoft and outline, but the on-disk button.css still has error, first differing at line 103; button.contract.ts first differs at line 5. I did not regenerate them, because that tool writes files outside my edit list. TSX is parsed with the installed typescript package. CSS is parsed by a small parser in the file that keeps line numbers.",
+   "files_created": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/lint-components.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/tsconfig.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/size-report.json"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/lint-components.mjs --self-test",
+     "exit_code": 0,
+     "last_line": "lint-components self-test: 10 of 10 checks caught their planted fault."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs",
+     "exit_code": 1,
+     "last_line": "lint-components: 3 errors, 0 warnings; 0 hand-written and 11 generated files read under ds-components/src; 5 valid specs, 0 with source, 5 with no source yet."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --size --types (repo, run twice, then cmp on size-report.json and tsconfig.json)",
+     "exit_code": 0,
+     "last_line": "both-identical"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --types (after adding allowImportingTsExtensions and the @gallery/registry path)",
+     "exit_code": 1,
+     "last_line": "types: 0 errors in 0 files (tsc -p ds-components/tsconfig.json exited 0). (exit 1 came from the stale-generation lint errors, not from tsc)"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --root <scratch tree with a stub button.tsx importing @radix-ui/react-slot> --size",
+     "exit_code": 1,
+     "last_line": "size     button         CSS 915 B (within the 2048 row); JS own 197 B (within 5120); JS with Radix 1526 B (within 5120)"
+    }
+   ],
+   "headline_numbers": [
+    "Self-test: 10 of 10 checks caught their planted fault, exit 0, 11 lines printed (ten per-check PASS lines plus the summary line STYLE requires)",
+    "Plain run on the current tree: 3 errors (all check 'layer', stale generated files), 0 warnings, exit 1",
+    "Current tree: 5 valid specs, 0 with source, 5 with 'no source yet' notes; 11 generated files under ds-components/src, 0 hand-written",
+    "Type check: the first run gave 10 errors in 2 gallery files; after the two tsconfig additions, 0 errors (tsc exited 0)",
+    "Size report on the repo: 0 measured, 5 'no source yet'. On a scratch stub Button: CSS 915 B, JS own 197 B, JS with Radix 1526 B, all within the 2,048 / 5,120 rows (a stub, not the real component)",
+    "size-report.json and tsconfig.json were byte-identical across two runs"
+   ],
+   "decisions_you_made": [
+    "File layout taken from the brief, since nothing in the repo set one: src/<slug>/<slug>.tsx, <slug>.css (generated), <slug>.contract.ts (generated), <slug>.extensions.css, <slug>.examples.tsx, <slug>.tests.mjs, src/index.ts, gallery/pages/**/*.tsx. It is written in the tool's header comment.",
+    "'No source yet' means the component has no <slug>.tsx, not that its folder is missing. The generator had already created folders holding only generated files. If a folder has hand-written .ts/.tsx but no <slug>.tsx, that is an error under 'slots' so the checks cannot silently skip it.",
+    "A file whose first line says 'generated' and 'do not edit' is treated as generated. Generated files are left out of the hand-written checks and checked by check 4 instead.",
+    "Check 4 regeneration: build-components.mjs exports the pure functions buildAll and loadContext. The lint runs them in memory (nothing is written) and compares every generated file under src/ byte for byte: <slug>.css, <slug>.contract.ts and styles.css. If a spec does not build, its files are not compared, and neither is styles.css; a note says so instead of an error. If the tool or its exports are missing, only the header is checked and a note says so.",
+    "Spec-level problems are warnings and the spec is skipped: an unreadable or schema-invalid spec never fails this lint. check-specs.mjs owns spec validity.",
+    "Check 2 scope: hand-written files only. Allowed names are those defined in tokens.css plus tokens.json cssVar names, plus component-local --<slug>-* properties that the same folder declares, either in its CSS or as a style key. This avoids a conflict with check 3, which allows passing '--x' through style. A proposed-but-not-merged token is still an error, and the message says it is proposed.",
+    "Check 1 scope: in CSS, declaration values only. Unitless numbers and @media/@container conditions are not checked. Raw times (ms, s) are reported too. em and ch are allowed only on the inline-size properties. In TSX, hex colours and colour functions are checked in every string except href and to. Lengths and named colours are checked only in style values and in [bracketed] arbitrary values, so content text is not flagged.",
+    "Check 3: a non-literal style expression is an error, unless it is a pass-through whose name is style.",
+    "Check 6: a slot counts as mentioned if the hand-written source has the literal string, or if it reads <SLUG>_SLOTS.<part> from the generated contract. An unknown <SLUG>_SLOTS member is reported.",
+    "Check 7: only the top-level keys of exported object literals count (export const, export default, or a local exported by name, unwrapped through as/satisfies). A nested prop key such as loading: true does not satisfy the example id 'loading'.",
+    "--size: React (react, react-dom, react-dom/*, react/jsx-runtime) stays external in both measures. Radix is external only in the 'own code' measure. NODE_ENV is defined as production. Going over a row is reported; a component that fails to build fails the run.",
+    "tsconfig.json has two options beyond the listed ones: allowImportingTsExtensions, and paths for @gallery/registry pointing at gallery/src/registry.generated.ts. Without them the first --types run reported 10 errors in 2 gallery files: TS2307 for the alias plus 8 implicit-any errors that followed from it, and TS5097 for a .tsx import. Both options mirror the esbuild setup in v2/tools/build-gallery.mjs. strict is unchanged. After the change, 0 errors.",
+    "The self-test builds its fixture inline, in a mkdtemp directory that it deletes afterwards. It first checks that the clean fixture gives 0 errors, 1 warning (a half-written spec) and a 'no source yet' note. Then it plants one fault per check and requires that only that check fires."
+   ],
+   "problems_found_in_specs_or_tools": [
+    "The generated files on disk are stale against the current specs: ds-components/src/button/button.css (first difference at line 103: data-variant 'error' on disk vs 'danger' generated; the new outline and dangerSoft rules are missing), button.contract.ts (line 5, the variant union) and, on the final run, dialog.contract.ts (line 5). The fix is for someone allowed to write those files to rerun 'node v2/tools/build-components.mjs'. This is the only reason the plain lint exits 1.",
+    "On the final run, input.spec.json is valid against the schema but does not build in build-components.mjs buildAll(), so its generated files and src/styles.css were not compared.",
+    "The gallery's ds-components/gallery/src/main.tsx imports '@gallery/registry', which only the esbuild alias in build-gallery.mjs resolves. Without the added paths entry, tsc cannot resolve it.",
+    "Another agent committed an intermediate version of v2/tools/lint-components.mjs in commit bec216b while I was working, so git now shows the file as modified (M), not new. I did not commit anything.",
+    "The tree changed under me during the run: ds-components/src/, build-components.mjs, the gallery and dropdown-menu.spec.json all appeared. The lint results above are from the last run only."
+   ],
+   "not_done": [
+    "The done-criterion 'node v2/tools/lint-components.mjs exits 0 on the current tree' is NOT met. It exits 1 with 3 real stale-generation errors. I did not loosen check 4 to make it pass, and I did not regenerate the files, because they are outside my edit list.",
+    "The self-test does not plant a fault for the regeneration branch of check 4; its layer fault is a missing @layer wrapper. The regeneration branch was checked only on the real tree: it found the real Button and Dialog drift and passed the other generated files.",
+    "--size has measured only a scratch stub Button, not real components, because none exist yet. The repo's size-report.json lists all five as 'no source yet'.",
+    "Gallery pages (ds-components/gallery/pages/) do not exist yet, so check 9 has run there only in the self-test fixture."
+   ]
+  }
+ ],
+ "button": {
+  "what": "I built Button end to end from its spec, as the pattern for the other four components. Six of the seven commands exit 0. The browser test run exits 1 on one check, button-label-wraps, and the cause is the spec, not the code. The spec gives the root a fixed \"height\" (control/md, 40 px) and no block padding. The border is 1 px on each side, so 38 px is left inside it. The long label wraps to two lines of 20 px, which need 40 px. Measured at 320 and 375 wide: label 40 px tall, 38 px available, 40 px button. The text spills 1 px over the border at the top and bottom. Nothing clips it and it stays inside the side padding. The fix belongs in the spec: minHeight instead of height. I could not fix it in the extensions file: that layer outranks the generated styles, so it would override the spec's sizes and the 44 px touch rule. I kept the test strict.\n\nResults of the last test run: 636 checks, 631 passed, 1 failed, 4 not run. The 4 not run are the type, lint and two manual requirements, which this runner does not check. Generic checks passed for all 18 examples: page errors, axe, sideways overflow, contrast, target size and focus ring. Other results: 100 of 100 state checks, 2 of 2 anatomy checks, 13 of 14 requirement tests. Label contrast passed for all 54 pairs (9 variants, default, hover and pressed, light and dark). Focus ring, touch target (44 px with an emulated touch screen) and the keyboard, disabled and loading tests all passed.\n\nI checked that the tests catch real faults. When loading also set the native disabled attribute and the spinner lost aria-hidden, icons-hidden, loading-inert and loading-stays-focusable all failed. When I made ariaLabel optional for icon-only buttons, tsc exited 2 (unused @ts-expect-error at line 60). Both changes were then undone.\n\nI looked at the screenshots: the button page at 1280 light; long-label at 375 light; with-icons, loading and outline at 375 dark. Labels are not clipped, padding is right, and icons sit on the label line. Two things look wrong, and both come from the spec. The long label touches the top and bottom edges. A loading button looks exactly like a disabled one.\n\nTool fixes (both self-tests still pass):\n\n1. v2/tools/build-components.mjs did not support placeholderColor, which the schema allows. input.spec.json failed to build, so the plain build exited 1. It also silently dropped the input/input.css import from src/styles.css. What I changed:\n   - Added DECLARATIONS.placeholderColor = { collection: 'Themes', css: ['color'], keywords: COLOUR_KEYWORDS, pseudo: '::placeholder' }.\n   - In the declaration loop, a declaration with a pseudo goes into its own list (pseudoDecls) instead of the main one (mainDecls).\n   - Each pseudo list is written as a separate rule on the selector plus the pseudo-element.\n   - Added a self-test case. The self-test now passes 13 of 13 (12 before).\n   Side effects: Input's CSS, contract and docs page were regenerated (input.css now has [data-slot=\"input-input\"]::placeholder rules), and src/styles.css imports input.css again. Two runs give identical files.\n\n2. ds-components/gallery/src/gallery.css set font-size on html. That made 1rem 14 px and scaled every token by 0.875: buttons measured 35 px instead of 40, and the 44 px touch target would have been 38.5. I moved font-size and line-height from html to body. This file is not on my MAY EDIT list. I treated it as part of the gallery tool because it was blocking the measurements. Self-tests still pass: build-gallery 8 of 8, test-components 23 of 23, lint-components 10 of 10.",
+  "files_created": [
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.tsx",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.extensions.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.examples.tsx",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.tests.mjs",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/index.ts",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/icons.tsx",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/COMPONENT-PATTERN.md",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/shots/ (74 PNGs)",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-components.mjs (edited: placeholderColor fix)",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/src/gallery.css (edited: root font size, outside MAY EDIT)"
+  ],
+  "commands": [
+   {
+    "command": "node v2/tools/check-specs.mjs",
+    "exit_code": 0,
+    "last_line": "5 specs, 70 checks run, 0 findings"
+   },
+   {
+    "command": "node v2/tools/build-components.mjs (before fix)",
+    "exit_code": 1,
+    "last_line": "5 specs read, 4 built, 1 not built; 15 files written."
+   },
+   {
+    "command": "node v2/tools/build-components.mjs --self-test (after fix)",
+    "exit_code": 0,
+    "last_line": "Self-test: 13 of 13 planted checks passed."
+   },
+   {
+    "command": "node v2/tools/build-components.mjs (after fix)",
+    "exit_code": 0,
+    "last_line": "5 specs read, 5 built, 0 not built; 18 files written."
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs --types",
+    "exit_code": 0,
+    "last_line": "lint-components: 0 errors, 0 warnings; 5 hand-written and 11 generated files read under ds-components/src; 5 valid specs, 1 with source, 4 with no source yet."
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs",
+    "exit_code": 0,
+    "last_line": "lint-components: 0 errors, 0 warnings; 5 hand-written and 11 generated files read under ds-components/src; 5 valid specs, 1 with source, 4 with no source yet."
+   },
+   {
+    "command": "node v2/tools/build-gallery.mjs",
+    "exit_code": 0,
+    "last_line": "build-gallery: 2 components (1 fixture), wrote ds-components/gallery/dist/gallery.js, ds-components/gallery/dist/gallery.css, ds-components/gallery/dist/index.html, ds-components/gallery/dist/Geist-Variable.woff2"
+   },
+   {
+    "command": "node v2/tools/test-components.mjs --component button --shots ds-components/generated/shots",
+    "exit_code": 1,
+    "last_line": "1 components, 18 examples, 636 checks, 631 passed, 1 failed, 4 not reached or not run"
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs --size",
+    "exit_code": 0,
+    "last_line": "lint-components: 0 errors, 0 warnings; 5 hand-written and 11 generated files read under ds-components/src; 5 valid specs, 1 with source, 4 with no source yet."
+   },
+   {
+    "command": "node v2/tools/build-gallery.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "build-gallery self-test: 8 of 8 planted cases handled"
+   },
+   {
+    "command": "node v2/tools/test-components.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "test-components self-test: 23 of 23 expectations met (13 planted faults, clean examples, required passes, invalid spec)"
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "lint-components self-test: 10 of 10 checks caught their planted fault."
+   },
+   {
+    "command": "lint-components --types with ariaLabel made optional on ButtonIconOnlyProps (mutation, then undone)",
+    "exit_code": 1,
+    "last_line": "types: 1 error in 1 file (tsc -p ds-components/tsconfig.json exited 2). [60:1 TS2578 Unused '@ts-expect-error' directive]"
+   }
+  ],
+  "headline_numbers": [
+   "Button browser tests: 636 checks, 631 passed, 1 failed (button-label-wraps), 4 not run (type, lint, two manual)",
+   "Requirement tests: 13 of 14 pass; states 100 of 100; anatomy 2 of 2; generic checks pass for all 18 examples",
+   "Label contrast: 54 of 54 label and fill pairs at or above 4.5 to 1 (9 variants x default, hover, pressed x light, dark)",
+   "Label wrap failure: label 40 px tall (2 lines) in 38 px inside the border of a 40 px button, at both 320 and 375 wide",
+   "Loading label contrast, measured but exempt as aria-disabled: light 1.74 to 1 (#b7b9be on #f0f1f2), dark 2.42 to 1 (#63666b on #2b2c2f); cursor not-allowed, never progress",
+   "Size (gzip): CSS 1,293 B (row 2,048); JS own 822 B, with Radix 2,142 B (row 5,120); all within",
+   "Gallery root font size bug: buttons measured 35 px before the fix, 40 px after",
+   "build-components self-test: 13 of 13 (was 12 of 12)"
+  ],
+  "decisions_you_made": [
+   "Named the component file ds-components/src/button/button.tsx in lower case, not Button.tsx as the brief says. lint-components (checks 6 to 8 and --size) looks for <slug>.tsx. Button.tsx only passes on macOS because its disk ignores letter case; it would fail on a Linux machine.",
+   "Fixed build-components.mjs instead of only reporting the placeholderColor gap. The schema allows the declaration and check-specs already accepts it, but a failed build silently dropped input.css from src/styles.css.",
+   "Edited ds-components/gallery/src/gallery.css (moved font-size and line-height from html to body), although it is not on my MAY EDIT list. Setting the type size on html scaled every rem token by 0.875, which made the size and touch-target measurements meaningless.",
+   "Did not import button.extensions.css from button.tsx. The generated src/styles.css imports <slug>.extensions.css automatically once the file exists, so a second import would load it twice.",
+   "Kept every colour, border, padding, outline and size out of button.extensions.css. That layer outranks the generated styles, so setting any of them would silently override the spec. This is why I did not work around the label-wrap failure there.",
+   "The exported ButtonProps is a union: iconOnly: true requires ariaLabel. The contract's ButtonProps is imported as ButtonContractProps. onClick is retyped as React.MouseEventHandler<HTMLElement> because the contract types handlers as (...args: never[]) => void, which cannot be called. Native attributes the contract owns are left out of the pass-through.",
+   "Proved the type requirement with a // @ts-expect-error line in button.tsx; tsc fails if the union ever accepts iconOnly without ariaLabel. I confirmed this by mutation.",
+   "Examples expose presses through window.__buttonClicks[<example id>], counted from each example's onClick. Every 'press does nothing' test first shows that the same press counts on a live example.",
+   "asChild uses Radix Slot with Slottable's render-function form, so the link's text sits inside the label part. A link gets no type or disabled attribute; disabled and loading are said with aria-disabled.",
+   "Loading: aria-busy and aria-disabled are set, the native disabled attribute is never set, and the click handler calls preventDefault and returns. That also stops a submit button from submitting and a link from navigating. The spinner (an inline SVG) replaces iconStart.",
+   "The spinner turns with calc(var(--duration-base) * 5) because no looping-duration token exists. It stops entirely under prefers-reduced-motion.",
+   "button-touch-target turns on CDP touch emulation (Emulation.setTouchEmulationEnabled). Chromium ignores an override of the pointer media feature; I checked this with a scratch probe."
+  ],
+  "problems_found_in_specs_or_tools": [
+   "SPEC (button): the root uses height (fixed block-size control/md) with no paddingBlock. A label that wraps to two lines needs 40 px but only 38 px is left inside the 1 px borders. Measured at 320 and 375 wide. This fails requirement button-label-wraps. Suggested fix: minHeight instead of height (and possibly a paddingBlock token).",
+   "SPEC (button): a loading button sets aria-disabled=\"true\", so it matches the disabled state selector :is(:disabled, [aria-disabled=\"true\"]). Every loading button therefore takes the disabled look (light #b7b9be on #f0f1f2, 1.74 to 1; dark #63666b on #2b2c2f, 2.42 to 1) and cursor not-allowed. The loading rule's cursor: progress can never apply, because the generated selector adds :not(disabled). The runner's contrast check skips aria-disabled elements, so nothing fails. A loading button should probably keep its variant's look.",
+   "SPEC (button): children is required: true, and the generated contract types it as required, yet the icon-only example has no content. My union makes children optional only when iconOnly is true.",
+   "TOKENS: no token exists for a looping or spinner duration; the spinner uses calc(var(--duration-base) * 5).",
+   "TOOL (fixed): build-components.mjs had no DECLARATIONS entry for placeholderColor, which the schema allows. input.spec.json failed to build, the build exited 1, and src/styles.css lost its input.css import.",
+   "GALLERY (fixed): gallery.css set font-size on html, which made 1rem 14 px and scaled every token to 0.875 of its value. A 40 px button rendered at 35 px.",
+   "TOOL NAMING: lint-components requires <slug>.tsx, but the brief asked for Button.tsx; the two only agree on a disk that ignores letter case.",
+   "RUNNER: test-components reports type: requirements as not run. button-icon-only-needs-label is enforced by tsc, through lint-components --types, and is not counted in the test report."
+  ],
+  "not_done": [
+   "button-label-wraps still fails. Fixing it needs a spec change (minHeight instead of height), which I may not make.",
+   "Loading-looks-disabled is reported, not fixed (it is a spec issue).",
+   "The full test run without --component (which writes ds-components/generated/test-report.json) was not run; only the filtered button run was.",
+   "I read only some 375 px screenshots: long-label light; with-icons, loading and outline dark. I also read the 1280 light button page. I did not open every one of the 74 PNGs.",
+   "No commit, by the brief's ban."
+  ]
+ }
+}
