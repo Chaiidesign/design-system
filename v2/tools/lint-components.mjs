@@ -1,0 +1,878 @@
+#!/usr/bin/env node
+// Lints the hand-written component code in ds-components/src/ so that nothing off-system gets in.
+//
+//   node v2/tools/lint-components.mjs              run the ten checks below on the repo
+//   node v2/tools/lint-components.mjs --size       also bundle each component and write
+//                                                  ds-components/generated/size-report.json
+//   node v2/tools/lint-components.mjs --types      also write ds-components/tsconfig.json and run
+//                                                  "npx tsc -p ds-components/tsconfig.json"
+//   node v2/tools/lint-components.mjs --self-test  plant one fault per check in a temporary fixture
+//                                                  and confirm that check, and only that check, reports it
+//   --root <dir>                                   lint another tree laid out like this repo
+//
+// File layout this tool expects (nothing in the repo set one before it; the task brief did):
+//   ds-components/specs/<slug>.spec.json      the contract
+//   ds-components/src/<slug>/<slug>.tsx       the React component (plus any other .tsx/.ts helpers)
+//   ds-components/src/<slug>/<slug>.css       generated from the spec by v2/tools/build-components.mjs
+//   ds-components/src/<slug>/<slug>.extensions.css   hand-written CSS, inside @layer ds.extensions
+//   ds-components/src/<slug>/<slug>.examples.tsx     one key per example id in the spec
+//   ds-components/src/<slug>/<slug>.tests.mjs        one key per requirement checked by test:<id>
+//   ds-components/src/index.ts                       exports every component folder that has a spec
+//   ds-components/gallery/pages/**/*.tsx             gallery pages (only check 9 reads them)
+//
+// The ten checks. Each finding is an error with a file and line; any error makes the exit code 1.
+//   raw-value            no raw colour or length in *.extensions.css declarations or in *.tsx.
+//                        Allowed lengths: 0, 100%, 50%, auto, 1fr, 1px inside calc(), and em or ch on the
+//                        inline-size properties (text measure). Raw times (ms, s) are reported too.
+//                        Unitless numbers (line-height: 1, flex: 1) and @media / @container conditions
+//                        (which cannot take var()) are not checked. In .tsx, hex colours and colour
+//                        functions are looked for in every string; lengths and named colours only in
+//                        style={{}} values and in [bracketed] arbitrary values inside strings, so words
+//                        such as "red" or "Save 20%" in content are not reported.
+//   primitive-reference  every var(--x) in hand-written files (*.extensions.css, *.tsx) names a custom
+//                        property defined in ds-tokens/dist/tokens.css (or listed in tokens.json), or a
+//                        component-local property --<slug>-... that the same folder declares, either in
+//                        its CSS or as a style={{ '--x': v }} key. A local property must carry that prefix.
+//                        Generated <slug>.css is not read here: it is checked against its generator.
+//   no-inline-style      style={{ ... }} in *.tsx may only set custom properties. A non-literal style
+//                        expression is allowed only when it is a pass-through named style.
+//   layer                every *.extensions.css is wrapped in @layer ds.extensions; <slug>.css starts with
+//                        the generated header and, if v2/tools/build-components.mjs exports a function
+//                        with "css" in its name, equals what that function returns for the spec; any other
+//                        .css file under src/ is reported.
+//   logical-properties   no physical properties (left, top, margin-left, width, height, ...) and no
+//                        float/clear/text-align left or right in extensions CSS.
+//   slots                the component source mentions every anatomy part's data-slot value as a string,
+//                        and sets no data-slot string the spec does not list.
+//   examples-and-tests   <slug>.examples.tsx has a key per example id; <slug>.tests.mjs a key per test id.
+//   exports              ds-components/src/index.ts exports every component folder that has a spec.
+//   one-primary-per-view in *.examples.tsx and gallery pages, one JSX tree holds at most one variant="primary".
+//   focus-not-removed    no outline: none / 0 in extensions CSS without a :focus-visible rule in the same
+//                        file that draws an outline.
+//
+// A spec without a source folder is a note ("no source yet"), not an error. A spec that is not
+// readable or not valid against ds-components/schema/component.schema.json is a warning and is
+// skipped: proving specs valid is v2/tools/check-specs.mjs's job. TSX is parsed with the installed
+// typescript package; CSS with a small parser in this file that keeps line numbers.
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { dirname, join, relative, basename, resolve, sep } from 'node:path';
+import { tmpdir } from 'node:os';
+import { gzipSync, constants as zc } from 'node:zlib';
+import { spawnSync } from 'node:child_process';
+import { expectedSyntax } from './lib/snapshot.mjs';
+
+const require = createRequire(import.meta.url);
+const ts = require('typescript');
+const here = dirname(fileURLToPath(import.meta.url));
+const REPO = resolve(here, '..', '..');
+const SCHEMA_FILE = join(REPO, 'ds-components', 'schema', 'component.schema.json');
+const TOOL = 'v2/tools/lint-components.mjs';
+
+export const CHECKS = [
+  'raw-value', 'primitive-reference', 'no-inline-style', 'layer', 'logical-properties',
+  'slots', 'examples-and-tests', 'exports', 'one-primary-per-view', 'focus-not-removed',
+];
+
+const CSS_BUDGET = 2048; // bytes per component, the row in scripts/size.mjs and PROGRESS.md
+const JS_BUDGET = 5120;
+
+// ---------------------------------------------------------------- small helpers
+const isObj = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
+const readText = (f) => readFileSync(f, 'utf8');
+const toPosix = (p) => p.split(sep).join('/');
+
+function walk(dir, pred) {
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const name of readdirSync(dir).sort()) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) out.push(...walk(p, pred));
+    else if (pred(p)) out.push(p);
+  }
+  return out;
+}
+
+function lineStarts(text) {
+  const starts = [0];
+  for (let i = 0; i < text.length; i++) if (text[i] === '\n') starts.push(i + 1);
+  return starts;
+}
+function lineAt(starts, offset) {
+  let lo = 0, hi = starts.length - 1;
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (starts[mid] <= offset) lo = mid; else hi = mid - 1; }
+  return lo + 1;
+}
+
+const NAMED_COLOURS = new Set((
+  'aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue blueviolet brown ' +
+  'burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan darkblue darkcyan ' +
+  'darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange darkorchid darkred ' +
+  'darksalmon darkseagreen darkslateblue darkslategray darkslategrey darkturquoise darkviolet deeppink ' +
+  'deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite forestgreen fuchsia gainsboro ghostwhite gold ' +
+  'goldenrod gray green greenyellow grey honeydew hotpink indianred indigo ivory khaki lavender lavenderblush ' +
+  'lawngreen lemonchiffon lightblue lightcoral lightcyan lightgoldenrodyellow lightgray lightgreen lightgrey ' +
+  'lightpink lightsalmon lightseagreen lightskyblue lightslategray lightslategrey lightsteelblue lightyellow lime ' +
+  'limegreen linen magenta maroon mediumaquamarine mediumblue mediumorchid mediumpurple mediumseagreen ' +
+  'mediumslateblue mediumspringgreen mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin ' +
+  'navajowhite navy oldlace olive olivedrab orange orangered orchid palegoldenrod palegreen paleturquoise ' +
+  'palevioletred papayawhip peachpuff peru pink plum powderblue purple rebeccapurple red rosybrown royalblue ' +
+  'saddlebrown salmon sandybrown seagreen seashell sienna silver skyblue slateblue slategray slategrey snow ' +
+  'springgreen steelblue tan teal thistle tomato turquoise violet wheat white whitesmoke yellow yellowgreen ' +
+  // system colours are raw too
+  'canvas canvastext linktext visitedtext activetext buttonface buttontext buttonborder field fieldtext ' +
+  'highlight highlighttext selecteditem selecteditemtext mark marktext graytext accentcolor accentcolortext'
+).split(/\s+/));
+
+const UNIT = 'px|rem|em|ch|ex|vh|vw|vmin|vmax|svh|lvh|dvh|svw|lvw|dvw|cqi|cqb|cqw|cqh|cqmin|cqmax|pt|pc|cm|mm|q|in|lh|rlh|cap|ic|rem|fr|ms|s|%';
+const LENGTH_RE = new RegExp(`(?<![\\w#.\\-])([+-]?(?:\\d*\\.)?\\d+)(${UNIT})(?![\\w-])`, 'gi');
+const HEX_RE = /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![0-9a-zA-Z_-])/g;
+const COLOUR_FN_RE = /(?<![\w-])(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\s*\(/gi;
+const IDENT_RE = /(?<![\w#-])-?[a-zA-Z_][\w-]*/g;
+const MEASURE_PROPS = /^(min-|max-)?inline-size$/;
+
+// Scans one CSS value for raw colours and lengths. Returns [{ index, text, kind }].
+// prop is the property name when known (it decides whether em/ch are a text measure).
+export function scanValue(value, prop = '', { namedColours = true, lengths = true } = {}) {
+  const hits = [];
+  for (const m of value.matchAll(HEX_RE)) hits.push({ index: m.index, text: m[0], kind: 'colour' });
+  for (const m of value.matchAll(COLOUR_FN_RE)) hits.push({ index: m.index, text: m[1] + '()', kind: 'colour' });
+  if (namedColours) {
+    for (const m of value.matchAll(IDENT_RE)) {
+      if (m[0].startsWith('--')) continue;
+      if (value[m.index + m[0].length] === '(') continue; // a function name
+      if (NAMED_COLOURS.has(m[0].toLowerCase())) hits.push({ index: m.index, text: m[0], kind: 'colour' });
+    }
+  }
+  if (lengths) {
+    // ranges of calc(...) so that a 1px hairline inside one is allowed
+    const calcRanges = [];
+    for (const m of value.matchAll(/calc\s*\(/gi)) {
+      let depth = 0, j = m.index + m[0].length - 1;
+      for (; j < value.length; j++) { if (value[j] === '(') depth++; else if (value[j] === ')' && --depth === 0) break; }
+      calcRanges.push([m.index, j]);
+    }
+    for (const m of value.matchAll(LENGTH_RE)) {
+      const num = parseFloat(m[1]); const unit = m[2].toLowerCase();
+      if (num === 0) continue;
+      if (unit === '%' && (num === 100 || num === 50)) continue;
+      if (unit === 'fr' && num === 1) continue;
+      if (unit === 'px' && Math.abs(num) === 1 && calcRanges.some(([a, b]) => m.index > a && m.index < b)) continue;
+      if ((unit === 'em' || unit === 'ch') && MEASURE_PROPS.test(prop)) continue;
+      hits.push({ index: m.index, text: m[0], kind: unit === 'ms' || unit === 's' ? 'time' : 'length' });
+    }
+  }
+  return hits.sort((a, b) => a.index - b.index);
+}
+
+// ---------------------------------------------------------------- CSS parsing
+// Comments and the inside of strings become spaces, so offsets and line numbers stay true.
+function blankCss(src) {
+  let out = '';
+  for (let i = 0; i < src.length;) {
+    if (src[i] === '/' && src[i + 1] === '*') {
+      const end = src.indexOf('*/', i + 2); const stop = end < 0 ? src.length : end + 2;
+      out += src.slice(i, stop).replace(/[^\n]/g, ' '); i = stop; continue;
+    }
+    if (src[i] === '"' || src[i] === "'") {
+      const q = src[i]; let j = i + 1;
+      while (j < src.length && src[j] !== q && src[j] !== '\n') { if (src[j] === '\\') j++; j++; }
+      out += q + src.slice(i + 1, j).replace(/[^\n]/g, ' ') + (j < src.length ? src[j] : ''); i = j + 1; continue;
+    }
+    out += src[i++];
+  }
+  return out;
+}
+
+// Returns a tree: blocks { type:'block', prelude, line, children } and declarations
+// { type:'decl', prop, value, valueOffset, line }, plus statements { type:'at', text, line }.
+export function parseCss(src) {
+  const s = blankCss(src); const starts = lineStarts(s);
+  let i = 0;
+  const firstNonSpace = (a, b) => { while (a < b && /\s/.test(s[a])) a++; return a; };
+  function flush(nodes, segStart, end) {
+    const seg = s.slice(segStart, end); if (!seg.trim()) return;
+    const at = firstNonSpace(segStart, end);
+    if (s[at] === '@') { nodes.push({ type: 'at', text: s.slice(at, end).trim(), line: lineAt(starts, at) }); return; }
+    const colon = s.indexOf(':', at);
+    if (colon < 0 || colon >= end) { nodes.push({ type: 'junk', text: seg.trim(), line: lineAt(starts, at) }); return; }
+    const rawProp = s.slice(at, colon).trim();
+    const prop = rawProp.startsWith('--') ? rawProp : rawProp.toLowerCase();
+    nodes.push({ type: 'decl', prop, value: s.slice(colon + 1, end), valueOffset: colon + 1, line: lineAt(starts, at), starts });
+  }
+  function parseList(inBlock) {
+    const nodes = []; let segStart = i;
+    while (i < s.length) {
+      const c = s[i];
+      if (c === '(') { let d = 0; do { if (s[i] === '(') d++; else if (s[i] === ')') d--; i++; } while (i < s.length && d > 0); continue; }
+      if (c === '{') {
+        const at = firstNonSpace(segStart, i);
+        const prelude = s.slice(segStart, i).trim(); const line = lineAt(starts, at);
+        i++; const children = parseList(true);
+        nodes.push({ type: 'block', prelude, line, children });
+        segStart = i; continue;
+      }
+      if (c === '}') {
+        flush(nodes, segStart, i); i++;
+        if (inBlock) return nodes;
+        nodes.push({ type: 'junk', text: '}', line: lineAt(starts, i - 1) }); segStart = i; continue;
+      }
+      if (c === ';') { flush(nodes, segStart, i); i++; segStart = i; continue; }
+      i++;
+    }
+    flush(nodes, segStart, i);
+    return nodes;
+  }
+  return parseList(false);
+}
+
+// Every declaration with the preludes of the blocks around it, outermost first.
+function* declarations(nodes, context = []) {
+  for (const n of nodes) {
+    if (n.type === 'decl') yield { ...n, context };
+    else if (n.type === 'block') yield* declarations(n.children, [...context, n.prelude]);
+  }
+}
+const declLine = (d, offsetInValue) => lineAt(d.starts, d.valueOffset + offsetInValue);
+function customPropertiesDeclared(nodes) {
+  const names = new Set();
+  for (const d of declarations(nodes)) if (d.prop.startsWith('--')) names.add(d.prop);
+  return names;
+}
+
+// ---------------------------------------------------------------- TSX parsing
+function parseTs(file, text) {
+  const kind = file.endsWith('.tsx') ? ts.ScriptKind.TSX : file.endsWith('.ts') ? ts.ScriptKind.TS : ts.ScriptKind.JS;
+  return ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
+}
+function visit(node, fn) { fn(node); ts.forEachChild(node, (c) => visit(c, fn)); }
+const nodeLine = (sf, node) => sf.getLineAndCharacterOfPosition(node.getStart(sf)).line + 1;
+const isStringish = (n) => ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n);
+const isTemplatePart = (n) => n.kind === ts.SyntaxKind.TemplateHead || n.kind === ts.SyntaxKind.TemplateMiddle || n.kind === ts.SyntaxKind.TemplateTail;
+function unwrap(e) {
+  while (e && (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isSatisfiesExpression(e) || ts.isTypeAssertionExpression(e) || ts.isNonNullExpression(e))) e = e.expression;
+  return e;
+}
+function propName(name) {
+  if (!name) return null;
+  if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name) || ts.isNoSubstitutionTemplateLiteral(name)) return name.text;
+  if (ts.isComputedPropertyName(name) && isStringish(unwrap(name.expression))) return unwrap(name.expression).text;
+  return null;
+}
+const attrName = (a) => (ts.isJsxAttribute(a) ? (ts.isIdentifier(a.name) ? a.name.text : a.name.getText()) : null);
+function stringsUnder(node) {
+  const out = [];
+  visit(node, (n) => { if (isStringish(n)) out.push(n); });
+  return out;
+}
+function isImportPath(n) {
+  const p = n.parent;
+  return p && (ts.isImportDeclaration(p) || ts.isExportDeclaration(p) || ts.isExternalModuleReference(p) ||
+    (ts.isCallExpression(p) && (p.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(p.expression) && p.expression.text === 'require'))));
+}
+const isJsxNode = (n) => ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n);
+
+// ---------------------------------------------------------------- context
+function loadSchemaValidator() {
+  const Ajv2020 = require('ajv/dist/2020.js');
+  const Ajv = Ajv2020.default ?? Ajv2020;
+  const ajv = new Ajv({ strict: false, allErrors: true, validateFormats: false, logger: false });
+  return ajv.compile(JSON.parse(readText(SCHEMA_FILE)));
+}
+
+function loadTokenNames(root) {
+  const names = new Set(); const sources = [];
+  const css = join(root, 'ds-tokens', 'dist', 'tokens.css');
+  if (existsSync(css)) {
+    for (const m of blankCss(readText(css)).matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)) names.add(m[1]);
+    sources.push('ds-tokens/dist/tokens.css');
+  }
+  const json = join(root, 'ds-tokens', 'dist', 'tokens.json');
+  if (existsSync(json)) {
+    try {
+      const t = JSON.parse(readText(json)); const list = Array.isArray(t) ? t : Array.isArray(t?.tokens) ? t.tokens : [];
+      for (const x of list) if (isObj(x) && typeof x.cssVar === 'string') names.add(x.cssVar);
+      sources.push('ds-tokens/dist/tokens.json');
+    } catch { /* tokens.css is the authority; a broken json only loses the extra names */ }
+  }
+  const proposed = new Set();
+  const pf = join(root, 'ds-tokens', 'proposed', 'tokens.json');
+  if (existsSync(pf)) {
+    try {
+      for (const x of JSON.parse(readText(pf))) {
+        if (isObj(x) && typeof x.name === 'string' && typeof x.collection === 'string') {
+          const m = expectedSyntax(x).match(/var\((--[^)]+)\)/); if (m) proposed.add(m[1]);
+        }
+      }
+    } catch { /* hint only */ }
+  }
+  return { names, proposed, sources };
+}
+
+function loadSpecs(root, validate, findings, notes) {
+  const dir = join(root, 'ds-components', 'specs');
+  const specs = [];
+  if (!existsSync(dir)) { notes.push('ds-components/specs/ does not exist: no specs to check against.'); return specs; }
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.spec.json')).sort()) {
+    const rel = `ds-components/specs/${f}`;
+    let spec;
+    try { spec = JSON.parse(readText(join(dir, f))); } catch (e) {
+      findings.push({ check: 'spec', severity: 'warning', file: rel, line: 1, message: `not readable JSON (${e.message.split('\n')[0]}); skipped. v2/tools/check-specs.mjs owns spec validity.` });
+      continue;
+    }
+    if (!validate(spec)) {
+      const first = validate.errors.slice(0, 2).map((e) => `${e.instancePath || '/'} ${e.message}`).join('; ');
+      findings.push({ check: 'spec', severity: 'warning', file: rel, line: 1, message: `not valid against component.schema.json (${validate.errors.length} problem${validate.errors.length === 1 ? '' : 's'}, first: ${first}); skipped. v2/tools/check-specs.mjs owns spec validity.` });
+      continue;
+    }
+    specs.push({
+      file: rel, spec, slug: spec.slug,
+      slots: Object.values(spec.anatomy).map((p) => p.slot),
+      partBySlot: new Map(Object.entries(spec.anatomy).map(([k, p]) => [p.slot, k])),
+      exampleIds: spec.examples.map((e) => e.id),
+      testIds: spec.requirements.filter((r) => r.check.startsWith('test:')).map((r) => r.check.slice(5)),
+    });
+  }
+  return specs;
+}
+
+// A file whose first line says it is generated and must not be edited.
+function isGeneratedFile(f) {
+  if (!/\.(css|ts|tsx|mjs|js|json)$/.test(f)) return false;
+  const first = readText(f).split('\n')[0];
+  return /generated/i.test(first) && /do not edit/i.test(first);
+}
+
+// Runs build-components.mjs's pure buildAll() in memory. Returns { map: rel path -> text, failed: Set of slugs } or null.
+async function regenerate(root, notes) {
+  const tool = join(root, 'v2', 'tools', 'build-components.mjs');
+  const headerOnly = 'generated files are checked for their header only, not regenerated';
+  if (!existsSync(tool)) { notes.push(`v2/tools/build-components.mjs does not exist yet: ${headerOnly}.`); return null; }
+  let mod;
+  try { mod = await import(pathToFileURL(tool).href); } catch (e) { notes.push(`v2/tools/build-components.mjs could not be loaded (${e.message.split('\n')[0]}): ${headerOnly}.`); return null; }
+  if (typeof mod.buildAll !== 'function' || typeof mod.loadContext !== 'function') { notes.push(`v2/tools/build-components.mjs does not export buildAll and loadContext: ${headerOnly}.`); return null; }
+  try {
+    const dir = join(root, 'ds-components', 'specs');
+    const entries = (existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.spec.json')).sort() : []).map((f) => {
+      const e = { file: f };
+      try { e.spec = JSON.parse(readText(join(dir, f))); } catch (err) { e.error = `the file is not readable JSON: ${err.message}`; }
+      return e;
+    });
+    const ctx = { ...mod.loadContext(), extensionExists: (slug) => existsSync(join(root, 'ds-components', 'src', slug, `${slug}.extensions.css`)) };
+    const { files, results } = mod.buildAll(entries, ctx);
+    const map = new Map([...files].filter(([k]) => k.startsWith('ds-components/src/')));
+    const failedFiles = results.filter((r) => !r.ok).map((r) => r.file);
+    notes.push(`generated files are compared with an in-memory run of v2/tools/build-components.mjs buildAll()${failedFiles.length ? `; ${failedFiles.join(', ')} did not build, so their generated files and src/styles.css are not compared` : ''}.`);
+    return { map, failed: new Set(failedFiles.map((f) => f.replace(/\.spec\.json$/, ''))) };
+  } catch (e) { notes.push(`v2/tools/build-components.mjs buildAll() threw (${e.message.split('\n')[0]}): ${headerOnly}.`); return null; }
+}
+
+// ---------------------------------------------------------------- the lint
+// Returns { findings: [{ check, severity, file, line, message }], notes: [string] }.
+export async function lintTree(root = REPO) {
+  const findings = []; const notes = [];
+  const add = (check, file, line, message) => findings.push({ check, severity: 'error', file, line, message });
+  const rel = (p) => toPosix(relative(root, p));
+  const validate = loadSchemaValidator();
+  const tokens = loadTokenNames(root);
+  if (!tokens.sources.length) notes.push('ds-tokens/dist/tokens.css not found: every var() reference will be reported.');
+  const specs = loadSpecs(root, validate, findings, notes);
+  const srcDir = join(root, 'ds-components', 'src');
+  const galleryPages = join(root, 'ds-components', 'gallery', 'pages');
+  const bySlug = new Map(specs.map((s) => [s.slug, s]));
+
+  const folders = existsSync(srcDir) ? readdirSync(srcDir).filter((n) => statSync(join(srcDir, n)).isDirectory()).sort() : [];
+  if (!existsSync(srcDir)) notes.push('ds-components/src/ does not exist yet.');
+  // A component "has source" once its hand-written <slug>.tsx exists; a folder holding only generated files does not count.
+  const hasSource = (slug) => existsSync(join(srcDir, slug, `${slug}.tsx`));
+  for (const s of specs) {
+    if (!folders.includes(s.slug)) notes.push(`${s.slug}: no source yet (ds-components/src/${s.slug}/ does not exist); slots, examples-and-tests and exports skipped for it.`);
+    else if (!hasSource(s.slug)) notes.push(`${s.slug}: no source yet (ds-components/src/${s.slug}/ has no ${s.slug}.tsx yet); slots, examples-and-tests and exports skipped for it.`);
+  }
+  for (const f of folders) if (!bySlug.has(f)) notes.push(`ds-components/src/${f}/ has no valid spec; it is linted for raw values, references, inline styles, layers and logical properties only.`);
+
+  // Per folder: local custom properties (declared in its CSS or set as style keys in its TSX).
+  const folderOf = (file) => { const r = toPosix(relative(srcDir, file)); return r.includes('/') ? r.split('/')[0] : null; };
+  const local = new Map(); // folder -> Set of names
+  const addLocal = (folder, name) => { if (!folder) return; if (!local.has(folder)) local.set(folder, new Set()); local.get(folder).add(name); };
+
+  const allSrc = walk(srcDir, () => true);
+  const generatedFiles = allSrc.filter(isGeneratedFile);
+  const handWritten = allSrc.filter((f) => !generatedFiles.includes(f));
+  const extCss = allSrc.filter((f) => f.endsWith('.extensions.css'));
+  const otherCss = allSrc.filter((f) => f.endsWith('.css') && !f.endsWith('.extensions.css'));
+  const tsxFiles = handWritten.filter((f) => f.endsWith('.tsx'));
+
+  const parsedCss = new Map();
+  for (const f of [...extCss, ...otherCss]) {
+    const tree = parseCss(readText(f)); parsedCss.set(f, tree);
+    for (const n of customPropertiesDeclared(tree)) addLocal(folderOf(f), n);
+  }
+  const parsedTs = new Map();
+  for (const f of tsxFiles) {
+    const sf = parseTs(f, readText(f)); parsedTs.set(f, sf);
+    visit(sf, (n) => {
+      if (ts.isJsxAttribute(n) && attrName(n) === 'style' && n.initializer && ts.isJsxExpression(n.initializer)) {
+        const e = unwrap(n.initializer.expression);
+        if (e && ts.isObjectLiteralExpression(e)) for (const p of e.properties) { const k = propName(p.name); if (k && k.startsWith('--')) addLocal(folderOf(f), k); }
+      }
+    });
+  }
+
+  const checkVarName = (file, line, name, folder) => {
+    if (tokens.names.has(name)) return;
+    if (folder && name.startsWith(`--${folder}-`) && local.get(folder)?.has(name)) return;
+    let why = `${name} is not a token defined in ds-tokens/dist/tokens.css`;
+    if (tokens.proposed.has(name)) why += ' (it is proposed in ds-tokens/proposed/tokens.json but not merged into tokens.css yet)';
+    else if (folder && name.startsWith(`--${folder}-`)) why += ` and nothing in ds-components/src/${folder}/ declares it`;
+    else why += '; components may not reach primitives or invent tokens';
+    add('primitive-reference', file, line, why + '.');
+  };
+
+  // ---- CSS checks: 1, 2, 4, 5, 10
+  const PHYSICAL = {
+    left: 'inset-inline-start', right: 'inset-inline-end', top: 'inset-block-start', bottom: 'inset-block-end',
+    width: 'inline-size', height: 'block-size', 'min-width': 'min-inline-size', 'max-width': 'max-inline-size',
+    'min-height': 'min-block-size', 'max-height': 'max-block-size',
+    'border-top-left-radius': 'border-start-start-radius', 'border-top-right-radius': 'border-start-end-radius',
+    'border-bottom-left-radius': 'border-end-start-radius', 'border-bottom-right-radius': 'border-end-end-radius',
+  };
+  const SIDE = { left: 'inline-start', right: 'inline-end', top: 'block-start', bottom: 'block-end' };
+  const physicalFix = (prop) => {
+    if (PHYSICAL[prop]) return PHYSICAL[prop];
+    const m = prop.match(/^(margin|padding|scroll-margin|scroll-padding|border)-(left|right|top|bottom)(-.+)?$/);
+    return m ? `${m[1]}-${SIDE[m[2]]}${m[3] ?? ''}` : null;
+  };
+
+  for (const f of extCss) {
+    const file = rel(f); const tree = parsedCss.get(f); const folder = folderOf(f);
+    // 4 layer: every top-level node is an @layer ds.extensions block
+    for (const n of tree) {
+      if (n.type === 'block' && /^@layer\s+ds\.extensions$/.test(n.prelude)) continue;
+      const what = n.type === 'block' ? `"${n.prelude}" block` : n.type === 'decl' ? `declaration ${n.prop}` : `"${n.text}"`;
+      add('layer', file, n.line, `${what} sits outside @layer ds.extensions; wrap the whole file in @layer ds.extensions { ... }.`);
+    }
+    let removed = [];
+    let restored = false;
+    for (const d of declarations(tree)) {
+      const v = d.value.trim();
+      // 1 raw-value
+      for (const h of scanValue(d.value, d.prop)) add('raw-value', file, declLine(d, h.index), `raw ${h.kind} ${h.text} in ${d.prop}; use a token, var(--...).`);
+      // 2 primitive-reference
+      for (const m of d.value.matchAll(/var\(\s*(--[A-Za-z0-9_-]+)/g)) checkVarName(file, declLine(d, m.index), m[1], folder);
+      if (d.prop.startsWith('--')) {
+        if (!folder || !d.prop.startsWith(`--${folder}-`)) add('primitive-reference', file, d.line, `declares ${d.prop}; a component-local custom property must start with --${folder ?? '<slug>'}-.`);
+        else if (tokens.names.has(d.prop)) add('primitive-reference', file, d.line, `redefines the token ${d.prop}.`);
+      }
+      // 5 logical-properties
+      if (!d.prop.startsWith('--')) {
+        const fix = physicalFix(d.prop);
+        if (fix) add('logical-properties', file, d.line, `${d.prop} is a physical property; use ${fix}.`);
+        if (/^(float|clear|text-align)$/.test(d.prop) && /^(left|right)$/i.test(v)) add('logical-properties', file, d.line, `${d.prop}: ${v} is physical; use ${v.toLowerCase() === 'left' ? 'start' : 'end'}${d.prop === 'text-align' ? '' : ' (inline-start / inline-end)'}.`);
+      }
+      // 10 focus-not-removed
+      const removes = (d.prop === 'outline' && /^(none|0[a-z%]*)(\s|$)/i.test(v)) || (d.prop === 'outline-style' && /^none$/i.test(v)) || (d.prop === 'outline-width' && /^0[a-z%]*$/i.test(v));
+      if (removes) removed.push(d);
+      const draws = ['outline', 'outline-style', 'outline-width'].includes(d.prop) && !removes && v !== '';
+      if (draws && d.context.some((c) => c.includes(':focus-visible'))) restored = true;
+    }
+    if (!restored) for (const d of removed) add('focus-not-removed', file, d.line, `${d.prop}: ${d.value.trim()} removes the focus outline and no :focus-visible rule in this file draws one back.`);
+  }
+
+  // 4 layer: CSS other than *.extensions.css must be generated, and every generated file must equal a fresh
+  // in-memory build by v2/tools/build-components.mjs (when that tool exists and exports buildAll).
+  for (const f of otherCss) {
+    if (generatedFiles.includes(f)) continue;
+    const folder = folderOf(f);
+    add('layer', rel(f), 1, folder && basename(f) === `${folder}.css`
+      ? 'does not start with the generated header ("Generated by v2/tools/build-components.mjs ... Do not edit"), so it was written or edited by hand; regenerate it.'
+      : 'hand-written CSS goes in <slug>.extensions.css; any other CSS under ds-components/src/ must be generated by v2/tools/build-components.mjs.');
+  }
+  if (generatedFiles.length) {
+    const regen = await regenerate(root, notes);
+    if (regen) {
+      for (const f of generatedFiles) {
+        const file = rel(f); const folder = folderOf(f);
+        if (!regen.map.has(file)) {
+          if (folder && regen.failed.has(folder)) continue; // its spec did not build; already noted
+          if (!folder && regen.failed.size) continue;      // shared files depend on every spec building
+          add('layer', file, 1, 'carries a generated header, but build-components.mjs does not generate this file from the current specs; it is stale or made by hand.');
+          continue;
+        }
+        if (!folder && regen.failed.size) continue;
+        const text = readText(f); const want = regen.map.get(file);
+        if (text !== want) {
+          const a = text.split('\n'), b = want.split('\n'); let k = 0; while (k < a.length && a[k] === b[k]) k++;
+          add('layer', file, k + 1, 'differs from what v2/tools/build-components.mjs generates from the current spec (first difference on this line): it was edited by hand or the spec changed since the last build. Do not edit it; rerun node v2/tools/build-components.mjs.');
+        }
+      }
+    }
+  }
+
+  // ---- TSX checks: 1, 2, 3
+  for (const f of tsxFiles) {
+    const file = rel(f); const sf = parsedTs.get(f); const folder = folderOf(f);
+    visit(sf, (n) => {
+      // string text anywhere: colours, var() names, bracketed arbitrary values
+      if ((isStringish(n) || isTemplatePart(n)) && !isImportPath(n)) {
+        const parentAttr = n.parent && ts.isJsxAttribute(n.parent) ? attrName(n.parent) : null;
+        const text = n.text;
+        if (parentAttr !== 'href' && parentAttr !== 'to') {
+          for (const h of scanValue(text, '', { namedColours: false, lengths: false })) add('raw-value', file, nodeLine(sf, n), `raw colour ${h.text} in a string; use a token.`);
+        }
+        for (const m of text.matchAll(/\[([^\]\s]+)\]/g)) {
+          for (const h of scanValue(m[1].replace(/_/g, ' '), '', { lengths: true }).filter((h) => h.kind !== 'colour' || !/^#|\(\)$/.test(h.text))) {
+            add('raw-value', file, nodeLine(sf, n), `raw ${h.kind} ${h.text} in the arbitrary value [${m[1]}]; use a token.`);
+          }
+        }
+        for (const m of text.matchAll(/var\(\s*(--[A-Za-z0-9_-]+)/g)) checkVarName(file, nodeLine(sf, n), m[1], folder);
+      }
+      // 3 no-inline-style, and 1 on style values
+      if (ts.isJsxAttribute(n) && attrName(n) === 'style') {
+        const init = n.initializer;
+        const e = init && ts.isJsxExpression(init) ? unwrap(init.expression) : null;
+        if (!e) { add('no-inline-style', file, nodeLine(sf, n), 'style must be an object that sets custom properties only.'); return; }
+        if (ts.isObjectLiteralExpression(e)) {
+          for (const p of e.properties) {
+            const k = ts.isPropertyAssignment(p) ? propName(p.name) : null;
+            if (!k || !k.startsWith('--')) {
+              add('no-inline-style', file, nodeLine(sf, p), `style sets ${k ?? p.getText(sf).slice(0, 40)}; only custom properties (style={{ '--x': value }}) are allowed. Put the rule in the extensions CSS.`);
+              continue;
+            }
+            const val = unwrap(p.initializer);
+            if (ts.isNumericLiteral(val) && Number(val.text) !== 0) add('raw-value', file, nodeLine(sf, p), `raw number ${val.text} for ${k}; use a token.`);
+            if (isStringish(val)) for (const h of scanValue(val.text, '').filter((h) => !(h.kind === 'colour' && /^#|\(\)$/.test(h.text)))) add('raw-value', file, nodeLine(sf, p), `raw ${h.kind} ${h.text} for ${k}; use a token.`);
+          }
+        } else {
+          const last = ts.isIdentifier(e) ? e.text : ts.isPropertyAccessExpression(e) ? e.name.text : null;
+          if (last !== 'style') add('no-inline-style', file, nodeLine(sf, n), 'style is not an object literal, so it cannot be checked; only a pass-through named style is allowed.');
+        }
+      }
+    });
+  }
+
+  // ---- per spec with source: 6 slots, 7 examples-and-tests
+  // A slot counts as mentioned when the hand-written source has the string, or reads it from the generated
+  // contract's constant (BUTTON_SLOTS.label for the part "label"). Generated files are not component source.
+  for (const s of specs) {
+    if (!hasSource(s.slug)) continue;
+    const dir = join(srcDir, s.slug);
+    const sources = walk(dir, (p) => /\.(tsx|ts)$/.test(p) && !p.endsWith('.examples.tsx') && !/\.tests\.[mc]?[jt]s$/.test(p) && !generatedFiles.includes(p));
+    const mainFile = join(dir, `${s.slug}.tsx`);
+    const SLOTS_CONST = `${s.slug.toUpperCase().replace(/-/g, '_')}_SLOTS`;
+    const strings = new Set();
+    for (const f of sources) {
+      const sf = parsedTs.get(f) ?? parseTs(f, readText(f));
+      visit(sf, (n) => {
+        if (isStringish(n)) strings.add(n.text);
+        if (ts.isPropertyAccessExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === SLOTS_CONST) {
+          const part = s.spec.anatomy[n.name.text];
+          if (part) strings.add(part.slot);
+          else add('slots', rel(f), nodeLine(sf, n), `${SLOTS_CONST}.${n.name.text} is not an anatomy part of ${s.file}.`);
+        }
+        const isSlotAttr = ts.isJsxAttribute(n) && attrName(n) === 'data-slot';
+        const isSlotKey = ts.isPropertyAssignment(n) && propName(n.name) === 'data-slot';
+        if (isSlotAttr || isSlotKey) {
+          const target = n.initializer;
+          if (!target) return;
+          for (const lit of stringsUnder(target)) if (!s.slots.includes(lit.text)) add('slots', rel(f), nodeLine(sf, lit), `data-slot "${lit.text}" is not an anatomy part of ${s.file}; the spec lists ${s.slots.join(', ')}.`);
+        }
+      });
+    }
+    for (const slot of s.slots) if (!strings.has(slot)) add('slots', rel(mainFile), 1, `no string "${slot}" in the component source: every anatomy part carries data-slot="${slot}".`);
+
+    const keysOf = (f) => {
+      const sf = parseTs(f, readText(f)); const keys = new Set();
+      visit(sf, (n) => {
+        if ((ts.isPropertyAssignment(n) || ts.isShorthandPropertyAssignment(n) || ts.isMethodDeclaration(n) || ts.isGetAccessorDeclaration(n)) && ts.isObjectLiteralExpression(n.parent)) {
+          const k = propName(n.name); if (k !== null) keys.add(k);
+        }
+      });
+      return keys;
+    };
+    const ex = join(dir, `${s.slug}.examples.tsx`);
+    if (!existsSync(ex)) add('examples-and-tests', rel(ex), 1, `missing; it needs a key for each example id: ${s.exampleIds.join(', ')}.`);
+    else { const k = keysOf(ex); for (const id of s.exampleIds) if (!k.has(id)) add('examples-and-tests', rel(ex), 1, `no key "${id}" for the example of that id in ${s.file}.`); }
+    const tf = join(dir, `${s.slug}.tests.mjs`);
+    if (!existsSync(tf)) { if (s.testIds.length) add('examples-and-tests', rel(tf), 1, `missing; it needs a key for each test id: ${s.testIds.join(', ')}.`); }
+    else { const k = keysOf(tf); for (const id of s.testIds) if (!k.has(id)) add('examples-and-tests', rel(tf), 1, `no key "${id}" for the requirement checked by test:${id} in ${s.file}.`); }
+  }
+
+  // ---- 8 exports
+  const withSource = specs.filter((s) => hasSource(s.slug));
+  if (withSource.length) {
+    const idx = join(srcDir, 'index.ts');
+    if (!existsSync(idx)) add('exports', rel(idx), 1, `missing; it must export ${withSource.map((s) => s.slug).join(', ')}.`);
+    else {
+      const sf = parseTs(idx, readText(idx)); const from = [];
+      visit(sf, (n) => { if (ts.isExportDeclaration(n) && n.moduleSpecifier && isStringish(n.moduleSpecifier)) from.push(n.moduleSpecifier.text); });
+      for (const s of withSource) {
+        const re = new RegExp(`^\\./${s.slug}(/[^/]+)?(\\.(tsx?|js))?$`);
+        if (!from.some((m) => re.test(m))) add('exports', rel(idx), 1, `does not export ${s.slug}: add export ... from './${s.slug}/${s.slug}'.`);
+      }
+    }
+  }
+
+  // ---- 9 one-primary-per-view
+  const viewFiles = [...tsxFiles.filter((f) => f.endsWith('.examples.tsx')), ...walk(galleryPages, (p) => p.endsWith('.tsx'))];
+  for (const f of viewFiles) {
+    const sf = parsedTs.get(f) ?? parseTs(f, readText(f));
+    const roots = [];
+    visit(sf, (n) => {
+      if (!isJsxNode(n)) return;
+      let p = n.parent; while (p && !isJsxNode(p)) p = p.parent;
+      if (!p) roots.push(n);
+    });
+    for (const r of roots) {
+      const primaries = [];
+      visit(r, (n) => {
+        if (ts.isJsxAttribute(n) && attrName(n) === 'variant' && n.initializer) {
+          const v = ts.isStringLiteral(n.initializer) ? n.initializer : ts.isJsxExpression(n.initializer) ? unwrap(n.initializer.expression) : null;
+          if (v && isStringish(v) && v.text === 'primary') primaries.push(n);
+        }
+      });
+      if (primaries.length > 1) add('one-primary-per-view', rel(f), nodeLine(sf, r), `this JSX tree has ${primaries.length} elements with variant="primary" (lines ${primaries.map((p) => nodeLine(sf, p)).join(', ')}); a view has at most one.`);
+    }
+  }
+
+  findings.sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : a.line - b.line || CHECKS.indexOf(a.check) - CHECKS.indexOf(b.check)));
+  return { findings, notes, specs, withSource: specs.filter((s) => hasSource(s.slug)).map((s) => s.slug), handWritten: handWritten.length, generated: generatedFiles.length };
+}
+
+function printLint(result) {
+  for (const n of result.notes) console.log(`note     ${n}`);
+  for (const f of result.findings) console.log(`${f.severity.padEnd(8)} ${f.check.padEnd(21)} ${f.file}:${f.line}  ${f.message}`);
+  const errors = result.findings.filter((f) => f.severity === 'error').length;
+  const warnings = result.findings.length - errors;
+  const withSrc = result.withSource.length;
+  return { errors, warnings, line: `lint-components: ${errors} error${errors === 1 ? '' : 's'}, ${warnings} warning${warnings === 1 ? '' : 's'}; ${result.handWritten} hand-written and ${result.generated} generated file${result.generated === 1 ? '' : 's'} read under ds-components/src; ${result.specs.length} valid spec${result.specs.length === 1 ? '' : 's'}, ${withSrc} with source, ${result.specs.length - withSrc} with no source yet.` };
+}
+
+// ---------------------------------------------------------------- --size
+const REACT_EXTERNAL = ['react', 'react-dom', 'react-dom/*', 'react/jsx-runtime', 'react/jsx-dev-runtime'];
+const gz = (buf) => gzipSync(buf, { level: zc.Z_BEST_COMPRESSION }).length;
+
+async function sizeReport(root, specs, withSource) {
+  const esbuild = await import('esbuild');
+  const srcDir = join(root, 'ds-components', 'src');
+  const rows = []; let failed = 0;
+  const common = {
+    bundle: true, write: false, minify: true, format: 'esm', platform: 'browser', target: 'es2022', jsx: 'automatic',
+    define: { 'process.env.NODE_ENV': '"production"' }, legalComments: 'none', logLevel: 'silent',
+    nodePaths: [join(REPO, 'node_modules')], absWorkingDir: root, outdir: join(root, '.size-out'),
+  };
+  for (const s of [...specs].sort((a, b) => a.slug.localeCompare(b.slug))) {
+    const dir = join(srcDir, s.slug);
+    if (!withSource.includes(s.slug)) { rows.push({ component: s.slug, status: 'no source yet' }); continue; }
+    const entry = [`${s.slug}.tsx`, 'index.tsx', 'index.ts'].map((n) => join(dir, n)).find(existsSync);
+    const row = { component: s.slug, status: 'measured' };
+    let css = '';
+    for (const n of [`${s.slug}.css`, `${s.slug}.extensions.css`]) if (existsSync(join(dir, n))) css += readText(join(dir, n)) + '\n';
+    try {
+      const min = css ? (await esbuild.transform(css, { loader: 'css', minify: true, legalComments: 'none' })).code : '';
+      row.cssBytes = min ? gz(Buffer.from(min)) : 0;
+    } catch (e) { row.status = 'build failed'; row.error = `CSS: ${e.message.split('\n')[0]}`; failed++; rows.push(row); continue; }
+    if (!entry) { row.status = 'no entry'; row.error = `no ${s.slug}.tsx or index.ts(x) in ds-components/src/${s.slug}/`; failed++; rows.push(row); continue; }
+    try {
+      const own = await esbuild.build({ ...common, entryPoints: [entry], external: [...REACT_EXTERNAL, '@radix-ui/*', '*.css'] });
+      const all = await esbuild.build({ ...common, entryPoints: [entry], external: [...REACT_EXTERNAL, '*.css'] });
+      const js = (r) => r.outputFiles.filter((o) => o.path.endsWith('.js')).reduce((n, o) => n + gz(Buffer.from(o.contents)), 0);
+      row.jsOwnBytes = js(own); row.jsWithRadixBytes = js(all);
+    } catch (e) { row.status = 'build failed'; row.error = `JS: ${(e.errors?.[0]?.text ?? e.message).split('\n')[0]}`; failed++; rows.push(row); continue; }
+    row.css = row.cssBytes <= CSS_BUDGET ? 'within' : 'over';
+    row.jsOwn = row.jsOwnBytes <= JS_BUDGET ? 'within' : 'over';
+    row.jsWithRadix = row.jsWithRadixBytes <= JS_BUDGET ? 'within' : 'over';
+    rows.push(row);
+  }
+  const report = {
+    $comment: `Generated by ${TOOL} --size from ds-components/src/. Do not edit; rerun the tool.`,
+    method: 'esbuild 0.28 bundle, minified, ES2022, then gzip level 9. CSS is <slug>.css plus <slug>.extensions.css, minified. jsOwnBytes keeps React and every @radix-ui package external; jsWithRadixBytes bundles @radix-ui and still keeps React external, since the host app ships React once. CSS imports are external to the JS measure.',
+    external: { always: REACT_EXTERNAL, ownCodeOnly: ['@radix-ui/*'] },
+    rows: { cssBytesPerComponent: CSS_BUDGET, jsBytesPerComponent: JS_BUDGET, source: 'scripts/size.mjs and PROGRESS.md (the plain-HTML system\'s rows). The owner has not set a budget for the React adapter, so going over a row is reported, not failed.' },
+    components: rows,
+  };
+  const out = join(root, 'ds-components', 'generated', 'size-report.json');
+  mkdirSync(dirname(out), { recursive: true });
+  writeFileSync(out, JSON.stringify(report, null, 2) + '\n');
+  console.log(`size: React (${REACT_EXTERNAL.join(', ')}) is external in both measures; @radix-ui/* is external only in "own".`);
+  for (const r of rows) {
+    if (r.status !== 'measured') { console.log(`size     ${r.component.padEnd(14)} ${r.status}${r.error ? ': ' + r.error : ''}`); continue; }
+    console.log(`size     ${r.component.padEnd(14)} CSS ${r.cssBytes} B (${r.css} the ${CSS_BUDGET} row); JS own ${r.jsOwnBytes} B (${r.jsOwn} ${JS_BUDGET}); JS with Radix ${r.jsWithRadixBytes} B (${r.jsWithRadix} ${JS_BUDGET})`);
+  }
+  const measured = rows.filter((r) => r.status === 'measured');
+  const over = measured.filter((r) => r.css === 'over' || r.jsOwn === 'over' || r.jsWithRadix === 'over').map((r) => r.component);
+  console.log(`size: ${measured.length} measured, ${rows.filter((r) => r.status === 'no source yet').length} with no source yet${failed ? `, ${failed} failed to build` : ''}; ${over.length ? 'over a row: ' + over.join(', ') + ' (reported, not failed)' : 'none over a row'}. Wrote ${toPosix(relative(root, out))}.`);
+  return failed ? 1 : 0;
+}
+
+// ---------------------------------------------------------------- --types
+const TSCONFIG = `// Generated by ${TOOL} --types. Do not edit; change the tool and rerun it.
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["src", "gallery"]
+}
+`;
+
+function typeCheck(root) {
+  const cfg = join(root, 'ds-components', 'tsconfig.json');
+  writeFileSync(cfg, TSCONFIG);
+  const r = spawnSync('npx', ['tsc', '-p', toPosix(relative(root, cfg))], { cwd: root, encoding: 'utf8' });
+  const out = `${r.stdout ?? ''}${r.stderr ?? ''}`;
+  if (r.error) { console.log(`types: could not run npx tsc (${r.error.message})`); return 1; }
+  if (/TS18003/.test(out)) { console.log('types: no .ts or .tsx files in ds-components/src or ds-components/gallery yet; nothing to type-check (tsc TS18003).'); return 0; }
+  const byFile = new Map();
+  for (const line of out.split('\n')) {
+    const m = line.match(/^(.+?)\((\d+),(\d+)\): error (TS\d+): (.*)$/);
+    if (m) { if (!byFile.has(m[1])) byFile.set(m[1], []); byFile.get(m[1]).push(`${m[2]}:${m[3]} ${m[4]} ${m[5]}`); }
+  }
+  for (const [f, errs] of [...byFile].sort()) { console.log(`types    ${f}: ${errs.length} error${errs.length === 1 ? '' : 's'}`); for (const e of errs) console.log(`           ${e}`); }
+  const n = [...byFile.values()].reduce((a, b) => a + b.length, 0);
+  if (r.status !== 0 && n === 0) { console.log(out.trim()); console.log(`types: tsc exited ${r.status}`); return 1; }
+  console.log(`types: ${n} error${n === 1 ? '' : 's'} in ${byFile.size} file${byFile.size === 1 ? '' : 's'} (tsc -p ds-components/tsconfig.json exited ${r.status}).`);
+  return r.status === 0 ? 0 : 1;
+}
+
+// ---------------------------------------------------------------- --self-test
+const FIXTURE_SPEC = {
+  schemaVersion: '0.1.0', name: 'Chip', slug: 'chip', stage: 'alpha', summary: 'A fixture for the lint self-test.',
+  anatomy: {
+    root: { kind: 'container', role: null, slot: 'chip', element: 'span', description: 'The root.' },
+    label: { kind: 'text', role: null, slot: 'chip-label', element: 'span', description: 'The words.' },
+  },
+  props: { variant: { on: 'root', type: 'enum', values: ['primary', 'secondary'], default: 'secondary', reflects: 'data-variant', description: 'Weight.' } },
+  states: {},
+  styles: [{ when: {}, parts: { root: { background: 'surface/primary' } } }],
+  accessibility: { pattern: 'None', name: { from: 'The label.' }, keyboard: [], focus: {} },
+  requirements: [
+    { id: 'chip-renders', level: 'MUST', text: 'Renders.', check: 'test:chip-renders' },
+    { id: 'chip-reads-well', level: 'SHOULD', text: 'Reads well.', check: 'manual:chip-reads-well' },
+  ],
+  examples: [{ id: 'plain', title: 'Plain', props: {}, content: 'Tag' }, { id: 'with-primary', title: 'With primary', props: { variant: 'primary' }, content: 'Tag' }],
+  notCarried: [],
+};
+function fixture() {
+  return {
+    'ds-tokens/dist/tokens.css': ':root { --color-surface-primary: #ffffff; --color-text-primary: #111111; --spacing-static-80: 8px; --border-focus-width: 2px; --color-border-focus: #0000ff; }\n',
+    'ds-components/specs/chip.spec.json': JSON.stringify(FIXTURE_SPEC, null, 2),
+    'ds-components/specs/later.spec.json': JSON.stringify({ ...FIXTURE_SPEC, name: 'Later', slug: 'later' }, null, 2),
+    'ds-components/specs/half-written.spec.json': '{ "schemaVersion": "0.1.0", "name": ',
+    'ds-components/src/index.ts': "export { Chip } from './chip/chip';\n",
+    'ds-components/src/chip/chip.tsx': [
+      "import './chip.css';",
+      "import './chip.extensions.css';",
+      "import type { CSSProperties, ReactNode } from 'react';",
+      "export function Chip({ variant = 'secondary', children, measure }: { variant?: 'primary' | 'secondary'; children: ReactNode; measure?: string }) {",
+      '  return (',
+      "    <span data-slot=\"chip\" data-variant={variant} style={{ '--chip-measure': measure } as CSSProperties}>",
+      '      <span data-slot="chip-label">{children}</span>',
+      '    </span>',
+      '  );',
+      '}',
+      '',
+    ].join('\n'),
+    'ds-components/src/chip/chip.css': '/* Generated by v2/tools/build-components.mjs from ds-components/specs/chip.spec.json. Do not edit. */\n@layer ds.components { [data-slot="chip"] { background: var(--color-surface-primary); } }\n',
+    'ds-components/src/chip/chip.extensions.css': [
+      '@layer ds.extensions {',
+      '  [data-slot="chip"] {',
+      '    max-inline-size: var(--chip-measure, 40ch);',
+      '    padding-inline: var(--spacing-static-80);',
+      '    inline-size: calc(100% - 1px);',
+      '    outline: none;',
+      '  }',
+      '  [data-slot="chip"]:focus-visible {',
+      '    outline: var(--border-focus-width) solid var(--color-border-focus);',
+      '  }',
+      '}',
+      '',
+    ].join('\n'),
+    'ds-components/src/chip/chip.examples.tsx': [
+      "import { Chip } from './chip';",
+      'export const examples = {',
+      '  plain: () => <Chip>Tag</Chip>,',
+      "  'with-primary': () => (<div><Chip variant=\"primary\">Tag</Chip><Chip>Other</Chip></div>),",
+      '};',
+      '',
+    ].join('\n'),
+    'ds-components/src/chip/chip.tests.mjs': "export const tests = {\n  'chip-renders': async () => {},\n};\n",
+    'ds-components/gallery/pages/chips.tsx': "import { Chip } from '../../src/chip/chip';\nexport default function Page() {\n  return (<main><Chip variant=\"primary\">A</Chip><Chip>B</Chip></main>);\n}\n",
+  };
+}
+const edit = (key, from, to) => (files) => {
+  if (!files[key].includes(from)) throw new Error(`self-test fixture: "${from}" not found in ${key}`);
+  return { ...files, [key]: files[key].replace(from, to) };
+};
+const EXT = 'ds-components/src/chip/chip.extensions.css';
+const PLANTS = {
+  'raw-value': ['a hex colour in the extensions CSS', edit(EXT, '    outline: none;', '    color: #ff0000;\n    outline: none;')],
+  'primitive-reference': ['var(--neutral-light-100), a primitive', edit(EXT, '    outline: none;', '    background: var(--neutral-light-100);\n    outline: none;')],
+  'no-inline-style': ['style={{ padding: ... }} in chip.tsx', edit('ds-components/src/chip/chip.tsx', "'--chip-measure': measure }", "'--chip-measure': measure, padding: 'var(--spacing-static-80)' }")],
+  'layer': ['extensions CSS without @layer ds.extensions', (f) => ({ ...f, [EXT]: f[EXT].replace('@layer ds.extensions {\n', '').replace(/\}\n$/, '') })],
+  'logical-properties': ['margin-left in the extensions CSS', edit(EXT, '    outline: none;', '    margin-left: var(--spacing-static-80);\n    outline: none;')],
+  'slots': ['data-slot="chip-text" in place of chip-label', edit('ds-components/src/chip/chip.tsx', 'data-slot="chip-label"', 'data-slot="chip-text"')],
+  'examples-and-tests': ['no key chip-renders in chip.tests.mjs', (f) => ({ ...f, 'ds-components/src/chip/chip.tests.mjs': 'export const tests = {};\n' })],
+  'exports': ['index.ts that exports nothing', (f) => ({ ...f, 'ds-components/src/index.ts': 'export {};\n' })],
+  'one-primary-per-view': ['two variant="primary" in one example tree', edit('ds-components/src/chip/chip.examples.tsx', '<Chip>Other</Chip>', '<Chip variant="primary">Other</Chip>')],
+  'focus-not-removed': ['outline: none with the :focus-visible rule removed', edit(EXT, '  [data-slot="chip"]:focus-visible {\n    outline: var(--border-focus-width) solid var(--color-border-focus);\n  }\n', '')],
+};
+
+function writeTree(dir, files) {
+  for (const [p, text] of Object.entries(files)) { const f = join(dir, p); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, text); }
+}
+
+async function selfTest() {
+  const base = mkdtempSync(join(tmpdir(), 'lint-components-'));
+  let failed = 0;
+  try {
+    // Baseline: the clean fixture has no errors, one warning (the half-written spec) and a "no source yet" note.
+    const clean = join(base, 'clean'); writeTree(clean, fixture());
+    const r0 = await lintTree(clean);
+    const errs0 = r0.findings.filter((f) => f.severity === 'error');
+    const warn0 = r0.findings.filter((f) => f.severity === 'warning');
+    const noted = r0.notes.some((n) => n.startsWith('later: no source yet'));
+    if (errs0.length || warn0.length !== 1 || !noted) {
+      failed++;
+      console.log(`FAIL baseline: the clean fixture should give 0 errors, 1 warning and a "no source yet" note; got ${errs0.length} errors, ${warn0.length} warnings, note ${noted ? 'present' : 'absent'}`);
+      for (const f of r0.findings) console.log(`     ${f.check} ${f.file}:${f.line} ${f.message}`);
+    }
+    for (const check of CHECKS) {
+      const [what, plant] = PLANTS[check];
+      const dir = join(base, check); writeTree(dir, plant(fixture()));
+      const r = await lintTree(dir);
+      const errs = r.findings.filter((f) => f.severity === 'error');
+      const mine = errs.filter((f) => f.check === check);
+      const others = [...new Set(errs.filter((f) => f.check !== check).map((f) => f.check))];
+      if (mine.length && !others.length) console.log(`PASS ${check}: planted ${what}; reported at ${mine[0].file}:${mine[0].line}`);
+      else { failed++; console.log(`FAIL ${check}: planted ${what}; expected only ${check}, got ${errs.length ? [...new Set(errs.map((f) => f.check))].join(', ') : 'nothing'}`); }
+    }
+  } finally { rmSync(base, { recursive: true, force: true }); }
+  console.log(`lint-components self-test: ${CHECKS.length - Math.min(failed, CHECKS.length)} of ${CHECKS.length} checks caught their planted fault${failed ? `; ${failed} failure${failed === 1 ? '' : 's'}` : ''}.`);
+  return failed ? 1 : 0;
+}
+
+// ---------------------------------------------------------------- main
+async function main(argv) {
+  if (argv.includes('--self-test')) return selfTest();
+  const ri = argv.indexOf('--root');
+  const root = ri >= 0 && argv[ri + 1] ? resolve(argv[ri + 1]) : REPO;
+  const result = await lintTree(root);
+  const { errors, line } = printLint(result);
+  let code = errors ? 1 : 0;
+  if (argv.includes('--size')) code = Math.max(code, await sizeReport(root, result.specs, result.withSource));
+  if (argv.includes('--types')) code = Math.max(code, typeCheck(root));
+  console.log(line);
+  return code;
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+  process.exitCode = await main(process.argv.slice(2));
+}
