@@ -43,7 +43,7 @@ const KEYWORDS = new Set(['none', 'transparent', 'current', 'inherit', 'full']);
 // the token name (a type role "label-base" is the variable font-size/label-base).
 const PROPERTY_COLLECTION = {
   background: { collection: 'Themes' }, color: { collection: 'Themes' },
-  borderColor: { collection: 'Themes' }, outlineColor: { collection: 'Themes' },
+  borderColor: { collection: 'Themes' }, outlineColor: { collection: 'Themes' }, placeholderColor: { collection: 'Themes' },
   paddingInline: { collection: 'Density' }, paddingBlock: { collection: 'Density' }, gap: { collection: 'Density' },
   radius: { collection: 'Radius' },
   typography: { collection: 'Typography', prefix: 'font-size/' },
