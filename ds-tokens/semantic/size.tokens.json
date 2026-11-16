@@ -14,7 +14,8 @@
           "com.souvenir.why": "Radius has height/32, so a 32 pixel control exists in the design; nothing names its height.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-control-sm)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "md": {
@@ -29,7 +30,8 @@
           "com.souvenir.why": "Radius has height/40.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-control-md)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "lg": {
@@ -44,7 +46,8 @@
           "com.souvenir.why": "Radius has height/44.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-control-lg)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     },
@@ -61,7 +64,8 @@
           "com.souvenir.why": "32 and 40 pixel controls are small for a thumb. WCAG 2.2 AA asks 24; Apple and WCAG AAA ask 44.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-target-min)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     },
@@ -78,7 +82,8 @@
           "com.souvenir.why": "No icon size token exists.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-icon-sm)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "md": {
@@ -93,7 +98,8 @@
           "com.souvenir.why": "No icon size token exists.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-icon-md)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     },
@@ -110,7 +116,8 @@
           "com.souvenir.why": "A dialog needs a maximum width.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-dialog-sm)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "md": {
@@ -125,7 +132,8 @@
           "com.souvenir.why": "A dialog needs a maximum width.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-dialog-md)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     },
@@ -142,7 +150,8 @@
           "com.souvenir.why": "A menu narrower than its trigger looks broken.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-menu-min)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "max": {
@@ -157,7 +166,8 @@
           "com.souvenir.why": "Long item text must wrap, not run off the screen.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--size-menu-max)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     }

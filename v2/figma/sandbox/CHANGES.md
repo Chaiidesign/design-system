@@ -84,3 +84,84 @@ In Figma (by hand, or with a use_figma script that acts on these exact ids only)
    "(DS V2)"), then the 4 "(DS V2 primitives)" collections. Deleting a collection deletes its variables.
 
 Nothing outside these 15 objects needs touching. To put it all back, rerun `scripts/01` to `scripts/05` in order; they are idempotent.
+
+---
+
+# Components and screens added on 16 November 2026 (second step)
+
+Written by the generated scripts in `component-scripts/` and `screen-scripts/`, made by `node v2/tools/figma/make-component-scripts.mjs`
+from `ds-components/specs/*.spec.json` and `ds-tokens/dist/tokens.json`. Every script checks `figma.fileKey` and refuses any file
+other than Souvenir-test (3WGIouA6dby5LNzVkdaA48). No other Figma file was written to. The scripts only read the "(DS V2)"
+variables and effect styles and bind to them; no variable, collection or style was created, renamed or changed.
+
+## Pages added (2)
+
+| Page | Id | Root frame |
+| --- | --- | --- |
+| DS V2 · Components (added by Claude) | 4039:2 | DS V2 components (generated), 4039:3 |
+| DS V2 · Screens (added by Claude) | 4048:2 | DS V2 screens (generated), 4048:3 |
+
+## Components page: sections (each a light frame and a dark frame; the dark frame has Themes (DS V2) set to dark)
+
+| Section row | Light frame | Dark frame | Contents |
+| --- | --- | --- | --- |
+| Section · Icons 4039:4 | 4039:5 | 4039:8 | 9 components Icon/check 4039:14, Icon/chevron-down 4039:17, Icon/chevron-up 4039:20, Icon/plus 4039:23, Icon/x 4039:26, Icon/alert-circle 4039:30, Icon/arrow-up 4039:35, Icon/loader 4039:38, Icon/dot 4039:41; dark: a row of instances |
+| Section · Button 4041:11 | 4041:12 | 4041:15 | component set Button 4041:655, 114 variants (variant × state × size, iconOnly for primary and ghost); dark: frame "Button · instances" 4041:656 |
+| Section · Input 4044:512 | 4044:513 | 4044:516 | component set Input 4044:660, 21 variants (state × size); dark: "Input · instances" 4044:661 |
+| Section · Tabs 4045:635 | 4045:636 | 4045:639 | component set TabsTrigger 4045:706, 20 variants (state × variant × size); dark: 4045:707; example frames Tabs · horizontal 4045:772 (dark copy 4045:788), Tabs · vertical 4045:796 (dark copy 4045:812) |
+| Section · DropdownMenu 4046:711 | 4046:712 | 4046:715 | component set DropdownMenuItem 4046:770, 14 variants (kind × state × variant); components DropdownMenuLabel 4046:818, DropdownMenuSeparator 4046:822, DropdownMenuContent 4046:824 (the model selector); dark: 4046:771 and one instance of each component |
+| Section · Dialog 4047:783 | 4047:784 | 4047:787 | component set DialogContent 4047:852, 2 variants (size); dark: 4047:853; example frame Dialog · example 4047:896 (dark copy 4047:918) |
+
+174 variants and standalone components in all, plus 9 icon components.
+
+## Screens page: frames
+
+| Row | Light | Dark (clone, Themes (DS V2) set to dark) |
+| --- | --- | --- |
+| Row · Assistant · desktop 4048:4 | Assistant · desktop · light 4048:5 (1280 × 800) | 4048:799 |
+| Row · Delete project · mobile 4049:102 | Delete project · mobile · light 4050:190 (375 × 812) | 4050:1028 |
+
+Built only from instances of the components above, plus frames and text whose paints, paddings, gaps, radii and type are bound
+to "(DS V2)" variables.
+
+## Run log (honest record)
+
+- 00 ran three times (first as generated; then unchanged-in-effect after a runtime fix; then after the paint fix below). Second and
+  third runs created nothing: same ids.
+- 01a first failed (the runtime renamed each variant to "root"; Figma rolled the whole call back, nothing was left). The generator
+  was fixed and 01a rerun. 01b, 02, 03, 04, 05 each ran once. Before 05 the generator was fixed so a full-width part drawn on its own
+  keeps its template width (DialogContent had collapsed to "FILL").
+- Screen 01 ran once; screen 02 ran twice (second time the dialog moved to the bottom of the phone so the dimmed page and its two
+  buttons stay visible; the row is rebuilt by name).
+- Paint fix: re-running a script left the section frames of Icons and Button showing Figma's stored placeholder grey, because
+  re-binding a paint to the same variable does not recompute its stored colour. The runtime's `paint` now stores the colour the
+  variable resolves to for that node. 00 was rerun and a new generated script, 06-refresh-section-paints, re-applied the section
+  frame paints; it rebuilt nothing. Consequence: the files 01a to 05 and both screen scripts now on disk differ from the versions
+  that ran only in that `paint` helper (one definition and its call sites). Bindings are the same; the read-back below proves them.
+- Read-back: `v2/tools/figma/readback.figma.js` (read-only) ran with ONLY = null, after 05 and the screens, before the paint fix.
+  `node v2/tools/figma-readback-check.mjs <that output>` printed "174 variants, 3623 bindings checked, 0 mismatches, 0 raw values";
+  `--self-test` caught a planted wrong fill and a planted raw stroke weight. Results in `readback.json`.
+
+## Nothing that existed before was edited or deleted
+
+Counts read before the first write of this step (`component-scripts/before-counts.json`) and after the last write:
+
+| | Before | After |
+| --- | --- | --- |
+| Pages | 19 | 21 (+2, the pages above) |
+| Top-level nodes on each of the 19 earlier pages | 2,1,0,0,1,1,1,2,0,0,3,3,2,0,3,3,4,2,1 | identical, page by page |
+| Variable collections | 20 | 20 |
+| Variables | 961 | 961 |
+| Effect styles | 5 | 5 |
+| Text styles | 8 | 8 |
+| Paint styles / grid styles | 0 / 0 | 0 / 0 |
+
+Every write goes to a node the scripts created on one of the two new pages (find or create by name; rebuilds only remove children
+of nodes they made). The scripts call no variable or style setter.
+
+## How to remove it
+
+Delete the pages "DS V2 · Screens (added by Claude)" (4048:2) and then "DS V2 · Components (added by Claude)" (4039:2). Nothing else
+was added. To rebuild: run `component-scripts/00`, `01a`, `01b`, `02`, `03`, `04`, `05`, `06`, then `screen-scripts/01` and `02`.
+Rerunning a component script rebuilds its variants in place, which drops overrides on screen instances (the swapped icons), so rerun
+the screen scripts after any component script.

@@ -1,0 +1,2147 @@
+{
+ "checked": "2026-11-16",
+ "summary": "174 variants, 3623 bindings checked, 0 mismatches, 0 raw values",
+ "counts": {
+  "variants": 174,
+  "bindingsChecked": 3623,
+  "noPaintChecks": 191,
+  "mismatches": 0,
+  "rawValues": 0,
+  "extraBindings": 0
+ },
+ "readAt": [
+  "2026-11-16T15:46:45.074Z"
+ ],
+ "owners": [
+  "Button",
+  "Input",
+  "TabsTrigger",
+  "DropdownMenuItem",
+  "DropdownMenuLabel",
+  "DropdownMenuSeparator",
+  "DropdownMenuContent",
+  "DialogContent"
+ ],
+ "missingVariants": [],
+ "mismatches": [],
+ "raw": [],
+ "extraBindings": [],
+ "readback": [
+  {
+   "file": "3WGIouA6dby5LNzVkdaA48",
+   "page": "4039:2",
+   "readAt": "2026-11-16T15:46:45.074Z",
+   "owners": [
+    "Button",
+    "Input",
+    "TabsTrigger",
+    "DropdownMenuItem",
+    "DropdownMenuLabel",
+    "DropdownMenuSeparator",
+    "DropdownMenuContent",
+    "DialogContent"
+   ],
+   "dict": [
+    "Themes (DS V2)|interactive/primary/default",
+    "Border (DS V2)|width/sm",
+    "Radius (DS V2)|height/32",
+    "Density (DS V2)|static/120",
+    "Density (DS V2)|static/60",
+    "Size (DS V2)|control/sm",
+    "Size (DS V2)|icon/sm",
+    "Themes (DS V2)|text/on",
+    "Typography (DS V2)|font-size/label-base",
+    "Typography (DS V2)|line-height/label-base",
+    "Typography (DS V2)|font-family/sans",
+    "Typography (DS V2)|font-weight/label",
+    "Themes (DS V2)|interactive/primary/hover",
+    "Themes (DS V2)|interactive/primary/active",
+    "Themes (DS V2)|border/focus",
+    "Border (DS V2)|focus/width",
+    "Themes (DS V2)|interactive/primary/disabled",
+    "Themes (DS V2)|text/disabled",
+    "Radius (DS V2)|height/40",
+    "Density (DS V2)|static/160",
+    "Density (DS V2)|static/80",
+    "Size (DS V2)|control/md",
+    "Size (DS V2)|icon/md",
+    "Radius (DS V2)|height/44",
+    "Density (DS V2)|static/200",
+    "Size (DS V2)|control/lg",
+    "Typography (DS V2)|font-size/label-large",
+    "Typography (DS V2)|line-height/label-large",
+    "Themes (DS V2)|interactive/neutral/default",
+    "Themes (DS V2)|text/inverse",
+    "Themes (DS V2)|interactive/neutral/hover",
+    "Themes (DS V2)|interactive/neutral/active",
+    "Themes (DS V2)|interactive/secondary/default",
+    "Themes (DS V2)|text/primary",
+    "Themes (DS V2)|interactive/secondary/hover",
+    "Themes (DS V2)|interactive/secondary/active",
+    "Themes (DS V2)|border/strong/default",
+    "Themes (DS V2)|surface/primary/hover",
+    "Themes (DS V2)|border/strong/hover",
+    "Themes (DS V2)|surface/primary/active",
+    "Themes (DS V2)|border/primary/disabled",
+    "Themes (DS V2)|interactive/error/default",
+    "Themes (DS V2)|interactive/error/hover",
+    "Themes (DS V2)|surface/error",
+    "Themes (DS V2)|text/error",
+    "Themes (DS V2)|surface/accent/red/subtlest/hover",
+    "Themes (DS V2)|interactive/success/default",
+    "Themes (DS V2)|interactive/success/hover",
+    "Themes (DS V2)|interactive/warning/default",
+    "Themes (DS V2)|interactive/warning/hover",
+    "Density (DS V2)|static/0",
+    "Themes (DS V2)|surface/primary/default",
+    "Density (DS V2)|static/100",
+    "Density (DS V2)|static/40",
+    "Themes (DS V2)|text/placeholder",
+    "Typography (DS V2)|font-size/body-base",
+    "Typography (DS V2)|line-height/body-base",
+    "Typography (DS V2)|font-weight/body",
+    "Themes (DS V2)|text/secondary",
+    "Typography (DS V2)|font-size/body-small",
+    "Typography (DS V2)|line-height/body-small",
+    "Themes (DS V2)|border/error",
+    "Border (DS V2)|width/md",
+    "Themes (DS V2)|icon/error",
+    "Themes (DS V2)|surface/primary/disabled",
+    "Themes (DS V2)|surface/secondary/default",
+    "Typography (DS V2)|font-size/body-large",
+    "Typography (DS V2)|line-height/body-large",
+    "Themes (DS V2)|border/brand",
+    "Radius (DS V2)|round/full",
+    "Radius (DS V2)|container/small",
+    "Themes (DS V2)|border/primary/default",
+    "Radius (DS V2)|container/medium",
+    "Size (DS V2)|menu/min",
+    "Size (DS V2)|menu/max",
+    "style|shadow/md (DS V2)",
+    "Radius (DS V2)|container/large",
+    "Size (DS V2)|dialog/sm",
+    "style|shadow/lg (DS V2)",
+    "Density (DS V2)|scaled/240",
+    "Typography (DS V2)|font-size/heading-5",
+    "Typography (DS V2)|line-height/heading-5",
+    "Typography (DS V2)|font-weight/heading",
+    "Size (DS V2)|dialog/md"
+   ],
+   "nodes": [
+    ".~f=0,sw=1,r=2,pl=3,pr=3,pt=4,pb=4,g=4,mh=5",
+    "iconStart~zw=6,zh=6,c=7",
+    "spinner~zw=6,zh=6,c=7",
+    "label~c=7,fs=8,lh=9,ff=10,fw=11",
+    "iconEnd~zw=6,zh=6,c=7",
+    ".~f=12,sw=1,r=2,pl=3,pr=3,pt=4,pb=4,g=4,mh=5",
+    ".~f=13,sw=1,r=2,pl=3,pr=3,pt=4,pb=4,g=4,mh=5",
+    "focusRing~s=14,sw=15,r=2",
+    ".~f=16,sw=1,r=2,pl=3,pr=3,pt=4,pb=4,g=4,mh=5",
+    "iconStart~zw=6,zh=6,c=17",
+    "spinner~zw=6,zh=6,c=17",
+    "label~c=17,fs=8,lh=9,ff=10,fw=11",
+    "iconEnd~zw=6,zh=6,c=17",
+    ".~f=0,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    "iconStart~zw=22,zh=22,c=7",
+    "spinner~zw=22,zh=22,c=7",
+    "iconEnd~zw=22,zh=22,c=7",
+    ".~f=12,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=13,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    "focusRing~s=14,sw=15,r=18",
+    ".~f=16,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    "iconStart~zw=22,zh=22,c=17",
+    "spinner~zw=22,zh=22,c=17",
+    "iconEnd~zw=22,zh=22,c=17",
+    ".~f=0,sw=1,r=23,pl=24,pr=24,pt=20,pb=20,g=20,mh=25",
+    "label~c=7,fs=26,lh=27,ff=10,fw=11",
+    ".~f=12,sw=1,r=23,pl=24,pr=24,pt=20,pb=20,g=20,mh=25",
+    ".~f=13,sw=1,r=23,pl=24,pr=24,pt=20,pb=20,g=20,mh=25",
+    "focusRing~s=14,sw=15,r=23",
+    ".~f=16,sw=1,r=23,pl=24,pr=24,pt=20,pb=20,g=20,mh=25",
+    "label~c=17,fs=26,lh=27,ff=10,fw=11",
+    ".~f=28,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    "iconStart~zw=22,zh=22,c=29",
+    "spinner~zw=22,zh=22,c=29",
+    "label~c=29,fs=8,lh=9,ff=10,fw=11",
+    "iconEnd~zw=22,zh=22,c=29",
+    ".~f=30,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=31,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=32,sw=1,r=2,pl=3,pr=3,pt=4,pb=4,g=4,mh=5",
+    "iconStart~zw=6,zh=6,c=33",
+    "spinner~zw=6,zh=6,c=33",
+    "label~c=33,fs=8,lh=9,ff=10,fw=11",
+    "iconEnd~zw=6,zh=6,c=33",
+    ".~f=34,sw=1,r=2,pl=3,pr=3,pt=4,pb=4,g=4,mh=5",
+    ".~f=35,sw=1,r=2,pl=3,pr=3,pt=4,pb=4,g=4,mh=5",
+    ".~f=32,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    "iconStart~zw=22,zh=22,c=33",
+    "spinner~zw=22,zh=22,c=33",
+    "iconEnd~zw=22,zh=22,c=33",
+    ".~f=34,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=35,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=32,sw=1,r=23,pl=24,pr=24,pt=20,pb=20,g=20,mh=25",
+    "label~c=33,fs=26,lh=27,ff=10,fw=11",
+    ".~f=34,sw=1,r=23,pl=24,pr=24,pt=20,pb=20,g=20,mh=25",
+    ".~f=35,sw=1,r=23,pl=24,pr=24,pt=20,pb=20,g=20,mh=25",
+    ".~s=36,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=37,s=38,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=39,s=36,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~s=40,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=37,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=39,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=41,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=42,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=43,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    "iconStart~zw=22,zh=22,c=44",
+    "spinner~zw=22,zh=22,c=44",
+    "label~c=44,fs=8,lh=9,ff=10,fw=11",
+    "iconEnd~zw=22,zh=22,c=44",
+    ".~f=45,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=46,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=47,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=48,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=49,sw=1,r=18,pl=19,pr=19,pt=20,pb=20,g=20,mh=21",
+    ".~f=0,sw=1,r=2,pl=50,pr=50,pt=50,pb=50,g=4,mh=5,w=5",
+    ".~f=12,sw=1,r=2,pl=50,pr=50,pt=50,pb=50,g=4,mh=5,w=5",
+    ".~f=13,sw=1,r=2,pl=50,pr=50,pt=50,pb=50,g=4,mh=5,w=5",
+    ".~f=16,sw=1,r=2,pl=50,pr=50,pt=50,pb=50,g=4,mh=5,w=5",
+    ".~f=0,sw=1,r=18,pl=50,pr=50,pt=50,pb=50,g=20,mh=21,w=21",
+    ".~f=12,sw=1,r=18,pl=50,pr=50,pt=50,pb=50,g=20,mh=21,w=21",
+    ".~f=13,sw=1,r=18,pl=50,pr=50,pt=50,pb=50,g=20,mh=21,w=21",
+    ".~f=16,sw=1,r=18,pl=50,pr=50,pt=50,pb=50,g=20,mh=21,w=21",
+    ".~f=0,sw=1,r=23,pl=50,pr=50,pt=50,pb=50,g=20,mh=25,w=25",
+    ".~f=12,sw=1,r=23,pl=50,pr=50,pt=50,pb=50,g=20,mh=25,w=25",
+    ".~f=13,sw=1,r=23,pl=50,pr=50,pt=50,pb=50,g=20,mh=25,w=25",
+    ".~f=16,sw=1,r=23,pl=50,pr=50,pt=50,pb=50,g=20,mh=25,w=25",
+    ".~sw=1,r=2,pl=50,pr=50,pt=50,pb=50,g=4,mh=5,w=5",
+    ".~f=37,sw=1,r=2,pl=50,pr=50,pt=50,pb=50,g=4,mh=5,w=5",
+    ".~f=39,sw=1,r=2,pl=50,pr=50,pt=50,pb=50,g=4,mh=5,w=5",
+    ".~sw=1,r=18,pl=50,pr=50,pt=50,pb=50,g=20,mh=21,w=21",
+    ".~f=37,sw=1,r=18,pl=50,pr=50,pt=50,pb=50,g=20,mh=21,w=21",
+    ".~f=39,sw=1,r=18,pl=50,pr=50,pt=50,pb=50,g=20,mh=21,w=21",
+    ".~sw=1,r=23,pl=50,pr=50,pt=50,pb=50,g=20,mh=25,w=25",
+    ".~f=37,sw=1,r=23,pl=50,pr=50,pt=50,pb=50,g=20,mh=25,w=25",
+    ".~f=39,sw=1,r=23,pl=50,pr=50,pt=50,pb=50,g=20,mh=25,w=25",
+    ".~g=4",
+    "control~f=51,s=36,sw=1,r=2,pl=52,pr=52,pt=53,pb=53,g=4,mh=5",
+    "control/input~pl=50,pr=50,pt=50,pb=50",
+    "control/input/value~c=54,fs=55,lh=56,ff=10,fw=57",
+    "description~c=58,fs=59,lh=60,ff=10,fw=57",
+    "control~f=51,s=38,sw=1,r=2,pl=52,pr=52,pt=53,pb=53,g=4,mh=5",
+    "control/focusRing~s=14,sw=15,r=2",
+    "control/input/value~c=33,fs=55,lh=56,ff=10,fw=57",
+    "control~f=51,s=61,sw=62,r=2,pl=52,pr=52,pt=53,pb=53,g=4,mh=5",
+    "errorMessage~g=53",
+    "errorMessage/errorIcon~zw=6,zh=6,c=63",
+    "errorMessage/errorText~c=44,fs=59,lh=60,ff=10,fw=57",
+    "control~f=64,s=40,sw=1,r=2,pl=52,pr=52,pt=53,pb=53,g=4,mh=5",
+    "control/input/value~c=17,fs=55,lh=56,ff=10,fw=57",
+    "control~f=65,s=36,sw=1,r=2,pl=52,pr=52,pt=53,pb=53,g=4,mh=5",
+    "control~f=51,s=36,sw=1,r=18,pl=3,pr=3,pt=53,pb=53,g=20,mh=21",
+    "control~f=51,s=38,sw=1,r=18,pl=3,pr=3,pt=53,pb=53,g=20,mh=21",
+    "control/focusRing~s=14,sw=15,r=18",
+    "control~f=51,s=61,sw=62,r=18,pl=3,pr=3,pt=53,pb=53,g=20,mh=21",
+    "control~f=64,s=40,sw=1,r=18,pl=3,pr=3,pt=53,pb=53,g=20,mh=21",
+    "control~f=65,s=36,sw=1,r=18,pl=3,pr=3,pt=53,pb=53,g=20,mh=21",
+    "control~f=51,s=36,sw=1,r=23,pl=19,pr=19,pt=53,pb=53,g=20,mh=25",
+    "control/input/value~c=54,fs=66,lh=67,ff=10,fw=57",
+    "control~f=51,s=38,sw=1,r=23,pl=19,pr=19,pt=53,pb=53,g=20,mh=25",
+    "control/focusRing~s=14,sw=15,r=23",
+    "control/input/value~c=33,fs=66,lh=67,ff=10,fw=57",
+    "control~f=51,s=61,sw=62,r=23,pl=19,pr=19,pt=53,pb=53,g=20,mh=25",
+    "control~f=64,s=40,sw=1,r=23,pl=19,pr=19,pt=53,pb=53,g=20,mh=25",
+    "control/input/value~c=17,fs=66,lh=67,ff=10,fw=57",
+    "control~f=65,s=36,sw=1,r=23,pl=19,pr=19,pt=53,pb=53,g=20,mh=25",
+    ".~r=2,pl=20,pr=20,g=4,h=5",
+    "label~c=58,fs=55,lh=56,ff=10,fw=57",
+    "indicator~sw=62",
+    "label~c=33,fs=55,lh=56,ff=10,fw=57",
+    "indicator~s=68,sw=62",
+    "label~c=17,fs=55,lh=56,ff=10,fw=57",
+    ".~r=18,pl=3,pr=3,g=20,h=21",
+    ".~r=69,pl=3,pr=3,g=4,h=5",
+    ".~f=37,r=69,pl=3,pr=3,g=4,h=5",
+    ".~f=28,r=69,pl=3,pr=3,g=4,h=5",
+    "focusRing~s=14,sw=15,r=69",
+    ".~r=69,pl=19,pr=19,g=20,h=21",
+    ".~f=37,r=69,pl=19,pr=19,g=20,h=21",
+    ".~f=28,r=69,pl=19,pr=19,g=20,h=21",
+    ".~r=70,pl=20,pr=20,pt=4,pb=4,g=20,mh=5",
+    "itemLabel~c=33,fs=55,lh=56,ff=10,fw=57",
+    ".~f=28,r=70,pl=20,pr=20,pt=4,pb=4,g=20,mh=5",
+    "itemLabel~c=29,fs=55,lh=56,ff=10,fw=57",
+    "itemLabel~c=17,fs=55,lh=56,ff=10,fw=57",
+    "itemLabel~c=44,fs=55,lh=56,ff=10,fw=57",
+    ".~f=41,r=70,pl=20,pr=20,pt=4,pb=4,g=20,mh=5",
+    "itemLabel~c=7,fs=55,lh=56,ff=10,fw=57",
+    "indicatorBox~h=6,w=6",
+    "indicatorBox/itemIndicator~zw=6,zh=6,c=33",
+    "indicatorBox/itemIndicator~zw=6,zh=6,c=29",
+    "indicatorBox/itemIndicator~zw=6,zh=6,c=17",
+    ".~pl=20,pr=20,pt=4,pb=4",
+    "text~c=58,fs=8,lh=9,ff=10,fw=11",
+    ".~s=71,sw=1",
+    ".~f=51,s=36,sw=1,r=72,pl=53,pr=53,pt=53,pb=53,nw=73,xw=74,e=75",
+    "label~~I:DropdownMenuLabel",
+    "radioGroup~",
+    "radioGroup/radioItem~~I:DropdownMenuItem",
+    "radioGroup/radioItem#2~~I:DropdownMenuItem",
+    "radioGroup/radioItem#3~~I:DropdownMenuItem",
+    "separator~~I:DropdownMenuSeparator",
+    "checkboxItem~~I:DropdownMenuItem",
+    ".~f=51,sw=1,r=76,xw=77,e=78",
+    "header~pl=79,pr=79,pt=79,pb=79,g=20",
+    "header/title~c=33,fs=80,lh=81,ff=10,fw=82",
+    "header/description~c=58,fs=55,lh=56,ff=10,fw=57",
+    "body~pl=79,pr=79,pt=50,pb=50",
+    "body/bodyText~c=33,fs=55,lh=56,ff=10,fw=57",
+    "footer~pl=79,pr=79,pt=79,pb=79,g=20",
+    "footer/close~~I:Button",
+    "footer/action~~I:Button",
+    "dismiss~~I:Button",
+    ".~f=51,sw=1,r=76,xw=83,e=78"
+   ],
+   "variants": [
+    [
+     "Button",
+     "variant=primary, state=default, size=sm, iconOnly=false",
+     [
+      0,
+      1,
+      2,
+      3,
+      4
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=hover, size=sm, iconOnly=false",
+     [
+      5,
+      1,
+      2,
+      3,
+      4
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=active, size=sm, iconOnly=false",
+     [
+      6,
+      1,
+      2,
+      3,
+      4
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=focus, size=sm, iconOnly=false",
+     [
+      0,
+      7,
+      1,
+      2,
+      3,
+      4
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=disabled, size=sm, iconOnly=false",
+     [
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=loading, size=sm, iconOnly=false",
+     [
+      0,
+      1,
+      2,
+      3,
+      4
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=default, size=md, iconOnly=false",
+     [
+      13,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=hover, size=md, iconOnly=false",
+     [
+      17,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=active, size=md, iconOnly=false",
+     [
+      18,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=focus, size=md, iconOnly=false",
+     [
+      13,
+      19,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=disabled, size=md, iconOnly=false",
+     [
+      20,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=loading, size=md, iconOnly=false",
+     [
+      13,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=default, size=lg, iconOnly=false",
+     [
+      24,
+      14,
+      15,
+      25,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=hover, size=lg, iconOnly=false",
+     [
+      26,
+      14,
+      15,
+      25,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=active, size=lg, iconOnly=false",
+     [
+      27,
+      14,
+      15,
+      25,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=focus, size=lg, iconOnly=false",
+     [
+      24,
+      28,
+      14,
+      15,
+      25,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=disabled, size=lg, iconOnly=false",
+     [
+      29,
+      21,
+      22,
+      30,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=loading, size=lg, iconOnly=false",
+     [
+      24,
+      14,
+      15,
+      25,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=neutral, state=default, size=md, iconOnly=false",
+     [
+      31,
+      32,
+      33,
+      34,
+      35
+     ]
+    ],
+    [
+     "Button",
+     "variant=neutral, state=hover, size=md, iconOnly=false",
+     [
+      36,
+      32,
+      33,
+      34,
+      35
+     ]
+    ],
+    [
+     "Button",
+     "variant=neutral, state=active, size=md, iconOnly=false",
+     [
+      37,
+      32,
+      33,
+      34,
+      35
+     ]
+    ],
+    [
+     "Button",
+     "variant=neutral, state=focus, size=md, iconOnly=false",
+     [
+      31,
+      19,
+      32,
+      33,
+      34,
+      35
+     ]
+    ],
+    [
+     "Button",
+     "variant=neutral, state=disabled, size=md, iconOnly=false",
+     [
+      20,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=neutral, state=loading, size=md, iconOnly=false",
+     [
+      31,
+      32,
+      33,
+      34,
+      35
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=default, size=sm, iconOnly=false",
+     [
+      38,
+      39,
+      40,
+      41,
+      42
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=hover, size=sm, iconOnly=false",
+     [
+      43,
+      39,
+      40,
+      41,
+      42
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=active, size=sm, iconOnly=false",
+     [
+      44,
+      39,
+      40,
+      41,
+      42
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=focus, size=sm, iconOnly=false",
+     [
+      38,
+      7,
+      39,
+      40,
+      41,
+      42
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=disabled, size=sm, iconOnly=false",
+     [
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=loading, size=sm, iconOnly=false",
+     [
+      38,
+      39,
+      40,
+      41,
+      42
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=default, size=md, iconOnly=false",
+     [
+      45,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=hover, size=md, iconOnly=false",
+     [
+      49,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=active, size=md, iconOnly=false",
+     [
+      50,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=focus, size=md, iconOnly=false",
+     [
+      45,
+      19,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=disabled, size=md, iconOnly=false",
+     [
+      20,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=loading, size=md, iconOnly=false",
+     [
+      45,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=default, size=lg, iconOnly=false",
+     [
+      51,
+      46,
+      47,
+      52,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=hover, size=lg, iconOnly=false",
+     [
+      53,
+      46,
+      47,
+      52,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=active, size=lg, iconOnly=false",
+     [
+      54,
+      46,
+      47,
+      52,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=focus, size=lg, iconOnly=false",
+     [
+      51,
+      28,
+      46,
+      47,
+      52,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=disabled, size=lg, iconOnly=false",
+     [
+      29,
+      21,
+      22,
+      30,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=secondary, state=loading, size=lg, iconOnly=false",
+     [
+      51,
+      46,
+      47,
+      52,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=outline, state=default, size=md, iconOnly=false",
+     [
+      55,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=outline, state=hover, size=md, iconOnly=false",
+     [
+      56,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=outline, state=active, size=md, iconOnly=false",
+     [
+      57,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=outline, state=focus, size=md, iconOnly=false",
+     [
+      55,
+      19,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=outline, state=disabled, size=md, iconOnly=false",
+     [
+      58,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=outline, state=loading, size=md, iconOnly=false",
+     [
+      55,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=default, size=md, iconOnly=false",
+     [
+      59,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=hover, size=md, iconOnly=false",
+     [
+      60,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=active, size=md, iconOnly=false",
+     [
+      61,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=focus, size=md, iconOnly=false",
+     [
+      59,
+      19,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=disabled, size=md, iconOnly=false",
+     [
+      59,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=loading, size=md, iconOnly=false",
+     [
+      59,
+      46,
+      47,
+      41,
+      48
+     ]
+    ],
+    [
+     "Button",
+     "variant=danger, state=default, size=md, iconOnly=false",
+     [
+      62,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=danger, state=hover, size=md, iconOnly=false",
+     [
+      63,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=danger, state=active, size=md, iconOnly=false",
+     [
+      63,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=danger, state=focus, size=md, iconOnly=false",
+     [
+      62,
+      19,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=danger, state=disabled, size=md, iconOnly=false",
+     [
+      20,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=danger, state=loading, size=md, iconOnly=false",
+     [
+      62,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=dangerSoft, state=default, size=md, iconOnly=false",
+     [
+      64,
+      65,
+      66,
+      67,
+      68
+     ]
+    ],
+    [
+     "Button",
+     "variant=dangerSoft, state=hover, size=md, iconOnly=false",
+     [
+      69,
+      65,
+      66,
+      67,
+      68
+     ]
+    ],
+    [
+     "Button",
+     "variant=dangerSoft, state=active, size=md, iconOnly=false",
+     [
+      69,
+      65,
+      66,
+      67,
+      68
+     ]
+    ],
+    [
+     "Button",
+     "variant=dangerSoft, state=focus, size=md, iconOnly=false",
+     [
+      64,
+      19,
+      65,
+      66,
+      67,
+      68
+     ]
+    ],
+    [
+     "Button",
+     "variant=dangerSoft, state=disabled, size=md, iconOnly=false",
+     [
+      20,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=dangerSoft, state=loading, size=md, iconOnly=false",
+     [
+      64,
+      65,
+      66,
+      67,
+      68
+     ]
+    ],
+    [
+     "Button",
+     "variant=success, state=default, size=md, iconOnly=false",
+     [
+      70,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=success, state=hover, size=md, iconOnly=false",
+     [
+      71,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=success, state=active, size=md, iconOnly=false",
+     [
+      71,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=success, state=focus, size=md, iconOnly=false",
+     [
+      70,
+      19,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=success, state=disabled, size=md, iconOnly=false",
+     [
+      20,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=success, state=loading, size=md, iconOnly=false",
+     [
+      70,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=warning, state=default, size=md, iconOnly=false",
+     [
+      72,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=warning, state=hover, size=md, iconOnly=false",
+     [
+      73,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=warning, state=active, size=md, iconOnly=false",
+     [
+      73,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=warning, state=focus, size=md, iconOnly=false",
+     [
+      72,
+      19,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=warning, state=disabled, size=md, iconOnly=false",
+     [
+      20,
+      21,
+      22,
+      11,
+      23
+     ]
+    ],
+    [
+     "Button",
+     "variant=warning, state=loading, size=md, iconOnly=false",
+     [
+      72,
+      14,
+      15,
+      3,
+      16
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=default, size=sm, iconOnly=true",
+     [
+      74,
+      1,
+      2
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=hover, size=sm, iconOnly=true",
+     [
+      75,
+      1,
+      2
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=active, size=sm, iconOnly=true",
+     [
+      76,
+      1,
+      2
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=focus, size=sm, iconOnly=true",
+     [
+      74,
+      7,
+      1,
+      2
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=disabled, size=sm, iconOnly=true",
+     [
+      77,
+      9,
+      10
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=loading, size=sm, iconOnly=true",
+     [
+      74,
+      1,
+      2
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=default, size=md, iconOnly=true",
+     [
+      78,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=hover, size=md, iconOnly=true",
+     [
+      79,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=active, size=md, iconOnly=true",
+     [
+      80,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=focus, size=md, iconOnly=true",
+     [
+      78,
+      19,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=disabled, size=md, iconOnly=true",
+     [
+      81,
+      21,
+      22
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=loading, size=md, iconOnly=true",
+     [
+      78,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=default, size=lg, iconOnly=true",
+     [
+      82,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=hover, size=lg, iconOnly=true",
+     [
+      83,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=active, size=lg, iconOnly=true",
+     [
+      84,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=focus, size=lg, iconOnly=true",
+     [
+      82,
+      28,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=disabled, size=lg, iconOnly=true",
+     [
+      85,
+      21,
+      22
+     ]
+    ],
+    [
+     "Button",
+     "variant=primary, state=loading, size=lg, iconOnly=true",
+     [
+      82,
+      14,
+      15
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=default, size=sm, iconOnly=true",
+     [
+      86,
+      39,
+      40
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=hover, size=sm, iconOnly=true",
+     [
+      87,
+      39,
+      40
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=active, size=sm, iconOnly=true",
+     [
+      88,
+      39,
+      40
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=focus, size=sm, iconOnly=true",
+     [
+      86,
+      7,
+      39,
+      40
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=disabled, size=sm, iconOnly=true",
+     [
+      86,
+      9,
+      10
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=loading, size=sm, iconOnly=true",
+     [
+      86,
+      39,
+      40
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=default, size=md, iconOnly=true",
+     [
+      89,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=hover, size=md, iconOnly=true",
+     [
+      90,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=active, size=md, iconOnly=true",
+     [
+      91,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=focus, size=md, iconOnly=true",
+     [
+      89,
+      19,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=disabled, size=md, iconOnly=true",
+     [
+      89,
+      21,
+      22
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=loading, size=md, iconOnly=true",
+     [
+      89,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=default, size=lg, iconOnly=true",
+     [
+      92,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=hover, size=lg, iconOnly=true",
+     [
+      93,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=active, size=lg, iconOnly=true",
+     [
+      94,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=focus, size=lg, iconOnly=true",
+     [
+      92,
+      28,
+      46,
+      47
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=disabled, size=lg, iconOnly=true",
+     [
+      92,
+      21,
+      22
+     ]
+    ],
+    [
+     "Button",
+     "variant=ghost, state=loading, size=lg, iconOnly=true",
+     [
+      92,
+      46,
+      47
+     ]
+    ],
+    [
+     "Input",
+     "state=default, size=sm",
+     [
+      95,
+      41,
+      96,
+      97,
+      98,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=hover, size=sm",
+     [
+      95,
+      41,
+      100,
+      97,
+      98,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=focus, size=sm",
+     [
+      95,
+      41,
+      96,
+      101,
+      97,
+      98,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=filled, size=sm",
+     [
+      95,
+      41,
+      96,
+      97,
+      102,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=invalid, size=sm",
+     [
+      95,
+      41,
+      103,
+      97,
+      102,
+      99,
+      104,
+      105,
+      106
+     ]
+    ],
+    [
+     "Input",
+     "state=disabled, size=sm",
+     [
+      95,
+      41,
+      107,
+      97,
+      108,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=readOnly, size=sm",
+     [
+      95,
+      41,
+      109,
+      97,
+      102,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=default, size=md",
+     [
+      95,
+      41,
+      110,
+      97,
+      98,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=hover, size=md",
+     [
+      95,
+      41,
+      111,
+      97,
+      98,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=focus, size=md",
+     [
+      95,
+      41,
+      110,
+      112,
+      97,
+      98,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=filled, size=md",
+     [
+      95,
+      41,
+      110,
+      97,
+      102,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=invalid, size=md",
+     [
+      95,
+      41,
+      113,
+      97,
+      102,
+      99,
+      104,
+      105,
+      106
+     ]
+    ],
+    [
+     "Input",
+     "state=disabled, size=md",
+     [
+      95,
+      41,
+      114,
+      97,
+      108,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=readOnly, size=md",
+     [
+      95,
+      41,
+      115,
+      97,
+      102,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=default, size=lg",
+     [
+      95,
+      41,
+      116,
+      97,
+      117,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=hover, size=lg",
+     [
+      95,
+      41,
+      118,
+      97,
+      117,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=focus, size=lg",
+     [
+      95,
+      41,
+      116,
+      119,
+      97,
+      117,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=filled, size=lg",
+     [
+      95,
+      41,
+      116,
+      97,
+      120,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=invalid, size=lg",
+     [
+      95,
+      41,
+      121,
+      97,
+      120,
+      99,
+      104,
+      105,
+      106
+     ]
+    ],
+    [
+     "Input",
+     "state=disabled, size=lg",
+     [
+      95,
+      41,
+      122,
+      97,
+      123,
+      99
+     ]
+    ],
+    [
+     "Input",
+     "state=readOnly, size=lg",
+     [
+      95,
+      41,
+      124,
+      97,
+      120,
+      99
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=default, variant=line, size=sm",
+     [
+      125,
+      126,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=hover, variant=line, size=sm",
+     [
+      125,
+      128,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=selected, variant=line, size=sm",
+     [
+      125,
+      41,
+      129
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=focus, variant=line, size=sm",
+     [
+      125,
+      7,
+      41,
+      129
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=disabled, variant=line, size=sm",
+     [
+      125,
+      130,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=default, variant=line, size=md",
+     [
+      131,
+      126,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=hover, variant=line, size=md",
+     [
+      131,
+      128,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=selected, variant=line, size=md",
+     [
+      131,
+      41,
+      129
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=focus, variant=line, size=md",
+     [
+      131,
+      19,
+      41,
+      129
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=disabled, variant=line, size=md",
+     [
+      131,
+      130,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=default, variant=pill, size=sm",
+     [
+      132,
+      126,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=hover, variant=pill, size=sm",
+     [
+      133,
+      128,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=selected, variant=pill, size=sm",
+     [
+      134,
+      34,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=focus, variant=pill, size=sm",
+     [
+      134,
+      135,
+      34,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=disabled, variant=pill, size=sm",
+     [
+      132,
+      130,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=default, variant=pill, size=md",
+     [
+      136,
+      126,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=hover, variant=pill, size=md",
+     [
+      137,
+      128,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=selected, variant=pill, size=md",
+     [
+      138,
+      34,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=focus, variant=pill, size=md",
+     [
+      138,
+      135,
+      34,
+      127
+     ]
+    ],
+    [
+     "TabsTrigger",
+     "state=disabled, variant=pill, size=md",
+     [
+      136,
+      130,
+      127
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=item, state=default, variant=initial",
+     [
+      139,
+      140
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=item, state=highlighted, variant=initial",
+     [
+      141,
+      142
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=item, state=disabled, variant=initial",
+     [
+      139,
+      143
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=item, state=default, variant=danger",
+     [
+      139,
+      144
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=item, state=highlighted, variant=danger",
+     [
+      145,
+      146
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=item, state=disabled, variant=danger",
+     [
+      139,
+      143
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=checkboxItem, state=default, variant=initial",
+     [
+      139,
+      147,
+      148,
+      140
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=checkboxItem, state=highlighted, variant=initial",
+     [
+      141,
+      147,
+      149,
+      142
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=checkboxItem, state=checked, variant=initial",
+     [
+      139,
+      147,
+      148,
+      140
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=checkboxItem, state=disabled, variant=initial",
+     [
+      139,
+      147,
+      150,
+      143
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=radioItem, state=default, variant=initial",
+     [
+      139,
+      147,
+      148,
+      140
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=radioItem, state=highlighted, variant=initial",
+     [
+      141,
+      147,
+      149,
+      142
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=radioItem, state=checked, variant=initial",
+     [
+      139,
+      147,
+      148,
+      140
+     ]
+    ],
+    [
+     "DropdownMenuItem",
+     "kind=radioItem, state=disabled, variant=initial",
+     [
+      139,
+      147,
+      150,
+      143
+     ]
+    ],
+    [
+     "DropdownMenuLabel",
+     "DropdownMenuLabel",
+     [
+      151,
+      152
+     ]
+    ],
+    [
+     "DropdownMenuSeparator",
+     "DropdownMenuSeparator",
+     [
+      153
+     ]
+    ],
+    [
+     "DropdownMenuContent",
+     "DropdownMenuContent",
+     [
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161
+     ]
+    ],
+    [
+     "DialogContent",
+     "size=sm",
+     [
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171
+     ]
+    ],
+    [
+     "DialogContent",
+     "size=md",
+     [
+      172,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171
+     ]
+    ]
+   ]
+  }
+ ]
+}

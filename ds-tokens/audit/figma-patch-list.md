@@ -82,6 +82,8 @@
 
 ## Variables to add
 
+Tokens the repo proposes that Figma does not hold as variables. The snapshot reads variables only: a token Figma already keeps as a style (for example a shadow kept as an effect style) is listed here too; for those, check the style and add a variable only if one is wanted.
+
 | Collection | Name | Value per mode | Why |
 | --- | --- | --- | --- |
 | Border | width/sm | default: 1 | The Border collection is empty. Every control needs an edge width. |
@@ -107,3 +109,322 @@
 | Themes | surface/overlay | light: #00000080; dark: #000000b3 | No token dims the page behind a dialog. |
 | Themes | border/strong/default | light: neutral/light/500 (#8c8f97); dark: neutral/dark/500 (#7e8188) | border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. The naming standard's own example is 'add border/strong at 3:1'. |
 | Themes | border/strong/hover | light: neutral/light/700 (#6b6e76); dark: neutral/dark/700 (#a9abaf) | Goes with border/strong/default. |
+
+## Descriptions to set
+
+290 Figma variables have an empty description. Paste the text into each variable's description field. Source is where the text comes from (ds-tokens/descriptions.json): owner, drafted or proposed.
+
+### Themes (171)
+
+| Name | Description to paste | Source |
+| --- | --- | --- |
+| text/primary | Body text and headings on any surface. | drafted |
+| text/secondary | Supporting text, such as hints and details, on any surface. | drafted |
+| text/placeholder | Placeholder text inside an empty field. | drafted |
+| text/disabled | Text of a control that cannot be used. | drafted |
+| text/inverse | Text on an inverse surface, such as a tooltip. | drafted |
+| text/on | Text on a bold brand or action fill, such as a primary button. | drafted |
+| text/link/default | A link at rest. | drafted |
+| text/link/hover | A link under the pointer. | drafted |
+| text/link/active | A link while it is pressed. | drafted |
+| text/error | Text that reports an error, such as a field message. | drafted |
+| text/success | Text that confirms something worked. | drafted |
+| text/warning | Text that warns before something goes wrong. | drafted |
+| text/info | Text that gives neutral information or a tip. | drafted |
+| icon/primary | Icons that sit beside body text. | drafted |
+| icon/secondary | Supporting icons, such as a chevron or a hint. | drafted |
+| icon/disabled | An icon in a control that cannot be used. | drafted |
+| icon/inverse | An icon on an inverse surface, such as a tooltip. | drafted |
+| icon/on | An icon on a bold brand or action fill. | drafted |
+| icon/brand | An icon in the brand colour. | drafted |
+| icon/error | An icon that marks an error. | drafted |
+| icon/success | An icon that marks success. | drafted |
+| icon/warning | An icon that marks a warning. | drafted |
+| icon/info | An icon that marks information. | drafted |
+| surface/primary/default | The page and card background. | drafted |
+| surface/primary/hover | A row or item on the page under the pointer. | drafted |
+| surface/primary/active | A row or item on the page while it is pressed. | drafted |
+| surface/primary/disabled | A row or item on the page when it cannot be used. | drafted |
+| surface/secondary/default | A grouped area on the page, such as a field or a panel. | drafted |
+| surface/secondary/hover | A grouped area under the pointer. | drafted |
+| surface/secondary/active | A grouped area while it is pressed. | drafted |
+| surface/secondary/disabled | A grouped area when it cannot be used. | drafted |
+| surface/tertiary/default | A nested area inside a grouped area, such as a chip. | drafted |
+| surface/tertiary/hover | A nested area under the pointer. | drafted |
+| surface/tertiary/active | A nested area while it is pressed. | drafted |
+| surface/tertiary/disabled | A nested area when it cannot be used. | drafted |
+| surface/error | The background of an error message or banner. | drafted |
+| surface/success | The background of a success message or banner. | drafted |
+| surface/warning | The background of a warning message or banner. | drafted |
+| surface/info | The background of an information message or banner. | drafted |
+| interactive/primary/default | The fill of the main action button. | drafted |
+| interactive/primary/hover | The main action button under the pointer. | drafted |
+| interactive/primary/active | The main action button while it is pressed. | drafted |
+| interactive/primary/disabled | The main action button when it cannot be used. | drafted |
+| interactive/neutral/default | The fill of a neutral button, such as Cancel. | drafted |
+| interactive/neutral/hover | A neutral button under the pointer. | drafted |
+| interactive/neutral/active | A neutral button while it is pressed. | drafted |
+| interactive/neutral/disabled | A neutral button when it cannot be used. | drafted |
+| interactive/secondary/default | The fill of a secondary button. | drafted |
+| interactive/secondary/hover | A secondary button under the pointer. | drafted |
+| interactive/secondary/active | A secondary button while it is pressed. | drafted |
+| interactive/secondary/disabled | A secondary button when it cannot be used. | drafted |
+| interactive/error/default | The fill of a destructive action button, such as Delete. | drafted |
+| interactive/error/hover | A destructive action button under the pointer. | drafted |
+| interactive/success/default | The fill of a confirming action button. | drafted |
+| interactive/success/hover | A confirming action button under the pointer. | drafted |
+| interactive/warning/default | The fill of a button for an action that needs care. | drafted |
+| interactive/warning/hover | A button for an action that needs care under the pointer. | drafted |
+| border/primary/default | The edge of a card, divider or container. | drafted |
+| border/secondary | A quieter edge, such as a divider inside a card. | drafted |
+| border/primary/hover | The edge of a card or container under the pointer. | drafted |
+| border/primary/active | The edge of a card or container while it is pressed. | drafted |
+| border/primary/disabled | The edge of a card or container when it cannot be used. | drafted |
+| border/focus | The ring around whatever has keyboard focus. | drafted |
+| border/info | The edge of an information message. | drafted |
+| border/error | The edge of a field with an error, or of an error message. | drafted |
+| border/success | The edge of a success message. | drafted |
+| border/warning | The edge of a warning message. | drafted |
+| text/accent/teal/default | Teal text on a teal accent surface, such as a tag. | drafted |
+| text/accent/teal/bold | Stronger teal text, for emphasis on a teal accent surface. | drafted |
+| icon/accent/teal/default | A teal icon on a teal accent surface. | drafted |
+| icon/accent/teal/bold | A stronger teal icon on a teal accent surface. | drafted |
+| text/accent/blue/default | Blue text on a blue accent surface, such as a tag. | drafted |
+| text/accent/blue/bold | Stronger blue text, for emphasis on a blue accent surface. | drafted |
+| icon/accent/blue/default | A blue icon on a blue accent surface. | drafted |
+| icon/accent/blue/bold | A stronger blue icon on a blue accent surface. | drafted |
+| text/accent/violet/default | Violet text on a violet accent surface, such as a tag. | drafted |
+| text/accent/violet/bold | Stronger violet text, for emphasis on a violet accent surface. | drafted |
+| icon/accent/violet/default | A violet icon on a violet accent surface. | drafted |
+| icon/accent/violet/bold | A stronger violet icon on a violet accent surface. | drafted |
+| text/accent/amber/default | Amber text on an amber accent surface, such as a tag. | drafted |
+| text/accent/amber/bold | Stronger amber text, for emphasis on an amber accent surface. | drafted |
+| icon/accent/amber/default | An amber icon on an amber accent surface. | drafted |
+| icon/accent/amber/bold | A stronger amber icon on an amber accent surface. | drafted |
+| text/accent/pink/default | Pink text on a pink accent surface, such as a tag. | drafted |
+| text/accent/pink/bold | Stronger pink text, for emphasis on a pink accent surface. | drafted |
+| icon/accent/pink/default | A pink icon on a pink accent surface. | drafted |
+| icon/accent/pink/bold | A stronger pink icon on a pink accent surface. | drafted |
+| text/accent/green/default | Green text on a green accent surface, such as a tag. | drafted |
+| text/accent/green/bold | Stronger green text, for emphasis on a green accent surface. | drafted |
+| icon/accent/green/default | A green icon on a green accent surface. | drafted |
+| icon/accent/green/bold | A stronger green icon on a green accent surface. | drafted |
+| text/accent/orange/default | Orange text on an orange accent surface, such as a tag. | drafted |
+| text/accent/orange/bold | Stronger orange text, for emphasis on an orange accent surface. | drafted |
+| icon/accent/orange/default | An orange icon on an orange accent surface. | drafted |
+| icon/accent/orange/bold | A stronger orange icon on an orange accent surface. | drafted |
+| text/accent/red/default | Red text on a red accent surface, such as a tag. | drafted |
+| text/accent/red/bold | Stronger red text, for emphasis on a red accent surface. | drafted |
+| icon/accent/red/default | A red icon on a red accent surface. | drafted |
+| icon/accent/red/bold | A stronger red icon on a red accent surface. | drafted |
+| text/accent/rose/default | Rose text on a rose accent surface, such as a tag. | drafted |
+| text/accent/rose/bold | Stronger rose text, for emphasis on a rose accent surface. | drafted |
+| icon/accent/rose/default | A rose icon on a rose accent surface. | drafted |
+| icon/accent/rose/bold | A stronger rose icon on a rose accent surface. | drafted |
+| surface/accent/teal/subtlest/default | The faintest teal background, for a large tinted area. | drafted |
+| surface/accent/teal/subtlest/hover | The faintest teal background under the pointer. | drafted |
+| surface/accent/teal/subtle/default | A light teal background, such as a tag or badge. | drafted |
+| surface/accent/teal/subtle/hover | A light teal background under the pointer. | drafted |
+| surface/accent/teal/bold/default | A strong teal background, such as a solid tag. | drafted |
+| surface/accent/teal/bold/hover | A strong teal background under the pointer. | drafted |
+| surface/accent/blue/subtlest/default | The faintest blue background, for a large tinted area. | drafted |
+| surface/accent/blue/subtlest/hover | The faintest blue background under the pointer. | drafted |
+| surface/accent/blue/subtle/default | A light blue background, such as a tag or badge. | drafted |
+| surface/accent/blue/subtle/hover | A light blue background under the pointer. | drafted |
+| surface/accent/blue/bold/default | A strong blue background, such as a solid tag. | drafted |
+| surface/accent/blue/bold/hover | A strong blue background under the pointer. | drafted |
+| surface/accent/violet/subtlest/default | The faintest violet background, for a large tinted area. | drafted |
+| surface/accent/violet/subtlest/hover | The faintest violet background under the pointer. | drafted |
+| surface/accent/violet/subtle/default | A light violet background, such as a tag or badge. | drafted |
+| surface/accent/violet/subtle/hover | A light violet background under the pointer. | drafted |
+| surface/accent/violet/bold/default | A strong violet background, such as a solid tag. | drafted |
+| surface/accent/violet/bold/hover | A strong violet background under the pointer. | drafted |
+| surface/accent/amber/subtlest/default | The faintest amber background, for a large tinted area. | drafted |
+| surface/accent/amber/subtlest/hover | The faintest amber background under the pointer. | drafted |
+| surface/accent/amber/subtle/default | A light amber background, such as a tag or badge. | drafted |
+| surface/accent/amber/subtle/hover | A light amber background under the pointer. | drafted |
+| surface/accent/amber/bold/default | A strong amber background, such as a solid tag. | drafted |
+| surface/accent/amber/bold/hover | A strong amber background under the pointer. | drafted |
+| surface/accent/pink/subtlest/default | The faintest pink background, for a large tinted area. | drafted |
+| surface/accent/pink/subtlest/hover | The faintest pink background under the pointer. | drafted |
+| surface/accent/pink/subtle/default | A light pink background, such as a tag or badge. | drafted |
+| surface/accent/pink/subtle/hover | A light pink background under the pointer. | drafted |
+| surface/accent/pink/bold/default | A strong pink background, such as a solid tag. | drafted |
+| surface/accent/pink/bold/hover | A strong pink background under the pointer. | drafted |
+| surface/accent/green/subtlest/default | The faintest green background, for a large tinted area. | drafted |
+| surface/accent/green/subtlest/hover | The faintest green background under the pointer. | drafted |
+| surface/accent/green/subtle/default | A light green background, such as a tag or badge. | drafted |
+| surface/accent/green/subtle/hover | A light green background under the pointer. | drafted |
+| surface/accent/green/bold/default | A strong green background, such as a solid tag. | drafted |
+| surface/accent/green/bold/hover | A strong green background under the pointer. | drafted |
+| surface/accent/orange/subtlest/default | The faintest orange background, for a large tinted area. | drafted |
+| surface/accent/orange/subtlest/hover | The faintest orange background under the pointer. | drafted |
+| surface/accent/orange/subtle/default | A light orange background, such as a tag or badge. | drafted |
+| surface/accent/orange/subtle/hover | A light orange background under the pointer. | drafted |
+| surface/accent/orange/bold/default | A strong orange background, such as a solid tag. | drafted |
+| surface/accent/orange/bold/hover | A strong orange background under the pointer. | drafted |
+| surface/accent/red/subtlest/default | The faintest red background, for a large tinted area. | drafted |
+| surface/accent/red/subtlest/hover | The faintest red background under the pointer. | drafted |
+| surface/accent/red/subtle/default | A light red background, such as a tag or badge. | drafted |
+| surface/accent/red/subtle/hover | A light red background under the pointer. | drafted |
+| surface/accent/red/bold/default | A strong red background, such as a solid tag. | drafted |
+| surface/accent/red/bold/hover | A strong red background under the pointer. | drafted |
+| surface/accent/rose/subtlest/default | The faintest rose background, for a large tinted area. | drafted |
+| surface/accent/rose/subtlest/hover | The faintest rose background under the pointer. | drafted |
+| surface/accent/rose/subtle/default | A light rose background, such as a tag or badge. | drafted |
+| surface/accent/rose/subtle/hover | A light rose background under the pointer. | drafted |
+| surface/accent/rose/bold/default | A strong rose background, such as a solid tag. | drafted |
+| surface/accent/rose/bold/hover | A strong rose background under the pointer. | drafted |
+| surface/accent/neutral/subtlest/default | The faintest neutral background, for a large tinted area. | drafted |
+| surface/accent/neutral/subtlest/hover | The faintest neutral background under the pointer. | drafted |
+| surface/accent/neutral/subtle/default | A light neutral background, such as a tag or badge. | drafted |
+| surface/accent/neutral/subtle/hover | A light neutral background under the pointer. | drafted |
+| surface/accent/neutral/bold/default | A strong neutral background, such as a solid tag. | drafted |
+| surface/accent/neutral/bold/hover | A strong neutral background under the pointer. | drafted |
+| text/accent/neutral/default | Neutral text on a neutral accent surface, such as a tag. | drafted |
+| text/accent/neutral/bold | Stronger neutral text, for emphasis on a neutral accent surface. | drafted |
+| icon/accent/neutral/default | A neutral icon on a neutral accent surface. | drafted |
+| icon/accent/neutral/bold | A stronger neutral icon on a neutral accent surface. | drafted |
+| text/brand | Text in the brand colour, such as a highlighted word. | drafted |
+| border/brand | A brand edge, such as a selected card. | drafted |
+| surface/brand/subtle | A light brand background, such as a selected item or a promotion. | drafted |
+| surface/brand/bold | A strong brand background, such as a banner. | drafted |
+
+### Typography (36)
+
+| Name | Description to paste | Source |
+| --- | --- | --- |
+| font-size/heading-1 | Font size of a level 1 heading, the page title. | drafted |
+| font-size/heading-2 | Font size of a level 2 heading. | drafted |
+| font-size/heading-3 | Font size of a level 3 heading. | drafted |
+| font-size/heading-4 | Font size of a level 4 heading. | drafted |
+| font-size/heading-5 | Font size of a level 5 heading. | drafted |
+| font-size/heading-6 | Font size of a level 6 heading, the smallest. | drafted |
+| font-size/section-label-base | Font size of a section label, the small heading above a group of items. | drafted |
+| font-size/label-large | Font size of a label on a large control. | drafted |
+| font-size/label-base | Font size of a label on a default control. | drafted |
+| font-size/label-small | Font size of a label on a small control or tag. | drafted |
+| font-size/label-xsmall | Font size of the smallest labels, such as a badge count. | drafted |
+| font-size/body-large | Font size of large body text, such as an introduction. | drafted |
+| font-size/body-base | Font size of body text. | drafted |
+| font-size/body-small | Font size of small body text, such as help text or a caption. | drafted |
+| font-size/body-xsmall | Font size of the smallest body text, such as a legal note. | drafted |
+| line-height/heading-1 | Line height of a level 1 heading, the page title. | drafted |
+| line-height/heading-2 | Line height of a level 2 heading. | drafted |
+| line-height/heading-3 | Line height of a level 3 heading. | drafted |
+| line-height/heading-4 | Line height of a level 4 heading. | drafted |
+| line-height/heading-5 | Line height of a level 5 heading. | drafted |
+| line-height/heading-6 | Line height of a level 6 heading, the smallest. | drafted |
+| line-height/section-label-base | Line height of a section label, the small heading above a group of items. | drafted |
+| line-height/label-large | Line height of a label on a large control. | drafted |
+| line-height/label-base | Line height of a label on a default control. | drafted |
+| line-height/label-small | Line height of a label on a small control or tag. | drafted |
+| line-height/label-xsmall | Line height of the smallest labels, such as a badge count. | drafted |
+| line-height/body-large | Line height of large body text, such as an introduction. | drafted |
+| line-height/body-base | Line height of body text. | drafted |
+| line-height/body-small | Line height of small body text, such as help text or a caption. | drafted |
+| line-height/body-xsmall | Line height of the smallest body text, such as a legal note. | drafted |
+| font-weight/heading | Weight of every heading. | drafted |
+| font-weight/section-label-base | Weight of a section label. | drafted |
+| font-weight/label | Weight of labels on controls. | drafted |
+| font-weight/body | Weight of body text. | drafted |
+| font-weight/emphasis | Weight of emphasised words inside body text. | drafted |
+| font-family/sans | The typeface for all interface text. | drafted |
+
+### Radius (12)
+
+| Name | Description to paste | Source |
+| --- | --- | --- |
+| height/16 | Corners of a control 16 pixels tall. | drafted |
+| height/20 | Corners of a control 20 pixels tall. | drafted |
+| height/24 | Corners of a control 24 pixels tall. | drafted |
+| height/28 | Corners of a control 28 pixels tall. | drafted |
+| height/36 | Corners of a control 36 pixels tall. | drafted |
+| height/44 | Corners of a control 44 pixels tall. | drafted |
+| container/small | Corners of a small container, such as a tag or tooltip. | drafted |
+| container/medium | Corners of a card or menu. | drafted |
+| container/large | Corners of a dialog or sheet. | drafted |
+| round/full | A fully round corner, for pills and circles. | drafted |
+| height/32 | Corners of a control 32 pixels tall. | drafted |
+| height/40 | Corners of a control 40 pixels tall. | drafted |
+
+### Density (26)
+
+| Name | Description to paste | Source |
+| --- | --- | --- |
+| scaled/400 | Step 400 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/320 | Step 320 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/280 | Step 280 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/240 | Step 240 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/200 | Step 200 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/160 | Step 160 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/120 | Step 120 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/100 | Step 100 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/80 | Step 80 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/60 | Step 60 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/40 | Step 40 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/20 | Step 20 of the spacing that tightens in compact density, for padding and gaps inside components. | drafted |
+| scaled/0 | No space, in any density. | drafted |
+| static/400 | Step 400 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/320 | Step 320 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/280 | Step 280 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/240 | Step 240 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/200 | Step 200 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/160 | Step 160 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/120 | Step 120 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/100 | Step 100 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/80 | Step 80 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/60 | Step 60 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/40 | Step 40 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/20 | Step 20 of the spacing that stays the same in every density, for layout between components. | drafted |
+| static/0 | No space, in any density. | drafted |
+
+### Surface Gradients (45)
+
+| Name | Description to paste | Source |
+| --- | --- | --- |
+| red/base-start | Start colour of the red gradient background. | drafted |
+| red/base-end | End colour of the red gradient background. | drafted |
+| red/glow-warm | The warm glow laid over the red gradient. | drafted |
+| red/glow | The main glow laid over the red gradient. | drafted |
+| red/text | Text on the red gradient. | drafted |
+| orange/base-start | Start colour of the orange gradient background. | drafted |
+| orange/base-end | End colour of the orange gradient background. | drafted |
+| orange/glow-warm | The warm glow laid over the orange gradient. | drafted |
+| orange/glow | The main glow laid over the orange gradient. | drafted |
+| orange/text | Text on the orange gradient. | drafted |
+| amber/base-start | Start colour of the amber gradient background. | drafted |
+| amber/base-end | End colour of the amber gradient background. | drafted |
+| amber/glow-warm | The warm glow laid over the amber gradient. | drafted |
+| amber/glow | The main glow laid over the amber gradient. | drafted |
+| amber/text | Text on the amber gradient. | drafted |
+| green/base-start | Start colour of the green gradient background. | drafted |
+| green/base-end | End colour of the green gradient background. | drafted |
+| green/glow-warm | The warm glow laid over the green gradient. | drafted |
+| green/glow | The main glow laid over the green gradient. | drafted |
+| green/text | Text on the green gradient. | drafted |
+| teal/base-start | Start colour of the teal gradient background. | drafted |
+| teal/base-end | End colour of the teal gradient background. | drafted |
+| teal/glow-warm | The warm glow laid over the teal gradient. | drafted |
+| teal/glow | The main glow laid over the teal gradient. | drafted |
+| teal/text | Text on the teal gradient. | drafted |
+| blue/base-start | Start colour of the blue gradient background. | drafted |
+| blue/base-end | End colour of the blue gradient background. | drafted |
+| blue/glow-warm | The warm glow laid over the blue gradient. | drafted |
+| blue/glow | The main glow laid over the blue gradient. | drafted |
+| blue/text | Text on the blue gradient. | drafted |
+| violet/base-start | Start colour of the violet gradient background. | drafted |
+| violet/base-end | End colour of the violet gradient background. | drafted |
+| violet/glow-warm | The warm glow laid over the violet gradient. | drafted |
+| violet/glow | The main glow laid over the violet gradient. | drafted |
+| violet/text | Text on the violet gradient. | drafted |
+| pink/base-start | Start colour of the pink gradient background. | drafted |
+| pink/base-end | End colour of the pink gradient background. | drafted |
+| pink/glow-warm | The warm glow laid over the pink gradient. | drafted |
+| pink/glow | The main glow laid over the pink gradient. | drafted |
+| pink/text | Text on the pink gradient. | drafted |
+| rose/base-start | Start colour of the rose gradient background. | drafted |
+| rose/base-end | End colour of the rose gradient background. | drafted |
+| rose/glow-warm | The warm glow laid over the rose gradient. | drafted |
+| rose/glow | The main glow laid over the rose gradient. | drafted |
+| rose/text | Text on the rose gradient. | drafted |

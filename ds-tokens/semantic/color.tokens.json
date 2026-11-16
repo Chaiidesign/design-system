@@ -5,6 +5,7 @@
       "primary": {
         "$type": "color",
         "$value": "{color.neutral.light.1100}",
+        "$description": "Body text and headings on any surface.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/primary",
@@ -14,13 +15,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-text-primary)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "secondary": {
         "$type": "color",
         "$value": "{color.neutral.light.800}",
+        "$description": "Supporting text, such as hints and details, on any surface.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/secondary",
@@ -31,6 +34,7 @@
             "codeSyntax": {
               "WEB": "var(--color-text-secondary)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "neutral/light/700",
               "to": "neutral/light/800",
@@ -43,6 +47,7 @@
       "placeholder": {
         "$type": "color",
         "$value": "{color.neutral.light.700}",
+        "$description": "Placeholder text inside an empty field.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/placeholder",
@@ -53,6 +58,7 @@
             "codeSyntax": {
               "WEB": "var(--color-text-placeholder)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "neutral/light/500",
               "to": "neutral/light/700",
@@ -65,6 +71,7 @@
       "disabled": {
         "$type": "color",
         "$value": "{color.neutral.light.400}",
+        "$description": "Text of a control that cannot be used.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/disabled",
@@ -74,13 +81,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-text-disabled)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "inverse": {
         "$type": "color",
         "$value": "{color.neutral.light.0}",
+        "$description": "Text on an inverse surface, such as a tooltip.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/inverse",
@@ -90,13 +99,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-text-inverse)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "on": {
         "$type": "color",
         "$value": "{color.neutral.light.0}",
+        "$description": "Text on a bold brand or action fill, such as a primary button.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/on",
@@ -106,7 +117,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-text-on)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -114,6 +126,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.pink.800}",
+          "$description": "A link at rest.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "text/link/default",
@@ -124,6 +137,7 @@
               "codeSyntax": {
                 "WEB": "var(--color-text-link)"
               },
+              "descriptionSource": "drafted",
               "override": {
                 "from": "pink/600",
                 "to": "pink/800",
@@ -136,6 +150,7 @@
         "hover": {
           "$type": "color",
           "$value": "{color.pink.900}",
+          "$description": "A link under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "text/link/hover",
@@ -146,6 +161,7 @@
               "codeSyntax": {
                 "WEB": "var(--color-text-link-hover)"
               },
+              "descriptionSource": "drafted",
               "override": {
                 "from": "pink/700",
                 "to": "pink/900",
@@ -158,6 +174,7 @@
         "active": {
           "$type": "color",
           "$value": "{color.pink.950}",
+          "$description": "A link while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "text/link/active",
@@ -168,6 +185,7 @@
               "codeSyntax": {
                 "WEB": "var(--color-text-link-active)"
               },
+              "descriptionSource": "drafted",
               "override": {
                 "from": "pink/800",
                 "to": "pink/950",
@@ -181,6 +199,7 @@
       "error": {
         "$type": "color",
         "$value": "{color.red.700}",
+        "$description": "Text that reports an error, such as a field message.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/error",
@@ -191,6 +210,7 @@
             "codeSyntax": {
               "WEB": "var(--color-text-error)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "red/600",
               "to": "red/700",
@@ -203,6 +223,7 @@
       "success": {
         "$type": "color",
         "$value": "{color.green.800}",
+        "$description": "Text that confirms something worked.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/success",
@@ -213,6 +234,7 @@
             "codeSyntax": {
               "WEB": "var(--color-text-success)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "green/600",
               "to": "green/800",
@@ -225,6 +247,7 @@
       "warning": {
         "$type": "color",
         "$value": "{color.amber.800}",
+        "$description": "Text that warns before something goes wrong.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/warning",
@@ -235,6 +258,7 @@
             "codeSyntax": {
               "WEB": "var(--color-text-warning)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "amber/600",
               "to": "amber/800",
@@ -247,6 +271,7 @@
       "info": {
         "$type": "color",
         "$value": "{color.blue.700}",
+        "$description": "Text that gives neutral information or a tip.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/info",
@@ -257,6 +282,7 @@
             "codeSyntax": {
               "WEB": "var(--color-text-info)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "blue/600",
               "to": "blue/700",
@@ -271,6 +297,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.teal.800}",
+            "$description": "Teal text on a teal accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/teal/default",
@@ -281,6 +308,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-teal)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "teal/600",
                   "to": "teal/800",
@@ -293,6 +321,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.teal.100}",
+            "$description": "Stronger teal text, for emphasis on a teal accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/teal/bold",
@@ -302,7 +331,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-teal-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -311,6 +341,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.blue.700}",
+            "$description": "Blue text on a blue accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/blue/default",
@@ -321,6 +352,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-blue)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "blue/600",
                   "to": "blue/700",
@@ -333,6 +365,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.blue.100}",
+            "$description": "Stronger blue text, for emphasis on a blue accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/blue/bold",
@@ -342,7 +375,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-blue-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -351,6 +385,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.violet.700}",
+            "$description": "Violet text on a violet accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/violet/default",
@@ -361,6 +396,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-violet)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "violet/600",
                   "to": "violet/700",
@@ -373,6 +409,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.violet.100}",
+            "$description": "Stronger violet text, for emphasis on a violet accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/violet/bold",
@@ -382,7 +419,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-violet-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -391,6 +429,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.amber.800}",
+            "$description": "Amber text on an amber accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/amber/default",
@@ -401,6 +440,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-amber)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "amber/600",
                   "to": "amber/800",
@@ -413,6 +453,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.amber.100}",
+            "$description": "Stronger amber text, for emphasis on an amber accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/amber/bold",
@@ -422,7 +463,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-amber-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -431,6 +473,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.pink.800}",
+            "$description": "Pink text on a pink accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/pink/default",
@@ -441,6 +484,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-pink)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "pink/600",
                   "to": "pink/800",
@@ -453,6 +497,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.pink.100}",
+            "$description": "Stronger pink text, for emphasis on a pink accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/pink/bold",
@@ -462,7 +507,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-pink-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -471,6 +517,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.green.800}",
+            "$description": "Green text on a green accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/green/default",
@@ -481,6 +528,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-green)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "green/600",
                   "to": "green/800",
@@ -493,6 +541,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.green.100}",
+            "$description": "Stronger green text, for emphasis on a green accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/green/bold",
@@ -502,7 +551,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-green-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -511,6 +561,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.orange.800}",
+            "$description": "Orange text on an orange accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/orange/default",
@@ -521,6 +572,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-orange)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "orange/600",
                   "to": "orange/800",
@@ -533,6 +585,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.orange.100}",
+            "$description": "Stronger orange text, for emphasis on an orange accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/orange/bold",
@@ -542,7 +595,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-orange-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -551,6 +605,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.red.800}",
+            "$description": "Red text on a red accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/red/default",
@@ -561,6 +616,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-red)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "red/600",
                   "to": "red/800",
@@ -573,6 +629,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.red.100}",
+            "$description": "Stronger red text, for emphasis on a red accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/red/bold",
@@ -582,7 +639,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-red-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -591,6 +649,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.rose.800}",
+            "$description": "Rose text on a rose accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/rose/default",
@@ -601,6 +660,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-rose)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "rose/600",
                   "to": "rose/800",
@@ -613,6 +673,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.rose.100}",
+            "$description": "Stronger rose text, for emphasis on a rose accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/rose/bold",
@@ -622,7 +683,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-rose-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -631,6 +693,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.neutral.light.900}",
+            "$description": "Neutral text on a neutral accent surface, such as a tag.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/neutral/default",
@@ -641,6 +704,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-neutral)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "neutral/light/600",
                   "to": "neutral/light/900",
@@ -653,6 +717,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.neutral.light.300}",
+            "$description": "Stronger neutral text, for emphasis on a neutral accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "text/accent/neutral/bold",
@@ -662,7 +727,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-text-accent-neutral-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -671,6 +737,7 @@
       "brand": {
         "$type": "color",
         "$value": "{color.pink.800}",
+        "$description": "Text in the brand colour, such as a highlighted word.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "text/brand",
@@ -680,7 +747,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-text-brand)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       }
@@ -689,6 +757,7 @@
       "primary": {
         "$type": "color",
         "$value": "{color.neutral.light.1000}",
+        "$description": "Icons that sit beside body text.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/primary",
@@ -698,13 +767,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-primary)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "secondary": {
         "$type": "color",
         "$value": "{color.neutral.light.600}",
+        "$description": "Supporting icons, such as a chevron or a hint.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/secondary",
@@ -714,13 +785,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-secondary)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "disabled": {
         "$type": "color",
         "$value": "{color.neutral.light.400}",
+        "$description": "An icon in a control that cannot be used.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/disabled",
@@ -730,13 +803,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-disabled)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "inverse": {
         "$type": "color",
         "$value": "{color.neutral.light.0}",
+        "$description": "An icon on an inverse surface, such as a tooltip.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/inverse",
@@ -746,13 +821,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-inverse)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "on": {
         "$type": "color",
         "$value": "{color.neutral.light.0}",
+        "$description": "An icon on a bold brand or action fill.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/on",
@@ -762,13 +839,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-on)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "brand": {
         "$type": "color",
         "$value": "{color.pink.800}",
+        "$description": "An icon in the brand colour.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/brand",
@@ -778,13 +857,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-brand)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "error": {
         "$type": "color",
         "$value": "{color.red.600}",
+        "$description": "An icon that marks an error.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/error",
@@ -794,13 +875,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-error)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "success": {
         "$type": "color",
         "$value": "{color.green.700}",
+        "$description": "An icon that marks success.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/success",
@@ -811,6 +894,7 @@
             "codeSyntax": {
               "WEB": "var(--color-icon-success)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "green/600",
               "to": "green/700",
@@ -823,6 +907,7 @@
       "warning": {
         "$type": "color",
         "$value": "{color.amber.700}",
+        "$description": "An icon that marks a warning.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/warning",
@@ -833,6 +918,7 @@
             "codeSyntax": {
               "WEB": "var(--color-icon-warning)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "amber/600",
               "to": "amber/700",
@@ -845,6 +931,7 @@
       "info": {
         "$type": "color",
         "$value": "{color.blue.600}",
+        "$description": "An icon that marks information.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "icon/info",
@@ -854,7 +941,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-icon-info)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -863,6 +951,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.teal.600}",
+            "$description": "A teal icon on a teal accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/teal/default",
@@ -872,13 +961,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-teal)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.teal.100}",
+            "$description": "A stronger teal icon on a teal accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/teal/bold",
@@ -889,6 +980,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-teal-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "teal/300",
                   "to": "teal/100",
@@ -903,6 +995,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.blue.600}",
+            "$description": "A blue icon on a blue accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/blue/default",
@@ -912,13 +1005,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-blue)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.blue.100}",
+            "$description": "A stronger blue icon on a blue accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/blue/bold",
@@ -929,6 +1024,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-blue-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "blue/300",
                   "to": "blue/100",
@@ -943,6 +1039,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.violet.600}",
+            "$description": "A violet icon on a violet accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/violet/default",
@@ -952,13 +1049,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-violet)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.violet.100}",
+            "$description": "A stronger violet icon on a violet accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/violet/bold",
@@ -969,6 +1068,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-violet-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "violet/300",
                   "to": "violet/100",
@@ -983,6 +1083,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.amber.700}",
+            "$description": "An amber icon on an amber accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/amber/default",
@@ -993,6 +1094,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-amber)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "amber/600",
                   "to": "amber/700",
@@ -1005,6 +1107,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.amber.100}",
+            "$description": "A stronger amber icon on an amber accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/amber/bold",
@@ -1015,6 +1118,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-amber-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "amber/300",
                   "to": "amber/100",
@@ -1029,6 +1133,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.pink.600}",
+            "$description": "A pink icon on a pink accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/pink/default",
@@ -1038,13 +1143,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-pink)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.pink.100}",
+            "$description": "A stronger pink icon on a pink accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/pink/bold",
@@ -1055,6 +1162,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-pink-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "pink/300",
                   "to": "pink/100",
@@ -1069,6 +1177,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.green.600}",
+            "$description": "A green icon on a green accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/green/default",
@@ -1078,13 +1187,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-green)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.green.100}",
+            "$description": "A stronger green icon on a green accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/green/bold",
@@ -1095,6 +1206,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-green-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "green/300",
                   "to": "green/100",
@@ -1109,6 +1221,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.orange.600}",
+            "$description": "An orange icon on an orange accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/orange/default",
@@ -1118,13 +1231,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-orange)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.orange.100}",
+            "$description": "A stronger orange icon on an orange accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/orange/bold",
@@ -1135,6 +1250,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-orange-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "orange/300",
                   "to": "orange/100",
@@ -1149,6 +1265,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.red.600}",
+            "$description": "A red icon on a red accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/red/default",
@@ -1158,13 +1275,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-red)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.red.100}",
+            "$description": "A stronger red icon on a red accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/red/bold",
@@ -1175,6 +1294,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-red-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "red/300",
                   "to": "red/100",
@@ -1189,6 +1309,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.rose.600}",
+            "$description": "A rose icon on a rose accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/rose/default",
@@ -1198,13 +1319,15 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-rose)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           },
           "bold": {
             "$type": "color",
             "$value": "{color.rose.100}",
+            "$description": "A stronger rose icon on a rose accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/rose/bold",
@@ -1215,6 +1338,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-rose-bold)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "rose/300",
                   "to": "rose/100",
@@ -1229,6 +1353,7 @@
           "default": {
             "$type": "color",
             "$value": "{color.neutral.light.700}",
+            "$description": "A neutral icon on a neutral accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/neutral/default",
@@ -1239,6 +1364,7 @@
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-neutral)"
                 },
+                "descriptionSource": "drafted",
                 "override": {
                   "from": "neutral/light/600",
                   "to": "neutral/light/700",
@@ -1251,6 +1377,7 @@
           "bold": {
             "$type": "color",
             "$value": "{color.neutral.light.300}",
+            "$description": "A stronger neutral icon on a neutral accent surface.",
             "$extensions": {
               "com.souvenir.figma": {
                 "path": "icon/accent/neutral/bold",
@@ -1260,7 +1387,8 @@
                 ],
                 "codeSyntax": {
                   "WEB": "var(--color-icon-accent-neutral-bold)"
-                }
+                },
+                "descriptionSource": "drafted"
               }
             }
           }
@@ -1272,6 +1400,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.neutral.light.0}",
+          "$description": "The page and card background.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/primary/default",
@@ -1282,13 +1411,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-primary)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.neutral.light.100}",
+          "$description": "A row or item on the page under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/primary/hover",
@@ -1299,13 +1430,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-primary-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "active": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "A row or item on the page while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/primary/active",
@@ -1315,13 +1448,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-primary-active)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "disabled": {
           "$type": "color",
           "$value": "{color.neutral.light.100}",
+          "$description": "A row or item on the page when it cannot be used.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/primary/disabled",
@@ -1332,7 +1467,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-primary-disabled)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -1341,6 +1477,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.neutral.light.100}",
+          "$description": "A grouped area on the page, such as a field or a panel.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/secondary/default",
@@ -1351,13 +1488,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-secondary)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "A grouped area under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/secondary/hover",
@@ -1368,13 +1507,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-secondary-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "active": {
           "$type": "color",
           "$value": "{color.neutral.light.250}",
+          "$description": "A grouped area while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/secondary/active",
@@ -1384,13 +1525,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-secondary-active)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "disabled": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "A grouped area when it cannot be used.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/secondary/disabled",
@@ -1400,7 +1543,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-secondary-disabled)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -1409,6 +1553,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "A nested area inside a grouped area, such as a chip.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/tertiary/default",
@@ -1418,13 +1563,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-tertiary)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.neutral.light.250}",
+          "$description": "A nested area under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/tertiary/hover",
@@ -1434,13 +1581,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-tertiary-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "active": {
           "$type": "color",
           "$value": "{color.neutral.light.300}",
+          "$description": "A nested area while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/tertiary/active",
@@ -1450,13 +1599,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-tertiary-active)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "disabled": {
           "$type": "color",
           "$value": "{color.neutral.light.300}",
+          "$description": "A nested area when it cannot be used.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/tertiary/disabled",
@@ -1466,7 +1617,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-tertiary-disabled)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -1474,6 +1626,7 @@
       "error": {
         "$type": "color",
         "$value": "{color.red.50}",
+        "$description": "The background of an error message or banner.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "surface/error",
@@ -1483,13 +1636,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-surface-error)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "success": {
         "$type": "color",
         "$value": "{color.green.50}",
+        "$description": "The background of a success message or banner.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "surface/success",
@@ -1499,13 +1654,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-surface-success)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "warning": {
         "$type": "color",
         "$value": "{color.amber.50}",
+        "$description": "The background of a warning message or banner.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "surface/warning",
@@ -1515,13 +1672,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-surface-warning)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "info": {
         "$type": "color",
         "$value": "{color.blue.50}",
+        "$description": "The background of an information message or banner.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "surface/info",
@@ -1531,7 +1690,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-surface-info)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -1541,6 +1701,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.teal.50}",
+              "$description": "The faintest teal background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/teal/subtlest/default",
@@ -1551,13 +1712,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-teal-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.teal.100}",
+              "$description": "The faintest teal background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/teal/subtlest/hover",
@@ -1568,7 +1731,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-teal-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1577,6 +1741,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.teal.100}",
+              "$description": "A light teal background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/teal/subtle/default",
@@ -1587,13 +1752,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-teal-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.teal.200}",
+              "$description": "A light teal background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/teal/subtle/hover",
@@ -1604,7 +1771,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-teal-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1613,6 +1781,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.teal.700}",
+              "$description": "A strong teal background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/teal/bold/default",
@@ -1623,13 +1792,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-teal-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.teal.800}",
+              "$description": "A strong teal background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/teal/bold/hover",
@@ -1641,6 +1812,7 @@
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-teal-bold-hover)"
                   },
+                  "descriptionSource": "drafted",
                   "override": {
                     "from": "teal/600",
                     "to": "teal/800",
@@ -1657,6 +1829,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.blue.50}",
+              "$description": "The faintest blue background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/blue/subtlest/default",
@@ -1667,13 +1840,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-blue-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.blue.100}",
+              "$description": "The faintest blue background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/blue/subtlest/hover",
@@ -1684,7 +1859,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-blue-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1693,6 +1869,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.blue.100}",
+              "$description": "A light blue background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/blue/subtle/default",
@@ -1703,13 +1880,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-blue-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.blue.200}",
+              "$description": "A light blue background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/blue/subtle/hover",
@@ -1720,7 +1899,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-blue-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1729,6 +1909,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.blue.700}",
+              "$description": "A strong blue background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/blue/bold/default",
@@ -1739,13 +1920,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-blue-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.blue.800}",
+              "$description": "A strong blue background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/blue/bold/hover",
@@ -1757,6 +1940,7 @@
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-blue-bold-hover)"
                   },
+                  "descriptionSource": "drafted",
                   "override": {
                     "from": "blue/600",
                     "to": "blue/800",
@@ -1773,6 +1957,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.violet.50}",
+              "$description": "The faintest violet background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/violet/subtlest/default",
@@ -1783,13 +1968,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-violet-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.violet.100}",
+              "$description": "The faintest violet background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/violet/subtlest/hover",
@@ -1800,7 +1987,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-violet-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1809,6 +1997,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.violet.100}",
+              "$description": "A light violet background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/violet/subtle/default",
@@ -1819,13 +2008,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-violet-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.violet.200}",
+              "$description": "A light violet background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/violet/subtle/hover",
@@ -1836,7 +2027,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-violet-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1845,6 +2037,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.violet.700}",
+              "$description": "A strong violet background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/violet/bold/default",
@@ -1855,13 +2048,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-violet-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.violet.600}",
+              "$description": "A strong violet background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/violet/bold/hover",
@@ -1872,7 +2067,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-violet-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1883,6 +2079,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.amber.50}",
+              "$description": "The faintest amber background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/amber/subtlest/default",
@@ -1893,13 +2090,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-amber-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.amber.100}",
+              "$description": "The faintest amber background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/amber/subtlest/hover",
@@ -1910,7 +2109,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-amber-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1919,6 +2119,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.amber.100}",
+              "$description": "A light amber background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/amber/subtle/default",
@@ -1929,13 +2130,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-amber-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.amber.200}",
+              "$description": "A light amber background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/amber/subtle/hover",
@@ -1946,7 +2149,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-amber-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1955,6 +2159,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.amber.900}",
+              "$description": "A strong amber background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/amber/bold/default",
@@ -1965,13 +2170,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-amber-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.amber.800}",
+              "$description": "A strong amber background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/amber/bold/hover",
@@ -1982,7 +2189,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-amber-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -1993,6 +2201,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.pink.50}",
+              "$description": "The faintest pink background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/pink/subtlest/default",
@@ -2003,13 +2212,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-pink-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.pink.100}",
+              "$description": "The faintest pink background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/pink/subtlest/hover",
@@ -2020,7 +2231,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-pink-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2029,6 +2241,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.pink.100}",
+              "$description": "A light pink background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/pink/subtle/default",
@@ -2039,13 +2252,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-pink-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.pink.200}",
+              "$description": "A light pink background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/pink/subtle/hover",
@@ -2056,7 +2271,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-pink-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2065,6 +2281,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.pink.900}",
+              "$description": "A strong pink background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/pink/bold/default",
@@ -2075,13 +2292,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-pink-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.pink.800}",
+              "$description": "A strong pink background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/pink/bold/hover",
@@ -2092,7 +2311,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-pink-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2103,6 +2323,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.green.50}",
+              "$description": "The faintest green background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/green/subtlest/default",
@@ -2113,13 +2334,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-green-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.green.100}",
+              "$description": "The faintest green background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/green/subtlest/hover",
@@ -2130,7 +2353,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-green-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2139,6 +2363,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.green.100}",
+              "$description": "A light green background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/green/subtle/default",
@@ -2149,13 +2374,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-green-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.green.200}",
+              "$description": "A light green background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/green/subtle/hover",
@@ -2166,7 +2393,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-green-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2175,6 +2403,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.green.900}",
+              "$description": "A strong green background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/green/bold/default",
@@ -2185,13 +2414,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-green-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.green.800}",
+              "$description": "A strong green background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/green/bold/hover",
@@ -2202,7 +2433,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-green-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2213,6 +2445,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.orange.50}",
+              "$description": "The faintest orange background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/orange/subtlest/default",
@@ -2223,13 +2456,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-orange-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.orange.100}",
+              "$description": "The faintest orange background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/orange/subtlest/hover",
@@ -2240,7 +2475,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-orange-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2249,6 +2485,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.orange.100}",
+              "$description": "A light orange background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/orange/subtle/default",
@@ -2259,13 +2496,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-orange-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.orange.200}",
+              "$description": "A light orange background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/orange/subtle/hover",
@@ -2276,7 +2515,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-orange-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2285,6 +2525,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.orange.900}",
+              "$description": "A strong orange background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/orange/bold/default",
@@ -2295,13 +2536,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-orange-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.orange.800}",
+              "$description": "A strong orange background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/orange/bold/hover",
@@ -2312,7 +2555,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-orange-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2323,6 +2567,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.red.50}",
+              "$description": "The faintest red background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/red/subtlest/default",
@@ -2333,13 +2578,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-red-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.red.100}",
+              "$description": "The faintest red background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/red/subtlest/hover",
@@ -2350,7 +2597,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-red-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2359,6 +2607,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.red.100}",
+              "$description": "A light red background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/red/subtle/default",
@@ -2369,13 +2618,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-red-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.red.200}",
+              "$description": "A light red background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/red/subtle/hover",
@@ -2386,7 +2637,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-red-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2395,6 +2647,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.red.900}",
+              "$description": "A strong red background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/red/bold/default",
@@ -2405,13 +2658,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-red-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.red.800}",
+              "$description": "A strong red background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/red/bold/hover",
@@ -2422,7 +2677,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-red-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2433,6 +2689,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.rose.50}",
+              "$description": "The faintest rose background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/rose/subtlest/default",
@@ -2443,13 +2700,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-rose-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.rose.100}",
+              "$description": "The faintest rose background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/rose/subtlest/hover",
@@ -2460,7 +2719,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-rose-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2469,6 +2729,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.rose.100}",
+              "$description": "A light rose background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/rose/subtle/default",
@@ -2479,13 +2740,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-rose-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.rose.200}",
+              "$description": "A light rose background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/rose/subtle/hover",
@@ -2496,7 +2759,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-rose-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2505,6 +2769,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.rose.900}",
+              "$description": "A strong rose background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/rose/bold/default",
@@ -2515,13 +2780,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-rose-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.rose.800}",
+              "$description": "A strong rose background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/rose/bold/hover",
@@ -2532,7 +2799,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-rose-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2543,6 +2811,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.neutral.light.100}",
+              "$description": "The faintest neutral background, for a large tinted area.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/neutral/subtlest/default",
@@ -2553,13 +2822,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-neutral-subtlest)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.neutral.light.200}",
+              "$description": "The faintest neutral background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/neutral/subtlest/hover",
@@ -2570,7 +2841,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-neutral-subtlest-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2579,6 +2851,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.neutral.light.300}",
+              "$description": "A light neutral background, such as a tag or badge.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/neutral/subtle/default",
@@ -2589,13 +2862,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-neutral-subtle)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.neutral.light.400}",
+              "$description": "A light neutral background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/neutral/subtle/hover",
@@ -2606,7 +2881,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-neutral-subtle-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2615,6 +2891,7 @@
             "default": {
               "$type": "color",
               "$value": "{color.neutral.light.900}",
+              "$description": "A strong neutral background, such as a solid tag.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/neutral/bold/default",
@@ -2625,13 +2902,15 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-neutral-bold)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             },
             "hover": {
               "$type": "color",
               "$value": "{color.neutral.light.800}",
+              "$description": "A strong neutral background under the pointer.",
               "$extensions": {
                 "com.souvenir.figma": {
                   "path": "surface/accent/neutral/bold/hover",
@@ -2642,7 +2921,8 @@
                   ],
                   "codeSyntax": {
                     "WEB": "var(--color-surface-accent-neutral-bold-hover)"
-                  }
+                  },
+                  "descriptionSource": "drafted"
                 }
               }
             }
@@ -2653,6 +2933,7 @@
         "subtle": {
           "$type": "color",
           "$value": "{color.pink.50}",
+          "$description": "A light brand background, such as a selected item or a promotion.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/brand/subtle",
@@ -2663,13 +2944,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-brand-subtle)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "bold": {
           "$type": "color",
           "$value": "{color.pink.800}",
+          "$description": "A strong brand background, such as a banner.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "surface/brand/bold",
@@ -2680,7 +2963,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-surface-brand-bold)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -2703,7 +2987,8 @@
           "com.souvenir.why": "No token dims the page behind a dialog.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--color-surface-overlay)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     },
@@ -2712,6 +2997,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.pink.800}",
+          "$description": "The fill of the main action button.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/primary/default",
@@ -2721,13 +3007,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-primary)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.pink.900}",
+          "$description": "The main action button under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/primary/hover",
@@ -2737,13 +3025,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-primary-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "active": {
           "$type": "color",
           "$value": "{color.pink.950}",
+          "$description": "The main action button while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/primary/active",
@@ -2754,6 +3044,7 @@
               "codeSyntax": {
                 "WEB": "var(--color-interactive-primary-active)"
               },
+              "descriptionSource": "drafted",
               "override": {
                 "from": "pink/900",
                 "to": "pink/950",
@@ -2766,6 +3057,7 @@
         "disabled": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "The main action button when it cannot be used.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/primary/disabled",
@@ -2775,7 +3067,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-primary-disabled)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -2784,6 +3077,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.neutral.light.1200}",
+          "$description": "The fill of a neutral button, such as Cancel.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/neutral/default",
@@ -2793,13 +3087,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-neutral)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.neutral.light.800}",
+          "$description": "A neutral button under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/neutral/hover",
@@ -2809,13 +3105,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-neutral-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "active": {
           "$type": "color",
           "$value": "{color.neutral.light.700}",
+          "$description": "A neutral button while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/neutral/active",
@@ -2825,13 +3123,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-neutral-active)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "disabled": {
           "$type": "color",
           "$value": "{color.neutral.light.300}",
+          "$description": "A neutral button when it cannot be used.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/neutral/disabled",
@@ -2841,7 +3141,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-neutral-disabled)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -2850,6 +3151,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.neutral.light.100}",
+          "$description": "The fill of a secondary button.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/secondary/default",
@@ -2859,13 +3161,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-secondary)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "A secondary button under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/secondary/hover",
@@ -2875,13 +3179,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-secondary-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "active": {
           "$type": "color",
           "$value": "{color.neutral.light.300}",
+          "$description": "A secondary button while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/secondary/active",
@@ -2891,13 +3197,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-secondary-active)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "disabled": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "A secondary button when it cannot be used.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/secondary/disabled",
@@ -2907,7 +3215,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-secondary-disabled)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -2916,6 +3225,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.red.600}",
+          "$description": "The fill of a destructive action button, such as Delete.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/error/default",
@@ -2925,13 +3235,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-error)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.red.700}",
+          "$description": "A destructive action button under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/error/hover",
@@ -2941,7 +3253,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-error-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -2950,6 +3263,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.green.700}",
+          "$description": "The fill of a confirming action button.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/success/default",
@@ -2959,13 +3273,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-success)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.green.800}",
+          "$description": "A confirming action button under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/success/hover",
@@ -2975,7 +3291,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-success-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -2984,6 +3301,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.amber.700}",
+          "$description": "The fill of a button for an action that needs care.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/warning/default",
@@ -2993,13 +3311,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-warning)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.amber.800}",
+          "$description": "A button for an action that needs care under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "interactive/warning/hover",
@@ -3009,7 +3329,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-interactive-warning-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -3020,6 +3341,7 @@
         "default": {
           "$type": "color",
           "$value": "{color.neutral.light.300}",
+          "$description": "The edge of a card, divider or container.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "border/primary/default",
@@ -3029,13 +3351,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-border-primary)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "hover": {
           "$type": "color",
           "$value": "{color.neutral.light.400}",
+          "$description": "The edge of a card or container under the pointer.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "border/primary/hover",
@@ -3045,13 +3369,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-border-primary-hover)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "active": {
           "$type": "color",
           "$value": "{color.neutral.light.500}",
+          "$description": "The edge of a card or container while it is pressed.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "border/primary/active",
@@ -3061,13 +3387,15 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-border-primary-active)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         },
         "disabled": {
           "$type": "color",
           "$value": "{color.neutral.light.200}",
+          "$description": "The edge of a card or container when it cannot be used.",
           "$extensions": {
             "com.souvenir.figma": {
               "path": "border/primary/disabled",
@@ -3077,7 +3405,8 @@
               ],
               "codeSyntax": {
                 "WEB": "var(--color-border-primary-disabled)"
-              }
+              },
+              "descriptionSource": "drafted"
             }
           }
         }
@@ -3085,6 +3414,7 @@
       "secondary": {
         "$type": "color",
         "$value": "{color.neutral.light.400}",
+        "$description": "A quieter edge, such as a divider inside a card.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "border/secondary",
@@ -3094,13 +3424,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-border-secondary)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "focus": {
         "$type": "color",
         "$value": "{color.blue.600}",
+        "$description": "The ring around whatever has keyboard focus.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "border/focus",
@@ -3110,13 +3442,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-border-focus)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "info": {
         "$type": "color",
         "$value": "{color.blue.600}",
+        "$description": "The edge of an information message.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "border/info",
@@ -3126,13 +3460,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-border-info)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "error": {
         "$type": "color",
         "$value": "{color.red.600}",
+        "$description": "The edge of a field with an error, or of an error message.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "border/error",
@@ -3142,13 +3478,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-border-error)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "success": {
         "$type": "color",
         "$value": "{color.green.600}",
+        "$description": "The edge of a success message.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "border/success",
@@ -3158,13 +3496,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-border-success)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "warning": {
         "$type": "color",
         "$value": "{color.amber.700}",
+        "$description": "The edge of a warning message.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "border/warning",
@@ -3175,6 +3515,7 @@
             "codeSyntax": {
               "WEB": "var(--color-border-warning)"
             },
+            "descriptionSource": "drafted",
             "override": {
               "from": "amber/600",
               "to": "amber/700",
@@ -3187,6 +3528,7 @@
       "brand": {
         "$type": "color",
         "$value": "{color.pink.800}",
+        "$description": "A brand edge, such as a selected card.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "border/brand",
@@ -3196,7 +3538,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--color-border-brand)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -3210,7 +3553,8 @@
             "com.souvenir.why": "border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. The naming standard's own example is 'add border/strong at 3:1'.",
             "com.souvenir.codeSyntax": {
               "WEB": "var(--color-border-strong)"
-            }
+            },
+            "com.souvenir.descriptionSource": "proposed"
           }
         },
         "hover": {
@@ -3222,7 +3566,8 @@
             "com.souvenir.why": "Goes with border/strong/default.",
             "com.souvenir.codeSyntax": {
               "WEB": "var(--color-border-strong-hover)"
-            }
+            },
+            "com.souvenir.descriptionSource": "proposed"
           }
         }
       }

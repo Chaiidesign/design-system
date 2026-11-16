@@ -5,6 +5,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.red.100}",
+        "$description": "Start colour of the red gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "red/base-start",
@@ -15,13 +16,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-red-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.rose.100}",
+        "$description": "End colour of the red gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "red/base-end",
@@ -32,13 +35,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-red-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.orange.200}",
+        "$description": "The warm glow laid over the red gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "red/glow-warm",
@@ -49,13 +54,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-red-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.red.400}",
+        "$description": "The main glow laid over the red gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "red/glow",
@@ -66,13 +73,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-red-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.red.950}",
+        "$description": "Text on the red gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "red/text",
@@ -82,7 +91,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-red-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -107,6 +117,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-red-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "red/glow-warm"
           }
         }
@@ -132,6 +143,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-red-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "red/glow"
           }
         }
@@ -141,6 +153,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.orange.100}",
+        "$description": "Start colour of the orange gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "orange/base-start",
@@ -151,13 +164,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-orange-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.red.100}",
+        "$description": "End colour of the orange gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "orange/base-end",
@@ -168,13 +183,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-orange-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.amber.200}",
+        "$description": "The warm glow laid over the orange gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "orange/glow-warm",
@@ -185,13 +202,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-orange-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.orange.400}",
+        "$description": "The main glow laid over the orange gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "orange/glow",
@@ -202,13 +221,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-orange-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.orange.950}",
+        "$description": "Text on the orange gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "orange/text",
@@ -218,7 +239,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-orange-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -243,6 +265,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-orange-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "orange/glow-warm"
           }
         }
@@ -268,6 +291,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-orange-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "orange/glow"
           }
         }
@@ -277,6 +301,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.amber.100}",
+        "$description": "Start colour of the amber gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "amber/base-start",
@@ -287,13 +312,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-amber-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.orange.100}",
+        "$description": "End colour of the amber gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "amber/base-end",
@@ -304,13 +331,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-amber-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.rose.200}",
+        "$description": "The warm glow laid over the amber gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "amber/glow-warm",
@@ -321,13 +350,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-amber-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.amber.400}",
+        "$description": "The main glow laid over the amber gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "amber/glow",
@@ -338,13 +369,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-amber-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.amber.950}",
+        "$description": "Text on the amber gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "amber/text",
@@ -354,7 +387,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-amber-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -379,6 +413,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-amber-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "amber/glow-warm"
           }
         }
@@ -404,6 +439,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-amber-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "amber/glow"
           }
         }
@@ -413,6 +449,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.green.100}",
+        "$description": "Start colour of the green gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "green/base-start",
@@ -423,13 +460,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-green-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.teal.100}",
+        "$description": "End colour of the green gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "green/base-end",
@@ -440,13 +479,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-green-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.amber.200}",
+        "$description": "The warm glow laid over the green gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "green/glow-warm",
@@ -457,13 +498,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-green-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.green.400}",
+        "$description": "The main glow laid over the green gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "green/glow",
@@ -474,13 +517,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-green-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.green.950}",
+        "$description": "Text on the green gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "green/text",
@@ -490,7 +535,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-green-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -515,6 +561,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-green-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "green/glow-warm"
           }
         }
@@ -540,6 +587,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-green-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "green/glow"
           }
         }
@@ -549,6 +597,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.teal.100}",
+        "$description": "Start colour of the teal gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "teal/base-start",
@@ -559,13 +608,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-teal-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.blue.100}",
+        "$description": "End colour of the teal gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "teal/base-end",
@@ -576,13 +627,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-teal-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.green.200}",
+        "$description": "The warm glow laid over the teal gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "teal/glow-warm",
@@ -593,13 +646,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-teal-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.teal.400}",
+        "$description": "The main glow laid over the teal gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "teal/glow",
@@ -610,13 +665,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-teal-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.teal.950}",
+        "$description": "Text on the teal gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "teal/text",
@@ -626,7 +683,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-teal-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -651,6 +709,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-teal-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "teal/glow-warm"
           }
         }
@@ -676,6 +735,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-teal-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "teal/glow"
           }
         }
@@ -685,6 +745,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.blue.100}",
+        "$description": "Start colour of the blue gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "blue/base-start",
@@ -695,13 +756,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-blue-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.teal.100}",
+        "$description": "End colour of the blue gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "blue/base-end",
@@ -712,13 +775,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-blue-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.violet.200}",
+        "$description": "The warm glow laid over the blue gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "blue/glow-warm",
@@ -729,13 +794,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-blue-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.blue.400}",
+        "$description": "The main glow laid over the blue gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "blue/glow",
@@ -746,13 +813,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-blue-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.blue.950}",
+        "$description": "Text on the blue gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "blue/text",
@@ -762,7 +831,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-blue-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -787,6 +857,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-blue-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "blue/glow-warm"
           }
         }
@@ -812,6 +883,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-blue-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "blue/glow"
           }
         }
@@ -821,6 +893,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.violet.100}",
+        "$description": "Start colour of the violet gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "violet/base-start",
@@ -831,13 +904,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-violet-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.blue.100}",
+        "$description": "End colour of the violet gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "violet/base-end",
@@ -848,13 +923,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-violet-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.pink.200}",
+        "$description": "The warm glow laid over the violet gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "violet/glow-warm",
@@ -865,13 +942,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-violet-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.violet.400}",
+        "$description": "The main glow laid over the violet gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "violet/glow",
@@ -882,13 +961,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-violet-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.violet.950}",
+        "$description": "Text on the violet gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "violet/text",
@@ -898,7 +979,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-violet-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -923,6 +1005,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-violet-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "violet/glow-warm"
           }
         }
@@ -948,6 +1031,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-violet-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "violet/glow"
           }
         }
@@ -957,6 +1041,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.pink.100}",
+        "$description": "Start colour of the pink gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "pink/base-start",
@@ -967,13 +1052,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-pink-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.violet.100}",
+        "$description": "End colour of the pink gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "pink/base-end",
@@ -984,13 +1071,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-pink-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.rose.200}",
+        "$description": "The warm glow laid over the pink gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "pink/glow-warm",
@@ -1001,13 +1090,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-pink-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.pink.400}",
+        "$description": "The main glow laid over the pink gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "pink/glow",
@@ -1018,13 +1109,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-pink-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.pink.950}",
+        "$description": "Text on the pink gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "pink/text",
@@ -1034,7 +1127,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-pink-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -1059,6 +1153,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-pink-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "pink/glow-warm"
           }
         }
@@ -1084,6 +1179,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-pink-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "pink/glow"
           }
         }
@@ -1093,6 +1189,7 @@
       "base-start": {
         "$type": "color",
         "$value": "{color.rose.100}",
+        "$description": "Start colour of the rose gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "rose/base-start",
@@ -1103,13 +1200,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-rose-base-start)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "base-end": {
         "$type": "color",
         "$value": "{color.pink.100}",
+        "$description": "End colour of the rose gradient background.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "rose/base-end",
@@ -1120,13 +1219,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-rose-base-end)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow-warm": {
         "$type": "color",
         "$value": "{color.orange.200}",
+        "$description": "The warm glow laid over the rose gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "rose/glow-warm",
@@ -1137,13 +1238,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-rose-glow-warm)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "glow": {
         "$type": "color",
         "$value": "{color.rose.400}",
+        "$description": "The main glow laid over the rose gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "rose/glow",
@@ -1154,13 +1257,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-rose-glow)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "text": {
         "$type": "color",
         "$value": "{color.rose.950}",
+        "$description": "Text on the rose gradient.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "rose/text",
@@ -1170,7 +1275,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--gradient-rose-text)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
@@ -1195,6 +1301,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-rose-glow-warm-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "rose/glow-warm"
           }
         }
@@ -1220,6 +1327,7 @@
             "codeSyntax": {
               "WEB": "var(--gradient-rose-glow-fade)"
             },
+            "descriptionSource": "figma",
             "derivedFrom": "rose/glow"
           }
         }

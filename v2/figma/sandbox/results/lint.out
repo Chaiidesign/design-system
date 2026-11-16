@@ -5,7 +5,7 @@ name-case (standard rule 1): Names are lowercase kebab-case, slash between level
       primitive Colors: neutral/dark/-100
 
 state-segment (standard rule 3): A state is always its own last segment. 1 finding.
-  [breaks the standard] A state word sits before the last segment; the state must be the last segment. (2)
+  [breaks the standard] A state word sits before the last segment; the state must be the last segment. Fix: rename so the state word is not a group name, for example ring/width instead of focus/width. (2)
       Border: focus/width
       Border: focus/offset
 
@@ -98,29 +98,25 @@ alias (standard rule 6): Every semantic token aliases a primitive, written the s
 
 mode-names (standard rule 7): Mode names are lowercase words; a one-mode collection calls its mode default. 0 findings.
 
-collection-names (standard rule 8): Collections are named for their category. 1 finding.
-  [breaks the standard] These collection names are not in the category list (Color, Typography, Radius, Space, Gradient). The collection name becomes the JSON path and CSS prefix, so this decides every exported name. (7)
+collection-names (standard rule 8): Collections are named for their category. 2 findings.
+  [breaks the standard] These collection names are not in the category list (Color, Typography, Radius, Space, Gradient). The collection name becomes the JSON path and CSS prefix, so this decides every exported name. (4)
       collection Themes should be Color
       collection Density should be Space
       collection Surface Gradients should be Gradient
-      collection Border should be one of Color, Typography, Radius, Space, Gradient
-      collection Size should be one of Color, Typography, Radius, Space, Gradient
-      collection Motion should be one of Color, Typography, Radius, Space, Gradient
       primitive collection Colors should be Color
+  [decide] The standard's category list (Color, Typography, Radius, Space, Gradient) has no place for these four (Border, Size, Motion, Elevation); extend the list or fold them into an existing category. (3)
+      collection Border (4 variables)
+      collection Size (10 variables)
+      collection Motion (4 variables)
 
 description (standard rule 9): Every semantic token has a one-line description. 0 findings.
 
 scopes (standard rule 10): Every token has scopes that match its job, never all scopes. 1 finding.
-  [breaks the standard] These tokens have no scopes at all. (196)
-      primitive Colors: red/50
-      primitive Colors: red/100
-      primitive Colors: red/200
-      primitive Colors: red/300
-      primitive Colors: red/400
-      primitive Colors: red/500
-      primitive Colors: red/600
-      primitive Colors: red/700
-      ... and 188 more (all listed in lint.json)
+  [note] These Motion tokens have no scopes: no Figma scope fits a duration or an easing, so none can be set. Listed, not failed. (4)
+      Motion: duration/fast
+      Motion: duration/base
+      Motion: duration/spin
+      Motion: ease/standard
 
 code-syntax (standard rule 10): Every token has WEB code syntax, and it follows the naming rule. 1 finding.
   [decide] 192 of 192 primitives have no WEB code syntax. Rule 10 says every token has one; rule 5 says components never reach primitives. Decide whether primitives get CSS names. (192)
@@ -292,10 +288,8 @@ density (not in the standard): Compact density keeps the steps apart and never g
       Density: scaled/40 (4 -> 2)
       Density: scaled/20 (2 -> 2)
 
-missing-categories (not in the standard): Token categories that have not been started. 8 findings.
-  [note] Not started: no variable name or collection covers border width. (1)
-      category: border width
-  [note] Not started: no variable name or collection covers elevation or shadow. (1)
+missing-categories (not in the standard): Token categories that have not been started. 4 findings.
+  [note] Cannot tell from the snapshot: no variable or Elevation collection covers elevation or shadow, and Figma may hold it as effect styles, which the variable snapshot does not contain (add styles.txt beside the snapshot, one effect style name per line, to check). (1)
       category: elevation or shadow
   [note] Not started: no variable name or collection covers opacity. (1)
       category: opacity
@@ -303,12 +297,6 @@ missing-categories (not in the standard): Token categories that have not been st
       category: z-index
   [note] Not started: no variable name or collection covers breakpoint. (1)
       category: breakpoint
-  [note] Not started: no variable name or collection covers icon size. (1)
-      category: icon size
-  [note] Not started: no variable name or collection covers control height. (1)
-      category: control height
-  [note] Not started: no variable name or collection covers focus ring width and offset. (1)
-      category: focus ring width and offset
 
 Wrote ds-tokens/audit/lint.json.
-18 rules, 53 findings: 16 break the standard, 27 to decide, 10 notes
+18 rules, 50 findings: 15 break the standard, 28 to decide, 7 notes

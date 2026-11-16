@@ -1,9 +1,6 @@
 1. In Figma, missing in code: 0
 2. In code, not in Figma: 0
-3. Value differs with no override (drift): 3 (fails)
-   - Motion duration/fast, default: Figma 100, repo 100ms
-   - Motion duration/base, default: Figma 160, repo 160ms
-   - Motion duration/spin, default: Figma 800, repo 800ms
+3. Value differs with no override (drift): 0
 4. Value differs because of an override (intended: the repo is ahead of Figma): 0
 5. Override no longer needed (Figma now holds its value: delete the override): 77
    - Themes text/secondary, light: Figma already holds #505258 (neutral/light/800). Delete this override from overrides.json and tokens.json.
@@ -49,50 +46,10 @@
    ... and 37 more, all listed in diff.json (or run with --all).
 6. CSS name differs from the Figma WEB code syntax: 0
 7. tokens.css disagrees with tokens.json: 0
-8. Description differs: 291
-   - Themes text/primary: Figma "Body text and headings on any surface.", repo ""
-   - Themes text/secondary: Figma "Supporting text, such as hints and details, on any surface.", repo ""
-   - Themes text/placeholder: Figma "Placeholder text inside an empty field.", repo ""
-   - Themes text/disabled: Figma "Text of a control that cannot be used.", repo ""
-   - Themes text/inverse: Figma "Text on an inverse surface, such as a tooltip.", repo ""
-   - Themes text/on: Figma "Text on a bold brand or action fill, such as a primary button.", repo ""
-   - Themes text/link/default: Figma "A link at rest.", repo ""
-   - Themes text/link/hover: Figma "A link under the pointer.", repo ""
-   - Themes text/link/active: Figma "A link while it is pressed.", repo ""
-   - Themes text/error: Figma "Text that reports an error, such as a field message.", repo ""
-   - Themes text/success: Figma "Text that confirms something worked.", repo ""
-   - Themes text/warning: Figma "Text that warns before something goes wrong.", repo ""
-   - Themes text/info: Figma "Text that gives neutral information or a tip.", repo ""
-   - Themes icon/primary: Figma "Icons that sit beside body text.", repo ""
-   - Themes icon/secondary: Figma "Supporting icons, such as a chevron or a hint.", repo ""
-   - Themes icon/disabled: Figma "An icon in a control that cannot be used.", repo ""
-   - Themes icon/inverse: Figma "An icon on an inverse surface, such as a tooltip.", repo ""
-   - Themes icon/on: Figma "An icon on a bold brand or action fill.", repo ""
-   - Themes icon/brand: Figma "An icon in the brand colour.", repo ""
-   - Themes icon/error: Figma "An icon that marks an error.", repo ""
-   - Themes icon/success: Figma "An icon that marks success.", repo ""
-   - Themes icon/warning: Figma "An icon that marks a warning.", repo ""
-   - Themes icon/info: Figma "An icon that marks information.", repo ""
-   - Themes surface/primary/default: Figma "The page and card background.", repo ""
-   - Themes surface/primary/hover: Figma "A row or item on the page under the pointer.", repo ""
-   - Themes surface/primary/active: Figma "A row or item on the page while it is pressed.", repo ""
-   - Themes surface/primary/disabled: Figma "A row or item on the page when it cannot be used.", repo ""
-   - Themes surface/secondary/default: Figma "A grouped area on the page, such as a field or a panel.", repo ""
-   - Themes surface/secondary/hover: Figma "A grouped area under the pointer.", repo ""
-   - Themes surface/secondary/active: Figma "A grouped area while it is pressed.", repo ""
-   - Themes surface/secondary/disabled: Figma "A grouped area when it cannot be used.", repo ""
-   - Themes surface/tertiary/default: Figma "A nested area inside a grouped area, such as a chip.", repo ""
-   - Themes surface/tertiary/hover: Figma "A nested area under the pointer.", repo ""
-   - Themes surface/tertiary/active: Figma "A nested area while it is pressed.", repo ""
-   - Themes surface/tertiary/disabled: Figma "A nested area when it cannot be used.", repo ""
-   - Themes surface/error: Figma "The background of an error message or banner.", repo ""
-   - Themes surface/success: Figma "The background of a success message or banner.", repo ""
-   - Themes surface/warning: Figma "The background of a warning message or banner.", repo ""
-   - Themes surface/info: Figma "The background of an information message or banner.", repo ""
-   - Themes interactive/primary/default: Figma "The fill of the main action button.", repo ""
-   ... and 251 more, all listed in diff.json (or run with --all).
-9. Proposed in the repo, not in Figma: 2
+8. Description differs: 1
+   - Border width/md: Figma "The edge of a selected or invalid control, and the active tab&#39;s underline.", repo "The edge of a selected or invalid control, and the active tab's underline."
+9. Proposed in the repo, not in Figma (not a Figma variable: the snapshot reads variables only, so a token Figma keeps as a style, such as a shadow kept as an effect style, is still listed here): 2
    - Elevation shadow/md (--shadow-md): light 0 4px 16px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.08), dark 0 4px 16px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.4). Why: Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it.
    - Elevation shadow/lg (--shadow-lg): light 0 16px 48px rgb(0 0 0 / 0.18), 0 2px 8px rgb(0 0 0 / 0.08), dark 0 16px 48px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.4). Why: Elevation is not started in Figma.
 Wrote ds-tokens/audit/diff.json and ds-tokens/audit/figma-patch-list.md.
-Figma and code agree on 326 of 329 tokens; 3 drift, 0 intended overrides, 77 overrides to remove; 2 proposed in the repo, not in Figma
+Figma and code agree on 329 of 329 tokens; 0 drift, 0 intended overrides, 77 overrides to remove; 2 proposed in the repo, not in Figma

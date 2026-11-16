@@ -14,7 +14,8 @@
           "com.souvenir.why": "Motion is not started in Figma.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--duration-fast)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "base": {
@@ -29,7 +30,8 @@
           "com.souvenir.why": "Motion is not started in Figma.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--duration-base)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "spin": {
@@ -44,7 +46,8 @@
           "com.souvenir.why": "The Button pilot had to multiply another duration by five to turn its spinner. A loop needs its own token.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--duration-spin)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     },
@@ -63,7 +66,8 @@
           "com.souvenir.why": "Motion is not started in Figma.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--ease-standard)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     }

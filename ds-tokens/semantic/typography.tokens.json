@@ -5,6 +5,7 @@
       "heading-1": {
         "$type": "dimension",
         "$value": "{typography.font-size.40}",
+        "$description": "Font size of a level 1 heading, the page title.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/heading-1",
@@ -14,13 +15,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-heading-1)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-2": {
         "$type": "dimension",
         "$value": "{typography.font-size.32}",
+        "$description": "Font size of a level 2 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/heading-2",
@@ -30,13 +33,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-heading-2)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-3": {
         "$type": "dimension",
         "$value": "{typography.font-size.28}",
+        "$description": "Font size of a level 3 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/heading-3",
@@ -46,13 +51,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-heading-3)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-4": {
         "$type": "dimension",
         "$value": "{typography.font-size.20}",
+        "$description": "Font size of a level 4 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/heading-4",
@@ -62,13 +69,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-heading-4)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-5": {
         "$type": "dimension",
         "$value": "{typography.font-size.18}",
+        "$description": "Font size of a level 5 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/heading-5",
@@ -78,13 +87,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-heading-5)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-6": {
         "$type": "dimension",
         "$value": "{typography.font-size.16}",
+        "$description": "Font size of a level 6 heading, the smallest.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/heading-6",
@@ -94,13 +105,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-heading-6)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "section-label-base": {
         "$type": "dimension",
         "$value": "{typography.font-size.14}",
+        "$description": "Font size of a section label, the small heading above a group of items.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/section-label-base",
@@ -110,13 +123,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-section-label-base)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-large": {
         "$type": "dimension",
         "$value": "{typography.font-size.16}",
+        "$description": "Font size of a label on a large control.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/label-large",
@@ -126,13 +141,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-label-large)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-base": {
         "$type": "dimension",
         "$value": "{typography.font-size.14}",
+        "$description": "Font size of a label on a default control.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/label-base",
@@ -142,13 +159,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-label-base)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-small": {
         "$type": "dimension",
         "$value": "{typography.font-size.12}",
+        "$description": "Font size of a label on a small control or tag.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/label-small",
@@ -158,13 +177,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-label-small)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-xsmall": {
         "$type": "dimension",
         "$value": "{typography.font-size.10}",
+        "$description": "Font size of the smallest labels, such as a badge count.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/label-xsmall",
@@ -174,13 +195,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-label-xsmall)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-large": {
         "$type": "dimension",
         "$value": "{typography.font-size.16}",
+        "$description": "Font size of large body text, such as an introduction.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/body-large",
@@ -190,13 +213,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-body-large)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-base": {
         "$type": "dimension",
         "$value": "{typography.font-size.14}",
+        "$description": "Font size of body text.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/body-base",
@@ -206,13 +231,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-body-base)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-small": {
         "$type": "dimension",
         "$value": "{typography.font-size.12}",
+        "$description": "Font size of small body text, such as help text or a caption.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/body-small",
@@ -222,13 +249,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-body-small)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-xsmall": {
         "$type": "dimension",
         "$value": "{typography.font-size.10}",
+        "$description": "Font size of the smallest body text, such as a legal note.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-size/body-xsmall",
@@ -238,7 +267,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-size-body-xsmall)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       }
@@ -247,6 +277,7 @@
       "heading-1": {
         "$type": "dimension",
         "$value": "{typography.line-height.56}",
+        "$description": "Line height of a level 1 heading, the page title.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/heading-1",
@@ -256,13 +287,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-heading-1)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-2": {
         "$type": "dimension",
         "$value": "{typography.line-height.48}",
+        "$description": "Line height of a level 2 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/heading-2",
@@ -272,13 +305,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-heading-2)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-3": {
         "$type": "dimension",
         "$value": "{typography.line-height.40}",
+        "$description": "Line height of a level 3 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/heading-3",
@@ -288,13 +323,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-heading-3)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-4": {
         "$type": "dimension",
         "$value": "{typography.line-height.32}",
+        "$description": "Line height of a level 4 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/heading-4",
@@ -304,13 +341,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-heading-4)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-5": {
         "$type": "dimension",
         "$value": "{typography.line-height.28}",
+        "$description": "Line height of a level 5 heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/heading-5",
@@ -320,13 +359,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-heading-5)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "heading-6": {
         "$type": "dimension",
         "$value": "{typography.line-height.24}",
+        "$description": "Line height of a level 6 heading, the smallest.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/heading-6",
@@ -336,13 +377,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-heading-6)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "section-label-base": {
         "$type": "dimension",
         "$value": "{typography.line-height.20}",
+        "$description": "Line height of a section label, the small heading above a group of items.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/section-label-base",
@@ -352,13 +395,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-section-label-base)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-large": {
         "$type": "dimension",
         "$value": "{typography.line-height.24}",
+        "$description": "Line height of a label on a large control.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/label-large",
@@ -368,13 +413,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-label-large)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-base": {
         "$type": "dimension",
         "$value": "{typography.line-height.20}",
+        "$description": "Line height of a label on a default control.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/label-base",
@@ -384,13 +431,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-label-base)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-small": {
         "$type": "dimension",
         "$value": "{typography.line-height.16}",
+        "$description": "Line height of a label on a small control or tag.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/label-small",
@@ -400,13 +449,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-label-small)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label-xsmall": {
         "$type": "dimension",
         "$value": "{typography.line-height.16}",
+        "$description": "Line height of the smallest labels, such as a badge count.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/label-xsmall",
@@ -416,13 +467,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-label-xsmall)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-large": {
         "$type": "dimension",
         "$value": "{typography.line-height.24}",
+        "$description": "Line height of large body text, such as an introduction.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/body-large",
@@ -432,13 +485,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-body-large)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-base": {
         "$type": "dimension",
         "$value": "{typography.line-height.20}",
+        "$description": "Line height of body text.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/body-base",
@@ -448,13 +503,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-body-base)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-small": {
         "$type": "dimension",
         "$value": "{typography.line-height.16}",
+        "$description": "Line height of small body text, such as help text or a caption.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/body-small",
@@ -464,13 +521,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-body-small)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body-xsmall": {
         "$type": "dimension",
         "$value": "{typography.line-height.16}",
+        "$description": "Line height of the smallest body text, such as a legal note.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "line-height/body-xsmall",
@@ -480,7 +539,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--line-height-body-xsmall)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       }
@@ -489,6 +549,7 @@
       "heading": {
         "$type": "fontWeight",
         "$value": "{typography.font-weight.700}",
+        "$description": "Weight of every heading.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-weight/heading",
@@ -498,13 +559,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-weight-heading)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "section-label-base": {
         "$type": "fontWeight",
         "$value": "{typography.font-weight.700}",
+        "$description": "Weight of a section label.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-weight/section-label-base",
@@ -514,13 +577,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-weight-section-label-base)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "label": {
         "$type": "fontWeight",
         "$value": "{typography.font-weight.600}",
+        "$description": "Weight of labels on controls.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-weight/label",
@@ -530,13 +595,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-weight-label)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "body": {
         "$type": "fontWeight",
         "$value": "{typography.font-weight.500}",
+        "$description": "Weight of body text.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-weight/body",
@@ -546,13 +613,15 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-weight-body)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       },
       "emphasis": {
         "$type": "fontWeight",
         "$value": "{typography.font-weight.700}",
+        "$description": "Weight of emphasised words inside body text.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-weight/emphasis",
@@ -562,7 +631,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-weight-emphasis)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       }
@@ -571,6 +641,7 @@
       "sans": {
         "$type": "fontFamily",
         "$value": "Geist",
+        "$description": "The typeface for all interface text.",
         "$extensions": {
           "com.souvenir.figma": {
             "path": "font-family/sans",
@@ -580,7 +651,8 @@
             ],
             "codeSyntax": {
               "WEB": "var(--font-family-sans)"
-            }
+            },
+            "descriptionSource": "drafted"
           }
         }
       }

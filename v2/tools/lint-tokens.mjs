@@ -14,10 +14,10 @@
 //   "breaks the standard"  the file contradicts a written rule of the standard
 //   "decide"               a person has to choose: the standard is silent, or the standard and the file disagree
 //   "note"                 listed for a person to confirm, not a failure
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadSnapshots, makeResolver, expectedSyntax } from './lib/snapshot.mjs';
+import { loadSnapshots, makeResolver, expectedSyntax, SNAPSHOT_DIR } from './lib/snapshot.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const OUT = join(ROOT, 'ds-tokens', 'audit', 'lint.json');
@@ -31,6 +31,8 @@ const RANKS = ['primary', 'secondary', 'tertiary', 'quaternary'];
 const OLD_SIZE_WORDS = { xsmall: 'xs', small: 'sm', base: 'md', medium: 'md', large: 'lg', xlarge: 'xl', xxlarge: '2xl' };
 const CATEGORY_COLLECTIONS = ['Color', 'Typography', 'Radius', 'Space', 'Gradient'];
 const COLLECTION_SHOULD_BE = { Themes: 'Color', Colors: 'Color', Density: 'Space', 'Surface Gradients': 'Gradient' };
+// Collections the standard's category list has no place for. Reported once, together, for a person to decide.
+const UNLISTED_CATEGORIES = ['Border', 'Size', 'Motion', 'Elevation'];
 const HUES = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'neutral', 'slate', 'gray', 'zinc', 'stone'];
 const PRIMITIVE_WORDS = [...HUES, 'light', 'dark', 'typography', 'font-size', 'line-height', 'font-family', 'font-weight'];
 
@@ -39,19 +41,30 @@ const PRIMITIVE_WORDS = [...HUES, 'light', 'dark', 'typography', 'font-size', 'l
 const TAILWIND_TYPOGRAPHY = { 'font-size': 'text', 'line-height': 'leading', 'font-family': 'font', 'font-weight': 'font-weight' };
 const TAILWIND_COLLECTION = { Themes: 'color', Color: 'color', Radius: 'radius', Density: 'spacing', Space: 'spacing', 'Surface Gradients': 'gradient', Gradient: 'gradient' };
 
-// Categories a complete token set usually has and this one may not have started.
+// Categories a complete token set usually has and this one may not have started. A category is covered when a variable
+// name matches `re`, or when a non-empty collection of that purpose exists (`collection`, and `names` when only some of
+// its variables count: Border covers border width through width/*). Elevation may also be held as Figma effect styles,
+// which the variable snapshot does not contain: see stylesCover in the rule.
 const CATEGORIES = [
-  { id: 'border width', re: /border-width|border\/width|stroke-width|stroke\/width/ },
-  { id: 'motion or duration', re: /motion|duration/ },
-  { id: 'easing', re: /easing|(^|[/-])ease([/-]|$)/ },
-  { id: 'elevation or shadow', re: /elevation|shadow/ },
+  { id: 'border width', re: /border-width|border\/width|stroke-width|stroke\/width/, collection: 'Border', names: /^width\// },
+  { id: 'motion or duration', re: /motion|duration/, collection: 'Motion' },
+  { id: 'easing', re: /easing|(^|[/-])ease([/-]|$)/, collection: 'Motion' },
+  { id: 'elevation or shadow', re: /elevation|shadow/, collection: 'Elevation', styles: true },
   { id: 'opacity', re: /opacity|(^|[/-])alpha([/-]|$)/ },
   { id: 'z-index', re: /z-index|zindex|(^|\/)z(\/|$)/ },
   { id: 'breakpoint', re: /breakpoint|(^|\/)screen(s)?(\/|$)/ },
-  { id: 'icon size', re: /icon-size|icon\/size|size\/icon/ },
-  { id: 'control height', re: /control-height|control\/height|height\/control/ },
-  { id: 'focus ring width and offset', re: /focus-ring|focus\/ring|ring-width|ring-offset|outline-width|outline-offset/ },
+  { id: 'icon size', re: /icon-size|icon\/size|size\/icon/, collection: 'Size' },
+  { id: 'control height', re: /control-height|control\/height|height\/control/, collection: 'Size' },
+  { id: 'focus ring width and offset', re: /focus-ring|focus\/ring|ring-width|ring-offset|outline-width|outline-offset|(^|\/)(focus|ring)\/(width|offset)$/ },
 ];
+
+// Effect style names, one per line, from <snapshot folder>/styles.txt when that file exists; null when it does not,
+// because then the snapshot cannot say whether Figma holds elevation as styles.
+function loadStyles(dir = SNAPSHOT_DIR) {
+  const f = join(dir, 'styles.txt');
+  if (!existsSync(f)) return null;
+  return readFileSync(f, 'utf8').split('\n').map((l) => l.trim()).filter(Boolean);
+}
 
 // ---------- context ----------
 
@@ -62,7 +75,7 @@ const parentOf = (name) => segs(name).slice(0, -1).join('/');
 const lastOf = (name) => segs(name).at(-1);
 const fmt = (val) => (typeof val === 'number' ? `${val}` : typeof val === 'string' ? val : String(val));
 
-function buildContext(snap) {
+function buildContext(snap, styles = null) {
   const r = makeResolver(snap);
   const sem = [];
   for (const c of snap.semantic) {
@@ -72,7 +85,7 @@ function buildContext(snap) {
     }
   }
   const prims = snap.primitives.flatMap((c) => c.variables.map((v) => ({ ...v, modes: c.modes })));
-  return { snap, r, sem, prims };
+  return { snap, r, sem, prims, styles };
 }
 
 function finding(rule, severity, message, tokens, extra = {}) {
@@ -103,7 +116,7 @@ const RULES = [
         });
       }
       const out = [];
-      if (notLast.length) out.push(finding(rule, BREAKS, 'A state word sits before the last segment; the state must be the last segment.', [...new Set(notLast)]));
+      if (notLast.length) out.push(finding(rule, BREAKS, 'A state word sits before the last segment; the state must be the last segment. Fix: rename so the state word is not a group name, for example ring/width instead of focus/width.', [...new Set(notLast)]));
       if (joined.length) out.push(finding(rule, BREAKS, 'A state word is joined to another word with a hyphen (for example primary-hover); it must be its own segment.', [...new Set(joined)]));
       return out;
     },
@@ -255,16 +268,19 @@ const RULES = [
     check(ctx, rule) {
       const wrong = [];
       const empty = [];
+      const unlisted = [];
       for (const [file, list] of [['semantic', ctx.snap.semantic], ['primitives', ctx.snap.primitives]]) {
         for (const c of list) {
           const who = `${file === 'primitives' ? 'primitive ' : ''}collection ${c.name}`;
-          if (c.variables.length === 0) empty.push(`${who} has no variables`);
+          if (file === 'semantic' && UNLISTED_CATEGORIES.includes(c.name)) unlisted.push(`${who}${c.variables.length ? ` (${c.variables.length} variables)` : ' (empty)'}`);
+          else if (c.variables.length === 0) empty.push(`${who} has no variables`);
           else if (!CATEGORY_COLLECTIONS.includes(c.name)) wrong.push(`${who} should be ${COLLECTION_SHOULD_BE[c.name] || 'one of ' + CATEGORY_COLLECTIONS.join(', ')}`);
         }
       }
       const out = [];
       if (wrong.length) out.push(finding(rule, BREAKS, `These collection names are not in the category list (${CATEGORY_COLLECTIONS.join(', ')}). The collection name becomes the JSON path and CSS prefix, so this decides every exported name.`, wrong));
       if (empty.length) out.push(finding(rule, DECIDE, 'These collections are empty and not in the category list: fill them or remove them.', empty));
+      if (unlisted.length) out.push(finding(rule, DECIDE, `The standard's category list (${CATEGORY_COLLECTIONS.join(', ')}) has no place for these four (${UNLISTED_CATEGORIES.join(', ')}); extend the list or fold them into an existing category.`, unlisted));
       return out;
     },
   },
@@ -283,7 +299,11 @@ const RULES = [
     id: 'scopes', standardRule: '10', title: 'Every token has scopes that match its job, never all scopes',
     check(ctx, rule) {
       const all = ctx.sem.filter((v) => v.scopes.includes('ALL_SCOPES'));
-      const none = [...ctx.prims, ...ctx.sem].filter((v) => v.scopes.length === 0);
+      // A primitive with no scopes is hidden from every picker, which is what rule 5 asks: not a finding.
+      const primAll = ctx.prims.filter((v) => v.scopes.includes('ALL_SCOPES'));
+      // No Figma scope fits a duration or an easing, so an unscoped Motion token is only a note.
+      const none = ctx.sem.filter((v) => v.scopes.length === 0 && v.collection !== 'Motion');
+      const motionNone = ctx.sem.filter((v) => v.scopes.length === 0 && v.collection === 'Motion');
       const contra = [];
       const only = (v, s) => v.scopes.length === 1 && v.scopes[0] === s;
       for (const v of ctx.sem) {
@@ -299,7 +319,9 @@ const RULES = [
       }
       const out = [];
       if (all.length) out.push(finding(rule, BREAKS, 'These semantic tokens are scoped to ALL_SCOPES, which the standard forbids.', all.map(label)));
-      if (none.length) out.push(finding(rule, BREAKS, 'These tokens have no scopes at all.', none.map(label)));
+      if (none.length) out.push(finding(rule, BREAKS, 'These semantic tokens have no scopes at all.', none.map(label)));
+      if (primAll.length) out.push(finding(rule, DECIDE, 'These primitives are scoped to ALL_SCOPES: primitives are visible in every picker; rule 5 says components reach only semantic tokens. Empty scopes would hide them.', primAll.map(label)));
+      if (motionNone.length) out.push(finding(rule, NOTE, 'These Motion tokens have no scopes: no Figma scope fits a duration or an easing, so none can be set. Listed, not failed.', motionNone.map(label)));
       if (contra.length) out.push(finding(rule, BREAKS, 'These scopes contradict the name (ALL_SCOPES counts here too, because it is not the one scope the name promises).', contra));
       return out;
     },
@@ -451,15 +473,28 @@ const RULES = [
     id: 'missing-categories', standardRule: null, title: 'Token categories that have not been started',
     check(ctx, rule) {
       const names = [...ctx.prims, ...ctx.sem].map((v) => v.name.toLowerCase());
-      const collections = [...ctx.snap.semantic, ...ctx.snap.primitives].filter((c) => c.variables.length > 0).map((c) => c.name.toLowerCase());
-      return CATEGORIES.filter((cat) => !names.some((n) => cat.re.test(n)) && !collections.some((n) => cat.re.test(n)))
-        .map((cat) => finding(rule, NOTE, `Not started: no variable name or collection covers ${cat.id}.`, [`category: ${cat.id}`], { category: cat.id }));
+      const filled = [...ctx.snap.semantic, ...ctx.snap.primitives].filter((c) => c.variables.length > 0);
+      const byName = (f) => filled.some(f);
+      const covered = (cat) => names.some((n) => cat.re.test(n))
+        || byName((c) => cat.re.test(c.name.toLowerCase()))
+        || (cat.collection && byName((c) => c.name === cat.collection && (!cat.names || c.variables.some((v) => cat.names.test(v.name)))))
+        || (cat.styles && Array.isArray(ctx.styles) && ctx.styles.length > 0);
+      const out = [];
+      for (const cat of CATEGORIES) {
+        if (covered(cat)) continue;
+        if (cat.styles && ctx.styles === null) {
+          out.push(finding(rule, NOTE, `Cannot tell from the snapshot: no variable or ${cat.collection} collection covers ${cat.id}, and Figma may hold it as effect styles, which the variable snapshot does not contain (add styles.txt beside the snapshot, one effect style name per line, to check).`, [`category: ${cat.id}`], { category: cat.id, cannotTell: true }));
+          continue;
+        }
+        out.push(finding(rule, NOTE, `Not started: no variable name or collection covers ${cat.id}.`, [`category: ${cat.id}`], { category: cat.id }));
+      }
+      return out;
     },
   },
 ];
 
-function runRules(snap) {
-  const ctx = buildContext(snap);
+function runRules(snap, styles = null) {
+  const ctx = buildContext(snap, styles);
   return RULES.flatMap((rule) => rule.check(ctx, rule));
 }
 
@@ -544,6 +579,68 @@ function selfTestCategories(base) {
   return { ok, text: `${ok ? 'PASS' : 'FAIL'} missing-categories: covered 9 of 10 categories, left out "${left}" -> ${p.map((x) => x.category).join(', ') || 'nothing'} reported; covered all 10 -> ${f.length} reported (reversed test: planting covers a category, so other rules are not compared)` };
 }
 
+// The findings of one rule alone, for the refinements below, where planting would also (rightly) wake other rules.
+const ruleOnly = (id, snap, styles = null) => { const rule = RULES.find((r) => r.id === id); return rule.check(buildContext(snap, styles), rule); };
+const holds = (fs, severity, marker, text) => fs.some((f) => f.severity === severity && f.tokens.some((t) => t === marker || t.startsWith(`${marker} `)) && (!text || f.message.includes(text)));
+
+// Planted cases for the refinements: scopes by layer, categories covered by purpose, the four unlisted collections
+// reported once, and the state-segment message naming its fix.
+function selfTestRefinements(base) {
+  const out = [];
+  const add = (ok, text) => out.push({ ok, text: `${ok ? 'PASS' : 'FAIL'} ${text}` });
+
+  // scopes (a): primitive with no scopes is fine; primitive with ALL_SCOPES is "decide"; semantic with none breaks, except Motion (note).
+  const s1 = structuredClone(base);
+  const pe = label(plant(s1, 'primitives', 'Colors', { name: 'pink/9001', values: ['#ff00aa'], syntax: null, scopes: [] }));
+  const pa = label(plant(s1, 'primitives', 'Colors', { name: 'pink/9002', values: ['#ff00ab'], syntax: null, scopes: ['ALL_SCOPES'] }));
+  const se = label(plant(s1, 'semantic', 'Themes', { name: 'text/planted-unscoped', values: ['{neutral/light/1100}', '{neutral/dark/1100}'], syntax: 'rule', scopes: [] }));
+  const me = label(plant(s1, 'semantic', 'Motion', { name: 'duration/planted', type: 'number', values: ['100'], syntax: 'rule', scopes: [] }));
+  const f1 = ruleOnly('scopes', s1);
+  const peSeen = f1.some((f) => f.tokens.includes(pe));
+  add(!peSeen && holds(f1, DECIDE, pa, 'rule 5 says components reach only semantic tokens') && holds(f1, BREAKS, se) && holds(f1, NOTE, me) && !holds(f1, BREAKS, me),
+    `scopes: primitive with no scopes -> ${peSeen ? 'reported' : 'not reported'}; primitive with ALL_SCOPES -> decide; semantic with none -> breaks; Motion with none -> note only`);
+
+  // missing-categories (b): covered by a non-empty collection of that purpose, not only by a word in a name.
+  const s2 = structuredClone(base);
+  plant(s2, 'semantic', 'Border', { name: 'width/hairline', type: 'number', values: ['1'], syntax: 'rule', scopes: ['STROKE_FLOAT'] });
+  plant(s2, 'semantic', 'Size', { name: 'tap/md', type: 'number', values: ['44'], syntax: 'rule', scopes: ['WIDTH_HEIGHT'] });
+  plant(s2, 'semantic', 'Motion', { name: 'quick', type: 'number', values: ['100'], syntax: 'rule', scopes: [] });
+  s2.semantic.push({ file: 'semantic', name: 'Elevation', modes: ['default'], declared: 0, variables: [] });
+  const cats = (fs) => fs.map((f) => `${f.category}${f.cannotTell ? ' (cannot tell)' : ''}`);
+  const purpose = ['border width', 'motion or duration', 'easing', 'icon size', 'control height'];
+  const f2 = cats(ruleOnly('missing-categories', s2));
+  const f2s = cats(ruleOnly('missing-categories', s2, ['Shadow/Medium']));
+  const s3 = structuredClone(s2);
+  plant(s3, 'semantic', 'Elevation', { name: 'raised', type: 'string', values: ['"0 1px 2px #0003"'], syntax: 'rule', scopes: [] });
+  const f3 = cats(ruleOnly('missing-categories', s3));
+  const f0 = cats(ruleOnly('missing-categories', s2, []));
+  add(purpose.every((c) => !f2.includes(c)) && f2.includes('elevation or shadow (cannot tell)') && !f2s.some((c) => c.startsWith('elevation')) && !f3.some((c) => c.startsWith('elevation')) && f0.includes('elevation or shadow'),
+    `missing-categories: Border width/*, Size and Motion collections cover ${purpose.length} categories; elevation with no styles.txt -> cannot tell, with an effect style -> covered, with an Elevation collection -> covered, with an empty styles.txt -> not started (empty Elevation collection does not count)`);
+
+  // collection-names (c): the four are one "decide" finding, and not repeated as empty or as off the list.
+  const f4 = ruleOnly('collection-names', s3);
+  const together = f4.filter((f) => f.message.includes('has no place for these four'));
+  const elsewhere = f4.filter((f) => !together.includes(f)).flatMap((f) => f.tokens).filter((t) => /collection (Border|Size|Motion|Elevation)\b/.test(t));
+  add(together.length === 1 && together[0].severity === DECIDE && UNLISTED_CATEGORIES.every((c) => together[0].tokens.some((t) => t.startsWith(`collection ${c} `))) && elsewhere.length === 0,
+    `collection-names: Border, Size, Motion and Elevation -> ${together.length} decide finding naming ${together[0]?.tokens.length ?? 0}; elsewhere ${elsewhere.length}`);
+
+  // state-segment (d): focus/width is caught, and the message names the fix.
+  const s5 = structuredClone(base);
+  const fw = label(plant(s5, 'semantic', 'Border', { name: 'focus/width', type: 'number', values: ['2'], syntax: 'rule', scopes: ['STROKE_FLOAT'] }));
+  const f5 = ruleOnly('state-segment', s5);
+  add(holds(f5, BREAKS, fw, 'rename so the state word is not a group name, for example ring/width'), `state-segment: planted "${fw}" -> ${holds(f5, BREAKS, fw) ? 'caught' : 'not caught'}, message names the fix ring/width`);
+
+  // missing-categories: focus/width (or ring/width) in Border covers the focus ring category; the base snapshot does not.
+  const ringCat = 'focus ring width and offset';
+  const baseRing = ruleOnly('missing-categories', base).some((f) => f.category === ringCat);
+  const s6 = structuredClone(base);
+  plant(s6, 'semantic', 'Border', { name: 'ring/offset', type: 'number', values: ['2'], syntax: 'rule', scopes: ['GAP'] });
+  const s5Ring = ruleOnly('missing-categories', s5).some((f) => f.category === ringCat);
+  const s6Ring = ruleOnly('missing-categories', s6).some((f) => f.category === ringCat);
+  add(baseRing && !s5Ring && !s6Ring, `missing-categories: focus ring reported on the base snapshot -> ${baseRing}; covered by Border focus/width -> ${!s5Ring}; covered by Border ring/offset -> ${!s6Ring}`);
+  return out;
+}
+
 // ---------- report ----------
 
 function report(findings, snap) {
@@ -576,18 +673,22 @@ function main() {
   const snap = loadSnapshots();
   if (args.includes('--self-test')) {
     const lines = selfTest(snap);
-    for (const l of lines) console.log(l.text);
+    const extra = selfTestRefinements(snap);
+    for (const l of [...lines, ...extra]) console.log(l.text);
     const passed = lines.filter((l) => l.ok).length;
-    console.log(`Self-test: ${passed} of ${RULES.length} rules caught their planted fault${passed === RULES.length ? '' : '; FAILED'}.`);
-    process.exit(passed === RULES.length && lines.length === RULES.length ? 0 : 1);
+    const extraPassed = extra.filter((l) => l.ok).length;
+    const ok = passed === RULES.length && lines.length === RULES.length && extraPassed === extra.length;
+    console.log(`Self-test: ${passed} of ${RULES.length} rules caught their planted fault, and ${extraPassed} of ${extra.length} refinement cases behaved as expected${ok ? '' : '; FAILED'}.`);
+    process.exit(ok ? 0 : 1);
   }
-  const findings = runRules(snap);
+  const styles = loadStyles();
+  const findings = runRules(snap, styles);
   report(findings, snap);
   const c = counts(findings);
   mkdirSync(dirname(OUT), { recursive: true });
   writeFileSync(OUT, `${JSON.stringify({
     tool: 'v2/tools/lint-tokens.mjs',
-    sources: ['v2/figma/semantic.txt', 'v2/figma/primitives.txt'],
+    sources: ['semantic.txt', 'primitives.txt', ...(styles ? ['styles.txt'] : [])].map((f) => { const p = resolve(SNAPSHOT_DIR, f); return p.startsWith(ROOT) ? p.slice(ROOT.length + 1) : p; }),
     severities: { [BREAKS]: 'the file contradicts a written rule of the standard', [DECIDE]: 'a person has to choose', [NOTE]: 'listed for a person to confirm' },
     rules: RULES.map((r) => ({ id: r.id, standardRule: r.standardRule, title: r.title, findings: c.byRule[r.id] })),
     counts: c,

@@ -21,10 +21,13 @@
 //   6 CSS name differs from the Figma WEB code syntax   (fails)
 //   7 tokens.css disagrees with tokens.json     (fails)            one item per property and mode
 //   8 description differs                       (reported, does not fail)
-//   9 proposed in the repo, not in Figma        (reported, does not fail)  a code-only token marked "proposed": true in
-//                                               tokens.json (from ds-tokens/proposed/tokens.json): name, collection, values, why
+//   9 proposed in the repo, not a Figma variable (reported, does not fail)  a code-only token marked "proposed": true in
+//                                               tokens.json (from ds-tokens/proposed/tokens.json): name, collection, values, why.
+//                                               The snapshot holds variables only, so a token Figma keeps as a style (for
+//                                               example a shadow kept as an effect style) is still listed here.
 // Values are compared after normalising: hex case, #rrggbb against #rrggbbff (any other alpha is kept),
-// 16px against 1rem, font style names against numeric weights, and the first family of a font stack.
+// 16px against 1rem, font style names against numeric weights, the first family of a font stack, and, for a Motion
+// duration only, a number against the same number in ms (Figma holds 100, tokens.json "100ms").
 //
 // "Agree" in the last line means: the token is in both Figma and code, every mode has the same value,
 // the CSS name matches the Figma WEB code syntax, and tokens.css matches tokens.json for it.
@@ -32,8 +35,9 @@
 // M is every token in Figma or in code (the union), not counting proposed tokens: they cannot agree with Figma by
 // definition, so they are counted in list 9 and named separately in the last line.
 //
-// Writes ds-tokens/audit/diff.json and ds-tokens/audit/figma-patch-list.md: the changes to make by hand in Figma, in two
-// sections, the alias changes from overrides (list 4) and then "Variables to add" (list 9).
+// Writes ds-tokens/audit/diff.json and ds-tokens/audit/figma-patch-list.md: the changes to make by hand in Figma, in three
+// sections: the alias changes from overrides (list 4), "Variables to add" (list 9), and "Descriptions to set" (the items of
+// list 8 whose Figma description is empty, with the repo's text to paste, grouped by collection).
 // Exit 0 when lists 1, 2, 3, 6 and 7 are empty, or always with --report-only. Exit 1 on any item in them.
 // Exit 2 when an input cannot be read.
 // --self-test builds fixtures from the real Figma snapshot in a temporary folder, proves the clean set gives
@@ -42,7 +46,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, mkdtempSync, rmSync
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve as resolvePath } from 'node:path';
 import { tmpdir } from 'node:os';
-import { loadSnapshots, makeResolver, resolvedSemantic } from './lib/snapshot.mjs';
+import { loadSnapshots, makeResolver, resolvedSemantic, SNAPSHOT_DIR } from './lib/snapshot.mjs';
 import { parseCssColor } from '../../scripts/lib/color.mjs';
 
 const ROOT = resolvePath(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -56,7 +60,7 @@ export const LISTS = [
   { key: 'cssNameDiffers', label: 'CSS name differs from the Figma WEB code syntax', fails: true },
   { key: 'cssFileMismatch', label: 'tokens.css disagrees with tokens.json', fails: true },
   { key: 'descriptionDiffers', label: 'Description differs', fails: false },
-  { key: 'proposedNotInFigma', label: 'Proposed in the repo, not in Figma', fails: false },
+  { key: 'proposedNotInFigma', label: 'Proposed in the repo, not in Figma (not a Figma variable: the snapshot reads variables only, so a token Figma keeps as a style, such as a shadow kept as an effect style, is still listed here)', fails: false },
 ];
 
 // ---------- names ----------
@@ -81,6 +85,7 @@ const WEIGHT_NAMES = { thin: 100, extralight: 200, light: 300, regular: 400, nor
 function kindOf(figVar, codeTok) {
   if (figVar) {
     if (figVar.type === 'color') return 'color';
+    if (figVar.collection === 'Motion' && figVar.type === 'number') return 'duration';
     if (/(^|\/)font-weight(\/|$)/.test(figVar.name)) return 'weight';
     if (/(^|\/)font-family(\/|$)/.test(figVar.name)) return 'family';
     if (figVar.type === 'number') return 'number';
@@ -90,6 +95,7 @@ function kindOf(figVar, codeTok) {
   if (t === 'color') return 'color';
   if (t === 'fontweight') return 'weight';
   if (t === 'fontfamily') return 'family';
+  if (t === 'duration') return 'duration';
   if (t === 'dimension' || t === 'number') return 'number';
   return 'string';
 }
@@ -128,6 +134,20 @@ function toNumber(v) {
   }
   return null;
 }
+// A Motion duration in ms: 100, "100", "100ms", "0.1s" or { value: 100, unit: "ms" }. Only the duration kind reads ms,
+// so a length such as "100ms" in a Space token is still a difference.
+function toDuration(v) {
+  if (typeof v === 'number') return v;
+  if (v && typeof v === 'object' && 'value' in v) {
+    const n = toDuration(v.value);
+    return n == null ? null : n * (v.unit === 's' ? 1000 : 1);
+  }
+  if (typeof v === 'string') {
+    const m = v.trim().match(/^(-?\d*\.?\d+)\s*(ms|s)?$/i);
+    if (m) return Number(m[1]) * (m[2] && m[2].toLowerCase() === 's' ? 1000 : 1);
+  }
+  return null;
+}
 function toWeight(v) {
   const n = toNumber(v);
   if (n != null) return n;
@@ -150,6 +170,7 @@ export function normalise(v, kind) {
     if (c) return { text: rgbaText(c), cmp: c };
   }
   if (kind === 'number') { const n = toNumber(v); if (n != null) return { text: String(+n.toFixed(4)), cmp: +n.toFixed(4) }; }
+  if (kind === 'duration') { const n = toDuration(v); if (n != null) return { text: `${+n.toFixed(4)}ms`, cmp: +n.toFixed(4) }; }
   if (kind === 'weight') { const n = toWeight(v); if (n != null) return { text: String(n), cmp: n }; }
   if (kind === 'family') { const f = toFamily(v); if (f != null) return { text: f, cmp: f }; }
   const s = typeof v === 'object' ? JSON.stringify(v) : unquote(v);
@@ -336,7 +357,7 @@ export function diff({ snap, tokens, css, overrides }) {
 
     // 8. Description.
     const fd = (fig.description || '').trim(), cd = (t.description || '').trim();
-    if (fd !== cd) lists.descriptionDiffers.push({ collection: fig.collection, token: fig.name, figma: fd, repo: cd });
+    if (fd !== cd) lists.descriptionDiffers.push({ collection: fig.collection, token: fig.name, figma: fd, repo: cd, repoSource: t.descriptionSource ?? null });
   }
 
   // A code-only token is a failure unless tokens.json marks it proposed; a proposed one is listed with its values and reason.
@@ -388,7 +409,10 @@ export function diff({ snap, tokens, css, overrides }) {
 export function patchList(result) {
   const rows = result.lists.intendedOverrides;
   const adds = result.lists.proposedNotInFigma || [];
-  if (!rows.length && !adds.length) return 'No overrides are ahead of Figma and no variables are proposed, so there is nothing to change in Figma.\n';
+  // A description to set: Figma's is empty and the repo has one. A Figma description that differs from the repo's is not
+  // pasted over (Figma's wins in the build); it stays in list 8 only.
+  const toSet = (result.lists.descriptionDiffers || []).filter((d) => !d.figma && d.repo);
+  if (!rows.length && !adds.length && !toSet.length) return 'No overrides are ahead of Figma, no variables are proposed and no Figma description is empty, so there is nothing to change in Figma.\n';
   const lines = rows.map((r) => {
     const from = r.figmaAlias ?? r.figmaValue;
     const verb = r.figmaAlias ? 'change alias' : 'change value';
@@ -408,9 +432,19 @@ export function patchList(result) {
     '## Variables to add',
     '',
     ...(adds.length
-      ? ['| Collection | Name | Value per mode | Why |', '| --- | --- | --- | --- |', ...table]
+      ? ['Tokens the repo proposes that Figma does not hold as variables. The snapshot reads variables only: a token Figma already keeps as a style (for example a shadow kept as an effect style) is listed here too; for those, check the style and add a variable only if one is wanted.', '',
+        '| Collection | Name | Value per mode | Why |', '| --- | --- | --- | --- |', ...table]
       : ['None: no token is proposed in the repo.']),
     '',
+    '## Descriptions to set',
+    '',
+    ...(toSet.length
+      ? [`${toSet.length} Figma variable${toSet.length === 1 ? ' has' : 's have'} an empty description. Paste the text into each variable's description field. Source is where the text comes from (ds-tokens/descriptions.json): owner, drafted or proposed.`, '',
+        ...[...new Set(toSet.map((d) => d.collection))].flatMap((c) => {
+          const here = toSet.filter((d) => d.collection === c);
+          return [`### ${c} (${here.length})`, '', '| Name | Description to paste | Source |', '| --- | --- | --- |', ...here.map((d) => `| ${cell(d.token)} | ${cell(d.repo)} | ${cell(d.repoSource ?? '')} |`), ''];
+        })]
+      : ['None: every Figma variable already has a description.', '']),
   ].join('\n');
 }
 
@@ -518,14 +552,14 @@ function selfTest() {
   const writeCss = ({ blocks }) => [...blocks].map(([b, props]) => `${SELECTOR[b] ?? `[data-theme="${b}"]`} {\n${[...props].map(([p, v]) => `  ${p}: ${v};`).join('\n')}\n}`).join('\n\n') + '\n';
 
   const dir = mkdtempSync(join(tmpdir(), 'diff-figma-self-test-'));
-  const run = (fx, tag) => {
+  const run = (fx, tag, snapshot = snap) => {
     const paths = { tokens: join(dir, `${tag}-tokens.json`), css: join(dir, `${tag}-tokens.css`), overrides: join(dir, `${tag}-overrides.json`) };
     writeFileSync(paths.tokens, JSON.stringify(fx.tokens, null, 2));
     writeFileSync(paths.css, writeCss(fx));
     writeFileSync(paths.overrides, JSON.stringify(fx.overrides, null, 2));
     const input = loadInputs(paths);
     if (input.problems.length) throw new Error(input.problems.join('; '));
-    return diff({ snap, tokens: input.tokens, css: input.css, overrides: input.overrides });
+    return diff({ snap: snapshot, tokens: input.tokens, css: input.css, overrides: input.overrides });
   };
   const errors = [];
   const expect = (cond, msg) => { if (!cond) errors.push(msg); };
@@ -574,6 +608,7 @@ function selfTest() {
     fx.blocks.get('dark').set('--color-icon-secondary', '#ff00ff');
     // 8. Description.
     tok('surface/error').description = 'Background for error messages.';
+    tok('surface/error').descriptionSource = 'drafted';
     // 9. A token only in code, marked proposed, present in both files. (text/ghost above is not marked, and must still fail.)
     const proposedTok = { name: 'border/planted', collection: 'Themes', category: 'color', type: 'color', cssVar: '--color-border-planted', description: 'Planted.', values: { light: '#8c8f97', dark: '#7e8188' }, alias: { light: 'neutral/light/500', dark: 'neutral/dark/500' }, scopes: [], overridden: null, proposed: true, why: 'Planted | proposed.' };
     fx.tokens.push(proposedTok);
@@ -611,10 +646,15 @@ function selfTest() {
     const wantPl = [
       '# Changes to make by hand in Figma', '', '## Alias changes from overrides', '',
       '- Themes, text/link/default, light: change alias from pink/600 to pink/700. Pink 600 is below 4.5 to 1 on surface/secondary.',
-      '', '## Variables to add', '', '| Collection | Name | Value per mode | Why |', '| --- | --- | --- | --- |',
+      '', '## Variables to add', '',
+      'Tokens the repo proposes that Figma does not hold as variables. The snapshot reads variables only: a token Figma already keeps as a style (for example a shadow kept as an effect style) is listed here too; for those, check the style and add a variable only if one is wanted.', '',
+      '| Collection | Name | Value per mode | Why |', '| --- | --- | --- | --- |',
       '| Themes | border/planted | light: neutral/light/500 (#8c8f97); dark: neutral/dark/500 (#7e8188) | Planted \\| proposed. |', '',
+      '## Descriptions to set', '',
+      '1 Figma variable has an empty description. Paste the text into each variable\'s description field. Source is where the text comes from (ds-tokens/descriptions.json): owner, drafted or proposed.', '',
+      '### Themes (1)', '', '| Name | Description to paste | Source |', '| --- | --- | --- |', '| surface/error | Background for error messages. | drafted |', '',
     ];
-    expect(plLines.length === wantPl.length && wantPl.every((l, i) => plLines[i] === l), `patch list should be exactly two sections, one alias row and one variable row; got:\n${pl}`);
+    expect(plLines.length === wantPl.length && wantPl.every((l, i) => plLines[i] === l), `patch list should be exactly three sections, one alias row, one variable row and one description row; got:\n${pl}`);
     for (const w of r.warnings) errors.push(`planted fixture warning: ${w}`);
 
     // Proposed alone: listed, does not fail, and an unmarked copy of the same token does fail.
@@ -645,6 +685,45 @@ function selfTest() {
     const s = run(soft, 'soft');
     expect(!s.failed && s.counts.intendedOverrides === 1 && s.counts.overridesToRemove === 1 && s.counts.descriptionDiffers === 1, `lists 4, 5 and 8 alone should not fail (failed=${s.failed}, counts ${JSON.stringify(s.counts)})`);
 
+    // Descriptions to set: one row per Figma variable with an empty description, grouped by collection in Figma's order;
+    // a Figma description that differs from the repo's is reported in list 8 but not pasted over.
+    const dfx = cleanFixture();
+    const dt = (name, coll) => dfx.tokens.find((t) => t.name === name && t.collection === coll);
+    const radiusName = figma.find((v) => v.collection === 'Radius' && !v.description).name;
+    const fadeFig = figma.find((v) => v.collection === 'Surface Gradients' && v.description);
+    dt(radiusName, 'Radius').description = 'Planted radius text.';
+    dt(radiusName, 'Radius').descriptionSource = 'drafted';
+    dt('surface/error', 'Color').description = 'Planted | colour text.';
+    dt('surface/error', 'Color').descriptionSource = 'owner';
+    dt(fadeFig.name, 'Gradient').description = 'Planted text that differs from Figma.';
+    const dr = run(dfx, 'descriptions');
+    const dpl = patchList(dr);
+    const section = dpl.slice(dpl.indexOf('## Descriptions to set'));
+    const themesAt = section.indexOf('### Themes (1)'), radiusAt = section.indexOf('### Radius (1)');
+    expect(!dr.failed && dr.counts.descriptionDiffers === 3, `three description differences should be listed without failing (counts ${JSON.stringify(dr.counts)})`);
+    expect(themesAt > 0 && radiusAt > themesAt && section.includes('| surface/error | Planted \\| colour text. | owner |') && section.includes(`| ${radiusName} | Planted radius text. | drafted |`) && section.startsWith('## Descriptions to set\n\n2 Figma variables have'),
+      `descriptions to set should hold two rows grouped under Themes then Radius; got:\n${section}`);
+    expect(!section.includes(fadeFig.name), `a Figma description that differs should not be listed to set: ${fadeFig.name}`);
+    lines.push(`Caught descriptions to set: 2 rows in 2 collections (Themes, Radius); ${fadeFig.name}, whose Figma description differs, is not listed`);
+
+    // Motion durations: Figma holds 100, tokens.json "100ms". Equal for a Motion duration only.
+    expect(sameValue(100, '100ms', 'duration') && sameValue('160', { value: 160, unit: 'ms' }, 'duration') && sameValue(800, '0.8s', 'duration'), 'a duration number should equal the same number in ms');
+    expect(!sameValue(100, '160ms', 'duration'), 'different durations must differ');
+    expect(!sameValue(100, '100ms', 'number'), 'outside a Motion duration, 100 and 100ms must still differ');
+    const msnap = structuredClone(snap);
+    const mv = (name, n) => ({ file: 'semantic', collection: 'Motion', name, type: 'number', values: [String(n)], syntax: `var(--${name.replace('/', '-')})`, scopes: [], description: 'Planted.', line: 0 });
+    msnap.semantic.push({ file: 'semantic', name: 'Motion', modes: ['default'], declared: 2, variables: [mv('duration/fast', 100), mv('duration/base', 160)] });
+    const mfx = cleanFixture();
+    for (const [name, v] of [['duration/fast', '100ms'], ['duration/base', '170ms']]) {
+      mfx.tokens.push({ name, collection: 'Motion', category: 'motion', type: 'duration', cssVar: `--${name.replace('/', '-')}`, description: 'Planted.', values: { default: v }, alias: { default: null }, scopes: [], overridden: null });
+      mfx.blocks.get('root').set(`--${name.replace('/', '-')}`, v);
+    }
+    const mr = run(mfx, 'motion', msnap);
+    const md = mr.lists.drift;
+    expect(md.length === 1 && md[0].token === 'duration/base' && md[0].figmaValue === '160ms' && md[0].repoValue === '170ms' && mr.counts.cssFileMismatch === 0,
+      `Motion: 100 against "100ms" should agree and 160 against "170ms" should be the only drift; drift ${JSON.stringify(md)}, counts ${JSON.stringify(mr.counts)}`);
+    lines.push(`Caught Motion duration: Figma 100 = repo 100ms agrees; ${md[0] ? describe('drift', md[0]) : 'nothing'} is the only drift`);
+
     for (const line of lines) console.log(line);
   } catch (e) {
     errors.push(`self-test crashed: ${e.stack || e.message}`);
@@ -652,7 +731,7 @@ function selfTest() {
     rmSync(dir, { recursive: true, force: true });
   }
   for (const e of errors) console.log(`Problem: ${e}`);
-  console.log(errors.length ? `Self-test failed: ${errors.length} problem(s).` : 'Self-test passed: all 9 planted kinds were caught, each in its own list (a proposed token listed without failing, an unmarked one failing), and the clean fixture gave empty lists.');
+  console.log(errors.length ? `Self-test failed: ${errors.length} problem(s).` : 'Self-test passed: all 9 planted kinds were caught, each in its own list (a proposed token listed without failing, an unmarked one failing), descriptions to set were grouped by collection, a Motion duration in ms matched its Figma number, and the clean fixture gave empty lists.');
   process.exit(errors.length ? 1 : 0);
 }
 
@@ -689,7 +768,7 @@ function main() {
   const agreement = 'Agree means: in both Figma and code, the same value in every mode, the CSS name matches the Figma WEB code syntax, and tokens.css matches tokens.json. Descriptions are not part of agreement. A token whose override is no longer needed still agrees. The total is every token in Figma or in code.';
   writeFileSync(out, JSON.stringify({
     tool: 'v2/tools/diff-figma.mjs',
-    inputs: { figma: 'v2/figma/semantic.txt + primitives.txt', ...Object.fromEntries(Object.entries(paths).map(([k, p]) => [k, p.startsWith(ROOT) ? p.slice(ROOT.length + 1) : p])) },
+    inputs: { figma: `${((d) => (d.startsWith(ROOT) ? d.slice(ROOT.length + 1) : d))(resolvePath(SNAPSHOT_DIR))}/semantic.txt + primitives.txt`, ...Object.fromEntries(Object.entries(paths).map(([k, p]) => [k, p.startsWith(ROOT) ? p.slice(ROOT.length + 1) : p])) },
     agreement, agree: result.agree, total: result.total, failed: result.failed,
     counts: result.counts, lists: result.lists, warnings: result.warnings, summary: result.summary,
   }, null, 2) + '\n');

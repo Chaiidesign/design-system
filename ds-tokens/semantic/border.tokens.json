@@ -14,7 +14,8 @@
           "com.souvenir.why": "The Border collection is empty. Every control needs an edge width.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--border-width-sm)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "md": {
@@ -29,7 +30,8 @@
           "com.souvenir.why": "A state shown only by a colour change of a 1 pixel line is easy to miss.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--border-width-md)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     },
@@ -46,7 +48,8 @@
           "com.souvenir.why": "WCAG 2.4.13 measures a focus indicator against a 2 pixel perimeter.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--border-focus-width)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "offset": {
@@ -61,7 +64,8 @@
           "com.souvenir.why": "The gap keeps the blue ring readable beside a pink or black fill.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--border-focus-offset)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     }

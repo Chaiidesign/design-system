@@ -18,7 +18,7 @@
     "overridesToRemove": 0,
     "cssNameDiffers": 0,
     "cssFileMismatch": 0,
-    "descriptionDiffers": 0,
+    "descriptionDiffers": 290,
     "proposedNotInFigma": 23
   },
   "lists": {
@@ -1185,7 +1185,2038 @@
     "overridesToRemove": [],
     "cssNameDiffers": [],
     "cssFileMismatch": [],
-    "descriptionDiffers": [],
+    "descriptionDiffers": [
+      {
+        "collection": "Themes",
+        "token": "text/primary",
+        "figma": "",
+        "repo": "Body text and headings on any surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/secondary",
+        "figma": "",
+        "repo": "Supporting text, such as hints and details, on any surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/placeholder",
+        "figma": "",
+        "repo": "Placeholder text inside an empty field.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/disabled",
+        "figma": "",
+        "repo": "Text of a control that cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/inverse",
+        "figma": "",
+        "repo": "Text on an inverse surface, such as a tooltip.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/on",
+        "figma": "",
+        "repo": "Text on a bold brand or action fill, such as a primary button.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/default",
+        "figma": "",
+        "repo": "A link at rest.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/hover",
+        "figma": "",
+        "repo": "A link under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/active",
+        "figma": "",
+        "repo": "A link while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/error",
+        "figma": "",
+        "repo": "Text that reports an error, such as a field message.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/success",
+        "figma": "",
+        "repo": "Text that confirms something worked.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/warning",
+        "figma": "",
+        "repo": "Text that warns before something goes wrong.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/info",
+        "figma": "",
+        "repo": "Text that gives neutral information or a tip.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/primary",
+        "figma": "",
+        "repo": "Icons that sit beside body text.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/secondary",
+        "figma": "",
+        "repo": "Supporting icons, such as a chevron or a hint.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/disabled",
+        "figma": "",
+        "repo": "An icon in a control that cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/inverse",
+        "figma": "",
+        "repo": "An icon on an inverse surface, such as a tooltip.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/on",
+        "figma": "",
+        "repo": "An icon on a bold brand or action fill.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/brand",
+        "figma": "",
+        "repo": "An icon in the brand colour.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/error",
+        "figma": "",
+        "repo": "An icon that marks an error.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/success",
+        "figma": "",
+        "repo": "An icon that marks success.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/warning",
+        "figma": "",
+        "repo": "An icon that marks a warning.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/info",
+        "figma": "",
+        "repo": "An icon that marks information.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/default",
+        "figma": "",
+        "repo": "The page and card background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/hover",
+        "figma": "",
+        "repo": "A row or item on the page under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/active",
+        "figma": "",
+        "repo": "A row or item on the page while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/disabled",
+        "figma": "",
+        "repo": "A row or item on the page when it cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/default",
+        "figma": "",
+        "repo": "A grouped area on the page, such as a field or a panel.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/hover",
+        "figma": "",
+        "repo": "A grouped area under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/active",
+        "figma": "",
+        "repo": "A grouped area while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/disabled",
+        "figma": "",
+        "repo": "A grouped area when it cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/default",
+        "figma": "",
+        "repo": "A nested area inside a grouped area, such as a chip.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/hover",
+        "figma": "",
+        "repo": "A nested area under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/active",
+        "figma": "",
+        "repo": "A nested area while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/disabled",
+        "figma": "",
+        "repo": "A nested area when it cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/error",
+        "figma": "",
+        "repo": "The background of an error message or banner.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/success",
+        "figma": "",
+        "repo": "The background of a success message or banner.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/warning",
+        "figma": "",
+        "repo": "The background of a warning message or banner.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/info",
+        "figma": "",
+        "repo": "The background of an information message or banner.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/default",
+        "figma": "",
+        "repo": "The fill of the main action button.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/hover",
+        "figma": "",
+        "repo": "The main action button under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/active",
+        "figma": "",
+        "repo": "The main action button while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/disabled",
+        "figma": "",
+        "repo": "The main action button when it cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/default",
+        "figma": "",
+        "repo": "The fill of a neutral button, such as Cancel.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/hover",
+        "figma": "",
+        "repo": "A neutral button under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/active",
+        "figma": "",
+        "repo": "A neutral button while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/disabled",
+        "figma": "",
+        "repo": "A neutral button when it cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/default",
+        "figma": "",
+        "repo": "The fill of a secondary button.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/hover",
+        "figma": "",
+        "repo": "A secondary button under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/active",
+        "figma": "",
+        "repo": "A secondary button while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/disabled",
+        "figma": "",
+        "repo": "A secondary button when it cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/error/default",
+        "figma": "",
+        "repo": "The fill of a destructive action button, such as Delete.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/error/hover",
+        "figma": "",
+        "repo": "A destructive action button under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/success/default",
+        "figma": "",
+        "repo": "The fill of a confirming action button.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/success/hover",
+        "figma": "",
+        "repo": "A confirming action button under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/warning/default",
+        "figma": "",
+        "repo": "The fill of a button for an action that needs care.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/warning/hover",
+        "figma": "",
+        "repo": "A button for an action that needs care under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/default",
+        "figma": "",
+        "repo": "The edge of a card, divider or container.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/secondary",
+        "figma": "",
+        "repo": "A quieter edge, such as a divider inside a card.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/hover",
+        "figma": "",
+        "repo": "The edge of a card or container under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/active",
+        "figma": "",
+        "repo": "The edge of a card or container while it is pressed.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/disabled",
+        "figma": "",
+        "repo": "The edge of a card or container when it cannot be used.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/focus",
+        "figma": "",
+        "repo": "The ring around whatever has keyboard focus.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/info",
+        "figma": "",
+        "repo": "The edge of an information message.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/error",
+        "figma": "",
+        "repo": "The edge of a field with an error, or of an error message.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/success",
+        "figma": "",
+        "repo": "The edge of a success message.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/warning",
+        "figma": "",
+        "repo": "The edge of a warning message.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/default",
+        "figma": "",
+        "repo": "Teal text on a teal accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/bold",
+        "figma": "",
+        "repo": "Stronger teal text, for emphasis on a teal accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/default",
+        "figma": "",
+        "repo": "A teal icon on a teal accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/bold",
+        "figma": "",
+        "repo": "A stronger teal icon on a teal accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/default",
+        "figma": "",
+        "repo": "Blue text on a blue accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/bold",
+        "figma": "",
+        "repo": "Stronger blue text, for emphasis on a blue accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/default",
+        "figma": "",
+        "repo": "A blue icon on a blue accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/bold",
+        "figma": "",
+        "repo": "A stronger blue icon on a blue accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/default",
+        "figma": "",
+        "repo": "Violet text on a violet accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/bold",
+        "figma": "",
+        "repo": "Stronger violet text, for emphasis on a violet accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/default",
+        "figma": "",
+        "repo": "A violet icon on a violet accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/bold",
+        "figma": "",
+        "repo": "A stronger violet icon on a violet accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/default",
+        "figma": "",
+        "repo": "Amber text on an amber accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/bold",
+        "figma": "",
+        "repo": "Stronger amber text, for emphasis on an amber accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/default",
+        "figma": "",
+        "repo": "An amber icon on an amber accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/bold",
+        "figma": "",
+        "repo": "A stronger amber icon on an amber accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/default",
+        "figma": "",
+        "repo": "Pink text on a pink accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/bold",
+        "figma": "",
+        "repo": "Stronger pink text, for emphasis on a pink accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/default",
+        "figma": "",
+        "repo": "A pink icon on a pink accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/bold",
+        "figma": "",
+        "repo": "A stronger pink icon on a pink accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/default",
+        "figma": "",
+        "repo": "Green text on a green accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/bold",
+        "figma": "",
+        "repo": "Stronger green text, for emphasis on a green accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/default",
+        "figma": "",
+        "repo": "A green icon on a green accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/bold",
+        "figma": "",
+        "repo": "A stronger green icon on a green accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/default",
+        "figma": "",
+        "repo": "Orange text on an orange accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/bold",
+        "figma": "",
+        "repo": "Stronger orange text, for emphasis on an orange accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/default",
+        "figma": "",
+        "repo": "An orange icon on an orange accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/bold",
+        "figma": "",
+        "repo": "A stronger orange icon on an orange accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/default",
+        "figma": "",
+        "repo": "Red text on a red accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/bold",
+        "figma": "",
+        "repo": "Stronger red text, for emphasis on a red accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/default",
+        "figma": "",
+        "repo": "A red icon on a red accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/bold",
+        "figma": "",
+        "repo": "A stronger red icon on a red accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/default",
+        "figma": "",
+        "repo": "Rose text on a rose accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/bold",
+        "figma": "",
+        "repo": "Stronger rose text, for emphasis on a rose accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/default",
+        "figma": "",
+        "repo": "A rose icon on a rose accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/bold",
+        "figma": "",
+        "repo": "A stronger rose icon on a rose accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtlest/default",
+        "figma": "",
+        "repo": "The faintest teal background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest teal background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtle/default",
+        "figma": "",
+        "repo": "A light teal background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtle/hover",
+        "figma": "",
+        "repo": "A light teal background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/default",
+        "figma": "",
+        "repo": "A strong teal background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/hover",
+        "figma": "",
+        "repo": "A strong teal background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtlest/default",
+        "figma": "",
+        "repo": "The faintest blue background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest blue background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtle/default",
+        "figma": "",
+        "repo": "A light blue background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtle/hover",
+        "figma": "",
+        "repo": "A light blue background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/default",
+        "figma": "",
+        "repo": "A strong blue background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/hover",
+        "figma": "",
+        "repo": "A strong blue background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtlest/default",
+        "figma": "",
+        "repo": "The faintest violet background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest violet background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtle/default",
+        "figma": "",
+        "repo": "A light violet background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtle/hover",
+        "figma": "",
+        "repo": "A light violet background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/bold/default",
+        "figma": "",
+        "repo": "A strong violet background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/bold/hover",
+        "figma": "",
+        "repo": "A strong violet background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtlest/default",
+        "figma": "",
+        "repo": "The faintest amber background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest amber background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtle/default",
+        "figma": "",
+        "repo": "A light amber background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtle/hover",
+        "figma": "",
+        "repo": "A light amber background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/bold/default",
+        "figma": "",
+        "repo": "A strong amber background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/bold/hover",
+        "figma": "",
+        "repo": "A strong amber background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtlest/default",
+        "figma": "",
+        "repo": "The faintest pink background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest pink background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtle/default",
+        "figma": "",
+        "repo": "A light pink background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtle/hover",
+        "figma": "",
+        "repo": "A light pink background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/bold/default",
+        "figma": "",
+        "repo": "A strong pink background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/bold/hover",
+        "figma": "",
+        "repo": "A strong pink background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtlest/default",
+        "figma": "",
+        "repo": "The faintest green background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest green background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtle/default",
+        "figma": "",
+        "repo": "A light green background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtle/hover",
+        "figma": "",
+        "repo": "A light green background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/bold/default",
+        "figma": "",
+        "repo": "A strong green background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/bold/hover",
+        "figma": "",
+        "repo": "A strong green background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtlest/default",
+        "figma": "",
+        "repo": "The faintest orange background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest orange background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtle/default",
+        "figma": "",
+        "repo": "A light orange background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtle/hover",
+        "figma": "",
+        "repo": "A light orange background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/bold/default",
+        "figma": "",
+        "repo": "A strong orange background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/bold/hover",
+        "figma": "",
+        "repo": "A strong orange background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtlest/default",
+        "figma": "",
+        "repo": "The faintest red background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest red background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtle/default",
+        "figma": "",
+        "repo": "A light red background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtle/hover",
+        "figma": "",
+        "repo": "A light red background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/bold/default",
+        "figma": "",
+        "repo": "A strong red background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/bold/hover",
+        "figma": "",
+        "repo": "A strong red background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtlest/default",
+        "figma": "",
+        "repo": "The faintest rose background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest rose background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtle/default",
+        "figma": "",
+        "repo": "A light rose background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtle/hover",
+        "figma": "",
+        "repo": "A light rose background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/bold/default",
+        "figma": "",
+        "repo": "A strong rose background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/bold/hover",
+        "figma": "",
+        "repo": "A strong rose background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtlest/default",
+        "figma": "",
+        "repo": "The faintest neutral background, for a large tinted area.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtlest/hover",
+        "figma": "",
+        "repo": "The faintest neutral background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/default",
+        "figma": "",
+        "repo": "A light neutral background, such as a tag or badge.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/hover",
+        "figma": "",
+        "repo": "A light neutral background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/bold/default",
+        "figma": "",
+        "repo": "A strong neutral background, such as a solid tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/bold/hover",
+        "figma": "",
+        "repo": "A strong neutral background under the pointer.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/default",
+        "figma": "",
+        "repo": "Neutral text on a neutral accent surface, such as a tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/bold",
+        "figma": "",
+        "repo": "Stronger neutral text, for emphasis on a neutral accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/default",
+        "figma": "",
+        "repo": "A neutral icon on a neutral accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/bold",
+        "figma": "",
+        "repo": "A stronger neutral icon on a neutral accent surface.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "text/brand",
+        "figma": "",
+        "repo": "Text in the brand colour, such as a highlighted word.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "border/brand",
+        "figma": "",
+        "repo": "A brand edge, such as a selected card.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/brand/subtle",
+        "figma": "",
+        "repo": "A light brand background, such as a selected item or a promotion.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/brand/bold",
+        "figma": "",
+        "repo": "A strong brand background, such as a banner.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-1",
+        "figma": "",
+        "repo": "Font size of a level 1 heading, the page title.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-2",
+        "figma": "",
+        "repo": "Font size of a level 2 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-3",
+        "figma": "",
+        "repo": "Font size of a level 3 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-4",
+        "figma": "",
+        "repo": "Font size of a level 4 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-5",
+        "figma": "",
+        "repo": "Font size of a level 5 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-6",
+        "figma": "",
+        "repo": "Font size of a level 6 heading, the smallest.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/section-label-base",
+        "figma": "",
+        "repo": "Font size of a section label, the small heading above a group of items.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-large",
+        "figma": "",
+        "repo": "Font size of a label on a large control.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-base",
+        "figma": "",
+        "repo": "Font size of a label on a default control.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-small",
+        "figma": "",
+        "repo": "Font size of a label on a small control or tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-xsmall",
+        "figma": "",
+        "repo": "Font size of the smallest labels, such as a badge count.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-large",
+        "figma": "",
+        "repo": "Font size of large body text, such as an introduction.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-base",
+        "figma": "",
+        "repo": "Font size of body text.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-small",
+        "figma": "",
+        "repo": "Font size of small body text, such as help text or a caption.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-xsmall",
+        "figma": "",
+        "repo": "Font size of the smallest body text, such as a legal note.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-1",
+        "figma": "",
+        "repo": "Line height of a level 1 heading, the page title.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-2",
+        "figma": "",
+        "repo": "Line height of a level 2 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-3",
+        "figma": "",
+        "repo": "Line height of a level 3 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-4",
+        "figma": "",
+        "repo": "Line height of a level 4 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-5",
+        "figma": "",
+        "repo": "Line height of a level 5 heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-6",
+        "figma": "",
+        "repo": "Line height of a level 6 heading, the smallest.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/section-label-base",
+        "figma": "",
+        "repo": "Line height of a section label, the small heading above a group of items.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-large",
+        "figma": "",
+        "repo": "Line height of a label on a large control.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-base",
+        "figma": "",
+        "repo": "Line height of a label on a default control.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-small",
+        "figma": "",
+        "repo": "Line height of a label on a small control or tag.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-xsmall",
+        "figma": "",
+        "repo": "Line height of the smallest labels, such as a badge count.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-large",
+        "figma": "",
+        "repo": "Line height of large body text, such as an introduction.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-base",
+        "figma": "",
+        "repo": "Line height of body text.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-small",
+        "figma": "",
+        "repo": "Line height of small body text, such as help text or a caption.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-xsmall",
+        "figma": "",
+        "repo": "Line height of the smallest body text, such as a legal note.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/heading",
+        "figma": "",
+        "repo": "Weight of every heading.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/section-label-base",
+        "figma": "",
+        "repo": "Weight of a section label.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/label",
+        "figma": "",
+        "repo": "Weight of labels on controls.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/body",
+        "figma": "",
+        "repo": "Weight of body text.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/emphasis",
+        "figma": "",
+        "repo": "Weight of emphasised words inside body text.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Typography",
+        "token": "font-family/sans",
+        "figma": "",
+        "repo": "The typeface for all interface text.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/16",
+        "figma": "",
+        "repo": "Corners of a control 16 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/20",
+        "figma": "",
+        "repo": "Corners of a control 20 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/24",
+        "figma": "",
+        "repo": "Corners of a control 24 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/28",
+        "figma": "",
+        "repo": "Corners of a control 28 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/36",
+        "figma": "",
+        "repo": "Corners of a control 36 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/44",
+        "figma": "",
+        "repo": "Corners of a control 44 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "container/small",
+        "figma": "",
+        "repo": "Corners of a small container, such as a tag or tooltip.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "container/medium",
+        "figma": "",
+        "repo": "Corners of a card or menu.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "container/large",
+        "figma": "",
+        "repo": "Corners of a dialog or sheet.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "round/full",
+        "figma": "",
+        "repo": "A fully round corner, for pills and circles.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/32",
+        "figma": "",
+        "repo": "Corners of a control 32 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Radius",
+        "token": "height/40",
+        "figma": "",
+        "repo": "Corners of a control 40 pixels tall.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/400",
+        "figma": "",
+        "repo": "Step 400 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/320",
+        "figma": "",
+        "repo": "Step 320 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/280",
+        "figma": "",
+        "repo": "Step 280 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/240",
+        "figma": "",
+        "repo": "Step 240 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/200",
+        "figma": "",
+        "repo": "Step 200 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/160",
+        "figma": "",
+        "repo": "Step 160 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/120",
+        "figma": "",
+        "repo": "Step 120 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/100",
+        "figma": "",
+        "repo": "Step 100 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/80",
+        "figma": "",
+        "repo": "Step 80 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/60",
+        "figma": "",
+        "repo": "Step 60 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/40",
+        "figma": "",
+        "repo": "Step 40 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/20",
+        "figma": "",
+        "repo": "Step 20 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/0",
+        "figma": "",
+        "repo": "No space, in any density.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/400",
+        "figma": "",
+        "repo": "Step 400 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/320",
+        "figma": "",
+        "repo": "Step 320 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/280",
+        "figma": "",
+        "repo": "Step 280 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/240",
+        "figma": "",
+        "repo": "Step 240 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/200",
+        "figma": "",
+        "repo": "Step 200 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/160",
+        "figma": "",
+        "repo": "Step 160 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/120",
+        "figma": "",
+        "repo": "Step 120 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/100",
+        "figma": "",
+        "repo": "Step 100 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/80",
+        "figma": "",
+        "repo": "Step 80 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/60",
+        "figma": "",
+        "repo": "Step 60 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/40",
+        "figma": "",
+        "repo": "Step 40 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/20",
+        "figma": "",
+        "repo": "Step 20 of the spacing that stays the same in every density, for layout between components.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Density",
+        "token": "static/0",
+        "figma": "",
+        "repo": "No space, in any density.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/base-start",
+        "figma": "",
+        "repo": "Start colour of the red gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/base-end",
+        "figma": "",
+        "repo": "End colour of the red gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the red gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/glow",
+        "figma": "",
+        "repo": "The main glow laid over the red gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/text",
+        "figma": "",
+        "repo": "Text on the red gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/base-start",
+        "figma": "",
+        "repo": "Start colour of the orange gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/base-end",
+        "figma": "",
+        "repo": "End colour of the orange gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the orange gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/glow",
+        "figma": "",
+        "repo": "The main glow laid over the orange gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/text",
+        "figma": "",
+        "repo": "Text on the orange gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/base-start",
+        "figma": "",
+        "repo": "Start colour of the amber gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/base-end",
+        "figma": "",
+        "repo": "End colour of the amber gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the amber gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/glow",
+        "figma": "",
+        "repo": "The main glow laid over the amber gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/text",
+        "figma": "",
+        "repo": "Text on the amber gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/base-start",
+        "figma": "",
+        "repo": "Start colour of the green gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/base-end",
+        "figma": "",
+        "repo": "End colour of the green gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the green gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/glow",
+        "figma": "",
+        "repo": "The main glow laid over the green gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/text",
+        "figma": "",
+        "repo": "Text on the green gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/base-start",
+        "figma": "",
+        "repo": "Start colour of the teal gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/base-end",
+        "figma": "",
+        "repo": "End colour of the teal gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the teal gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/glow",
+        "figma": "",
+        "repo": "The main glow laid over the teal gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/text",
+        "figma": "",
+        "repo": "Text on the teal gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/base-start",
+        "figma": "",
+        "repo": "Start colour of the blue gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/base-end",
+        "figma": "",
+        "repo": "End colour of the blue gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the blue gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/glow",
+        "figma": "",
+        "repo": "The main glow laid over the blue gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/text",
+        "figma": "",
+        "repo": "Text on the blue gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/base-start",
+        "figma": "",
+        "repo": "Start colour of the violet gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/base-end",
+        "figma": "",
+        "repo": "End colour of the violet gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the violet gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/glow",
+        "figma": "",
+        "repo": "The main glow laid over the violet gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/text",
+        "figma": "",
+        "repo": "Text on the violet gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/base-start",
+        "figma": "",
+        "repo": "Start colour of the pink gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/base-end",
+        "figma": "",
+        "repo": "End colour of the pink gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the pink gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/glow",
+        "figma": "",
+        "repo": "The main glow laid over the pink gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/text",
+        "figma": "",
+        "repo": "Text on the pink gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/base-start",
+        "figma": "",
+        "repo": "Start colour of the rose gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/base-end",
+        "figma": "",
+        "repo": "End colour of the rose gradient background.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/glow-warm",
+        "figma": "",
+        "repo": "The warm glow laid over the rose gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/glow",
+        "figma": "",
+        "repo": "The main glow laid over the rose gradient.",
+        "repoSource": "drafted"
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/text",
+        "figma": "",
+        "repo": "Text on the rose gradient.",
+        "repoSource": "drafted"
+      }
+    ],
     "proposedNotInFigma": [
       {
         "collection": "Border",

@@ -1,0 +1,5745 @@
+{
+ "generated": "16 November 2026",
+ "sets": {
+  "Button": {
+   "variant=primary, state=default, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=hover, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=active, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=focus, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/32"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=disabled, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=primary, state=loading, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=primary, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=default, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=hover, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=active, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=focus, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/44"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=disabled, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=primary, state=loading, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=neutral, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    }
+   },
+   "variant=neutral, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    }
+   },
+   "variant=neutral, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    }
+   },
+   "variant=neutral, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    }
+   },
+   "variant=neutral, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=neutral, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/inverse"
+    }
+   },
+   "variant=secondary, state=default, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=hover, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=active, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=focus, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/32"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=disabled, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=secondary, state=loading, size=sm, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=secondary, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=default, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=hover, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=active, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=focus, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/44"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=secondary, state=disabled, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=secondary, state=loading, size=lg, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/secondary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/200",
+     "pr": "Density (DS V2)|static/200",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-large",
+     "lh": "Typography (DS V2)|line-height/label-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=outline, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=outline, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/hover",
+     "s": "Themes (DS V2)|border/strong/hover",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=outline, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/active",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=outline, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=outline, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "Themes (DS V2)|border/primary/disabled",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=outline, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=ghost, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=danger, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/error/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=danger, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/error/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=danger, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/error/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=danger, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/error/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=danger, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=danger, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/error/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=dangerSoft, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/error",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    }
+   },
+   "variant=dangerSoft, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/accent/red/subtlest/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    }
+   },
+   "variant=dangerSoft, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/accent/red/subtlest/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    }
+   },
+   "variant=dangerSoft, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/error",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    }
+   },
+   "variant=dangerSoft, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=dangerSoft, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|surface/error",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/error"
+    }
+   },
+   "variant=success, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/success/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=success, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/success/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=success, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/success/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=success, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/success/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=success, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=success, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/success/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=warning, state=default, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/warning/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=warning, state=hover, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/warning/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=warning, state=active, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/warning/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=warning, state=focus, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/warning/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=warning, state=disabled, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=warning, state=loading, size=md, iconOnly=false": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/warning/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/80",
+     "pb": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "iconEnd": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=default, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=hover, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=active, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=focus, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/32"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=disabled, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=primary, state=loading, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=default, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=hover, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=active, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=focus, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=disabled, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=primary, state=loading, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=default, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=hover, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=active, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=focus, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/44"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=primary, state=disabled, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/disabled",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=primary, state=loading, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/on"
+    }
+   },
+   "variant=ghost, state=default, size=sm, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=hover, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=active, size=sm, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=focus, size=sm, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/32"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=disabled, size=sm, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=ghost, state=loading, size=sm, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "w": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/60"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=default, size=md, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=hover, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=active, size=md, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=focus, size=md, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=disabled, size=md, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=ghost, state=loading, size=md, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "w": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=default, size=lg, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=hover, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/hover",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=active, size=lg, iconOnly=true": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/active",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=focus, size=lg, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/44"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   },
+   "variant=ghost, state=disabled, size=lg, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/disabled"
+    }
+   },
+   "variant=ghost, state=loading, size=lg, iconOnly=true": {
+    ".": {
+     "f": "-",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "w": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0",
+     "g": "Density (DS V2)|static/80"
+    },
+    "iconStart": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "spinner": {
+     "zw": "Size (DS V2)|icon/md",
+     "zh": "Size (DS V2)|icon/md",
+     "c": "Themes (DS V2)|text/primary"
+    }
+   }
+  },
+  "Input": {
+   "state=default, size=sm": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/100",
+     "pr": "Density (DS V2)|static/100",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/60"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=hover, size=sm": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/hover",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/100",
+     "pr": "Density (DS V2)|static/100",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/60"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=focus, size=sm": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/100",
+     "pr": "Density (DS V2)|static/100",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/60"
+    },
+    "control/focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/32"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=filled, size=sm": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/100",
+     "pr": "Density (DS V2)|static/100",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/60"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=invalid, size=sm": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/error",
+     "sw": "Border (DS V2)|width/md",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/100",
+     "pr": "Density (DS V2)|static/100",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/60"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "errorMessage": {
+     "g": "Density (DS V2)|static/40"
+    },
+    "errorMessage/errorIcon": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|icon/error"
+    },
+    "errorMessage/errorText": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=disabled, size=sm": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/disabled",
+     "s": "Themes (DS V2)|border/primary/disabled",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/100",
+     "pr": "Density (DS V2)|static/100",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/60"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=readOnly, size=sm": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/secondary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/32",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/100",
+     "pr": "Density (DS V2)|static/100",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/60"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=default, size=md": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=hover, size=md": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/hover",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=focus, size=md": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=filled, size=md": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=invalid, size=md": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/error",
+     "sw": "Border (DS V2)|width/md",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "errorMessage": {
+     "g": "Density (DS V2)|static/40"
+    },
+    "errorMessage/errorIcon": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|icon/error"
+    },
+    "errorMessage/errorText": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=disabled, size=md": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/disabled",
+     "s": "Themes (DS V2)|border/primary/disabled",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=readOnly, size=md": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/secondary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/40",
+     "mh": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=default, size=lg": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-large",
+     "lh": "Typography (DS V2)|line-height/body-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=hover, size=lg": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/hover",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-large",
+     "lh": "Typography (DS V2)|line-height/body-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=focus, size=lg": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/44"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/placeholder",
+     "fs": "Typography (DS V2)|font-size/body-large",
+     "lh": "Typography (DS V2)|line-height/body-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=filled, size=lg": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-large",
+     "lh": "Typography (DS V2)|line-height/body-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=invalid, size=lg": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/error",
+     "sw": "Border (DS V2)|width/md",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-large",
+     "lh": "Typography (DS V2)|line-height/body-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "errorMessage": {
+     "g": "Density (DS V2)|static/40"
+    },
+    "errorMessage/errorIcon": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|icon/error"
+    },
+    "errorMessage/errorText": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=disabled, size=lg": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/primary/disabled",
+     "s": "Themes (DS V2)|border/primary/disabled",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-large",
+     "lh": "Typography (DS V2)|line-height/body-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "state=readOnly, size=lg": {
+    ".": {
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "control": {
+     "f": "Themes (DS V2)|surface/secondary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|height/44",
+     "mh": "Size (DS V2)|control/lg",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "g": "Density (DS V2)|static/80"
+    },
+    "control/input": {
+     "f": "-",
+     "pl": "Density (DS V2)|static/0",
+     "pr": "Density (DS V2)|static/0",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "control/input/value": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-large",
+     "lh": "Typography (DS V2)|line-height/body-large",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-small",
+     "lh": "Typography (DS V2)|line-height/body-small",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   }
+  },
+  "TabsTrigger": {
+   "state=default, variant=line, size=sm": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/32",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=hover, variant=line, size=sm": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/32",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=selected, variant=line, size=sm": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/32",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "Themes (DS V2)|border/brand",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=focus, variant=line, size=sm": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/32",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/60"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/32"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "Themes (DS V2)|border/brand",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=disabled, variant=line, size=sm": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/32",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=default, variant=line, size=md": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/40",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=hover, variant=line, size=md": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/40",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=selected, variant=line, size=md": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/40",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "Themes (DS V2)|border/brand",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=focus, variant=line, size=md": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/40",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|height/40"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "Themes (DS V2)|border/brand",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=disabled, variant=line, size=md": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|height/40",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=default, variant=pill, size=sm": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=hover, variant=pill, size=sm": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/hover",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=selected, variant=pill, size=sm": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=focus, variant=pill, size=sm": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/60"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|round/full"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=disabled, variant=pill, size=sm": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/120",
+     "pr": "Density (DS V2)|static/120",
+     "g": "Density (DS V2)|static/60"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=default, variant=pill, size=md": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=hover, variant=pill, size=md": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/hover",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=selected, variant=pill, size=md": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=focus, variant=pill, size=md": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "g": "Density (DS V2)|static/80"
+    },
+    "focusRing": {
+     "s": "Themes (DS V2)|border/focus",
+     "sw": "Border (DS V2)|focus/width",
+     "r": "Radius (DS V2)|round/full"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   },
+   "state=disabled, variant=pill, size=md": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|round/full",
+     "h": "Size (DS V2)|control/md",
+     "pl": "Density (DS V2)|static/160",
+     "pr": "Density (DS V2)|static/160",
+     "g": "Density (DS V2)|static/80"
+    },
+    "label": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "indicator": {
+     "s": "-",
+     "sw": "Border (DS V2)|width/md"
+    }
+   }
+  },
+  "DropdownMenuItem": {
+   "kind=item, state=default, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=item, state=highlighted, variant=initial": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=item, state=disabled, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=item, state=default, variant=danger": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/error",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=item, state=highlighted, variant=danger": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/error/default",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/on",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=item, state=disabled, variant=danger": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=checkboxItem, state=default, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=checkboxItem, state=highlighted, variant=initial": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=checkboxItem, state=checked, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=checkboxItem, state=disabled, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=radioItem, state=default, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=radioItem, state=highlighted, variant=initial": {
+    ".": {
+     "f": "Themes (DS V2)|interactive/neutral/default",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/inverse"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/inverse",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=radioItem, state=checked, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/primary"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   },
+   "kind=radioItem, state=disabled, variant=initial": {
+    ".": {
+     "f": "-",
+     "r": "Radius (DS V2)|container/small",
+     "mh": "Size (DS V2)|control/sm",
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60",
+     "g": "Density (DS V2)|static/80"
+    },
+    "indicatorBox": {
+     "h": "Size (DS V2)|icon/sm",
+     "w": "Size (DS V2)|icon/sm"
+    },
+    "indicatorBox/itemIndicator": {
+     "zw": "Size (DS V2)|icon/sm",
+     "zh": "Size (DS V2)|icon/sm",
+     "c": "Themes (DS V2)|text/disabled"
+    },
+    "itemLabel": {
+     "c": "Themes (DS V2)|text/disabled",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    }
+   }
+  },
+  "DropdownMenuLabel": {
+   "DropdownMenuLabel": {
+    ".": {
+     "pl": "Density (DS V2)|static/80",
+     "pr": "Density (DS V2)|static/80",
+     "pt": "Density (DS V2)|static/60",
+     "pb": "Density (DS V2)|static/60"
+    },
+    "text": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/label-base",
+     "lh": "Typography (DS V2)|line-height/label-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/label"
+    }
+   }
+  },
+  "DropdownMenuSeparator": {
+   "DropdownMenuSeparator": {
+    ".": {
+     "s": "Themes (DS V2)|border/primary/default",
+     "sw": "Border (DS V2)|width/sm"
+    }
+   }
+  },
+  "DropdownMenuContent": {
+   "DropdownMenuContent": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "Themes (DS V2)|border/strong/default",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|container/medium",
+     "nw": "Size (DS V2)|menu/min",
+     "xw": "Size (DS V2)|menu/max",
+     "pl": "Density (DS V2)|static/40",
+     "pr": "Density (DS V2)|static/40",
+     "pt": "Density (DS V2)|static/40",
+     "pb": "Density (DS V2)|static/40",
+     "e": "style|shadow/md (DS V2)"
+    }
+   }
+  },
+  "DialogContent": {
+   "size=sm": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|container/large",
+     "xw": "Size (DS V2)|dialog/sm",
+     "e": "style|shadow/lg (DS V2)"
+    },
+    "header": {
+     "pl": "Density (DS V2)|scaled/240",
+     "pr": "Density (DS V2)|scaled/240",
+     "pt": "Density (DS V2)|scaled/240",
+     "pb": "Density (DS V2)|scaled/240",
+     "g": "Density (DS V2)|static/80"
+    },
+    "header/title": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/heading-5",
+     "lh": "Typography (DS V2)|line-height/heading-5",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/heading"
+    },
+    "header/description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "body": {
+     "pl": "Density (DS V2)|scaled/240",
+     "pr": "Density (DS V2)|scaled/240",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "body/bodyText": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "footer": {
+     "pl": "Density (DS V2)|scaled/240",
+     "pr": "Density (DS V2)|scaled/240",
+     "pt": "Density (DS V2)|scaled/240",
+     "pb": "Density (DS V2)|scaled/240",
+     "g": "Density (DS V2)|static/80"
+    }
+   },
+   "size=md": {
+    ".": {
+     "f": "Themes (DS V2)|surface/primary/default",
+     "s": "-",
+     "sw": "Border (DS V2)|width/sm",
+     "r": "Radius (DS V2)|container/large",
+     "xw": "Size (DS V2)|dialog/md",
+     "e": "style|shadow/lg (DS V2)"
+    },
+    "header": {
+     "pl": "Density (DS V2)|scaled/240",
+     "pr": "Density (DS V2)|scaled/240",
+     "pt": "Density (DS V2)|scaled/240",
+     "pb": "Density (DS V2)|scaled/240",
+     "g": "Density (DS V2)|static/80"
+    },
+    "header/title": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/heading-5",
+     "lh": "Typography (DS V2)|line-height/heading-5",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/heading"
+    },
+    "header/description": {
+     "c": "Themes (DS V2)|text/secondary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "body": {
+     "pl": "Density (DS V2)|scaled/240",
+     "pr": "Density (DS V2)|scaled/240",
+     "pt": "Density (DS V2)|static/0",
+     "pb": "Density (DS V2)|static/0"
+    },
+    "body/bodyText": {
+     "c": "Themes (DS V2)|text/primary",
+     "fs": "Typography (DS V2)|font-size/body-base",
+     "lh": "Typography (DS V2)|line-height/body-base",
+     "ff": "Typography (DS V2)|font-family/sans",
+     "fw": "Typography (DS V2)|font-weight/body"
+    },
+    "footer": {
+     "pl": "Density (DS V2)|scaled/240",
+     "pr": "Density (DS V2)|scaled/240",
+     "pt": "Density (DS V2)|scaled/240",
+     "pb": "Density (DS V2)|scaled/240",
+     "g": "Density (DS V2)|static/80"
+    }
+   }
+  }
+ }
+}

@@ -68,7 +68,8 @@
           "com.souvenir.why": "Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--shadow-md)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       },
       "lg": {
@@ -137,7 +138,8 @@
           "com.souvenir.why": "Elevation is not started in Figma.",
           "com.souvenir.codeSyntax": {
             "WEB": "var(--shadow-lg)"
-          }
+          },
+          "com.souvenir.descriptionSource": "proposed"
         }
       }
     }
