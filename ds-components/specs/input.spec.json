@@ -1,0 +1,1068 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "schemaVersion": "0.1.0",
+  "name": "Input",
+  "slug": "input",
+  "stage": "alpha",
+  "summary": "A single-line text field with its label, an optional description and an error message, as one component.",
+  "figma": {
+    "component": "TextField",
+    "wasCalled": null,
+    "confirmed": false
+  },
+  "primitive": {
+    "package": null,
+    "native": "The input element does all a text field needs: editing, selection, autofill, the right on-screen keyboard and the required, disabled and read-only states. Radix has no Input part. The label element ties the name by for and id. Ids come from React's useId when the id prop is not given."
+  },
+  "anatomy": {
+    "root": {
+      "kind": "container",
+      "role": null,
+      "slot": "input",
+      "element": "div",
+      "primitivePart": null,
+      "description": "The field group. It stacks the label, the control, the description and the error message, and carries the data attributes for disabled, read-only and invalid so every part can be styled from them."
+    },
+    "label": {
+      "kind": "text",
+      "role": "label",
+      "slot": "input-label",
+      "element": "label",
+      "primitivePart": null,
+      "description": "The visible name. Its for attribute holds the id of the input. Not rendered when ariaLabel is used instead."
+    },
+    "requiredMark": {
+      "kind": "text",
+      "role": "indicator",
+      "slot": "input-required-mark",
+      "element": "span",
+      "primitivePart": null,
+      "required": false,
+      "description": "The word Required after the label text, shown while required is true. It is hidden from assistive technology because the input's own required attribute already says the same thing, so a screen reader does not hear it twice."
+    },
+    "control": {
+      "kind": "container",
+      "role": null,
+      "slot": "input-control",
+      "element": "div",
+      "primitivePart": null,
+      "description": "The visible box. It holds the prefix, the native input and the suffix, draws the border and draws the focus ring while anything inside it has focus. A press anywhere on it moves focus to the input."
+    },
+    "prefix": {
+      "kind": "text",
+      "role": "indicator",
+      "slot": "input-prefix",
+      "element": "span",
+      "primitivePart": null,
+      "required": false,
+      "description": "An optional icon or short text before the input, such as a search icon or a currency symbol. Hidden from assistive technology; the label must carry the same meaning."
+    },
+    "input": {
+      "kind": "control",
+      "role": "textbox",
+      "slot": "input-input",
+      "element": "input",
+      "primitivePart": null,
+      "description": "The native input element. It takes the value, the type, every native attribute, aria-invalid and aria-describedby. It has no border, background or outline of its own; the control draws them."
+    },
+    "suffix": {
+      "kind": "text",
+      "role": "indicator",
+      "slot": "input-suffix",
+      "element": "span",
+      "primitivePart": null,
+      "required": false,
+      "description": "An optional icon or short text after the input, such as a unit. Hidden from assistive technology; the label must carry the same meaning."
+    },
+    "description": {
+      "kind": "text",
+      "role": "description",
+      "slot": "input-description",
+      "element": "p",
+      "primitivePart": null,
+      "required": false,
+      "description": "Optional help text under the control, such as the format expected. Its id is listed in the input's aria-describedby."
+    },
+    "errorMessage": {
+      "kind": "container",
+      "role": "errormessage",
+      "slot": "input-error-message",
+      "element": "p",
+      "primitivePart": null,
+      "required": false,
+      "description": "Rendered only while invalid is true and errorMessage has text. It holds an icon and the words, so the error is never shown by colour alone. Its id is listed first in the input's aria-describedby."
+    },
+    "errorIcon": {
+      "kind": "glyph",
+      "role": "indicator",
+      "slot": "input-error-icon",
+      "element": "span",
+      "primitivePart": null,
+      "required": false,
+      "description": "The error icon inside the error message. Hidden from assistive technology; the words say what is wrong."
+    },
+    "errorText": {
+      "kind": "text",
+      "role": null,
+      "slot": "input-error-text",
+      "element": "span",
+      "primitivePart": null,
+      "required": false,
+      "description": "The words of the error message."
+    }
+  },
+  "props": {
+    "label": {
+      "on": "label",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "The visible name of the field. Required unless ariaLabel is given; the type of the props says so. It stays visible while the field has a value."
+    },
+    "description": {
+      "on": "description",
+      "type": "node",
+      "figmaProperty": null,
+      "description": "Help text under the field. Its id goes into the input's aria-describedby."
+    },
+    "errorMessage": {
+      "on": "errorText",
+      "type": "node",
+      "figmaProperty": null,
+      "description": "What is wrong and how to fix it. Shown only while invalid is true."
+    },
+    "invalid": {
+      "on": "root",
+      "type": "boolean",
+      "default": false,
+      "reflects": "data-invalid",
+      "figmaProperty": null,
+      "description": "The value is wrong. With an errorMessage it sets data-invalid on the root, renders the error message and sets aria-invalid to true on the input. Without an errorMessage it does nothing: the type of the props forbids it and the component warns in development."
+    },
+    "required": {
+      "on": "root",
+      "type": "boolean",
+      "default": false,
+      "reflects": "data-required",
+      "figmaProperty": null,
+      "description": "A value must be given. Sets data-required on the root, the native required attribute on the input, and shows the word Required after the label."
+    },
+    "disabled": {
+      "on": "root",
+      "type": "boolean",
+      "default": false,
+      "reflects": "data-disabled",
+      "figmaProperty": null,
+      "description": "The field cannot be used or focused, and its value is not sent with the form. Sets data-disabled on the root and the native disabled attribute on the input."
+    },
+    "readOnly": {
+      "on": "root",
+      "type": "boolean",
+      "default": false,
+      "reflects": "data-readonly",
+      "figmaProperty": null,
+      "description": "The value can be read, selected and copied but not changed, and it is sent with the form. The field stays in the Tab order. Sets data-readonly on the root and the native readonly attribute on the input."
+    },
+    "size": {
+      "on": "root",
+      "type": "enum",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md",
+      "reflects": "data-size",
+      "figmaProperty": null,
+      "description": "The least height of the control: 32, 40 or 44 pixels, as on Button. On a touch screen every size grows to at least 44. The control grows taller when the text is enlarged."
+    },
+    "type": {
+      "on": "input",
+      "type": "enum",
+      "values": [
+        "text",
+        "email",
+        "password",
+        "search",
+        "tel",
+        "url",
+        "number"
+      ],
+      "default": "text",
+      "reflects": null,
+      "figmaProperty": "type",
+      "description": "The native input type. It decides the on-screen keyboard and what the browser checks. Figma's type property has only text, password and number; email, search, tel and url exist in code only. Prefer text with inputMode over number; see the requirement input-no-number-for-codes."
+    },
+    "value": {
+      "on": "input",
+      "type": "string",
+      "controls": "onChange",
+      "figmaProperty": "value",
+      "description": "The value, when the parent owns it. Use with onChange. Figma's text property value on the Input inside TextField shows it."
+    },
+    "defaultValue": {
+      "on": "input",
+      "type": "string",
+      "figmaProperty": null,
+      "description": "The starting value, when the field owns it."
+    },
+    "onChange": {
+      "on": "input",
+      "type": "handler",
+      "figmaProperty": null,
+      "description": "Called with the change event on every edit. Not called while disabled or read-only."
+    },
+    "placeholder": {
+      "on": "input",
+      "type": "string",
+      "figmaProperty": null,
+      "description": "A short example of the expected value, shown while the field is empty. Never the only label or instruction."
+    },
+    "name": {
+      "on": "input",
+      "type": "string",
+      "figmaProperty": null,
+      "description": "The name the value is sent under with the form."
+    },
+    "autoComplete": {
+      "on": "input",
+      "type": "string",
+      "figmaProperty": null,
+      "description": "The autocomplete token, such as email, given-name, postal-code or cc-number, so the browser can fill the field. A field that asks for the person's own details must set it."
+    },
+    "inputMode": {
+      "on": "input",
+      "type": "enum",
+      "values": [
+        "none",
+        "text",
+        "decimal",
+        "numeric",
+        "tel",
+        "search",
+        "email",
+        "url"
+      ],
+      "default": null,
+      "reflects": null,
+      "figmaProperty": null,
+      "description": "The on-screen keyboard to show. The default null leaves the attribute off so the browser picks the keyboard from type. Use numeric for a card number or a code, decimal for an amount."
+    },
+    "prefix": {
+      "on": "prefix",
+      "type": "node",
+      "figmaProperty": null,
+      "description": "An icon or short text before the input."
+    },
+    "suffix": {
+      "on": "suffix",
+      "type": "node",
+      "figmaProperty": null,
+      "description": "An icon or short text after the input."
+    },
+    "id": {
+      "on": "input",
+      "type": "string",
+      "figmaProperty": null,
+      "description": "The id of the input. When it is not given the component makes one with useId. The ids of the description and the error message are made from it."
+    },
+    "ariaLabel": {
+      "on": "input",
+      "type": "string",
+      "figmaProperty": null,
+      "description": "The accessible name when there is no visible label, such as a search field whose purpose the page already shows. When it is given the label part is not rendered."
+    }
+  },
+  "states": {
+    "hover": {
+      "on": "control",
+      "selector": ":hover",
+      "source": "native",
+      "figma": {
+        "property": "state",
+        "value": "hover"
+      },
+      "reach": "hover",
+      "description": "The pointer is over the control."
+    },
+    "focus": {
+      "on": "control",
+      "selector": ":focus-within",
+      "source": "native",
+      "figma": {
+        "property": "state",
+        "value": "focus"
+      },
+      "reach": "focus-by-keyboard",
+      "description": "The input has focus, from the keyboard or a press. A text field shows the ring for both, because the person is about to type either way."
+    },
+    "disabled": {
+      "on": "root",
+      "selector": "[data-disabled]",
+      "source": "prop",
+      "figma": {
+        "property": "state",
+        "value": "disabled"
+      },
+      "reach": "prop:disabled=true",
+      "description": "The field cannot be used."
+    },
+    "readOnly": {
+      "on": "root",
+      "selector": "[data-readonly]",
+      "source": "prop",
+      "figma": null,
+      "reach": "prop:readOnly=true",
+      "description": "The value can be read and copied but not changed. Figma has no state value for it."
+    },
+    "invalid": {
+      "on": "root",
+      "selector": "[data-invalid]",
+      "source": "prop",
+      "figma": {
+        "property": "state",
+        "value": "error"
+      },
+      "reach": "prop:invalid=true,errorMessage=Enter an email address, such as name@example.com",
+      "description": "The value is wrong and the error message is shown. The input has aria-invalid set to true at the same time and at no other time. Figma calls this state error."
+    },
+    "placeholderShown": {
+      "on": "input",
+      "selector": ":placeholder-shown",
+      "source": "native",
+      "figma": {
+        "property": "state",
+        "value": "placeholder"
+      },
+      "reach": "prop:placeholder=name@example.com",
+      "description": "The field is empty and shows its placeholder. The placeholder text takes the placeholderColor of the input part."
+    },
+    "filled": {
+      "on": "input",
+      "selector": ":not(:placeholder-shown)",
+      "source": "native",
+      "figma": {
+        "property": "state",
+        "value": "filled"
+      },
+      "reach": "prop:defaultValue=Ada Lovelace",
+      "description": "The field holds a value. The selector also matches an empty input that has no placeholder attribute, so it means the placeholder is not showing rather than that there is a value. It changes no style."
+    }
+  },
+  "precedence": [
+    "disabled",
+    "readOnly",
+    "invalid",
+    "focus",
+    "hover",
+    "placeholderShown",
+    "filled"
+  ],
+  "styles": [
+    {
+      "when": {},
+      "parts": {
+        "root": {
+          "gap": "static/60"
+        },
+        "label": {
+          "color": "text/primary",
+          "typography": "label-base"
+        },
+        "requiredMark": {
+          "color": "text/secondary",
+          "typography": "body-small"
+        },
+        "control": {
+          "minHeight": "control/md",
+          "paddingInline": "static/120",
+          "paddingBlock": "static/40",
+          "gap": "static/80",
+          "radius": "height/40",
+          "borderWidth": "width/sm",
+          "borderStyle": "solid",
+          "borderColor": "border/strong/default",
+          "background": "surface/primary/default",
+          "cursor": "text",
+          "duration": "duration/fast",
+          "easing": "ease/standard",
+          "outlineColor": "border/focus",
+          "outlineWidth": "none",
+          "outlineOffset": "focus/offset"
+        },
+        "prefix": {
+          "color": "text/secondary",
+          "typography": "body-base"
+        },
+        "input": {
+          "width": "full",
+          "paddingInline": "static/0",
+          "paddingBlock": "static/0",
+          "background": "transparent",
+          "borderStyle": "none",
+          "outlineWidth": "none",
+          "color": "text/primary",
+          "typography": "body-base",
+          "placeholderColor": "text/placeholder"
+        },
+        "suffix": {
+          "color": "text/secondary",
+          "typography": "body-base"
+        },
+        "description": {
+          "color": "text/secondary",
+          "typography": "body-small"
+        },
+        "errorMessage": {
+          "gap": "static/40"
+        },
+        "errorIcon": {
+          "iconSize": "icon/sm",
+          "color": "icon/error"
+        },
+        "errorText": {
+          "color": "text/error",
+          "typography": "body-small"
+        }
+      },
+      "why": "The edge uses border/strong/default because border/primary/default is only 1.35 to 1 against the page and an input's edge is the only thing that shows where it is. The native input has no border, background or outline so the browser's own focus outline never doubles the control's ring. The placeholder takes text/placeholder through placeholderColor; that token is being fixed by an override for light contrast, so keep using it."
+    },
+    {
+      "when": {
+        "states": [
+          "hover"
+        ]
+      },
+      "parts": {
+        "control": {
+          "borderColor": "border/strong/hover"
+        }
+      }
+    },
+    {
+      "when": {
+        "states": [
+          "focus"
+        ]
+      },
+      "parts": {
+        "control": {
+          "outlineWidth": "focus/width"
+        }
+      }
+    },
+    {
+      "when": {
+        "props": {
+          "size": "sm"
+        }
+      },
+      "parts": {
+        "control": {
+          "minHeight": "control/sm",
+          "paddingInline": "static/100",
+          "gap": "static/60",
+          "radius": "height/32"
+        }
+      }
+    },
+    {
+      "when": {
+        "props": {
+          "size": "lg"
+        }
+      },
+      "parts": {
+        "control": {
+          "minHeight": "control/lg",
+          "paddingInline": "static/160",
+          "radius": "height/44"
+        },
+        "prefix": {
+          "typography": "body-large"
+        },
+        "input": {
+          "typography": "body-large"
+        },
+        "suffix": {
+          "typography": "body-large"
+        }
+      }
+    },
+    {
+      "when": {
+        "media": "coarse-pointer"
+      },
+      "parts": {
+        "control": {
+          "minHeight": "target/min"
+        },
+        "prefix": {
+          "typography": "body-large"
+        },
+        "input": {
+          "typography": "body-large"
+        },
+        "suffix": {
+          "typography": "body-large"
+        }
+      },
+      "why": "iOS zooms the page when a focused field's text is under 16 pixels, and a finger needs a 44 pixel target. Where the pointer is coarse the text is body-large at every size."
+    },
+    {
+      "when": {
+        "states": [
+          "invalid"
+        ]
+      },
+      "parts": {
+        "control": {
+          "borderColor": "border/error",
+          "borderWidth": "width/md"
+        }
+      },
+      "why": "A thicker edge as well as a colour change, and the error message carries an icon and words, so the error never rests on colour alone."
+    },
+    {
+      "when": {
+        "states": [
+          "readOnly"
+        ]
+      },
+      "parts": {
+        "control": {
+          "background": "surface/secondary/default",
+          "cursor": "default"
+        }
+      },
+      "why": "The edge stays at full strength and the text at text/primary: a read-only value must stay as readable as an editable one. Only the fill says it cannot be changed."
+    },
+    {
+      "when": {
+        "states": [
+          "disabled"
+        ]
+      },
+      "parts": {
+        "control": {
+          "background": "surface/primary/disabled",
+          "borderColor": "border/primary/disabled",
+          "borderWidth": "width/sm",
+          "cursor": "not-allowed"
+        },
+        "input": {
+          "color": "text/disabled",
+          "placeholderColor": "text/disabled"
+        },
+        "prefix": {
+          "color": "text/disabled"
+        },
+        "suffix": {
+          "color": "text/disabled"
+        }
+      },
+      "why": "The label keeps text/primary so a disabled field still says what it is. The border width goes back to width/sm in case the field was also invalid."
+    },
+    {
+      "when": {
+        "media": "reduced-motion"
+      },
+      "parts": {
+        "control": {
+          "duration": "none"
+        }
+      }
+    }
+  ],
+  "accessibility": {
+    "pattern": "W3C WAI Forms tutorial: labelling controls, form instructions and user notifications. There is no Authoring Practices pattern for a plain text field; the native input is used.",
+    "reference": "https://www.w3.org/WAI/tutorials/forms/",
+    "name": {
+      "from": "The label element, tied to the input by for and id. Without a visible label, the ariaLabel prop.",
+      "note": "The placeholder, the prefix and the suffix never give the name. The description and the error message are read after the name through aria-describedby, error first."
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "on": "input",
+        "does": "Moves focus into the field and on to the next one. A read-only field is reached; a disabled field is skipped.",
+        "test": "input-tab-order"
+      },
+      {
+        "key": "Shift+Tab",
+        "on": "input",
+        "does": "Moves focus to the previous field.",
+        "test": null
+      },
+      {
+        "key": "Typing and text editing keys",
+        "on": "input",
+        "does": "Edits the value as the browser does. Nothing is overridden.",
+        "test": null
+      },
+      {
+        "key": "Escape",
+        "on": "input",
+        "does": "With type search, some browsers clear the value. The component adds nothing.",
+        "test": null
+      },
+      {
+        "key": "Enter",
+        "on": "input",
+        "does": "Submits the enclosing form, as the browser does. The component never stops it.",
+        "test": "input-enter-submits-form"
+      }
+    ],
+    "focus": {
+      "order": "In page order. A press anywhere on the control, including the prefix and suffix, moves focus to the input.",
+      "onOpen": "Not applicable: an input does not open.",
+      "onClose": "Not applicable: an input does not close.",
+      "trapped": false,
+      "ring": "control"
+    },
+    "announcements": [
+      "On focus a screen reader says the label, the role, required and invalid when they apply, then the error message and the description.",
+      "The error message is not a live region. It is read when focus reaches the field; after a failed submit the form moves focus to the first invalid field. This keeps a form with many errors from talking over the person."
+    ]
+  },
+  "requirements": [
+    {
+      "id": "input-native-element",
+      "level": "MUST",
+      "text": "The input part is an input element. It is never a div with contenteditable.",
+      "wcag": "4.1.2",
+      "check": "test:input-native-element"
+    },
+    {
+      "id": "input-label",
+      "level": "MUST",
+      "text": "The input has an accessible name: a label element tied by for and id, or ariaLabel.",
+      "wcag": "1.3.1",
+      "check": "axe:label"
+    },
+    {
+      "id": "input-label-or-aria-label",
+      "level": "MUST",
+      "text": "The type of the props requires label or ariaLabel, and the component warns in development when both are missing.",
+      "wcag": "4.1.2",
+      "check": "type:input-label-or-aria-label"
+    },
+    {
+      "id": "input-ids-generated",
+      "level": "MUST",
+      "text": "Without an id prop the input gets a unique id from useId, and the label's for, the description's id and the error message's id are made from it. Two inputs on one page never share an id.",
+      "check": "test:input-ids-generated"
+    },
+    {
+      "id": "input-described-by",
+      "level": "MUST",
+      "text": "aria-describedby on the input lists the error message's id first while it is shown, then the description's id when there is one, and never an id that is not in the page.",
+      "wcag": "1.3.1",
+      "check": "test:input-described-by"
+    },
+    {
+      "id": "input-invalid-only-with-error",
+      "level": "MUST",
+      "text": "aria-invalid is true on the input only while the error message is shown, and is absent otherwise.",
+      "wcag": "3.3.1",
+      "check": "test:input-invalid-only-with-error"
+    },
+    {
+      "id": "input-invalid-needs-message",
+      "level": "MUST",
+      "text": "invalid without an errorMessage is a type error, and the component warns in development.",
+      "wcag": "3.3.1",
+      "check": "type:input-invalid-needs-message"
+    },
+    {
+      "id": "input-aria-valid",
+      "level": "MUST",
+      "text": "Every ARIA attribute on the input holds a valid value.",
+      "wcag": "4.1.2",
+      "check": "axe:aria-valid-attr-value"
+    },
+    {
+      "id": "input-error-not-colour-alone",
+      "level": "MUST",
+      "text": "An error is shown by words and an icon and a 2 pixel edge, never by colour alone.",
+      "wcag": "1.4.1",
+      "check": "test:input-error-not-colour-alone"
+    },
+    {
+      "id": "input-required-not-colour-alone",
+      "level": "MUST",
+      "text": "A required field shows the word Required next to its label and sets the native required attribute. It is never marked by colour alone.",
+      "wcag": "3.3.2",
+      "check": "test:input-required-not-colour-alone"
+    },
+    {
+      "id": "input-tab-order",
+      "level": "MUST",
+      "text": "Tab reaches the input when it is enabled or read-only and skips it when disabled.",
+      "wcag": "2.1.1",
+      "check": "test:input-tab-order"
+    },
+    {
+      "id": "input-enter-submits-form",
+      "level": "MUST",
+      "text": "Enter in the input submits the enclosing form; the component does not cancel it.",
+      "wcag": "2.1.1",
+      "check": "test:input-enter-submits-form"
+    },
+    {
+      "id": "input-focus-visible",
+      "level": "MUST",
+      "text": "While the input has focus the control shows a ring at least 2 pixels thick with at least 3 to 1 contrast against what is beside it, and the input shows no second outline of its own.",
+      "wcag": "2.4.7",
+      "check": "test:input-focus-visible"
+    },
+    {
+      "id": "input-edge-contrast",
+      "level": "MUST",
+      "text": "The control's edge has at least 3 to 1 contrast against the page in every state except disabled, in light and dark.",
+      "wcag": "1.4.11",
+      "check": "test:input-edge-contrast"
+    },
+    {
+      "id": "input-text-contrast",
+      "level": "MUST",
+      "text": "The value, label, description and error text have at least 4.5 to 1 contrast against their background in every state except disabled, in light and dark.",
+      "wcag": "1.4.3",
+      "check": "axe:color-contrast"
+    },
+    {
+      "id": "input-placeholder-contrast",
+      "level": "MUST",
+      "text": "The placeholder has at least 4.5 to 1 contrast against the control's fill in light and dark. It fails in light today until the text/placeholder override lands.",
+      "wcag": "1.4.3",
+      "check": "test:input-placeholder-contrast"
+    },
+    {
+      "id": "input-no-ios-zoom",
+      "level": "MUST",
+      "text": "Where the pointer is coarse the input's text is at least 16 pixels at every size, so iOS does not zoom the page on focus.",
+      "check": "test:input-no-ios-zoom",
+      "label": "pattern"
+    },
+    {
+      "id": "input-touch-target",
+      "level": "SHOULD",
+      "text": "Where the pointer is coarse the control is at least 44 pixels tall.",
+      "check": "test:input-touch-target",
+      "label": "pattern"
+    },
+    {
+      "id": "input-target-size",
+      "level": "MUST",
+      "text": "The control is at least 24 by 24 pixels at every size.",
+      "wcag": "2.5.8",
+      "check": "test:input-target-size"
+    },
+    {
+      "id": "input-reflow",
+      "level": "MUST",
+      "text": "At 320 pixels wide and at 200 percent text size, nothing in the field is clipped or hidden: the control grows taller, and the label, description and error message wrap.",
+      "wcag": "1.4.10",
+      "check": "test:input-reflow"
+    },
+    {
+      "id": "input-text-resize",
+      "level": "MUST",
+      "text": "With text at 200 percent the control is never shorter than its text; it uses a least height, not a fixed one.",
+      "wcag": "1.4.4",
+      "check": "test:input-text-resize"
+    },
+    {
+      "id": "input-field-stack",
+      "level": "MUST",
+      "text": "The label, the control, the description and the error message stack top to bottom in that order, spaced by the root gap, and the error icon sits before the error words on their first line.",
+      "wcag": "1.3.2",
+      "check": "test:input-field-stack"
+    },
+    {
+      "id": "input-control-row",
+      "level": "MUST",
+      "text": "The prefix, the input and the suffix sit on one row inside the control, centred vertically. The input takes the width that is left and may shrink; the prefix and suffix keep their size. At 320 pixels wide the typed text never runs under the prefix or the suffix.",
+      "wcag": "1.4.10",
+      "check": "test:input-control-row"
+    },
+    {
+      "id": "input-decorations-hidden",
+      "level": "MUST",
+      "text": "The prefix, the suffix, the required mark and the error icon carry aria-hidden.",
+      "wcag": "1.1.1",
+      "check": "test:input-decorations-hidden"
+    },
+    {
+      "id": "input-press-control-focuses",
+      "level": "SHOULD",
+      "text": "A press on the control outside the input, including on the prefix or suffix, moves focus to the input.",
+      "check": "test:input-press-control-focuses",
+      "label": "pattern"
+    },
+    {
+      "id": "input-autocomplete-valid",
+      "level": "MUST",
+      "text": "A field that collects the person's own details sets a valid autocomplete token.",
+      "wcag": "1.3.5",
+      "check": "axe:autocomplete-valid"
+    },
+    {
+      "id": "input-placeholder-not-label",
+      "level": "MUST",
+      "text": "The placeholder is never the only label or the only instruction; it disappears as soon as the person types.",
+      "wcag": "3.3.2",
+      "check": "manual:input-placeholder-not-label",
+      "label": "pattern"
+    },
+    {
+      "id": "input-no-number-for-codes",
+      "level": "SHOULD",
+      "text": "Amounts, card numbers, postal codes and one-time codes use type text with inputMode numeric or decimal, not type number, which changes the value on scroll, drops leading zeros and is read poorly by some screen readers.",
+      "check": "manual:input-no-number-for-codes",
+      "label": "pattern"
+    },
+    {
+      "id": "input-error-says-fix",
+      "level": "SHOULD",
+      "text": "The error message says what is wrong and how to fix it, such as Enter an email address, such as name@example.com.",
+      "wcag": "3.3.3",
+      "check": "manual:input-error-says-fix",
+      "label": "pattern"
+    },
+    {
+      "id": "input-validate-on-leave",
+      "level": "SHOULD",
+      "text": "The product shows an error when the person leaves the field or submits, not while they are still typing, and removes it as soon as the value is fixed.",
+      "check": "manual:input-validate-on-leave",
+      "label": "pattern"
+    },
+    {
+      "id": "input-required-word-understood",
+      "level": "COULD",
+      "text": "People understand the word Required next to a label faster than an asterisk explained elsewhere on the page.",
+      "check": "manual:input-required-word-understood",
+      "label": "assumption"
+    }
+  ],
+  "content": [
+    "The label names the value in a few words, in sentence case, with no colon and no full stop: Email address, not Email:.",
+    "The label carries any meaning shown by the prefix or suffix: Amount in dollars, not Amount with a dollar sign beside it.",
+    "The description gives the format or why the value is asked for, in one sentence.",
+    "The error message says what is wrong and how to fix it, in one sentence, without blame: Enter a postal code with 5 digits, not Invalid input.",
+    "The placeholder is an example of a value, never an instruction and never the label.",
+    "Required fields show the word Required. When most fields in a form are required, the form may instead mark the few optional ones with the word Optional, and says so at the top."
+  ],
+  "examples": [
+    {
+      "id": "default",
+      "title": "Default",
+      "props": {
+        "label": "Full name",
+        "autoComplete": "name"
+      }
+    },
+    {
+      "id": "with-description",
+      "title": "With a description",
+      "props": {
+        "label": "Phone number",
+        "type": "tel",
+        "autoComplete": "tel",
+        "description": "Only used to tell you about your delivery."
+      }
+    },
+    {
+      "id": "placeholder",
+      "title": "With a placeholder",
+      "props": {
+        "label": "Email address",
+        "type": "email",
+        "autoComplete": "email",
+        "placeholder": "name@example.com"
+      }
+    },
+    {
+      "id": "required",
+      "title": "Required",
+      "props": {
+        "label": "Email address",
+        "type": "email",
+        "autoComplete": "email",
+        "required": true
+      }
+    },
+    {
+      "id": "invalid",
+      "title": "Invalid",
+      "props": {
+        "label": "Email address",
+        "type": "email",
+        "autoComplete": "email",
+        "defaultValue": "name@example",
+        "invalid": true,
+        "errorMessage": "Enter an email address, such as name@example.com."
+      }
+    },
+    {
+      "id": "disabled",
+      "title": "Disabled",
+      "props": {
+        "label": "Country",
+        "defaultValue": "United Kingdom",
+        "disabled": true
+      }
+    },
+    {
+      "id": "read-only",
+      "title": "Read-only",
+      "props": {
+        "label": "Order number",
+        "defaultValue": "SV-20481",
+        "readOnly": true
+      }
+    },
+    {
+      "id": "small",
+      "title": "Small",
+      "props": {
+        "label": "Discount code",
+        "size": "sm",
+        "autoComplete": "off"
+      }
+    },
+    {
+      "id": "large",
+      "title": "Large",
+      "props": {
+        "label": "Card number",
+        "size": "lg",
+        "inputMode": "numeric",
+        "autoComplete": "cc-number"
+      }
+    },
+    {
+      "id": "prefix-text",
+      "title": "Prefix text",
+      "props": {
+        "label": "Tip amount in dollars",
+        "prefix": "$",
+        "inputMode": "decimal"
+      }
+    },
+    {
+      "id": "suffix-text",
+      "title": "Suffix text",
+      "props": {
+        "label": "Weight in kilograms",
+        "suffix": "kg",
+        "inputMode": "decimal"
+      }
+    },
+    {
+      "id": "search",
+      "title": "Search with an icon",
+      "props": {
+        "ariaLabel": "Search products",
+        "type": "search",
+        "prefix": "search",
+        "placeholder": "Shoes, bags, gifts"
+      },
+      "note": "No visible label: the page heading and the icon already show the purpose, so ariaLabel names it."
+    },
+    {
+      "id": "password",
+      "title": "Password",
+      "props": {
+        "label": "Password",
+        "type": "password",
+        "autoComplete": "current-password",
+        "required": true
+      }
+    },
+    {
+      "id": "url",
+      "title": "Web address",
+      "props": {
+        "label": "Website",
+        "type": "url",
+        "autoComplete": "url",
+        "placeholder": "https://example.com"
+      }
+    },
+    {
+      "id": "number",
+      "title": "Number type",
+      "props": {
+        "label": "Quantity",
+        "type": "number",
+        "defaultValue": "1"
+      },
+      "note": "Shown so the type is covered. For amounts and codes use text with inputMode instead."
+    },
+    {
+      "id": "hover",
+      "title": "Hover",
+      "props": {
+        "label": "Full name"
+      },
+      "note": "State example: the test hovers the control."
+    },
+    {
+      "id": "focus",
+      "title": "Focus",
+      "props": {
+        "label": "Full name"
+      },
+      "note": "State example: the test focuses the input by keyboard and checks the ring on the control."
+    },
+    {
+      "id": "long-text",
+      "title": "Long label, description and error",
+      "props": {
+        "label": "Name of the person who will collect the parcel from the pickup point",
+        "description": "They will need to show photo identification that matches this name exactly, including any middle names.",
+        "required": true,
+        "invalid": true,
+        "errorMessage": "Enter the collector's full name as it appears on their photo identification, including any middle names."
+      }
+    },
+    {
+      "id": "worst-case-320",
+      "title": "Worst case at 320 pixels",
+      "props": {
+        "label": "Billing postal code for the card ending in 4242",
+        "size": "lg",
+        "required": true,
+        "inputMode": "numeric",
+        "autoComplete": "postal-code",
+        "prefix": "location",
+        "suffix": "UK",
+        "placeholder": "SW1A 1AA",
+        "description": "Must match the address your bank holds for this card, or the payment will be declined.",
+        "invalid": true,
+        "errorMessage": "Enter the postal code your bank holds for this card. It has between 5 and 8 characters."
+      },
+      "note": "Rendered at 320 pixels wide and at 200 percent text size. Everything wraps or grows; nothing is clipped."
+    }
+  ],
+  "dependencies": [],
+  "notCarried": [
+    "The live Figma components: their properties were read from a cached copy inside the Semantic Tokens file, which is older than the published library, so every figma mapping here is unconfirmed. That copy has two components. Input, the bare control, has variant (primary, secondary), state (placeholder, hover, focus, filled, error, disabled), type (text, password, number) and a text property value. TextField wraps Input and adds the label and description, with the same six state values, the booleans showLabel and showDescription and the instance swap typeInput. This spec covers what Figma calls TextField.",
+    "The code component was called InputField and is renamed Input. That name was never a Figma name, so it is not recorded in the figma block.",
+    "Figma's variant property on Input, with the values primary and secondary: what each looks like could not be read, so the spec has no variant prop. One look is specified until the two can be compared.",
+    "Figma's type list (text, password, number) is shorter than the spec's; email, search, tel and url exist in code only.",
+    "showLabel and showDescription: design-tool switches that code does not need. Pass the label or the description, or leave it out. The typeInput instance swap likewise has no prop: the code renders its own input part.",
+    "Read-only has no Figma state value; the readOnly state exists in code only.",
+    "Layout written in the extensions stylesheet: the root is a column (which is what makes its gap work); the control is a row with its items centred vertically; the input takes the leftover width and may shrink while the prefix and suffix do not; the error message is a row with the icon first. Proven by input-field-stack and input-control-row, not by styles.",
+    "The icon set: prefix, suffix and the error icon take an icon node, but no Icon component spec exists yet.",
+    "Validation logic and when to run it: the product decides when invalid becomes true.",
+    "Moving focus to the first invalid field after a failed submit, and an error summary at the top of the form: these belong to a Form component.",
+    "A multi-line text area, a select, a combobox, a date field and a field with a clear or show-password button inside it.",
+    "Character counters and maxLength guidance.",
+    "Other native attributes such as maxLength, pattern, min, max and onBlur: they pass through to the input unchanged and have no styles.",
+    "A success or warning state for the field.",
+    "Forced-colours mode beyond what the browser does to borders and outlines.",
+    "Motion beyond a colour transition on the control."
+  ]
+}

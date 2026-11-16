@@ -1,0 +1,260 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "schemaVersion": "0.1.0",
+  "name": "Tabs",
+  "slug": "tabs",
+  "stage": "alpha",
+  "summary": "Switches between related views of the same thing, one at a time, without leaving the page.",
+  "figma": { "component": "Tabs", "wasCalled": "Tabs", "confirmed": false },
+  "primitive": { "package": "@radix-ui/react-tabs", "native": "Plain HTML has no tabs element. Buttons and sections can imitate one, but they lack the tablist roles, the roving focus with arrow keys and the link between each tab and its panel, which Radix provides." },
+  "anatomy": {
+    "root": { "kind": "container", "role": null, "slot": "tabs", "element": "div", "primitivePart": "Tabs.Root", "description": "Exported as Tabs. Holds the list and the panels. It carries variant, size, orientation and the selected value. Radix sets data-orientation and dir on it." },
+    "list": { "kind": "container", "role": "tablist", "slot": "tabs-list", "element": "div", "primitivePart": "Tabs.List", "description": "Exported as TabsList. The row of tabs, or the column when vertical. When the tabs are wider than the space, the list scrolls sideways inside itself and the page never scrolls. It keeps padding on every side so a focus ring is never clipped by that scrolling." },
+    "trigger": { "kind": "control", "role": "tab", "slot": "tabs-trigger", "element": "button", "primitivePart": "Tabs.Trigger", "repeats": true, "description": "Exported as TabsTrigger. One tab. Its label is its accessible name. Pressing it, or focusing it when activation is automatic, selects it and shows its panel. The label stays on one line." },
+    "iconStart": { "kind": "glyph", "role": "indicator", "slot": "tabs-trigger-icon-start", "element": "span", "primitivePart": null, "required": false, "repeats": true, "description": "An optional icon before the tab's label, inside the trigger. Figma calls it prefix. Hidden from assistive technology." },
+    "label": { "kind": "text", "role": null, "slot": "tabs-trigger-label", "element": "span", "primitivePart": null, "repeats": true, "description": "The tab's words, inside the trigger. They are the tab's accessible name." },
+    "iconEnd": { "kind": "glyph", "role": "indicator", "slot": "tabs-trigger-icon-end", "element": "span", "primitivePart": null, "required": false, "repeats": true, "description": "An optional icon after the tab's label, inside the trigger. Figma calls it suffix. Hidden from assistive technology." },
+    "indicator": { "kind": "layer", "role": "indicator", "slot": "tabs-indicator", "element": "span", "primitivePart": null, "repeats": true, "description": "A line inside each tab, drawn by its border on one edge only: the bottom edge when the tabs are horizontal and the inline-start edge when vertical. It runs the full length of that edge. It is transparent until its tab is selected and is used only by the line variant. Hidden from assistive technology with aria-hidden; the tab already exposes aria-selected." },
+    "content": { "kind": "container", "role": "tabpanel", "slot": "tabs-content", "element": "div", "primitivePart": "Tabs.Content", "repeats": true, "description": "Exported as TabsContent. The panel for one tab. Only the selected tab's panel is shown; the others carry the hidden attribute and their children are not rendered. Radix makes the panel focusable with tabindex 0 so keyboard users can reach it even when it holds no control." }
+  },
+  "props": {
+    "variant": { "on": "root", "type": "enum", "values": ["line", "pill"], "default": "line", "reflects": "data-variant", "figmaProperty": "variant", "description": "How the selected tab is marked. line puts a brand-coloured line under the selected tab and sets its label in a heavier weight; use it to switch sections of a page. pill fills the selected tab with the neutral fill and sets its label heavier; use it as a compact switch between a few views, such as Delivery and Collection. Figma calls this property variant, with the values primary (its default) and secondary; which of the two is line and which is pill could not be read, so the names here are the spec's own." },
+    "size": { "on": "root", "type": "enum", "values": ["sm", "md"], "default": "md", "reflects": "data-size", "figmaProperty": null, "description": "Tab height: 32 or 40 pixels. Where the pointer is coarse both grow to at least 44. There is no large size: a tab is navigation, never the main action. The Figma copy that could be read has no size property, so this exists only in code for now." },
+    "orientation": { "on": "root", "type": "enum", "values": ["horizontal", "vertical"], "default": "horizontal", "reflects": "data-orientation", "figmaProperty": "orientation", "description": "Lays the tabs out in a row or a column and decides which arrow keys move between them. Radix sets data-orientation on the root, list, every tab and every panel, and aria-orientation on the list. In Figma the property sits on each tab (_TabsElement), not on the Tabs set." },
+    "activationMode": { "on": "root", "type": "enum", "values": ["automatic", "manual"], "default": "automatic", "reflects": null, "figmaProperty": null, "description": "automatic selects a tab as soon as it gets focus. manual moves focus with the arrow keys and selects only on Enter, Space or a press. Use manual when a panel takes time to load." },
+    "dir": { "on": "root", "type": "enum", "values": ["ltr", "rtl"], "default": null, "reflects": "dir", "figmaProperty": null, "description": "Reading direction. Unset unless given: it is then inherited from a Radix DirectionProvider and falls back to ltr. In rtl, ArrowLeft and ArrowRight swap." },
+    "value": { "on": "root", "type": "string", "default": null, "figmaProperty": null, "controls": "onValueChange", "description": "The value of the selected tab, when the parent holds the state. Unset unless given. Give either value or defaultValue." },
+    "defaultValue": { "on": "root", "type": "string", "figmaProperty": null, "description": "The value of the tab selected at first, when Tabs holds its own state. Without value or defaultValue no tab would be selected, so one of the two is required by the type of the props." },
+    "onValueChange": { "on": "root", "type": "handler", "figmaProperty": null, "description": "Called with the new value when a different tab is selected." },
+    "list.behavior": { "on": "list", "type": "enum", "values": ["hug", "fill"], "default": "hug", "reflects": "data-behavior", "figmaProperty": "behavior", "description": "How the tabs share the list's width. hug sizes each tab to its label. fill makes the list as wide as its container and shares that width equally between the tabs; when the labels do not fit, the list scrolls as it does with hug. Figma has this property on the Tabs set, with the same values and hug as the default." },
+    "list.loop": { "on": "list", "type": "boolean", "default": true, "reflects": null, "figmaProperty": null, "description": "Whether the arrow keys wrap from the last tab to the first and back." },
+    "list.ariaLabel": { "on": "list", "type": "string", "figmaProperty": null, "description": "The accessible name of the list when no visible heading names it, such as Product information. Give this or list.ariaLabelledby." },
+    "list.ariaLabelledby": { "on": "list", "type": "string", "figmaProperty": null, "description": "The id of a visible heading that names the list. Preferred over list.ariaLabel when such a heading exists." },
+    "trigger.value": { "on": "trigger", "type": "string", "required": true, "figmaProperty": null, "description": "The value that identifies the tab. It must match the content.value of one panel." },
+    "trigger.disabled": { "on": "trigger", "type": "boolean", "default": false, "reflects": "data-disabled", "figmaProperty": null, "description": "The tab cannot be selected. Radix sets the native disabled attribute and data-disabled, and the arrow keys skip the tab. In Figma this is the disabled value of the state property, not a property of its own." },
+    "trigger.children": { "on": "trigger", "type": "node", "required": true, "figmaProperty": "label", "description": "The words on the tab, rendered in the label part. They are the tab's accessible name." },
+    "trigger.iconStart": { "on": "trigger", "type": "node", "figmaProperty": "prefix", "description": "An icon before the label, rendered in the iconStart part. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out." },
+    "trigger.iconEnd": { "on": "trigger", "type": "node", "figmaProperty": "suffix", "description": "An icon after the label, rendered in the iconEnd part. Figma calls the property suffix and adds a showSuffix switch, which code does not need." },
+    "content.value": { "on": "content", "type": "string", "required": true, "figmaProperty": null, "description": "The value of the tab this panel belongs to." },
+    "content.children": { "on": "content", "type": "node", "required": true, "figmaProperty": null, "description": "What the panel shows." }
+  },
+  "states": {
+    "unselected": { "on": "trigger", "selector": "[data-state=\"inactive\"]", "source": "primitive", "figma": { "property": "state", "value": "default" }, "reach": "click", "description": "A tab whose panel is not shown, reached by selecting another tab. Radix sets data-state to inactive and aria-selected to false. The base style rule draws it." },
+    "hover": { "on": "trigger", "selector": ":hover", "source": "native", "figma": { "property": "state", "value": "hover" }, "reach": "hover", "description": "The pointer is over a tab." },
+    "focus": { "on": "trigger", "selector": ":focus-visible", "source": "native", "figma": null, "reach": "focus-by-keyboard", "description": "A tab has keyboard focus. The Figma copy that could be read has no focus value." },
+    "selected": { "on": "trigger", "selector": "[data-state=\"active\"]", "source": "primitive", "figma": { "property": "state", "value": "selected" }, "reach": "click", "description": "The tab whose panel is shown. Radix sets data-state to active on it and aria-selected to true; every other tab has data-state inactive. Named selected, not active, so it is never confused with the pressed state :active." },
+    "disabled": { "on": "trigger", "selector": "[data-disabled]", "source": "primitive", "figma": { "property": "state", "value": "disabled" }, "reach": "prop:trigger.disabled=true", "description": "The tab cannot be selected. Radix sets data-disabled and the native disabled attribute." },
+    "contentFocus": { "on": "content", "selector": ":focus-visible", "source": "native", "figma": null, "reach": "focus-by-keyboard", "description": "The shown panel has keyboard focus, reached with Tab from the selected tab." }
+  },
+  "precedence": ["disabled", "selected", "hover"],
+  "styles": [
+    { "when": {}, "parts": {
+        "root": { "gap": "static/120" },
+        "list": { "gap": "static/40", "paddingInline": "static/40", "paddingBlock": "static/40" },
+        "trigger": { "height": "control/md", "paddingInline": "static/120", "gap": "static/80", "radius": "height/40", "borderStyle": "none", "background": "transparent", "color": "text/secondary", "typography": "body-base", "cursor": "pointer", "duration": "duration/fast", "easing": "ease/standard", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" },
+        "iconStart": { "iconSize": "icon/md", "color": "current" },
+        "iconEnd": { "iconSize": "icon/md", "color": "current" },
+        "indicator": { "borderColor": "transparent" },
+        "content": { "radius": "container/small", "color": "text/primary", "typography": "body-base", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" }
+      },
+      "why": "The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's edge and its width/md thickness are written in the extensions stylesheet, because a one-sided border cannot be said here; only its colour is set here, so the theme still drives it." },
+    { "when": { "states": ["hover"] }, "parts": { "trigger": { "color": "text/primary" } } },
+    { "when": { "states": ["selected"] }, "parts": {
+        "trigger": { "color": "text/primary", "typography": "label-base" },
+        "indicator": { "borderColor": "border/brand" }
+      },
+      "why": "The selected tab is shown three ways, not by colour alone: the label turns from body-base (weight 500) to label-base (weight 600) at the same 14 on 20 size, the label darkens to text/primary, and the brand line appears. The label is never set in text/brand, which is 3.83 to 1 in dark and fails for small text. border/brand is a non-text mark 2 pixels thick, 7.88 to 1 in light and 3.83 to 1 in dark against the page, which passes the 3 to 1 for non-text contrast in both themes." },
+
+    { "when": { "props": { "size": "sm" } }, "parts": {
+        "trigger": { "height": "control/sm", "paddingInline": "static/80", "gap": "static/60", "radius": "height/32" },
+        "iconStart": { "iconSize": "icon/sm" },
+        "iconEnd": { "iconSize": "icon/sm" }
+      } },
+    { "when": { "media": "coarse-pointer" }, "parts": { "trigger": { "minHeight": "target/min" } }, "why": "On a touch screen every tab is at least 44 pixels tall." },
+
+    { "when": { "props": { "orientation": "vertical" } }, "parts": { "root": { "gap": "static/240" } }, "why": "A vertical list sits beside its panel and needs more space between them than a list above its panel. The column layout itself is written in the extensions stylesheet from data-orientation; see the requirement tabs-orientation-layout." },
+    { "when": { "props": { "list.behavior": "fill" } }, "parts": { "list": { "width": "full" } }, "why": "With fill the list takes its container's width. The equal share between the tabs is written in the extensions stylesheet; see the requirement tabs-behavior-fill." },
+
+    { "when": { "props": { "variant": "pill" } }, "parts": {
+        "list": { "gap": "static/80" },
+        "trigger": { "radius": "round/full", "paddingInline": "static/160" },
+        "indicator": { "borderColor": "transparent" }
+      },
+      "why": "The pill variant marks the selected tab with a fill, so its indicator stays transparent even when selected." },
+    { "when": { "props": { "variant": "pill", "size": "sm" } }, "parts": { "trigger": { "paddingInline": "static/120" } } },
+    { "when": { "props": { "variant": "pill" }, "states": ["hover"] }, "parts": { "trigger": { "background": "surface/primary/hover" } }, "why": "text/secondary on surface/primary/hover is 4.80 to 1 in light and 6.66 to 1 in dark." },
+    { "when": { "props": { "variant": "pill" }, "states": ["selected"] }, "parts": {
+        "trigger": { "background": "interactive/neutral/default", "color": "text/inverse" },
+        "indicator": { "borderColor": "transparent" }
+      },
+      "why": "The pill's fill must stand out from the page by 3 to 1 and carry a readable label. interactive/neutral/default is 21 to 1 in light and 17.61 to 1 in dark against the page, and text/inverse on it is 21 to 1 and 17.61 to 1. text/primary cannot be used on this fill, so the rule that a selected label is text/primary holds for the line variant only. A pink fill is not used: a filled brand shape reads as the page's primary action." },
+
+    { "when": { "states": ["focus"] }, "parts": { "trigger": { "outlineWidth": "focus/width" } } },
+    { "when": { "states": ["contentFocus"] }, "parts": { "content": { "outlineWidth": "focus/width" } } },
+    { "when": { "states": ["disabled"] }, "parts": { "trigger": { "color": "text/disabled", "cursor": "not-allowed" } }, "why": "One disabled look for both variants. The icons follow the label's colour." },
+    { "when": { "props": { "variant": "pill" }, "states": ["disabled"] }, "parts": { "trigger": { "background": "transparent" } } },
+
+    { "when": { "props": { "variant": "pill" }, "states": ["selected"], "media": "forced-colors" }, "parts": { "trigger": { "borderStyle": "solid", "borderWidth": "width/md", "borderColor": "current" } }, "why": "In forced colours the fill is removed, so the selected pill gets a 2 pixel border in the text colour on all four sides. The line variant needs no rule: its indicator is a border, which forced colours keep." },
+    { "when": { "media": "reduced-motion" }, "parts": { "trigger": { "duration": "none" } } }
+  ],
+  "accessibility": {
+    "pattern": "WAI-ARIA Authoring Practices: Tabs",
+    "reference": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+    "name": { "from": "The list: list.ariaLabelledby pointing at a visible heading, or list.ariaLabel. Each tab: its label; an icon never gives the name. Each panel: aria-labelledby its tab, set by Radix.", "note": "Radix sets aria-controls on each tab and aria-labelledby on each panel from generated ids; the adapter never sets them by hand." },
+    "keyboard": [
+      { "key": "Tab", "on": "list", "does": "Moves focus into the list, onto the selected tab.", "test": "tabs-tab-enters-selected" },
+      { "key": "Tab", "on": "trigger", "does": "Moves focus out of the list to the shown panel.", "test": "tabs-tab-to-panel" },
+      { "key": "Shift+Tab", "on": "trigger", "does": "Moves focus out of the list to the element before it.", "test": "tabs-shift-tab-leaves-list" },
+      { "key": "ArrowRight", "on": "trigger", "does": "Horizontal: moves focus to the next tab that is not disabled, wrapping from last to first while list.loop is true. In rtl it moves to the previous tab. Ignored when vertical.", "test": "tabs-arrow-right-next" },
+      { "key": "ArrowLeft", "on": "trigger", "does": "Horizontal: moves focus to the previous tab that is not disabled, wrapping from first to last while list.loop is true. In rtl it moves to the next tab. Ignored when vertical.", "test": "tabs-arrow-left-previous" },
+      { "key": "ArrowDown", "on": "trigger", "does": "Vertical: moves focus to the next tab that is not disabled, wrapping while list.loop is true. Ignored when horizontal, so the page still scrolls.", "test": "tabs-arrow-down-next-vertical" },
+      { "key": "ArrowUp", "on": "trigger", "does": "Vertical: moves focus to the previous tab that is not disabled, wrapping while list.loop is true. Ignored when horizontal.", "test": "tabs-arrow-up-previous-vertical" },
+      { "key": "Home", "on": "trigger", "does": "Moves focus to the first tab that is not disabled.", "test": "tabs-home-first" },
+      { "key": "End", "on": "trigger", "does": "Moves focus to the last tab that is not disabled.", "test": "tabs-end-last" },
+      { "key": "PageUp", "on": "trigger", "does": "Same as Home. Radix adds it; the Authoring Practices do not ask for it.", "test": "tabs-page-up-first" },
+      { "key": "PageDown", "on": "trigger", "does": "Same as End. Radix adds it; the Authoring Practices do not ask for it.", "test": "tabs-page-down-last" },
+      { "key": "Enter", "on": "trigger", "does": "Selects the focused tab. With automatic activation the tab is already selected by focus, so Enter changes nothing.", "test": "tabs-enter-selects-manual" },
+      { "key": "Space", "on": "trigger", "does": "Selects the focused tab, as Enter does.", "test": "tabs-space-selects-manual" }
+    ],
+    "focus": {
+      "order": "The list is one stop in the Tab order, landing on the selected tab; the shown panel is the next stop. The arrow keys move between tabs, and a key pressed with Shift, Control, Alt or Meta is ignored. Disabled tabs are skipped.",
+      "onOpen": "Not applicable: tabs do not open. When a tab is selected, focus stays on that tab and does not move into its panel.",
+      "onClose": "Not applicable: tabs do not close. If the focused tab is removed, the product moves focus to the tab that took its place.",
+      "trapped": false,
+      "ring": "trigger, and content when the panel itself has focus"
+    },
+    "announcements": ["A screen reader announces each tab as a tab, its position such as 2 of 4, and whether it is selected, from role tab, aria-selected and the tablist. Nothing else is announced when the panel changes."]
+  },
+  "requirements": [
+    { "id": "tabs-roles", "level": "MUST", "text": "The list has role tablist, each tab is a button element with role tab, and each panel has role tabpanel. A tab is never a link.", "wcag": "4.1.2", "check": "test:tabs-roles" },
+    { "id": "tabs-required-children", "level": "MUST", "text": "A tablist contains only tabs.", "wcag": "1.3.1", "check": "axe:aria-required-children" },
+    { "id": "tabs-list-name", "level": "MUST", "text": "The list has an accessible name from list.ariaLabelledby or list.ariaLabel; the type of TabsList's props requires one of the two.", "wcag": "4.1.2", "check": "type:tabs-list-needs-name" },
+    { "id": "tabs-one-selected", "level": "MUST", "text": "Exactly one tab has aria-selected true at all times. value or defaultValue is required by the type of the props, because Radix starts with no tab selected without one.", "wcag": "4.1.2", "check": "test:tabs-one-selected" },
+    { "id": "tabs-wiring", "level": "MUST", "text": "Each tab's aria-controls names its panel's id and each panel's aria-labelledby names its tab's id.", "wcag": "1.3.1", "check": "test:tabs-wiring" },
+    { "id": "tabs-hidden-panels", "level": "MUST", "text": "Panels of tabs that are not selected carry the hidden attribute and are not in the accessibility tree.", "wcag": "1.3.2", "check": "test:tabs-hidden-panels" },
+    { "id": "tabs-icons-hidden", "level": "MUST", "text": "iconStart and iconEnd carry aria-hidden, so the tab's name comes from its label alone.", "wcag": "1.1.1", "check": "test:tabs-icons-hidden" },
+    { "id": "tabs-tab-enters-selected", "level": "MUST", "text": "Tab from the element before the list moves focus onto the selected tab, not the first tab.", "wcag": "2.4.3", "check": "test:tabs-tab-enters-selected" },
+    { "id": "tabs-panel-focusable", "level": "MUST", "text": "The shown panel has tabindex 0, so Tab from the selected tab reaches it.", "wcag": "2.1.1", "check": "test:tabs-tab-to-panel" },
+    { "id": "tabs-shift-tab-leaves-list", "level": "MUST", "text": "Shift+Tab from any tab moves focus to the element before the list, not to another tab.", "wcag": "2.4.3", "check": "test:tabs-shift-tab-leaves-list" },
+    { "id": "tabs-arrow-keys", "level": "MUST", "text": "When horizontal, ArrowRight moves focus to the next tab that is not disabled, wrapping from last to first while list.loop is true, and ArrowUp and ArrowDown do nothing.", "wcag": "2.1.1", "check": "test:tabs-arrow-right-next" },
+    { "id": "tabs-arrow-left-previous", "level": "MUST", "text": "When horizontal, ArrowLeft moves focus to the previous tab that is not disabled, wrapping from first to last while list.loop is true.", "wcag": "2.1.1", "check": "test:tabs-arrow-left-previous" },
+    { "id": "tabs-arrow-down-next-vertical", "level": "MUST", "text": "When vertical, ArrowDown moves focus to the next tab that is not disabled, wrapping while list.loop is true, and ArrowLeft and ArrowRight do nothing.", "wcag": "2.1.1", "check": "test:tabs-arrow-down-next-vertical" },
+    { "id": "tabs-arrow-up-previous-vertical", "level": "MUST", "text": "When vertical, ArrowUp moves focus to the previous tab that is not disabled, wrapping while list.loop is true.", "wcag": "2.1.1", "check": "test:tabs-arrow-up-previous-vertical" },
+    { "id": "tabs-home-first", "level": "MUST", "text": "Home moves focus to the first tab that is not disabled.", "wcag": "2.1.1", "check": "test:tabs-home-first" },
+    { "id": "tabs-end-last", "level": "MUST", "text": "End moves focus to the last tab that is not disabled.", "wcag": "2.1.1", "check": "test:tabs-end-last" },
+    { "id": "tabs-page-up-first", "level": "SHOULD", "text": "PageUp moves focus to the first tab that is not disabled, as Radix provides.", "check": "test:tabs-page-up-first" },
+    { "id": "tabs-page-down-last", "level": "SHOULD", "text": "PageDown moves focus to the last tab that is not disabled, as Radix provides.", "check": "test:tabs-page-down-last" },
+    { "id": "tabs-rtl-arrows", "level": "MUST", "text": "In rtl, ArrowLeft moves to the next tab and ArrowRight to the previous one.", "wcag": "2.1.1", "check": "test:tabs-rtl-arrows" },
+    { "id": "tabs-manual-activation", "level": "MUST", "text": "With activationMode manual, the arrow keys move focus without changing the selected tab, and Enter selects the focused tab.", "wcag": "3.2.1", "check": "test:tabs-enter-selects-manual" },
+    { "id": "tabs-space-selects-manual", "level": "MUST", "text": "With activationMode manual, Space selects the focused tab, as Enter does.", "wcag": "2.1.1", "check": "test:tabs-space-selects-manual" },
+    { "id": "tabs-disabled-skipped", "level": "MUST", "text": "A disabled tab cannot be selected by press or by key, and the arrow keys skip it.", "check": "test:tabs-disabled-skipped" },
+    { "id": "tabs-focus-visible", "level": "MUST", "text": "With keyboard focus a tab, or the shown panel, shows a ring 2 pixels thick, 2 pixels away, with at least 3 to 1 contrast against the page. The ring of the first and the last tab is fully visible and not cut off by the list's scrolling.", "wcag": "2.4.7", "check": "test:tabs-focus-visible" },
+    { "id": "tabs-label-contrast", "level": "MUST", "text": "In both variants and both themes, every label that is not disabled has at least 4.5 to 1 contrast against what is behind it, including while hovered.", "wcag": "1.4.3", "check": "test:tabs-label-contrast" },
+    { "id": "tabs-indicator-contrast", "level": "MUST", "text": "The mark of the selected tab, the brand line in line or the fill in pill, has at least 3 to 1 contrast against the page in light and dark.", "wcag": "1.4.11", "check": "test:tabs-indicator-contrast" },
+    { "id": "tabs-selected-not-colour-alone", "level": "MUST", "text": "The selected tab differs from the others by a shape, the line or the fill, and by a heavier label weight, not by colour alone.", "wcag": "1.4.1", "check": "test:tabs-selected-not-colour-alone" },
+    { "id": "tabs-selected-forced-colors", "level": "MUST", "text": "In forced colours the selected tab is still marked: the line variant keeps its line and the pill variant shows a 2 pixel border.", "wcag": "1.4.11", "check": "test:tabs-selected-forced-colors" },
+    { "id": "tabs-list-scrolls-inside", "level": "MUST", "text": "When the tabs are wider than the list, the list scrolls sideways inside itself. At 320 pixels wide the page has no horizontal scroll. Labels never wrap and are never cut off with an ellipsis. The overflow and the single line are written in the extensions stylesheet.", "wcag": "1.4.10", "check": "test:tabs-no-page-scroll-320" },
+    { "id": "tabs-scroll-region-focusable", "level": "MUST", "text": "A list that scrolls can be reached and scrolled with the keyboard, which holds because it contains focusable tabs.", "wcag": "2.1.1", "check": "axe:scrollable-region-focusable" },
+    { "id": "tabs-focused-tab-in-view", "level": "MUST", "text": "A tab that receives focus from an arrow key is scrolled into view inside the list.", "wcag": "2.4.11", "check": "test:tabs-focused-tab-in-view" },
+    { "id": "tabs-selected-in-view-on-mount", "level": "SHOULD", "text": "When the list scrolls, the selected tab is scrolled into view when Tabs first renders.", "check": "test:tabs-selected-in-view-on-mount", "label": "assumption" },
+    { "id": "tabs-orientation-layout", "level": "MUST", "text": "Horizontal tabs sit in a row above their panel; vertical tabs sit in a column at the inline start of their panel, each tab as wide as the list. The extensions stylesheet sets this from data-orientation, because the style declarations have no layout direction.", "check": "test:tabs-orientation-layout" },
+    { "id": "tabs-behavior-fill", "level": "MUST", "text": "With list.behavior fill, the list is as wide as its container and every tab has the same width, within one pixel; with hug, each tab is as wide as its label and padding. When fill's labels do not fit, the list scrolls instead of cutting a label. The equal share is written in the extensions stylesheet.", "check": "test:tabs-behavior-fill" },
+    { "id": "tabs-indicator-edge", "level": "MUST", "text": "The indicator draws a border width/md thick on one edge only: the bottom edge of the tab when horizontal and the inline-start edge when vertical, along the tab's full length. It is written in the extensions stylesheet; the style rules set only its colour.", "check": "test:tabs-indicator-edge" },
+    { "id": "tabs-no-width-shift", "level": "SHOULD", "text": "Selecting a tab does not change its width or move the tabs beside it, although the label's weight changes: the extensions stylesheet reserves the width of the heavier weight.", "check": "test:tabs-no-width-shift", "label": "pattern" },
+    { "id": "tabs-target-size", "level": "MUST", "text": "Every tab is at least 24 by 24 pixels at every size.", "wcag": "2.5.8", "check": "test:tabs-target-size" },
+    { "id": "tabs-touch-target", "level": "SHOULD", "text": "Where the pointer is coarse every tab is at least 44 pixels tall.", "check": "test:tabs-touch-target", "label": "pattern" },
+    { "id": "tabs-manual-for-slow-panels", "level": "SHOULD", "text": "Use activationMode manual when a panel's content is fetched or slow to show, so that moving focus along the list does not load every panel on the way.", "check": "manual:tabs-manual-for-slow-panels", "label": "pattern" },
+    { "id": "tabs-not-for-steps", "level": "SHOULD", "text": "Tabs show views of the same thing that can be visited in any order. They are not used for the steps of a sequence such as checkout.", "check": "manual:tabs-not-for-steps", "label": "pattern" },
+    { "id": "tabs-few-tabs", "level": "COULD", "text": "On a phone, keep to the number of tabs that fit without scrolling, about two to four, so no tab is hidden off screen.", "check": "manual:tabs-few-tabs", "label": "assumption" }
+  ],
+  "content": [
+    "One to three words per tab, a noun that names the view: Details, Reviews, Delivery.",
+    "Sentence case. No full stop.",
+    "Labels in one list are parallel in form and similar in length.",
+    "A count, if any, goes in the label in brackets, such as Reviews (124), so it is read as part of the name.",
+    "Do not repeat the list's heading in each label: Delivery, not Delivery options.",
+    "An icon only supports the label; it never replaces it."
+  ],
+  "examples": [
+    { "id": "line", "title": "Line", "props": { "list.ariaLabel": "Product information", "defaultValue": "details" }, "content": [
+        { "value": "details", "label": "Details", "panel": "Organic cotton, relaxed fit." },
+        { "value": "reviews", "label": "Reviews (124)", "panel": "Average rating 4.6 out of 5." },
+        { "value": "delivery", "label": "Delivery", "panel": "Free delivery over £50." }
+      ] },
+    { "id": "pill", "title": "Pill", "props": { "variant": "pill", "list.ariaLabel": "How to receive your order", "defaultValue": "delivery" }, "content": [
+        { "value": "delivery", "label": "Delivery", "panel": "Delivered in 2 to 3 working days." },
+        { "value": "collection", "label": "Collection", "panel": "Collect from a store near you." }
+      ] },
+    { "id": "fill", "title": "Fill", "props": { "variant": "pill", "list.behavior": "fill", "list.ariaLabel": "How to receive your order", "defaultValue": "delivery" }, "content": [
+        { "value": "delivery", "label": "Delivery", "panel": "Delivered in 2 to 3 working days." },
+        { "value": "collection", "label": "Collection", "panel": "Collect from a store near you." }
+      ], "note": "The two tabs share the list's full width equally." },
+    { "id": "with-icons", "title": "With icons", "props": { "list.ariaLabel": "How to receive your order", "defaultValue": "delivery" }, "content": [
+        { "value": "delivery", "label": "Delivery", "iconStart": "truck", "panel": "Delivered in 2 to 3 working days." },
+        { "value": "collection", "label": "Collection", "iconStart": "store", "panel": "Collect from a store near you." }
+      ], "note": "The icons are hidden from assistive technology; each tab is named by its label." },
+    { "id": "small", "title": "Small", "props": { "size": "sm", "list.ariaLabel": "Order filter", "defaultValue": "all" }, "content": [
+        { "value": "all", "label": "All", "panel": "All orders." },
+        { "value": "open", "label": "Open", "panel": "Orders on their way." },
+        { "value": "returned", "label": "Returned", "panel": "Returned orders." }
+      ] },
+    { "id": "small-pill", "title": "Small pill", "props": { "variant": "pill", "size": "sm", "list.ariaLabel": "Order filter", "defaultValue": "open" }, "content": [
+        { "value": "all", "label": "All", "panel": "All orders." },
+        { "value": "open", "label": "Open", "panel": "Orders on their way." },
+        { "value": "returned", "label": "Returned", "panel": "Returned orders." }
+      ] },
+    { "id": "vertical", "title": "Vertical", "props": { "orientation": "vertical", "list.ariaLabel": "Account settings", "defaultValue": "profile" }, "content": [
+        { "value": "profile", "label": "Profile", "panel": "Name and email." },
+        { "value": "addresses", "label": "Addresses", "panel": "Saved addresses." },
+        { "value": "payments", "label": "Payments", "panel": "Saved payment methods." }
+      ] },
+    { "id": "vertical-pill", "title": "Vertical pill", "props": { "orientation": "vertical", "variant": "pill", "list.ariaLabel": "Account settings", "defaultValue": "addresses" }, "content": [
+        { "value": "profile", "label": "Profile", "panel": "Name and email." },
+        { "value": "addresses", "label": "Addresses", "panel": "Saved addresses." },
+        { "value": "payments", "label": "Payments", "panel": "Saved payment methods." }
+      ] },
+    { "id": "disabled-tab", "title": "With a disabled tab", "props": { "list.ariaLabel": "Product information", "defaultValue": "details" }, "content": [
+        { "value": "details", "label": "Details", "panel": "Organic cotton, relaxed fit." },
+        { "value": "sizes", "label": "Size guide", "disabled": true, "panel": "Not available for this product." },
+        { "value": "delivery", "label": "Delivery", "panel": "Free delivery over £50." }
+      ], "note": "Shows the disabled state and that the arrow keys skip the disabled tab." },
+    { "id": "manual", "title": "Manual activation", "props": { "activationMode": "manual", "list.ariaLabel": "Order history", "defaultValue": "recent" }, "content": [
+        { "value": "recent", "label": "Recent", "panel": "Orders from the last 30 days." },
+        { "value": "older", "label": "Older", "panel": "Loaded when selected." }
+      ], "note": "The arrow keys move focus only; Enter or Space selects." },
+    { "id": "rtl", "title": "Right to left", "props": { "dir": "rtl", "list.ariaLabel": "معلومات المنتج", "defaultValue": "details" }, "content": [
+        { "value": "details", "label": "التفاصيل", "panel": "قطن عضوي." },
+        { "value": "reviews", "label": "المراجعات", "panel": "التقييم 4.6 من 5." }
+      ], "note": "ArrowLeft moves to the next tab." },
+    { "id": "controlled", "title": "Controlled", "props": { "value": "reviews", "onValueChange": "setTab", "list.ariaLabel": "Product information" }, "content": [
+        { "value": "details", "label": "Details", "panel": "Organic cotton, relaxed fit." },
+        { "value": "reviews", "label": "Reviews (124)", "panel": "Average rating 4.6 out of 5." }
+      ] },
+    { "id": "long-labels", "title": "Long labels", "props": { "list.ariaLabel": "Product information", "defaultValue": "care" }, "content": [
+        { "value": "details", "label": "Details and materials", "panel": "Organic cotton, relaxed fit." },
+        { "value": "care", "label": "Washing and care instructions", "panel": "Wash at 30 degrees." },
+        { "value": "returns", "label": "Delivery and free returns", "panel": "Free returns within 30 days." }
+      ], "note": "Labels longer than the content rules allow. They stay on one line and the list scrolls; the selected tab is in view on first render." },
+    { "id": "worst-case-320", "title": "Worst case at 320 pixels", "props": { "variant": "line", "size": "md", "list.ariaLabel": "Product information", "defaultValue": "questions" }, "content": [
+        { "value": "details", "label": "Details", "panel": "Organic cotton, relaxed fit." },
+        { "value": "reviews", "label": "Reviews (1,284)", "panel": "Average rating 4.6 out of 5." },
+        { "value": "sizes", "label": "Size guide", "disabled": true, "panel": "Not available." },
+        { "value": "delivery", "label": "Delivery", "panel": "Free delivery over £50." },
+        { "value": "returns", "label": "Returns", "panel": "Free returns within 30 days." },
+        { "value": "questions", "label": "Questions and answers", "panel": "12 questions." }
+      ], "note": "Rendered at 320 pixels wide with a coarse pointer: six tabs, one disabled, the selected one last and off screen at first. The page must not scroll sideways, the list scrolls, the selected tab is scrolled into view, and focus rings on the first and last tab are not clipped." }
+  ],
+  "dependencies": [],
+  "notCarried": [
+    "The live Figma component: its properties were read from a cached copy inside the Semantic Tokens file, which is older than the published library, so every figma mapping here is unconfirmed. That copy has a Tabs set with variant primary or secondary (default primary), behavior hug or fill (default hug), and the switches showOption1 to showOption10 and showScrollShadow; and a tab, _TabsElement, with variant primary or secondary, state default, hover, selected or disabled, orientation horizontal or vertical, a label text property, and prefix and suffix icons with showPrefix and showSuffix switches. The show switches are design-tool switches, not props in code: code renders the tabs and icons it is given.",
+    "Which Figma variant is line and which is pill: Figma calls the property variant with the values primary and secondary, and their looks could not be read. The spec keeps its own names line and pill until the mapping is checked against the library.",
+    "A size property in Figma, and a focus value of Figma's state property: neither is in the copy that could be read, so size and the focus state map to nothing in Figma.",
+    "Layout written in the extensions stylesheet: the list is a row or a column from data-orientation, and the root puts a vertical list beside its panel; the list scrolls sideways inside itself (overflow); each tab lays out its icons and label in a centred row and its label never wraps (white-space); vertical tabs are as wide as the list; the indicator's one-sided border, its edge and its width/md thickness; with list.behavior fill, the tabs share the list's width equally; and each label reserves the width of its heavier selected weight. Each is pinned by a requirement with a test.",
+    "Scroll buttons or fade edges on a list that scrolls, which Figma's showScrollShadow draws. The list scrolls by touch, wheel and keyboard only.",
+    "Badges or close buttons on a tab, and tabs that can be added, removed or reordered by the person using them (the Delete key in the Authoring Practices).",
+    "A tab with a popup menu (Shift+F10 in the Authoring Practices).",
+    "A divider line under the whole list. It is not designed; if added it would be border/primary/default, a divider, written in the extensions stylesheet.",
+    "Motion of the indicator sliding between tabs, and panel transitions. Only a colour transition is specified. Radix's forceMount, which exists for such animation, is not exposed.",
+    "Tabs used as links to other pages: that is navigation with aria-current, a different component."
+  ]
+}

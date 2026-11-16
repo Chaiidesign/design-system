@@ -106,7 +106,7 @@
     },
     "props": {
       "type": "object",
-      "description": "The public surface. Every prop is typed, and a prop with a fixed set of values lists them and names a default. Authored order is kept. A prop of the root is keyed by its name (variant). A prop of any other part is keyed part.prop (trigger.value, content.side), because several parts of a compound component can take a prop of the same name; the generator splits on the first dot. A default of null means the prop is unset unless given: a controlled state prop such as open, or an attribute the browser should choose.",
+      "description": "The public surface. Every prop is typed, and a prop with a fixed set of values lists them and names a default. Authored order is kept. In a compound component, whose parts are exported as components of their own (TabsTrigger, DialogContent), a prop of the root is keyed by its name (orientation) and a prop of any other exported part is keyed part.prop (trigger.value, content.side): the part before the dot is the component that takes the prop and equals the prop's 'on'. A component exported as one piece (Button, Input) keys every prop by its plain name, and 'on' says which inner part the prop reaches. A default of null means the prop is unset unless given: a controlled state prop such as open, or an attribute the browser should choose.",
       "additionalProperties": {
         "$ref": "#/$defs/prop"
       },

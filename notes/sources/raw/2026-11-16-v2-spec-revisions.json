@@ -1,0 +1,303 @@
+{
+ "revised": [
+  {
+   "slug": "input",
+   "component": "Input (covers what Figma calls TextField)",
+   "checker_line": "input.spec.json: 0 errors, 0 warnings",
+   "counts": "11 parts, 20 props, 7 states (filled added), 9 style rules (the placeholderShown workaround rule removed), 31 requirements (2 added: input-field-stack, input-control-row), 5 keyboard rows (unchanged, both test ids resolve), 19 examples, 16 notCarried entries. Tokens: 25 from Figma plus text/placeholder through placeholderColor, which the checker does not count; 13 proposed.",
+   "changed": [
+    "figma block: component changed from Input to TextField, and wasCalled changed from InputField to null, because InputField was a code name and was never read from Figma. confirmed stays false.",
+    "figmaProperty set to null on every prop except type (now 'type') and value (now 'value'). The old mappings were never read from Figma: label, description, errorMessage, invalid, required, disabled, readOnly, size, placeholder, prefix and suffix.",
+    "type prop description now says Figma's type list is only text, password and number.",
+    "invalid state figma changed from {invalid, true} to {state, error}. readOnly state figma changed from {state, readOnly} to null, since Figma has no such value.",
+    "Added a filled state on the input part: selector :not(:placeholder-shown), source native, figma {state, filled}, reach prop:defaultValue. Its description warns that it also matches an empty input with no placeholder. Added to the end of precedence.",
+    "Convention 7: removed the placeholderShown style rule and its '::placeholder written by the renderer' workaround. Added placeholderColor: text/placeholder to the base input declarations, and placeholderColor: text/disabled to the disabled rule. Reworded the placeholderShown state description and the base rule's why.",
+    "Convention 8: added the requirements input-field-stack (stack order, plus the error icon before the words) and input-control-row (prefix, input and suffix on one row, the input shrinks, the text never runs under the prefix or suffix at 320 px), each with a test: check. Added one notCarried line starting 'Layout written in the extensions stylesheet: ...'.",
+    "notCarried: replaced 'Components file was not shared' with the cached-copy statement, which lists both Figma components and their properties. Added entries for: the InputField-to-Input rename; Figma's variant property (primary, secondary), whose looks were not readable and which has no prop; the shorter Figma type list; showLabel and showDescription as design-tool switches with no props, and typeInput as an instance swap with no prop; readOnly having no Figma state value."
+   ],
+   "exported_parts": [
+    "Input"
+   ],
+   "state_map": [
+    {
+     "figma_state": "state=placeholder",
+     "part": "input",
+     "selector": ":placeholder-shown",
+     "note": "Spec state placeholderShown. The placeholder colour comes from placeholderColor (text/placeholder) on the input part. No other style changes."
+    },
+    {
+     "figma_state": "state=hover",
+     "part": "control",
+     "selector": ":hover",
+     "note": "Spec state hover. The edge goes to border/strong/hover."
+    },
+    {
+     "figma_state": "state=focus",
+     "part": "control",
+     "selector": ":focus-within",
+     "note": "Spec state focus. The control draws the focus/width ring for keyboard focus and for a press."
+    },
+    {
+     "figma_state": "state=filled",
+     "part": "input",
+     "selector": ":not(:placeholder-shown)",
+     "note": "New spec state filled, with no style change. It also matches an empty input that has no placeholder attribute."
+    },
+    {
+     "figma_state": "state=error",
+     "part": "root",
+     "selector": "[data-invalid]",
+     "note": "Spec state invalid, set by the invalid prop together with errorMessage. Edge becomes border/error at width/md, aria-invalid is true and the error message shows."
+    },
+    {
+     "figma_state": "state=disabled",
+     "part": "root",
+     "selector": "[data-disabled]",
+     "note": "Spec state disabled, set by the disabled prop. The native disabled attribute is on the input."
+    },
+    {
+     "figma_state": "(none)",
+     "part": "root",
+     "selector": "[data-readonly]",
+     "note": "Spec state readOnly exists only in code; figma is null."
+    }
+   ],
+   "open_questions": [
+    "Convention 1 versus the Button pattern: I kept plain prop keys (type, value, placeholder and others on the input part; label on label; errorMessage on errorText), matching Button, which keys children on label and iconStart on iconStart. Input is not one of the compound components in convention 5, so it exports a single component. Dotted keys such as input.type would make the dot-splitting generator invent a part component that is never exported. Read literally, convention 1 asks for dotted keys. The lead should confirm the rule applies only to compound components. No two Input props share a name.",
+    "Checker gap: v2/tools/check-specs.mjs has no PROPERTY_COLLECTION entry for placeholderColor, so it does not check that property's token. 0 errors says nothing about text/placeholder or text/disabled used as placeholderColor. I confirmed by hand that text/placeholder is in v2/figma/semantic.txt. text/disabled is already validated elsewhere as a Themes token. text/placeholder dropped out of the checker's 'tokens from Figma' list for this reason. I did not edit the tool.",
+    "figma.wasCalled: I set it to null rather than repeating TextField, because no earlier Figma name was read. Button repeats its own name, so the lead may want one rule for both.",
+    "The filled state's selector :not(:placeholder-shown) means the placeholder is not showing, not that there is a value: an empty input with no placeholder matches it. If filled ever needs a style, a value-based attribute set by the component may be needed.",
+    "Figma's Input variant (primary, secondary) has no prop because its looks could not be read. Someone needs to compare the two in the published library.",
+    "Running the checker as instructed rewrites ds-components/generated/spec-index.json and test-ids.json. That is a side effect of the required validation command, not a hand edit. The only file I edited is ds-components/specs/input.spec.json. I used a scratch script outside the repo to rewrite it."
+   ]
+  },
+  {
+   "slug": "tabs",
+   "component": "Tabs (ds-components/specs/tabs.spec.json)",
+   "checker_line": "tabs.spec.json: 0 errors, 0 warnings",
+   "counts": "Before the revision the checker found 10 errors in this spec: keyboard rows naming tests that no requirement checks. After it: 0 errors and 0 warnings, and 0 findings across all 5 specs. The spec now has 8 anatomy parts (5 before), 19 props (16), 6 states (5), 17 style rules (16), 13 keyboard rows (unchanged), 40 requirements (28), 14 examples (12) and 10 notCarried entries (8). It uses 20 Figma tokens and 10 proposed tokens; the new proposed ones are icon/md and icon/sm.",
+   "changed": [
+    "Renamed props to the part.prop pattern: loop, ariaLabel and ariaLabelledby became list.loop, list.ariaLabel and list.ariaLabelledby. triggerValue, triggerDisabled and label became trigger.value, trigger.disabled and trigger.children. contentValue and children became content.value and content.children. Every example's props, the disabled state's reach (prop:trigger.disabled=true), accessibility.name and the keyboard and requirement text were updated to match.",
+    "Added the prop list.behavior (hug | fill, default hug, reflects data-behavior, figmaProperty behavior). Added a style rule that makes the list full width under fill, a MUST requirement tabs-behavior-fill with its test, and a fill example. Removed the notCarried line that said equal-width tabs could not be expressed.",
+    "Added the anatomy parts iconStart, label and iconEnd inside the trigger: glyph, text and glyph spans, the icons optional and repeating. Added the props trigger.iconStart (figmaProperty prefix) and trigger.iconEnd (figmaProperty suffix). Icons take icon/md, or icon/sm at size sm, in the colour current. Added a MUST requirement tabs-icons-hidden, a with-icons example and a content rule about icons. Rewrote the notCarried item about icons, badges and close buttons, because icons are now carried.",
+    "Figma fields now record only what was read. size.figmaProperty and trigger.disabled.figmaProperty are null. The focus state's figma is null. The selected state maps to state=selected. A new state, unselected ([data-state=\"inactive\"] on the trigger), maps to state=default. hover and disabled keep state=hover and state=disabled. orientation keeps figmaProperty orientation, and its description says that in Figma the property sits on _TabsElement. The variant description says Figma uses primary and secondary and that which is line and which is pill could not be read. The first notCarried entry now says the properties came from a cached copy inside the Semantic Tokens file, older than the published library, and lists everything read, including the showOption1 to showOption10, showScrollShadow, showPrefix and showSuffix switches, which are design-tool only. confirmed stays false.",
+    "Set default null on value, a controlled state prop, and on dir, which was ltr. dir is inherited from a Radix DirectionProvider when not given, so a fixed ltr default would have overridden it.",
+    "The indicator's all-sides borderWidth and borderStyle were removed from the style rules. Styles now set only its borderColor: transparent in the base rule, border/brand when selected, and transparent again under pill. Its edge and its width/md thickness move to the extensions stylesheet and are pinned by tabs-indicator-edge. The pill rule's indicator borderStyle none became borderColor transparent.",
+    "Wording that said the renderer handles layout now says the extensions stylesheet does. This covers the vertical rule's why, tabs-orientation-layout, tabs-no-width-shift and tabs-list-scrolls-inside. Added one notCarried entry, \"Layout written in the extensions stylesheet: ...\", listing the row or column direction, the overflow, the label's white-space, the width of vertical tabs, the one-sided indicator border, the equal share under fill and the width reserved for the heavier weight.",
+    "Added requirements so every keyboard row's test is the check of a requirement: tabs-tab-enters-selected, tabs-shift-tab-leaves-list, tabs-arrow-left-previous, tabs-arrow-down-next-vertical, tabs-arrow-up-previous-vertical, tabs-home-first, tabs-end-last, tabs-page-up-first (SHOULD), tabs-page-down-last (SHOULD) and tabs-space-selects-manual. Narrowed tabs-arrow-keys to ArrowRight, which is what its test checks, and narrowed tabs-manual-activation to Enter. No keyboard rows were deleted.",
+    "The anatomy descriptions of root, list, trigger and content now name their exported components: Tabs, TabsList, TabsTrigger and TabsContent.",
+    "notCarried now records that Figma's size property and focus state value were not in the copy that could be read, and links the scroll-fade item to Figma's showScrollShadow. The divider-line entry now says that a divider, if added, would be border/primary/default written in the extensions stylesheet."
+   ],
+   "exported_parts": [
+    "Tabs",
+    "TabsList",
+    "TabsTrigger",
+    "TabsContent"
+   ],
+   "state_map": [
+    {
+     "figma_state": "_TabsElement state=default",
+     "part": "trigger",
+     "selector": "[data-state=\"inactive\"]",
+     "note": "New spec state named unselected, not inactive, so it is not confused with the :active pressed state. The base style rule draws it."
+    },
+    {
+     "figma_state": "_TabsElement state=hover",
+     "part": "trigger",
+     "selector": ":hover",
+     "note": "Spec state hover."
+    },
+    {
+     "figma_state": "_TabsElement state=selected",
+     "part": "trigger",
+     "selector": "[data-state=\"active\"]",
+     "note": "Spec state selected. Radix also sets aria-selected=true."
+    },
+    {
+     "figma_state": "_TabsElement state=disabled",
+     "part": "trigger",
+     "selector": "[data-disabled]",
+     "note": "Spec state disabled, reached by trigger.disabled=true. Radix also sets the native disabled attribute."
+    },
+    {
+     "figma_state": "(none: Figma has no focus value)",
+     "part": "trigger",
+     "selector": ":focus-visible",
+     "note": "Spec state focus keeps figma null."
+    },
+    {
+     "figma_state": "(none)",
+     "part": "content",
+     "selector": ":focus-visible",
+     "note": "Spec state contentFocus exists only in code, with figma null."
+    },
+    {
+     "figma_state": "Tabs set: no state property",
+     "part": "root",
+     "selector": "(none)",
+     "note": "The Tabs set has variant and behavior only. variant maps to the variant prop, primary and secondary against line and pill, unconfirmed. behavior maps to list.behavior."
+    }
+   ],
+   "open_questions": [
+    "Button keys its non-root props iconStart, iconEnd and children by plain name, with on set to its iconStart, iconEnd and label parts. That does not follow convention 1, which wants a non-root part's prop keyed part.prop. In Tabs I keyed the icon and label props trigger.iconStart, trigger.iconEnd and trigger.children with on: trigger, because TabsTrigger is the component that takes them, and the iconStart, label and iconEnd parts are internal spans with no export of their own. The lead should confirm that a prop belongs to the exported component that takes it, not to the inner part it fills, and bring Button into line if so.",
+    "orientation keeps figmaProperty orientation, but in Figma that property sits on _TabsElement, the tab, while in code it is a prop of the root. Please confirm that this mapping across levels is acceptable.",
+    "tabs-list-name is still checked by type:tabs-list-needs-name, a type on TabsList's own props. That is not a wrapper prop, so I read convention 5 as not applying. If the lead wants generated tests for every accessible-name rule, switch the check to test:tabs-list-name. Radix gives no development warning for a tablist without a name.",
+    "The checker cannot reach into examples' content arrays, so the item fields value, label, disabled, iconStart and panel are a renderer shape that is not validated against the props. As in schema 0.1.0's known limits, compound examples have no fixed shape.",
+    "git status now shows the five spec files as untracked (??), not added (A) as at the start of the session. I ran no git commands that change the index, so something else changed it. Please check before committing."
+   ]
+  },
+  {
+   "slug": "dropdown-menu",
+   "component": "DropdownMenu (ds-components/specs/dropdown-menu.spec.json)",
+   "checker_line": "dropdown-menu.spec.json: 0 errors, 0 warnings",
+   "counts": "19 parts, 39 props, 19 states, 15 style rules, 12 keyboard rows (all names a test that a requirement in the spec checks), 46 requirements, 16 examples, 12 notCarried lines. Tokens used: 19 from Figma, 9 proposed (border/strong/default, width/sm, shadow/md, menu/min, menu/max, control/sm, icon/sm, target/min, focus/width).",
+   "changed": [
+    "Rule 2: anatomy.root and anatomy.portal had \"element\": \"none\" and now have null. Both keep their slot names and take no styles or states. Every root prop now has \"reflects\": null, including the onOpenChange handler.",
+    "Rule 4: open, dir, checkboxItem.checked and radioGroup.value now default to null, because each is a controlled state prop or a value that is unset unless given. open used to be false and dir used to be ltr, and both descriptions said 'its default means absent'. The meta sentence about the prop-key rule was removed from the open description.",
+    "Rules 6 and 10: item.tone (default | error) is now item.variant (initial | danger). The default is initial, it reflects data-variant and its figmaProperty is \"type\". Every style rule, requirement, example and why string was updated; the danger styles use text/error, interactive/error/default and text/on. The requirement dropdown-menu-error-not-colour-alone is renamed dropdown-menu-danger-not-colour-alone.",
+    "Anatomy itemIcon is renamed iconStart (slot dropdown-menu-icon-start). A new iconEnd part (dropdown-menu-icon-end) is added. item.icon is replaced by item.iconStart (figmaProperty prefix) and item.iconEnd (figmaProperty suffix).",
+    "New optional itemDescription part: text, text/secondary, body-small. New props item.description, checkboxItem.description and radioItem.description, each with figmaProperty \"description\". The description follows the text colour ('current') in all three highlight rules and the danger highlight rule, so text/secondary is never drawn on the dark fill. It turns text/disabled in the three disabled rules.",
+    "Rule 1: every dotted key's prefix now equals its 'on' part, matching how build-components.mjs groups props into <Name><Part>Props. item.children, checkboxItem.children and radioItem.children were 'on' itemLabel and are now 'on' their own item part. item.shortcut was 'on' itemShortcut and is now 'on' item. Each description names the inner part it renders into. The three children props take figmaProperty \"title\".",
+    "Rule 10, states: itemHighlighted, checkboxItemHighlighted and radioItemHighlighted had figma value 'highlighted', which was never read from Figma. They now map to {state, hover}, and each description says that Figma's hover and focus values are one state in code. checkboxItemChecked and radioItemChecked now map to {state, selected}. The disabled states keep {state, disabled}. The trigger, content and unchecked states stay null.",
+    "Rule 11: the content border changed from border/primary/default to border/strong/default, because the menu's outline is an edge and not a divider. The separator keeps border/primary/default. The why text explains both.",
+    "Separator: borderStyle solid is removed, because it drew a 2-pixel box. The style now holds only borderColor border/primary/default and borderWidth width/sm. Size/separator/thickness is not used. The block-start-only edge, zero height and margin move to the extensions stylesheet, pinned by a new MUST requirement, dropdown-menu-separator-line.",
+    "Rule 8: new MUST dropdown-menu-item-layout covers the row order, the description under the label, a growing label column, icons that never shrink, and a shortcut that never wraps. The fits-viewport and scrolls-when-tall requirements now say the extensions stylesheet sets the available-width cap, the max height and the overflow; they no longer say 'the adapter, because the spec format has no property'. One notCarried line beginning 'Layout written in the extensions stylesheet:' replaces the old separate lines on max height and scrolling, and on separator margin.",
+    "New MUST dropdown-menu-description-not-name: an item is labelled by its itemLabel (aria-labelledby) and described by its itemDescription (aria-describedby), and type-ahead matches the label only. item.textValue and accessibility.name explain this. A new announcement line is added.",
+    "New MUST dropdown-menu-highlight-not-colour-alone (WCAG 1.4.1): the highlight is a filled block with a lightness difference of at least 3 to 1 and inverted text, with an outline under forced colours. Checked items show their glyph. text-contrast now covers descriptions, and glyphs-hidden now names iconStart and iconEnd.",
+    "Rule 3: the collection-prefixed 'size/menu/max' in the long-label example note is now 'menu/max'. The 'until Size has a 1 pixel token' wording is removed from the separator why.",
+    "Examples: nested content now uses item.iconStart and item.variant 'danger'. A with-descriptions example was added (radio items with descriptions, and an action item with iconStart, iconEnd and a description). The worst-case-320 and disabled-items examples now include descriptions.",
+    "notCarried: the unconfirmed-Figma line is replaced by a cached-copy line that lists exactly what was read for Dropdown and DropdownItem. It says showGroups, showDivider, showPrefix and showSuffix have no code prop, and that hover and focus are one state. Also added: a line on the danger, type and error naming, and a line saying checkbox and radio items take no icons or shortcut. The line 'A second line of description under an item label' was removed, because the spec now carries it.",
+    "Content rules: a line was added on descriptions, and 'destructive item' became 'danger item'."
+   ],
+   "exported_parts": [
+    "DropdownMenu",
+    "DropdownMenuTrigger",
+    "DropdownMenuPortal",
+    "DropdownMenuContent",
+    "DropdownMenuGroup",
+    "DropdownMenuLabel",
+    "DropdownMenuItem",
+    "DropdownMenuCheckboxItem",
+    "DropdownMenuRadioGroup",
+    "DropdownMenuRadioItem",
+    "DropdownMenuItemIndicator",
+    "DropdownMenuSeparator"
+   ],
+   "state_map": [
+    {
+     "figma_state": "DropdownItem state=default",
+     "part": "item, checkboxItem, radioItem",
+     "selector": "(no selector: base style, neither [data-highlighted] nor [data-disabled])",
+     "note": "No state entry. The base rule draws it."
+    },
+    {
+     "figma_state": "DropdownItem state=hover",
+     "part": "item / checkboxItem / radioItem",
+     "selector": "[data-highlighted]",
+     "note": "Recorded as figma {state, hover} on itemHighlighted, checkboxItemHighlighted and radioItemHighlighted. Radix has one highlight for pointer and keyboard."
+    },
+    {
+     "figma_state": "DropdownItem state=focus",
+     "part": "item / checkboxItem / radioItem",
+     "selector": "[data-highlighted]",
+     "note": "The same state as hover in code. The figma field can hold only one value, so the descriptions name focus as the second Figma value of the same state."
+    },
+    {
+     "figma_state": "DropdownItem state=selected",
+     "part": "checkboxItem / radioItem",
+     "selector": "[data-state=\"checked\"]",
+     "note": "checkboxItemChecked and radioItemChecked. Radix also sets aria-checked true and mounts the item indicator."
+    },
+    {
+     "figma_state": "DropdownItem state=disabled",
+     "part": "item / checkboxItem / radioItem",
+     "selector": "[data-disabled]",
+     "note": "itemDisabled, checkboxItemDisabled and radioItemDisabled. Radix also sets aria-disabled."
+    },
+    {
+     "figma_state": "DropdownItem type=initial | danger",
+     "part": "item",
+     "selector": "[data-variant=\"danger\"]",
+     "note": "A prop, not a state: item.variant (figmaProperty type), default initial. Danger uses the error tokens."
+    },
+    {
+     "figma_state": "Dropdown showGroups / showDivider; DropdownItem showPrefix / showSuffix",
+     "part": "content / item",
+     "selector": "(none)",
+     "note": "Design-tool switches with no code prop. A group, separator or icon is there when it is composed or passed."
+    }
+   ],
+   "open_questions": [
+    "Content border: I switched it from border/primary/default to border/strong/default under fact 11, because the menu outline is an edge, not a divider. It is easy to reverse. If the lead treats a floating surface's outline as decoration, it goes back to border/primary/default and the shadow carries the edge.",
+    "Prop keys: build-components.mjs groups props by 'on' into <Name><Part>Props, so I made every dotted key's prefix equal its 'on'. For example, item.children is on item and renders into itemLabel. Button does it the other way: its plain-keyed children is on label and iconStart is on iconStart. If the lead means 'on' to name the part a prop renders into, then item.children, item.description, item.iconStart, item.iconEnd and item.shortcut would go back onto their inner parts. That would put three props named children onto one ItemLabel interface.",
+    "Neither the checker nor the generator checks that a prop key's prefix matches its 'on', or that an element is null rather than \"none\". The old spec passed with both problems. This is a gap in the tools, not a reason to change the spec.",
+    "The highlighted states can record only one Figma value, so I recorded hover and named focus in the descriptions. The schema's state.figma is a single {property, value}, and a list of values would need a schema change.",
+    "I added description props to checkbox and radio items as well as action items, on the reading that Figma has one DropdownItem for all three kinds. I read prefix and suffix (iconStart and iconEnd) and the shortcut as belonging to action items only. That is recorded in notCarried.",
+    "checkboxItem.checked now defaults to null because it is a controlled pair. Radix has no uncontrolled mode for a menu checkbox item and renders unset as unchecked, so behaviour is the same as the old false."
+   ]
+  },
+  {
+   "slug": "dialog",
+   "component": "Dialog (ds-components/specs/dialog.spec.json)",
+   "checker_line": "dialog.spec.json: 0 errors, 0 warnings",
+   "counts": "11 parts (root and portal have element null), 19 props (3 root, 16 part.prop), 6 states (all figma null), 5 style rules, 7 keyboard rows (all test ids backed by test: requirements), 32 requirements (2 added: dialog-overlay-covers-viewport, dialog-footer-wraps), 11 examples (all kept, rewritten into the nested part structure), 11 notCarried entries. Tokens: 10 from Figma, 8 proposed, no collection prefixes.",
+   "changed": [
+    "Rewrote the spec as a compound component in Radix's shape. The wrapper props trigger, title, description, children and actions are gone. Content now goes in as children of the parts: trigger.children, header.children, title.children, description.children, body.children, footer.children and close.children.",
+    "root and portal now have element null and kind slot, and take no styles or states. Every root prop (open, defaultOpen, onOpenChange) has reflects null.",
+    "Renamed content props to part.prop keys: size became content.size (sm|md, default md, reflects data-size), dismissible became content.dismissible, initialFocus became content.initialFocus, and onOpenAutoFocus and onCloseAutoFocus gained the content. prefix. The styles rule now matches on content.size and the examples use the new keys.",
+    "Added trigger.asChild and close.asChild, following dropdown-menu's convention, so the Souvenir Button keeps its look.",
+    "Kept modal out of the props and fixed at true. The reasoning stays in notCarried, which now also lists modal among the Radix props that are not exposed.",
+    "Changed dialog-title-required from type: to a MUST checked by test:dialog-title-required. The test fails when any DialogContent has no DialogTitle. dialog-title-dev-warning stays as the adapter's own development warning, because the installed Radix 1.3.1 gives none (checked in node_modules).",
+    "Set figma.component, figma.wasCalled and every figmaProperty to null. size, title and description had non-null values before. Every state's figma stays null and confirmed stays false. notCarried explains why: nothing could be read, the Modal component set's properties were unreadable, no instance exists, and other components' properties came from a cached copy that is older than the published library.",
+    "Replaced the old layout line with a single entry starting 'Layout written in the extensions stylesheet: ...'. It names the test that pins each behaviour: the overlay is fixed, covers the viewport and centres the content; the content is a column capped in height; header and footer do not shrink; only the body scrolls; the footer row wraps; long words break.",
+    "Added requirements dialog-overlay-covers-viewport and dialog-footer-wraps. Widened dialog-escape-closes so that the first Escape closes an open menu inside the dialog and leaves the dialog open, which is what its keyboard row claims. Widened dialog-text-wraps to cover long words breaking.",
+    "Rewrote the stacking line in notCarried: no layer token exists, so stacking is left to Radix's portal order. No dialog/margin or Layer token is used.",
+    "Updated requirement and focus texts to the new prop names (content.dismissible, content.initialFocus, content.onOpenAutoFocus, content.onCloseAutoFocus). The onCloseAutoFocus description no longer contradicts the adapter's focus return for a dialog without a trigger.",
+    "Rewrote all 11 examples into a nested structure: trigger with trigger.asChild, then portal, overlay and content (with content.* props), holding header (title, description), body and footer (close parts with close.asChild, then the primary Button). All copy, notes and ids are kept.",
+    "Added a notCarried entry saying the single-wrapper API is deliberately not offered.",
+    "Unchanged and still compliant: no text part uses text/brand, there is no border/primary divider, and no style declares layout."
+   ],
+   "exported_parts": [
+    "Dialog",
+    "DialogTrigger",
+    "DialogPortal",
+    "DialogOverlay",
+    "DialogContent",
+    "DialogHeader",
+    "DialogTitle",
+    "DialogDescription",
+    "DialogBody",
+    "DialogFooter",
+    "DialogClose"
+   ],
+   "state_map": [
+    {
+     "figma_state": "none read",
+     "part": "content",
+     "selector": "[data-state=\"open\"] / [data-state=\"closed\"]",
+     "note": "States open and closed. Nothing could be read from Figma for Modal/Dialog, so figma is null."
+    },
+    {
+     "figma_state": "none read",
+     "part": "overlay",
+     "selector": "[data-state=\"open\"] / [data-state=\"closed\"]",
+     "note": "States overlayOpen and overlayClosed. figma is null."
+    },
+    {
+     "figma_state": "none read",
+     "part": "trigger",
+     "selector": "[data-state=\"open\"] / [data-state=\"closed\"]",
+     "note": "States triggerOpen and triggerClosed. figma is null."
+    }
+   ],
+   "open_questions": [
+    "Convention 5 says to pair the title test with 'the development warning Radix already gives'. The installed @radix-ui/react-dialog 1.3.1 gives no such warning: node_modules/@radix-ui/react-dialog/dist/index.mjs has no console calls and its WarningProvider only renders its children. The spec therefore keeps dialog-title-dev-warning as the adapter's own warning and says why in accessibility.name.note. Please confirm the convention text should change for Dialog.",
+    "figma.component and figma.wasCalled are null because the brief says every figma field is null. The Modal component set's existence (to be renamed Dialog) is recorded only in notCarried. Should wasCalled be 'Modal', since the component set's name was seen even though its properties were not?",
+    "dialog-escape-closes now also requires that the first Escape closes an open DropdownMenu inside the dialog. Its generated test needs DropdownMenu as a fixture, but DropdownMenu is not in dependencies because it is not part of the component. Should test-only fixtures be declared somewhere?",
+    "The schema allows the example 'content' to be any shape. Part props in examples (content.size, content.dismissible, content.initialFocus, trigger.asChild, close.asChild) sit inside nested part nodes, following dropdown-menu's pattern, so check-specs' example-props check does not validate them. Only root props at the top level of an example are checked.",
+    "The overlay-padding approach needs DialogContent rendered as a child of DialogOverlay, not as its sibling as in Radix's docs and shadcn. The spec states this in both part descriptions and in the example structure. The adapter must follow it."
+   ]
+  }
+ ],
+ "missing": []
+}

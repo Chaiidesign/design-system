@@ -1,0 +1,1343 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "schemaVersion": "0.1.0",
+  "name": "Dialog",
+  "slug": "dialog",
+  "stage": "alpha",
+  "summary": "A modal window for one short task or decision. The page behind is dimmed and unreachable until the dialog closes.",
+  "figma": {
+    "component": null,
+    "wasCalled": "Modal",
+    "confirmed": false
+  },
+  "primitive": {
+    "package": "@radix-ui/react-dialog",
+    "native": "The dialog element with showModal gives a modal window, Escape to close and an inert page behind. It lacks focus return to a trigger that was removed, a hook to block Escape for a step that must not be lost (the cancel event is not reliably preventable in every browser), page scroll lock and close on an outside press."
+  },
+  "anatomy": {
+    "root": {
+      "kind": "slot",
+      "role": null,
+      "slot": "dialog",
+      "element": null,
+      "primitivePart": "Dialog.Root",
+      "description": "Holds the open state and links the parts together. It renders no element, so it takes no styles or states and its data-slot never reaches the page. Exported as Dialog."
+    },
+    "trigger": {
+      "kind": "control",
+      "role": "dialogtrigger",
+      "slot": "dialog-trigger",
+      "element": "button",
+      "primitivePart": "Dialog.Trigger",
+      "required": false,
+      "description": "The control that opens the dialog: a Souvenir Button rendered through trigger.asChild, so the button keeps its own look. Optional: a dialog opened by the open prop alone has no trigger. Exported as DialogTrigger."
+    },
+    "portal": {
+      "kind": "slot",
+      "role": null,
+      "slot": "dialog-portal",
+      "element": null,
+      "primitivePart": "Dialog.Portal",
+      "description": "Moves the overlay and the content to the end of the body so no ancestor can clip them. It renders no element, so it takes no styles or states. Exported as DialogPortal."
+    },
+    "overlay": {
+      "kind": "layer",
+      "role": "scrim",
+      "slot": "dialog-overlay",
+      "element": "div",
+      "primitivePart": "Dialog.Overlay",
+      "description": "Covers the whole viewport and dims the page. The content is its child, so its padding is the margin between the content and the screen edge. Exported as DialogOverlay."
+    },
+    "content": {
+      "kind": "container",
+      "role": "dialog",
+      "slot": "dialog-content",
+      "element": "div",
+      "primitivePart": "Dialog.Content",
+      "description": "The dialog window, inside the overlay. It holds a header, a body and an optional footer, and its height never exceeds the overlay's inner box. Exported as DialogContent."
+    },
+    "header": {
+      "kind": "container",
+      "role": null,
+      "slot": "dialog-header",
+      "element": "div",
+      "primitivePart": null,
+      "description": "Souvenir's own layout part. Holds the title and the description and never scrolls away. Exported as DialogHeader."
+    },
+    "title": {
+      "kind": "text",
+      "role": "dialogtitle",
+      "slot": "dialog-title",
+      "element": "h2",
+      "primitivePart": "Dialog.Title",
+      "description": "The dialog's name. Required: its id is what aria-labelledby on the content points at. Exported as DialogTitle."
+    },
+    "description": {
+      "kind": "text",
+      "role": "dialogdescription",
+      "slot": "dialog-description",
+      "element": "p",
+      "primitivePart": "Dialog.Description",
+      "required": false,
+      "description": "One short sentence under the title. When present its id is added to aria-describedby on the content. Exported as DialogDescription."
+    },
+    "body": {
+      "kind": "container",
+      "role": null,
+      "slot": "dialog-body",
+      "element": "div",
+      "primitivePart": null,
+      "description": "Souvenir's own layout part. The task: text, fields or a summary. It is the only part that scrolls when the dialog is taller than the screen. Exported as DialogBody."
+    },
+    "footer": {
+      "kind": "container",
+      "role": null,
+      "slot": "dialog-footer",
+      "element": "div",
+      "primitivePart": null,
+      "required": false,
+      "description": "Souvenir's own layout part. The actions, as Souvenir Buttons, least weighty first. It never scrolls away. Exported as DialogFooter."
+    },
+    "close": {
+      "kind": "control",
+      "role": "dialogclose",
+      "slot": "dialog-close",
+      "element": "button",
+      "primitivePart": "Dialog.Close",
+      "required": false,
+      "repeats": true,
+      "description": "Closes the dialog when pressed. Wraps a footer Button through close.asChild, such as Cancel or Back. Any number of footer actions may be close parts. Exported as DialogClose."
+    }
+  },
+  "props": {
+    "open": {
+      "on": "root",
+      "type": "boolean",
+      "default": null,
+      "reflects": null,
+      "figmaProperty": null,
+      "controls": "onOpenChange",
+      "description": "Whether the dialog is open, for a dialog whose state the product holds. Left unset (null), the dialog holds its own state and starts from defaultOpen."
+    },
+    "defaultOpen": {
+      "on": "root",
+      "type": "boolean",
+      "default": false,
+      "reflects": null,
+      "figmaProperty": null,
+      "description": "Whether a dialog that holds its own state starts open."
+    },
+    "onOpenChange": {
+      "on": "root",
+      "type": "handler",
+      "reflects": null,
+      "figmaProperty": null,
+      "description": "Called with true or false when the trigger, a close part, Escape or an outside press asks to open or close."
+    },
+    "trigger.asChild": {
+      "on": "trigger",
+      "type": "boolean",
+      "default": false,
+      "reflects": null,
+      "figmaProperty": null,
+      "description": "Renders the child, a Souvenir Button, as the trigger, so it keeps the button's look and gains the trigger's behaviour and attributes. Set it whenever the child is a Button."
+    },
+    "trigger.children": {
+      "on": "trigger",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "With trigger.asChild, the Souvenir Button; without it, the trigger's label."
+    },
+    "content.size": {
+      "on": "content",
+      "type": "enum",
+      "values": [
+        "sm",
+        "md"
+      ],
+      "default": "md",
+      "reflects": "data-size",
+      "figmaProperty": null,
+      "description": "The widest the dialog grows: 400 pixels for sm, 560 for md. On a narrower screen both fill the width less the overlay's 16 pixel padding each side."
+    },
+    "content.dismissible": {
+      "on": "content",
+      "type": "boolean",
+      "default": true,
+      "reflects": null,
+      "figmaProperty": null,
+      "description": "Whether Escape and a press outside close the dialog. Set it to false for a step that must not be lost by accident; a footer action must then offer the way out."
+    },
+    "content.initialFocus": {
+      "on": "content",
+      "type": "enum",
+      "values": [
+        "control",
+        "title"
+      ],
+      "default": "control",
+      "reflects": null,
+      "figmaProperty": null,
+      "description": "Where focus goes on open. control: the first control in the dialog that is not a link. title: the title itself, for a body of long text whose start must not scroll out of view."
+    },
+    "content.onOpenAutoFocus": {
+      "on": "content",
+      "type": "handler",
+      "figmaProperty": null,
+      "description": "Called when the dialog is about to move focus inside on open. Calling preventDefault on the event stops the move so the product can place focus itself."
+    },
+    "content.onCloseAutoFocus": {
+      "on": "content",
+      "type": "handler",
+      "figmaProperty": null,
+      "description": "Called when the dialog is about to return focus on close. Calling preventDefault on the event lets the product place focus on the next step instead. Without it, focus returns to the trigger, or for a dialog without a trigger to the element that had focus when it opened."
+    },
+    "content.children": {
+      "on": "content",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "The header, the body and, when there are actions, the footer, in that order."
+    },
+    "header.children": {
+      "on": "header",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "The title, then the description when there is one."
+    },
+    "title.children": {
+      "on": "title",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "The dialog's name, a short phrase in sentence case."
+    },
+    "description.children": {
+      "on": "description",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "One short sentence that says what the dialog is for. Leave the whole description part out when the body is structured, such as a list or a cost summary."
+    },
+    "body.children": {
+      "on": "body",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "What the person reads or fills in."
+    },
+    "footer.children": {
+      "on": "footer",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "The actions as Souvenir Buttons, least weighty first and the primary action last. Actions that only close the dialog are close parts."
+    },
+    "close.asChild": {
+      "on": "close",
+      "type": "boolean",
+      "default": false,
+      "reflects": null,
+      "figmaProperty": null,
+      "description": "Renders the child, a Souvenir Button, as the close part, so it keeps the button's look and closes the dialog when pressed. Set it whenever the child is a Button."
+    },
+    "close.children": {
+      "on": "close",
+      "type": "node",
+      "required": true,
+      "figmaProperty": null,
+      "description": "With close.asChild, the Souvenir Button; without it, the label."
+    }
+  },
+  "states": {
+    "open": {
+      "on": "content",
+      "selector": "[data-state=\"open\"]",
+      "source": "primitive",
+      "figma": null,
+      "reach": "click the trigger, or prop:open=true",
+      "description": "The dialog is showing."
+    },
+    "closed": {
+      "on": "content",
+      "selector": "[data-state=\"closed\"]",
+      "source": "primitive",
+      "figma": null,
+      "reach": "open the dialog, then key:Escape",
+      "description": "The dialog is leaving. Radix keeps the content in the page only while a closing animation runs, then removes it."
+    },
+    "overlayOpen": {
+      "on": "overlay",
+      "selector": "[data-state=\"open\"]",
+      "source": "primitive",
+      "figma": null,
+      "reach": "click the trigger, or prop:open=true",
+      "description": "The overlay is showing."
+    },
+    "overlayClosed": {
+      "on": "overlay",
+      "selector": "[data-state=\"closed\"]",
+      "source": "primitive",
+      "figma": null,
+      "reach": "open the dialog, then key:Escape",
+      "description": "The overlay is leaving."
+    },
+    "triggerOpen": {
+      "on": "trigger",
+      "selector": "[data-state=\"open\"]",
+      "source": "primitive",
+      "figma": null,
+      "reach": "click the trigger",
+      "description": "The dialog this trigger controls is open. The trigger also has aria-expanded set to true."
+    },
+    "triggerClosed": {
+      "on": "trigger",
+      "selector": "[data-state=\"closed\"]",
+      "source": "primitive",
+      "figma": null,
+      "reach": "render with prop:open=false",
+      "description": "The dialog this trigger controls is closed."
+    }
+  },
+  "precedence": [
+    "closed",
+    "open",
+    "overlayClosed",
+    "overlayOpen",
+    "triggerOpen",
+    "triggerClosed"
+  ],
+  "styles": [
+    {
+      "when": {},
+      "parts": {
+        "overlay": {
+          "background": "surface/overlay",
+          "paddingInline": "static/160",
+          "paddingBlock": "static/160",
+          "duration": "duration/base",
+          "easing": "ease/standard"
+        },
+        "content": {
+          "background": "surface/primary/default",
+          "color": "text/primary",
+          "radius": "container/large",
+          "shadow": "shadow/lg",
+          "borderWidth": "width/sm",
+          "borderStyle": "solid",
+          "borderColor": "transparent",
+          "width": "full",
+          "maxWidth": "dialog/md",
+          "duration": "duration/base",
+          "easing": "ease/standard"
+        },
+        "header": {
+          "paddingInline": "scaled/240",
+          "paddingBlock": "scaled/240",
+          "gap": "static/80"
+        },
+        "title": {
+          "typography": "heading-5",
+          "color": "text/primary"
+        },
+        "description": {
+          "typography": "body-base",
+          "color": "text/secondary"
+        },
+        "body": {
+          "paddingInline": "scaled/240",
+          "paddingBlock": "static/0",
+          "typography": "body-base",
+          "color": "text/primary"
+        },
+        "footer": {
+          "paddingInline": "scaled/240",
+          "paddingBlock": "scaled/240",
+          "gap": "static/80"
+        }
+      },
+      "why": "The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears."
+    },
+    {
+      "when": {
+        "props": {
+          "content.size": "sm"
+        }
+      },
+      "parts": {
+        "content": {
+          "maxWidth": "dialog/sm"
+        }
+      }
+    },
+    {
+      "when": {
+        "states": [
+          "closed"
+        ]
+      },
+      "parts": {
+        "content": {
+          "duration": "duration/fast"
+        }
+      },
+      "why": "Leaving is quicker than arriving, so the page is back sooner."
+    },
+    {
+      "when": {
+        "states": [
+          "overlayClosed"
+        ]
+      },
+      "parts": {
+        "overlay": {
+          "duration": "duration/fast"
+        }
+      }
+    },
+    {
+      "when": {
+        "media": "reduced-motion"
+      },
+      "parts": {
+        "overlay": {
+          "duration": "none"
+        },
+        "content": {
+          "duration": "none"
+        }
+      }
+    }
+  ],
+  "accessibility": {
+    "pattern": "WAI-ARIA Authoring Practices: Dialog (Modal)",
+    "reference": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/",
+    "name": {
+      "from": "The title: the content's aria-labelledby points at the title's id. The description, when present, is added to aria-describedby.",
+      "note": "Radix sets aria-labelledby only while a DialogTitle is mounted inside the content. The installed @radix-ui/react-dialog 1.3.1 gives no warning when one is missing (its WarningProvider renders its children and nothing else), so a generated test fails on a DialogContent without a DialogTitle and the adapter warns in development."
+    },
+    "keyboard": [
+      {
+        "key": "Enter",
+        "on": "trigger",
+        "does": "Opens the dialog.",
+        "test": "dialog-trigger-opens-by-keyboard"
+      },
+      {
+        "key": "Space",
+        "on": "trigger",
+        "does": "Opens the dialog.",
+        "test": "dialog-trigger-opens-by-keyboard"
+      },
+      {
+        "key": "Tab",
+        "on": "content",
+        "does": "Moves focus to the next control in the dialog; from the last it wraps to the first. Focus never leaves the dialog while it is open.",
+        "test": "dialog-tab-wraps"
+      },
+      {
+        "key": "Shift+Tab",
+        "on": "content",
+        "does": "Moves focus to the previous control in the dialog; from the first it wraps to the last.",
+        "test": "dialog-shift-tab-wraps"
+      },
+      {
+        "key": "Escape",
+        "on": "content",
+        "does": "Closes the dialog when content.dismissible is true; does nothing when it is false. When a menu is open inside the dialog, the first Escape closes only the menu.",
+        "test": "dialog-escape-closes"
+      },
+      {
+        "key": "Enter",
+        "on": "close",
+        "does": "Closes the dialog.",
+        "test": "dialog-close-part-closes"
+      },
+      {
+        "key": "Space",
+        "on": "close",
+        "does": "Closes the dialog.",
+        "test": "dialog-close-part-closes"
+      }
+    ],
+    "focus": {
+      "order": "In the order of the parts: header, body, footer. Footer actions run least weighty first, so the primary action is the last stop.",
+      "onOpen": "With content.initialFocus control, the first tabbable element inside the content that is not a link; with none, the content itself, which has tabindex -1. With content.initialFocus title, the title, which then has tabindex -1. content.onOpenAutoFocus can prevent the move.",
+      "onClose": "Back to the trigger. Without a trigger, back to the element that had focus when the dialog opened, which the adapter records on open. content.onCloseAutoFocus can prevent the move so the product places focus on the next step instead.",
+      "trapped": true,
+      "ring": "Each control inside draws its own ring; the content draws none."
+    },
+    "announcements": [
+      "On open, a screen reader announces a dialog, its title as the name and the description when present.",
+      "While open, everything outside the content carries aria-hidden and the content carries aria-modal set to true, so the page behind is not read."
+    ]
+  },
+  "requirements": [
+    {
+      "id": "dialog-name",
+      "level": "MUST",
+      "text": "The content has role dialog and an accessible name taken from the title.",
+      "wcag": "4.1.2",
+      "check": "axe:aria-dialog-name"
+    },
+    {
+      "id": "dialog-title-required",
+      "level": "MUST",
+      "text": "Every DialogContent holds a DialogTitle with text. The generated test opens each example and fails when a DialogContent has no DialogTitle inside it; every example in this spec has one.",
+      "wcag": "4.1.2",
+      "check": "test:dialog-title-required"
+    },
+    {
+      "id": "dialog-title-dev-warning",
+      "level": "MUST",
+      "text": "In development the adapter warns in the console when a DialogContent mounts without a DialogTitle or with an empty one, because Radix 1.3.1 does not warn.",
+      "check": "test:dialog-title-dev-warning"
+    },
+    {
+      "id": "dialog-aria-modal",
+      "level": "MUST",
+      "text": "While open, the content carries aria-modal set to true. Radix 1.3.1 does not set it; the adapter does.",
+      "wcag": "4.1.2",
+      "check": "test:dialog-aria-modal"
+    },
+    {
+      "id": "dialog-describedby",
+      "level": "MUST",
+      "text": "aria-describedby on the content points at the description when one is given and is absent when none is.",
+      "wcag": "1.3.1",
+      "check": "test:dialog-describedby"
+    },
+    {
+      "id": "dialog-trigger-attributes",
+      "level": "MUST",
+      "text": "The trigger has aria-haspopup set to dialog, aria-expanded that matches the open state, and while open aria-controls naming the content's id.",
+      "wcag": "4.1.2",
+      "check": "test:dialog-trigger-attributes"
+    },
+    {
+      "id": "dialog-trigger-opens-by-keyboard",
+      "level": "MUST",
+      "text": "Enter and Space on the trigger open the dialog.",
+      "wcag": "2.1.1",
+      "check": "test:dialog-trigger-opens-by-keyboard"
+    },
+    {
+      "id": "dialog-focus-on-open",
+      "level": "MUST",
+      "text": "On open, focus moves inside the content: to the first control that is not a link, or to the content when there is none.",
+      "wcag": "2.4.3",
+      "check": "test:dialog-focus-on-open"
+    },
+    {
+      "id": "dialog-initial-focus-title",
+      "level": "MUST",
+      "text": "With content.initialFocus title, focus lands on the title and the top of the body stays in view.",
+      "wcag": "2.4.3",
+      "check": "test:dialog-initial-focus-title"
+    },
+    {
+      "id": "dialog-tab-wraps",
+      "level": "MUST",
+      "text": "Tab from the last control moves to the first, and focus never reaches the page behind.",
+      "wcag": "2.4.3",
+      "check": "test:dialog-tab-wraps"
+    },
+    {
+      "id": "dialog-shift-tab-wraps",
+      "level": "MUST",
+      "text": "Shift+Tab from the first control moves to the last.",
+      "wcag": "2.4.3",
+      "check": "test:dialog-shift-tab-wraps"
+    },
+    {
+      "id": "dialog-escape-closes",
+      "level": "MUST",
+      "text": "With content.dismissible true, Escape closes the dialog and calls onOpenChange with false once. When a DropdownMenu inside the dialog is open, the first Escape closes only the menu and the dialog stays open.",
+      "wcag": "2.1.1",
+      "check": "test:dialog-escape-closes"
+    },
+    {
+      "id": "dialog-outside-press-closes",
+      "level": "MUST",
+      "text": "With content.dismissible true, a primary-button press on the overlay closes the dialog. A right-click or Ctrl+click outside does not.",
+      "check": "test:dialog-outside-press-closes"
+    },
+    {
+      "id": "dialog-not-dismissible",
+      "level": "MUST",
+      "text": "With content.dismissible false, neither Escape nor a press on the overlay closes the dialog or calls onOpenChange.",
+      "check": "test:dialog-not-dismissible"
+    },
+    {
+      "id": "dialog-not-dismissible-has-way-out",
+      "level": "MUST",
+      "text": "With content.dismissible false, the content holds at least one tabbable footer action that closes or completes the step, so a keyboard user is never trapped.",
+      "wcag": "2.1.2",
+      "check": "test:dialog-not-dismissible-has-way-out"
+    },
+    {
+      "id": "dialog-close-part-closes",
+      "level": "MUST",
+      "text": "A press, Enter or Space on a close part closes the dialog.",
+      "wcag": "2.1.1",
+      "check": "test:dialog-close-part-closes"
+    },
+    {
+      "id": "dialog-visible-close",
+      "level": "MUST",
+      "text": "With content.dismissible true, the footer holds at least one visible close part, such as Cancel, because a person using a touch screen reader has no Escape key and may not find the overlay.",
+      "check": "test:dialog-visible-close",
+      "label": "pattern"
+    },
+    {
+      "id": "dialog-focus-returns",
+      "level": "MUST",
+      "text": "On close, focus returns to the trigger.",
+      "wcag": "2.4.3",
+      "check": "test:dialog-focus-returns"
+    },
+    {
+      "id": "dialog-focus-returns-without-trigger",
+      "level": "MUST",
+      "text": "A dialog opened by the open prop with no trigger returns focus on close to the element that had focus when it opened. Radix alone would leave focus on the page body.",
+      "wcag": "2.4.3",
+      "check": "test:dialog-focus-returns-without-trigger"
+    },
+    {
+      "id": "dialog-background-inert",
+      "level": "MUST",
+      "text": "While open, the page behind is hidden from assistive technology, cannot be pressed and does not scroll.",
+      "wcag": "1.3.2",
+      "check": "test:dialog-background-inert"
+    },
+    {
+      "id": "dialog-overlay-covers-viewport",
+      "level": "MUST",
+      "text": "While open, the overlay covers the whole viewport and stays put when the page behind would scroll, and the content sits centred inside it.",
+      "check": "test:dialog-overlay-covers-viewport"
+    },
+    {
+      "id": "dialog-fits-320",
+      "level": "MUST",
+      "text": "At a 320 pixel wide viewport the content is the viewport width less the overlay's 16 pixel padding each side, centred, and the page has no horizontal scroll.",
+      "wcag": "1.4.10",
+      "check": "test:dialog-fits-320"
+    },
+    {
+      "id": "dialog-body-scrolls",
+      "level": "MUST",
+      "text": "When the content is taller than the viewport less its margin, only the body scrolls; the header with the title and the footer with the actions stay fully visible.",
+      "wcag": "1.4.10",
+      "check": "test:dialog-body-scrolls"
+    },
+    {
+      "id": "dialog-footer-wraps",
+      "level": "MUST",
+      "text": "Footer actions sit in one row aligned to the end while they fit, wrap onto further rows when they do not, and are never cut off or pushed outside the content.",
+      "wcag": "1.4.10",
+      "check": "test:dialog-footer-wraps"
+    },
+    {
+      "id": "dialog-body-scroll-keyboard",
+      "level": "MUST",
+      "text": "A body that scrolls can be scrolled with the keyboard: it is focusable or holds a focusable element.",
+      "wcag": "2.1.1",
+      "check": "axe:scrollable-region-focusable"
+    },
+    {
+      "id": "dialog-text-wraps",
+      "level": "MUST",
+      "text": "A long title or description wraps, and a long word breaks rather than overflow; neither is cut off or ended with an ellipsis.",
+      "wcag": "1.4.10",
+      "check": "test:dialog-text-wraps"
+    },
+    {
+      "id": "dialog-text-contrast",
+      "level": "MUST",
+      "text": "The title, description and body text have at least 4.5 to 1 contrast against the content's fill, in light and dark.",
+      "wcag": "1.4.3",
+      "check": "test:dialog-text-contrast"
+    },
+    {
+      "id": "dialog-reduced-motion",
+      "level": "SHOULD",
+      "text": "Where the person asks for reduced motion, the dialog and overlay appear and leave without a transition.",
+      "check": "test:dialog-reduced-motion",
+      "label": "pattern"
+    },
+    {
+      "id": "dialog-one-primary",
+      "level": "SHOULD",
+      "text": "The footer has at most one primary button, and it is the last action.",
+      "check": "lint:one-primary-per-view",
+      "label": "pattern"
+    },
+    {
+      "id": "dialog-not-destructive",
+      "level": "SHOULD",
+      "text": "A confirmation of an action that cannot be undone, such as deleting or paying, uses AlertDialog rather than Dialog.",
+      "check": "manual:dialog-not-destructive",
+      "label": "pattern"
+    },
+    {
+      "id": "dialog-no-nesting",
+      "level": "SHOULD",
+      "text": "A dialog does not open another dialog. A second step replaces the body of the first.",
+      "check": "manual:dialog-no-nesting",
+      "label": "pattern"
+    },
+    {
+      "id": "dialog-short-task",
+      "level": "COULD",
+      "text": "On a phone, a task longer than one screen of body moves to its own page instead of a dialog, because a scrolling body inside a window is harder to read than a page.",
+      "check": "manual:dialog-short-task",
+      "label": "assumption"
+    }
+  ],
+  "content": [
+    "The title names the task or the question in sentence case, with no full stop: Change delivery address, not Address.",
+    "Keep the title to one line where you can; it wraps when it must and is never cut off.",
+    "The description is one sentence. Leave it out when the body is a list, a table or a cost summary.",
+    "Do not repeat the title in the body.",
+    "Footer buttons start with a verb and name the result, such as Use this address. The secondary action says Cancel or Back, never No.",
+    "Never ask Are you sure. If a step needs that question, it is an AlertDialog."
+  ],
+  "examples": [
+    {
+      "id": "default",
+      "title": "Default",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "trigger": {
+          "props": {
+            "trigger.asChild": true
+          },
+          "button": {},
+          "children": "Change address"
+        },
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Change delivery address"
+                    },
+                    {
+                      "part": "description",
+                      "children": "Your order will go to the new address."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "12 Harbour Street, Leith, Edinburgh EH6 6QW"
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Cancel"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Use this address"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "confirm-step",
+      "title": "Confirm step with primary and secondary actions",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "trigger": {
+          "props": {
+            "trigger.asChild": true
+          },
+          "button": {
+            "variant": "primary"
+          },
+          "children": "Continue to payment"
+        },
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "props": {
+                "content.size": "sm"
+              },
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Use express delivery?"
+                    },
+                    {
+                      "part": "description",
+                      "children": "It arrives tomorrow and adds £4.99 to your order."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "You can change this until the order ships."
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Keep standard"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Add express delivery"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "note": "The secondary action is a close part; the primary action closes the dialog through onOpenChange once the change is saved."
+    },
+    {
+      "id": "small",
+      "title": "Small",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "props": {
+                "content.size": "sm"
+              },
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Rename list"
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "Weekend shopping"
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Cancel"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Save name"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "medium",
+      "title": "Medium",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "props": {
+                "content.size": "md"
+              },
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Delivery options"
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "Standard: 3 to 5 working days, free. Express: next working day, £4.99."
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Close"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "no-description",
+      "title": "Without a description",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Order summary"
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": [
+                    "2 items: £38.00",
+                    "Delivery: £4.99",
+                    "Total: £42.99"
+                  ]
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Close"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "not-dismissible",
+      "title": "Not dismissible",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "props": {
+                "content.dismissible": false
+              },
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Confirm your card"
+                    },
+                    {
+                      "part": "description",
+                      "children": "Your bank needs you to confirm this payment in its app."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "Keep this window open until the app says the payment is confirmed."
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Use a different card"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "I have confirmed it"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "note": "Escape and an outside press do nothing; the footer offers the way out."
+    },
+    {
+      "id": "title-focus",
+      "title": "Focus on the title",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "props": {
+                "content.initialFocus": "title"
+              },
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Returns policy"
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "Five paragraphs of policy text, taller than the viewport."
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Close"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "closed",
+      "title": "Closed",
+      "props": {
+        "defaultOpen": false
+      },
+      "content": {
+        "trigger": {
+          "props": {
+            "trigger.asChild": true
+          },
+          "button": {},
+          "children": "Change address"
+        },
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Change delivery address"
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "12 Harbour Street, Leith, Edinburgh EH6 6QW"
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Cancel"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "note": "Only the trigger shows, with data-state closed and aria-expanded false. A test opens it to reach the open state and presses Escape to reach the closed state."
+    },
+    {
+      "id": "controlled-without-trigger",
+      "title": "Opened by the product, without a trigger",
+      "props": {
+        "open": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Your session is about to end"
+                    },
+                    {
+                      "part": "description",
+                      "children": "Stay signed in to keep your basket."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "You will be signed out in 2 minutes."
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Sign out"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Stay signed in"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "note": "Target for the test that focus returns to where it was when the dialog opened."
+    },
+    {
+      "id": "long-text",
+      "title": "Long text",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Choose how you would like us to deliver the items that are coming from our partner warehouse"
+                    },
+                    {
+                      "part": "description",
+                      "children": "These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "Twelve paragraphs of delivery terms, taller than the viewport."
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Back"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Deliver everything together"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "worst-case-320",
+      "title": "Worst case at 320 pixels",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "props": {
+                "content.dismissible": false
+              },
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Choose how you would like us to deliver the items that are coming from our partner warehouse in Rotterdam"
+                    },
+                    {
+                      "part": "description",
+                      "children": "These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature from someone at the address."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "Twelve paragraphs of delivery terms in German, with long compound words such as Lieferbedingungen and Versandkostenübernahme."
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Go back to my basket"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Deliver everything together on the later date"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "note": "Viewport 320 by 568. The title wraps over several lines, the body scrolls, the footer buttons wrap and stay visible, and the page has no horizontal scroll."
+    }
+  ],
+  "dependencies": [
+    "Button"
+  ],
+  "notCarried": [
+    "A destructive or irreversible confirmation: that is AlertDialog, a separate component with the alertdialog role and no outside-press close.",
+    "A panel that slides in from an edge: that is Sheet.",
+    "A non-modal dialog. Radix's modal prop is not exposed and is fixed to true: with modal false Radix renders no overlay, so the margin, the scroll lock and the inert page would all be lost.",
+    "A single wrapper component that takes title, description and actions as props. Dialog keeps Radix's compound shape; a required title is enforced by the dialog-title-required test and the adapter's development warning instead of by a prop type.",
+    "Layout written in the extensions stylesheet: the overlay is fixed to the viewport, covers it and centres its child (dialog-overlay-covers-viewport); the content is a column whose height is capped at the overlay's inner box (dialog-body-scrolls); the header is a column and neither it nor the footer shrinks; the body takes the leftover height and is the only part with overflow on the block axis (dialog-body-scrolls); the footer is a row aligned to the end that wraps (dialog-footer-wraps); the title and description break long words (dialog-text-wraps).",
+    "The entrance and exit animation itself (fade and scale). Only its duration and easing are tokens here.",
+    "Stacking order. No layer token exists, so the overlay's place above the page is left to Radix's portal order: the portal appends to the end of the body, and a later portal sits above an earlier one.",
+    "Space for the iPhone home indicator and notch beyond the overlay's 16 pixel padding.",
+    "A close button with an icon in the header corner.",
+    "Radix's modal, onEscapeKeyDown, onPointerDownOutside, onInteractOutside, forceMount and container props: content.dismissible covers the need, and they are not part of the Souvenir surface.",
+    "Figma: nothing could be read. The library has a component set called Modal, to be renamed Dialog, but its properties were not readable, and no instance exists in the files that were shared. The component properties that could be read for other components came from a cached copy inside the Semantic Tokens file, which is older than the published library; that copy gave nothing for Dialog. So every figma field here is null, confirmed is false, and size sm and md, dismissible and the parts are code decisions to check against the Modal component set once it can be read."
+  ]
+}
