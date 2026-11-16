@@ -16,6 +16,7 @@ Every state of every built component: the part it is on, the selector that match
 | Dialog | overlayClosed | overlay | `[data-state="closed"]` | primitive |  |
 | Dialog | triggerOpen | trigger | `[data-state="open"]` | primitive |  |
 | Dialog | triggerClosed | trigger | `[data-state="closed"]` | primitive |  |
+| Dialog | bodyFocus | body | `:focus-visible` | native |  |
 | DropdownMenu | triggerOpen | trigger | `[data-state="open"]` | primitive |  |
 | DropdownMenu | triggerClosed | trigger | `[data-state="closed"]` | primitive |  |
 | DropdownMenu | triggerDisabled | trigger | `[data-disabled]` | primitive |  |

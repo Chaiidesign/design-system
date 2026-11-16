@@ -74,9 +74,10 @@ export function DropdownMenuTrigger({
   ref,
   ...radix
 }: DropdownMenuTriggerProps) {
-  // Note: with asChild and a Souvenir Button child, Button writes its own data-slot="button" after the props it
-  // receives, so the element shows data-slot="button" and keeps the Button's look. Without asChild the Radix
-  // button carries data-slot="dropdown-menu-trigger".
+  // data-slot is a list of slot names. With asChild, Radix's Slot hands data-slot="dropdown-menu-trigger" to the
+  // child; a Souvenir Button merges it after its own name, so the element carries
+  // data-slot="button dropdown-menu-trigger" and keeps the Button's look. Without asChild the Radix button carries
+  // data-slot="dropdown-menu-trigger" alone.
   const reflected = { [DROPDOWN_MENU_REFLECTS["trigger.disabled"]]: disabled ? "" : undefined };
   return (
     <RadixMenu.Trigger {...radix} {...reflected} ref={ref} asChild={asChild} disabled={disabled} data-slot={DROPDOWN_MENU_SLOTS.trigger}>
@@ -233,6 +234,30 @@ function useItemText(children: React.ReactNode, description: React.ReactNode, te
 
 const present = (node: React.ReactNode) => node != null && node !== false;
 
+// aria-keyshortcuts takes key names joined by "+" (KeyboardEvent.key values, such as Meta+C), never the glyphs a
+// hint shows to the eye. A hint written with "+" (Ctrl+C) is split on it; a hint of glyphs (⌘⇧M) is read glyph by
+// glyph, and the characters after the glyphs are the key. Letters are upper case, as ARIA's examples write them.
+const KEY_GLYPHS: Record<string, string> = {
+  "⌘": "Meta", "⇧": "Shift", "⌥": "Alt", "⌃": "Control", "⌫": "Backspace", "⌦": "Delete", "⏎": "Enter", "↩": "Enter",
+  "⎋": "Escape", "⇥": "Tab", "←": "ArrowLeft", "→": "ArrowRight", "↑": "ArrowUp", "↓": "ArrowDown",
+};
+const KEY_WORDS: Record<string, string> = { ctrl: "Control", control: "Control", cmd: "Meta", command: "Meta", meta: "Meta", alt: "Alt", option: "Alt", opt: "Alt", shift: "Shift", esc: "Escape", del: "Delete" };
+const keyName = (k: string) => KEY_WORDS[k.toLowerCase()] ?? KEY_GLYPHS[k] ?? (k.length === 1 ? k.toUpperCase() : k);
+function keyShortcutsOf(hint: string): string {
+  const text = hint.trim();
+  if (text.includes("+") && text.length > 1) return text.split("+").map((k) => keyName(k.trim())).join("+");
+  const keys: string[] = [];
+  let rest = "";
+  for (const ch of text) {
+    if (KEY_GLYPHS[ch]) {
+      if (rest) { keys.push(keyName(rest)); rest = ""; }
+      keys.push(KEY_GLYPHS[ch]);
+    } else if (ch.trim()) rest += ch;
+  }
+  if (rest) keys.push(keyName(rest));
+  return keys.join("+");
+}
+
 /** Props of DropdownMenuItem: one action. Choosing it runs onSelect and closes the menu. */
 export type DropdownMenuItemProps = Omit<Radix<typeof RadixMenu.Item>, keyof DropdownMenuItemContractProps | "aria-keyshortcuts"> &
   Omit<DropdownMenuItemContractProps, "onSelect"> & {
@@ -268,7 +293,7 @@ export function DropdownMenuItem({
       disabled={disabled}
       textValue={typeAhead}
       onSelect={onSelect}
-      aria-keyshortcuts={shortcut || undefined}
+      aria-keyshortcuts={shortcut ? keyShortcutsOf(shortcut) || undefined : undefined}
       data-slot={DROPDOWN_MENU_SLOTS.item}
     >
       {present(iconStart) ? (

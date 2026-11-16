@@ -168,7 +168,7 @@ export function Input(props: InputProps) {
   // A press on the control outside the input (padding, prefix, suffix) moves focus to the input. preventDefault
   // keeps the press from blurring the input first, so focus lands once and stays.
   const handleControlMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    const field = event.currentTarget.querySelector<HTMLInputElement>(`[data-slot="${INPUT_SLOTS.input}"]`);
+    const field = event.currentTarget.querySelector<HTMLInputElement>(`[data-slot~="${INPUT_SLOTS.input}"]`);
     if (!field || disabled || event.target === field) return;
     event.preventDefault();
     field.focus();

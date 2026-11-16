@@ -165,7 +165,7 @@ export function TabsList(props: TabsListProps) {
     const reveal = () => {
       // Once a tab has focus, the person is moving through the list; leave its scroll alone.
       if (list.contains(document.activeElement)) return;
-      const selected = list.querySelector<HTMLElement>(`[data-slot="${TABS_SLOTS.trigger}"][data-state="active"]`);
+      const selected = list.querySelector<HTMLElement>(`[data-slot~="${TABS_SLOTS.trigger}"][data-state="active"]`);
       if (selected) revealInList(list, selected);
     };
     reveal();
@@ -216,7 +216,7 @@ export function TabsTrigger(props: TabsTriggerProps) {
   // list's padding around it so its focus ring is not cut off (tabs-focused-tab-in-view, tabs-focus-visible).
   const handleFocus = (event: React.FocusEvent<HTMLButtonElement>) => {
     onFocus?.(event);
-    const list = event.currentTarget.closest<HTMLElement>(`[data-slot="${TABS_SLOTS.list}"]`);
+    const list = event.currentTarget.closest<HTMLElement>(`[data-slot~="${TABS_SLOTS.list}"]`);
     if (list) revealInList(list, event.currentTarget);
   };
   return (

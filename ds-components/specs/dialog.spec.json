@@ -257,7 +257,7 @@
       "selector": "[data-state=\"open\"]",
       "source": "primitive",
       "figma": null,
-      "reach": "click the trigger, or prop:open=true",
+      "reach": "open",
       "description": "The dialog is showing."
     },
     "closed": {
@@ -265,7 +265,7 @@
       "selector": "[data-state=\"closed\"]",
       "source": "primitive",
       "figma": null,
-      "reach": "open the dialog, then key:Escape",
+      "reach": "prop:content.dismissible=true > open > key:Escape",
       "description": "The dialog is leaving. Radix keeps the content in the page only while a closing animation runs, then removes it."
     },
     "overlayOpen": {
@@ -273,7 +273,7 @@
       "selector": "[data-state=\"open\"]",
       "source": "primitive",
       "figma": null,
-      "reach": "click the trigger, or prop:open=true",
+      "reach": "open",
       "description": "The overlay is showing."
     },
     "overlayClosed": {
@@ -281,7 +281,7 @@
       "selector": "[data-state=\"closed\"]",
       "source": "primitive",
       "figma": null,
-      "reach": "open the dialog, then key:Escape",
+      "reach": "prop:content.dismissible=true > open > key:Escape",
       "description": "The overlay is leaving."
     },
     "triggerOpen": {
@@ -289,7 +289,7 @@
       "selector": "[data-state=\"open\"]",
       "source": "primitive",
       "figma": null,
-      "reach": "click the trigger",
+      "reach": "open",
       "description": "The dialog this trigger controls is open. The trigger also has aria-expanded set to true."
     },
     "triggerClosed": {
@@ -297,8 +297,16 @@
       "selector": "[data-state=\"closed\"]",
       "source": "primitive",
       "figma": null,
-      "reach": "render with prop:open=false",
+      "reach": "example:closed",
       "description": "The dialog this trigger controls is closed."
+    },
+    "bodyFocus": {
+      "on": "body",
+      "selector": ":focus-visible",
+      "source": "native",
+      "figma": null,
+      "reach": "example:long-text > focus-by-keyboard",
+      "description": "The body has keyboard focus. Only a body that scrolls takes focus (it joins the Tab order so the keyboard can scroll it), and it then draws the focus ring."
     }
   },
   "precedence": [
@@ -307,7 +315,8 @@
     "overlayClosed",
     "overlayOpen",
     "triggerOpen",
-    "triggerClosed"
+    "triggerClosed",
+    "bodyFocus"
   ],
   "styles": [
     {
@@ -350,7 +359,10 @@
           "paddingInline": "scaled/240",
           "paddingBlock": "static/0",
           "typography": "body-base",
-          "color": "text/primary"
+          "color": "text/primary",
+          "outlineColor": "border/focus",
+          "outlineWidth": "none",
+          "outlineOffset": "focus/offset"
         },
         "footer": {
           "paddingInline": "scaled/240",
@@ -396,6 +408,19 @@
           "duration": "duration/fast"
         }
       }
+    },
+    {
+      "when": {
+        "states": [
+          "bodyFocus"
+        ]
+      },
+      "parts": {
+        "body": {
+          "outlineWidth": "focus/width"
+        }
+      },
+      "why": "A body that scrolls is in the Tab order (dialog-body-scroll-keyboard), so it shows the same focus ring as every control (WCAG 2.4.7). The ring sits outside the body, in the header's and the footer's padding, so nothing clips it."
     },
     {
       "when": {
@@ -779,9 +804,7 @@
           "props": {
             "trigger.asChild": true
           },
-          "button": {
-            "variant": "primary"
-          },
+          "button": {},
           "children": "Continue to payment"
         },
         "portal": {
@@ -1322,10 +1345,97 @@
         }
       },
       "note": "Viewport 320 by 568. The title wraps over several lines, the body scrolls, the footer buttons wrap and stay visible, and the page has no horizontal scroll."
+    },
+    {
+      "id": "with-menu",
+      "title": "With a menu inside",
+      "props": {
+        "defaultOpen": true
+      },
+      "content": {
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Delivery day"
+                    },
+                    {
+                      "part": "description",
+                      "children": "Choose when the courier comes."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": [
+                    {
+                      "component": "DropdownMenu",
+                      "content": {
+                        "trigger": {
+                          "props": {
+                            "trigger.asChild": true
+                          },
+                          "button": {
+                            "iconEnd": "chevron-down"
+                          },
+                          "children": "Tuesday 18 November"
+                        },
+                        "content": [
+                          {
+                            "part": "item",
+                            "children": "Tuesday 18 November"
+                          },
+                          {
+                            "part": "item",
+                            "children": "Wednesday 19 November"
+                          },
+                          {
+                            "part": "item",
+                            "children": "Thursday 20 November"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Cancel"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Save day"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "note": "Target for the test that, while the menu is open, the first Escape closes only the menu and the second closes the dialog."
     }
   ],
   "dependencies": [
-    "Button"
+    "Button",
+    "DropdownMenu"
   ],
   "notCarried": [
     "A destructive or irreversible confirmation: that is AlertDialog, a separate component with the alertdialog role and no outside-press close.",

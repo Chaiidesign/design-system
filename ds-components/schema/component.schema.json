@@ -276,7 +276,7 @@
         "slot": {
           "type": "string",
           "pattern": "^[a-z][a-z-]*$",
-          "description": "The value of the data-slot attribute this part carries in every renderer. A part whose element is null reserves the name and emits nothing."
+          "description": "The slot name this part carries in its data-slot attribute in every renderer: one word. data-slot is a space-separated list of slot names, like a class list, because one element can be two parts at once (a Button inside DropdownMenuTrigger asChild carries data-slot=\"button dropdown-menu-trigger\"). A component that can be the child of asChild puts its own name first and keeps every incoming name after it, never overwriting them. Styles, tests and lints therefore find a part by the word, [data-slot~=\"<slot>\"], never by the whole attribute. A part whose element is null reserves the name and emits nothing."
         },
         "element": {
           "type": [
@@ -441,7 +441,7 @@
         },
         "reach": {
           "type": "string",
-          "description": "How a test puts the component into this state, in words a script can follow: hover, press, focus-by-keyboard, click, key:ArrowRight, prop:disabled=true."
+          "description": "How a test puts the component into this state, in a grammar a script follows. Steps are joined by \" > \" and run in order. A step is one of: hover, press, focus-by-keyboard, click, key:<Key> (a key name only, such as ArrowDown, Escape or Shift+Tab); prop:<name>=<value>, several joined by &, which chooses an example whose props say so (a name part.prop also matches that prop anywhere inside the example's content structure, not only the example's top-level props: under its full key, or as the bare prop on an object whose part field names that part or that names no part; the example's own props decide first, then the content, and the spec's default only when neither sets the prop); open, which clicks the component's trigger part or uses an example that is already open; example:<id>, which uses exactly that example. An action step may end in @<part>, an anatomy key, to say which part it acts on (click@trigger, hover@item); the state's own part is the default. A prop step takes no @<part>, so a value may hold @. Examples: hover; prop:disabled=true; prop:item.disabled=true&item.variant=danger; open > key:ArrowDown@item; example:side-top > open > hover@item. A reach the grammar cannot parse is reported as reach not understood, never guessed."
         },
         "description": {
           "type": "string"

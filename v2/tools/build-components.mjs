@@ -19,8 +19,12 @@
 //   ds-components/generated/tokens-used.json      tokens per component, and Figma colours nobody uses
 //
 // The stylesheet has flat specificity: every condition on a part (props, states, precedence exclusions) and
-// every ancestor part sits inside :where(), so each rule weighs what [data-slot="..."] alone weighs and the
+// every ancestor part sits inside :where(), so each rule weighs what [data-slot~="..."] alone weighs and the
 // rules apply in spec order, like a stylesheet. A later rule wins where two set the same property.
+// data-slot is a space-separated list of slot names, like a class list (an element can be two parts at once, such
+// as a Button inside DropdownMenuTrigger asChild), so every part selector matches by the word: [data-slot~="x"].
+// Outline: a block that sets outlineWidth also gets outline-style, written last: none for a width of none (a width of
+// 0 alone leaves Chromium's automatic focus ring), solid for a width token.
 //
 // Contracts. A single-piece spec (no prop keyed part.prop) gives one interface, <Name>Props, with every prop.
 // A compound spec gives <Name>Props for its plain keys and <Name><Part>Props for each part.prop prefix, the
@@ -228,7 +232,10 @@ export function compileStyles(spec, file, ctx) {
   }
   precedence.forEach((s, i) => { if (!has(states, s)) fail(`precedence[${i}]`, `${q(s)} is not a state.`); });
 
-  const slotSel = (p) => `[data-slot="${str(obj(parts[p]).slot)}"]`;
+  // data-slot is a space-separated list of slot names, like a class list: one element can be two parts at once (a
+  // Button inside DropdownMenuTrigger asChild carries data-slot="button dropdown-menu-trigger"). Every part is
+  // therefore found by the word, never by the whole attribute.
+  const slotSel = (p) => `[data-slot~="${str(obj(parts[p]).slot)}"]`;
 
   arr(spec.styles).forEach((rule, i) => {
     const at = `styles[${i}]`;
@@ -334,6 +341,15 @@ export function compileStyles(spec, file, ctx) {
           if (!usage.has(key)) usage.set(key, { token: t.name, collection: t.collection, cssVar: t.cssVar, origin: t.origin, rules: new Set() });
           usage.get(key).rules.add(i);
         }
+      }
+      // outline-style follows outlineWidth, written last so it wins over the solid that outlineColor adds: none for a
+      // width of none (a width of 0 alone leaves Chromium's automatic focus ring, outline-style auto, painted), solid
+      // for a width token, inherit for inherit.
+      const ow = obj(declsRaw).outlineWidth;
+      if (typeof ow === 'string' && mainDecls.some(([p]) => p === 'outline-width')) {
+        const style = ow === 'none' ? 'none' : ow === 'inherit' ? 'inherit' : 'solid';
+        for (let k = mainDecls.length - 1; k >= 0; k--) if (mainDecls[k][0] === 'outline-style') mainDecls.splice(k, 1);
+        mainDecls.push(['outline-style', style]);
       }
       if (!condOk) continue;
       // The selector: other parts' compounds as ancestors, then the styled part's compound.
@@ -748,13 +764,13 @@ function selfTest() {
 
   // 3. The hover rule excludes the stronger states on the same part, disabled first, inside :where().
   const css = clean.files.get('ds-components/src/button/button.css') || '';
-  const hoverSel = '[data-slot="button"]:where(:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {';
-  const primaryHover = '[data-slot="button"]:where([data-variant="primary"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {\n    background-color: var(--color-interactive-primary-hover);';
+  const hoverSel = '[data-slot~="button"]:where(:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {';
+  const primaryHover = '[data-slot~="button"]:where([data-variant="primary"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {\n    background-color: var(--color-interactive-primary-hover);';
   check('the hover rule excludes the disabled selector', css.includes(hoverSel) && css.includes(primaryHover), 'selector not found');
 
   // 4. A boolean condition of false gives :not().
   s = clone(); s.styles.push({ when: { props: { fullWidth: false } }, parts: { root: { width: 'size/control/md' } } });
-  check('a boolean false condition produces :not()', cssOf(s).includes('[data-slot="button"]:where(:not([data-full-width])) {\n    inline-size: var(--size-control-md);'), 'selector not found');
+  check('a boolean false condition produces :not()', cssOf(s).includes('[data-slot~="button"]:where(:not([data-full-width])) {\n    inline-size: var(--size-control-md);'), 'selector not found');
 
   // Flat specificity: with every :where(...) group removed, each selector is the bare part selector (plus a
   // pseudo-element), so every rule for a part weighs (0,1,0) and source order alone decides.
@@ -767,26 +783,26 @@ function selfTest() {
     }
     return out.trim();
   };
-  const flat = (text) => selectorsOf(text).filter((sel) => !/^\[data-slot="[a-z-]+"\](::[a-z-]+)?$/.test(stripWhere(sel)));
+  const flat = (text) => selectorsOf(text).filter((sel) => !/^\[data-slot~="[a-z-]+"\](::[a-z-]+)?$/.test(stripWhere(sel)));
   const notFlat = flat(css);
   check('every Button selector has the specificity of its part selector alone', selectorsOf(css).length > 40 && notFlat.length === 0, `${selectorsOf(css).length} selectors; not flat: ${notFlat.slice(0, 3).join(' | ')}`);
   // Disabled beats hover (hover excludes it and comes first); ghost-disabled beats disabled (later, same weight).
   const at = (needle) => css.indexOf(needle);
-  const disabledAt = at('[data-slot="button"]:where(:is(:disabled, [data-disabled])) {');
-  const ghostDisabledAt = at('[data-slot="button"]:where([data-variant="ghost"]:is(:disabled, [data-disabled])) {');
+  const disabledAt = at('[data-slot~="button"]:where(:is(:disabled, [data-disabled])) {');
+  const ghostDisabledAt = at('[data-slot~="button"]:where([data-variant="ghost"]:is(:disabled, [data-disabled])) {');
   check('disabled comes after hover and ghost-disabled after disabled, at equal weight', at(hoverSel) > 0 && disabledAt > at(hoverSel) && ghostDisabledAt > disabledAt, `hover ${at(hoverSel)}, disabled ${disabledAt}, ghost disabled ${ghostDisabledAt}`);
   // A size rule after a variant rule that sets the same property wins by order alone: both selectors weigh the same.
   s = clone();
   s.styles.push({ when: { props: { variant: 'primary' } }, parts: { root: { minHeight: 'control/sm' } } });
   s.styles.push({ when: { props: { size: 'lg' } }, parts: { root: { minHeight: 'control/lg' } } });
   const orderCss = cssOf(s);
-  const vAt = orderCss.indexOf(`/* styles[${s.styles.length - 2}] */\n  [data-slot="button"]:where([data-variant="primary"]) {\n    min-block-size: var(--size-control-sm);`);
-  const zAt = orderCss.indexOf(`/* styles[${s.styles.length - 1}] */\n  [data-slot="button"]:where([data-size="lg"]) {\n    min-block-size: var(--size-control-lg);`);
+  const vAt = orderCss.indexOf(`/* styles[${s.styles.length - 2}] */\n  [data-slot~="button"]:where([data-variant="primary"]) {\n    min-block-size: var(--size-control-sm);`);
+  const zAt = orderCss.indexOf(`/* styles[${s.styles.length - 1}] */\n  [data-slot~="button"]:where([data-size="lg"]) {\n    min-block-size: var(--size-control-lg);`);
   check('a size rule written after a variant rule on the same property comes later at the same weight', vAt > 0 && zAt > vAt && flat(orderCss).length === 0, `variant at ${vAt}, size at ${zAt}`);
   // An ancestor part's conditions are wrapped too: the descendant rule still weighs only its own part selector.
   s = clone(); s.styles.push({ when: { props: { variant: 'ghost' }, states: ['hover'] }, parts: { label: { color: 'text/primary' } } });
   const descCss = cssOf(s);
-  check('an ancestor compound is wrapped in :where()', descCss.includes(':where([data-slot="button"][data-variant="ghost"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) [data-slot="button-label"] {') && flat(descCss).length === 0, 'descendant selector not found');
+  check('an ancestor compound is wrapped in :where()', descCss.includes(':where([data-slot~="button"][data-variant="ghost"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) [data-slot~="button-label"] {') && flat(descCss).length === 0, 'descendant selector not found');
 
   // 5. Two runs are identical, every file included.
   const a = build(clone()).files; const b = build(clone()).files;
@@ -807,10 +823,33 @@ function selfTest() {
   const r = buildAll([{ file: 'button.spec.json', spec: s }, { file: 'broken.spec.json', error: 'the file is not readable JSON: test' }], ctx).results;
   check('an invalid spec is reported, not thrown', !r[0].ok && r[0].errors.some((e) => e.includes('schema')) && !r[1].ok, r.map((x) => x.errors.join('; ')).join(' / '));
   check('a prefixed Size token gets its CSS name by rule', css.includes('block-size: var(--size-control-md);') && !css.includes('--size-size-'), 'wrong Size name');
-  check('reduced motion writes 0s and the transition properties', css.includes('@media (prefers-reduced-motion: reduce) {\n    [data-slot="button"] {\n      transition-property: background-color, border-color, color, box-shadow, opacity;\n      transition-duration: 0s;'), 'block not found');
+  check('reduced motion writes 0s and the transition properties', css.includes('@media (prefers-reduced-motion: reduce) {\n    [data-slot~="button"] {\n      transition-property: background-color, border-color, color, box-shadow, opacity;\n      transition-duration: 0s;'), 'block not found');
   s = clone(); s.styles[0].parts.root.placeholderColor = 'text/secondary';
   const placeholderCss = cssOf(s);
-  check('placeholderColor is written on ::placeholder, not on the part', placeholderCss.includes('[data-slot="button"]::placeholder {\n    color: var(--color-text-secondary);') && !/\[data-slot="button"\] \{[^}]*--color-text-secondary/.test(placeholderCss), 'rule not found');
+  check('placeholderColor is written on ::placeholder, not on the part', placeholderCss.includes('[data-slot~="button"]::placeholder {\n    color: var(--color-text-secondary);') && !/\[data-slot~="button"\] \{[^}]*--color-text-secondary/.test(placeholderCss), 'rule not found');
+
+  // data-slot is a list of words: every part selector matches by the word ([data-slot~="..."]), none by the whole
+  // attribute, so an element that is two parts at once ("button dropdown-menu-trigger") keeps both looks.
+  const exactSlot = selectorsOf(css).filter((sel) => sel.includes('[data-slot="'));
+  check('every part selector matches data-slot by the word, none by the whole attribute', selectorsOf(css).length > 40 && exactSlot.length === 0 && selectorsOf(css).every((sel) => sel.includes('[data-slot~="')), `exact: ${exactSlot.slice(0, 2).join(' | ')}`);
+
+  // Outline: a width of none writes outline-style none (outline-width 0 alone leaves Chromium's automatic ring), a
+  // width token writes outline-style solid, and outline-style comes last whatever order the spec lists the keys in.
+  const outlineBlock = (text, needle) => { const at = text.indexOf(needle); if (at < 0) return ''; return text.slice(at, text.indexOf('}', at)); };
+  const lastStyle = (block) => { const all = [...block.matchAll(/outline-style: ([a-z]+);/g)]; return all.length ? all[all.length - 1][1] : null; };
+  const lastDecl = (block) => (block.trim().split('\n').filter((l) => l.includes(':')).pop() || '').trim();
+  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineColor: 'border/focus', outlineWidth: 'none' } } });
+  let ob = outlineBlock(cssOf(s), `/* styles[${s.styles.length - 1}] */`);
+  check('outlineWidth none after outlineColor writes outline-style none last', lastStyle(ob) === 'none' && lastDecl(ob) === 'outline-style: none;' && ob.includes('outline-width: 0;'), ob || 'rule not found');
+  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineWidth: 'none', outlineColor: 'border/focus' } } });
+  ob = outlineBlock(cssOf(s), `/* styles[${s.styles.length - 1}] */`);
+  check('outlineWidth none before outlineColor still ends with outline-style none', lastStyle(ob) === 'none' && lastDecl(ob) === 'outline-style: none;', ob || 'rule not found');
+  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineWidth: 'focus/width' } } });
+  ob = outlineBlock(cssOf(s), `/* styles[${s.styles.length - 1}] */`);
+  check('an outlineWidth token writes outline-style solid', lastStyle(ob) === 'solid' && ob.includes('outline-width: var(--border-focus-width);'), ob || 'rule not found');
+  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineOffset: 'focus/offset' } } });
+  ob = outlineBlock(cssOf(s), `/* styles[${s.styles.length - 1}] */`);
+  check('a rule with no outlineWidth writes no outline-style', ob.includes('outline-offset') && lastStyle(ob) === null, ob || 'rule not found');
 
   // Single-piece (no dotted key): every prop is in ButtonProps, whichever part it lands on.
   const contractOf = (spec) => build(spec).files.get('ds-components/src/button/button.contract.ts') || '';

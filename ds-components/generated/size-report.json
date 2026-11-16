@@ -22,9 +22,9 @@
     {
       "component": "button",
       "status": "measured",
-      "cssBytes": 1310,
-      "jsOwnBytes": 838,
-      "jsWithRadixBytes": 2154,
+      "cssBytes": 1320,
+      "jsOwnBytes": 915,
+      "jsWithRadixBytes": 2202,
       "css": "within",
       "jsOwn": "within",
       "jsWithRadix": "within"
@@ -32,9 +32,9 @@
     {
       "component": "dialog",
       "status": "measured",
-      "cssBytes": 766,
-      "jsOwnBytes": 1563,
-      "jsWithRadixBytes": 15203,
+      "cssBytes": 781,
+      "jsOwnBytes": 1582,
+      "jsWithRadixBytes": 15214,
       "css": "within",
       "jsOwn": "within",
       "jsWithRadix": "over"
@@ -42,9 +42,9 @@
     {
       "component": "dropdown-menu",
       "status": "measured",
-      "cssBytes": 1267,
-      "jsOwnBytes": 1988,
-      "jsWithRadixBytes": 32591,
+      "cssBytes": 1279,
+      "jsOwnBytes": 2339,
+      "jsWithRadixBytes": 32914,
       "css": "within",
       "jsOwn": "within",
       "jsWithRadix": "over"
@@ -52,9 +52,9 @@
     {
       "component": "input",
       "status": "measured",
-      "cssBytes": 1159,
-      "jsOwnBytes": 1062,
-      "jsWithRadixBytes": 1062,
+      "cssBytes": 1171,
+      "jsOwnBytes": 1064,
+      "jsWithRadixBytes": 1064,
       "css": "within",
       "jsOwn": "within",
       "jsWithRadix": "within"
@@ -62,9 +62,9 @@
     {
       "component": "tabs",
       "status": "measured",
-      "cssBytes": 1396,
-      "jsOwnBytes": 1331,
-      "jsWithRadixBytes": 10652,
+      "cssBytes": 1394,
+      "jsOwnBytes": 1333,
+      "jsWithRadixBytes": 10654,
       "css": "within",
       "jsOwn": "within",
       "jsWithRadix": "over"

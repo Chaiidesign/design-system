@@ -3,7 +3,7 @@
 @layer ds.components {
 
   /* styles[0]: The height is a least height: a label that wraps makes the button taller instead of being cut off. */
-  [data-slot="button"] {
+  [data-slot~="button"] {
     padding-inline: var(--spacing-static-160);
     gap: var(--spacing-static-80);
     border-radius: var(--radius-height-40);
@@ -20,191 +20,191 @@
     transition-duration: var(--duration-fast);
     transition-timing-function: var(--ease-standard);
     outline-color: var(--color-border-focus);
-    outline-style: solid;
     outline-width: 0;
     outline-offset: var(--border-focus-offset);
     min-block-size: var(--size-control-md);
     padding-block: var(--spacing-static-80);
+    outline-style: none;
   }
-  [data-slot="button-icon-start"] {
+  [data-slot~="button-icon-start"] {
     inline-size: var(--size-icon-md);
     block-size: var(--size-icon-md);
     color: currentColor;
   }
-  [data-slot="button-icon-end"] {
+  [data-slot~="button-icon-end"] {
     inline-size: var(--size-icon-md);
     block-size: var(--size-icon-md);
     color: currentColor;
   }
-  [data-slot="button-spinner"] {
+  [data-slot~="button-spinner"] {
     inline-size: var(--size-icon-md);
     block-size: var(--size-icon-md);
     color: currentColor;
   }
 
   /* styles[1] */
-  [data-slot="button"]:where(:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where(:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-interactive-secondary-hover);
   }
 
   /* styles[2] */
-  [data-slot="button"]:where(:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where(:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-interactive-secondary-active);
   }
 
   /* styles[3] */
-  [data-slot="button"]:where([data-variant="primary"]) {
+  [data-slot~="button"]:where([data-variant="primary"]) {
     background-color: var(--color-interactive-primary);
     color: var(--color-text-on);
   }
 
   /* styles[4] */
-  [data-slot="button"]:where([data-variant="primary"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="primary"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-interactive-primary-hover);
   }
 
   /* styles[5] */
-  [data-slot="button"]:where([data-variant="primary"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="primary"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-interactive-primary-active);
   }
 
   /* styles[6] */
-  [data-slot="button"]:where([data-variant="neutral"]) {
+  [data-slot~="button"]:where([data-variant="neutral"]) {
     background-color: var(--color-interactive-neutral);
     color: var(--color-text-inverse);
   }
 
   /* styles[7] */
-  [data-slot="button"]:where([data-variant="neutral"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="neutral"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-interactive-neutral-hover);
   }
 
   /* styles[8] */
-  [data-slot="button"]:where([data-variant="neutral"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="neutral"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-interactive-neutral-active);
   }
 
   /* styles[9] */
-  [data-slot="button"]:where([data-variant="ghost"]) {
+  [data-slot~="button"]:where([data-variant="ghost"]) {
     background-color: transparent;
     color: var(--color-text-primary);
   }
 
   /* styles[10] */
-  [data-slot="button"]:where([data-variant="ghost"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="ghost"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-surface-primary-hover);
   }
 
   /* styles[11] */
-  [data-slot="button"]:where([data-variant="ghost"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="ghost"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-surface-primary-active);
   }
 
   /* styles[12] */
-  [data-slot="button"]:where([data-variant="danger"]) {
+  [data-slot~="button"]:where([data-variant="danger"]) {
     background-color: var(--color-interactive-error);
     color: var(--color-text-on);
   }
 
   /* styles[13] */
-  [data-slot="button"]:where([data-variant="danger"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="danger"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-interactive-error-hover);
   }
 
   /* styles[14]: Figma has no interactive/error/active yet; the hover step is reused until it does. */
-  [data-slot="button"]:where([data-variant="danger"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="danger"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-interactive-error-hover);
   }
 
   /* styles[15] */
-  [data-slot="button"]:where([data-variant="success"]) {
+  [data-slot~="button"]:where([data-variant="success"]) {
     background-color: var(--color-interactive-success);
     color: var(--color-text-on);
   }
 
   /* styles[16] */
-  [data-slot="button"]:where([data-variant="success"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="success"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-interactive-success-hover);
   }
 
   /* styles[17]: Figma has no interactive/success/active yet. */
-  [data-slot="button"]:where([data-variant="success"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="success"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-interactive-success-hover);
   }
 
   /* styles[18] */
-  [data-slot="button"]:where([data-variant="warning"]) {
+  [data-slot~="button"]:where([data-variant="warning"]) {
     background-color: var(--color-interactive-warning);
     color: var(--color-text-on);
   }
 
   /* styles[19] */
-  [data-slot="button"]:where([data-variant="warning"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="warning"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-interactive-warning-hover);
   }
 
   /* styles[20]: Figma has no interactive/warning/active yet. */
-  [data-slot="button"]:where([data-variant="warning"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="warning"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-interactive-warning-hover);
   }
 
   /* styles[21] */
-  [data-slot="button"]:where([data-variant="outline"]) {
+  [data-slot~="button"]:where([data-variant="outline"]) {
     background-color: transparent;
     border-color: var(--color-border-strong);
     color: var(--color-text-primary);
   }
 
   /* styles[22] */
-  [data-slot="button"]:where([data-variant="outline"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="outline"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-surface-primary-hover);
     border-color: var(--color-border-strong-hover);
   }
 
   /* styles[23] */
-  [data-slot="button"]:where([data-variant="outline"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="outline"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-surface-primary-active);
   }
 
   /* styles[24]: A destructive action that should not shout: tinted, not filled. It also differs from the primary button in more than hue, which matters in the dark theme where the pink and the red fills are close. */
-  [data-slot="button"]:where([data-variant="dangerSoft"]) {
+  [data-slot~="button"]:where([data-variant="dangerSoft"]) {
     background-color: var(--color-surface-error);
     color: var(--color-text-error);
   }
 
   /* styles[25] */
-  [data-slot="button"]:where([data-variant="dangerSoft"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
+  [data-slot~="button"]:where([data-variant="dangerSoft"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {
     background-color: var(--color-surface-accent-red-subtlest-hover);
   }
 
   /* styles[26]: The next red step fails 4.5 to 1 with the error text in dark, so pressed reuses the hover step. */
-  [data-slot="button"]:where([data-variant="dangerSoft"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
+  [data-slot~="button"]:where([data-variant="dangerSoft"]:active:not(:is(:disabled, [data-disabled])):not([data-loading])) {
     background-color: var(--color-surface-accent-red-subtlest-hover);
   }
 
   /* styles[27] */
-  [data-slot="button"]:where([data-size="sm"]) {
+  [data-slot~="button"]:where([data-size="sm"]) {
     padding-inline: var(--spacing-static-120);
     gap: var(--spacing-static-60);
     border-radius: var(--radius-height-32);
     min-block-size: var(--size-control-sm);
     padding-block: var(--spacing-static-60);
   }
-  :where([data-slot="button"][data-size="sm"]) [data-slot="button-icon-start"] {
+  :where([data-slot~="button"][data-size="sm"]) [data-slot~="button-icon-start"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
   }
-  :where([data-slot="button"][data-size="sm"]) [data-slot="button-icon-end"] {
+  :where([data-slot~="button"][data-size="sm"]) [data-slot~="button-icon-end"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
   }
-  :where([data-slot="button"][data-size="sm"]) [data-slot="button-spinner"] {
+  :where([data-slot~="button"][data-size="sm"]) [data-slot~="button-spinner"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
   }
 
   /* styles[28] */
-  [data-slot="button"]:where([data-size="lg"]) {
+  [data-slot~="button"]:where([data-size="lg"]) {
     padding-inline: var(--spacing-static-200);
     border-radius: var(--radius-height-44);
     font-size: var(--font-size-label-large);
@@ -215,65 +215,66 @@
 
   /* styles[29]: On a touch screen every size is at least 44 pixels tall. */
   @media (pointer: coarse) {
-    [data-slot="button"] {
+    [data-slot~="button"] {
       min-block-size: var(--size-target-min);
     }
   }
 
   /* styles[30] */
-  [data-slot="button"]:where([data-icon-only]) {
+  [data-slot~="button"]:where([data-icon-only]) {
     padding-inline: var(--spacing-static-0);
     inline-size: var(--size-control-md);
     padding-block: var(--spacing-static-0);
   }
 
   /* styles[31] */
-  [data-slot="button"]:where([data-icon-only][data-size="sm"]) {
+  [data-slot~="button"]:where([data-icon-only][data-size="sm"]) {
     inline-size: var(--size-control-sm);
   }
 
   /* styles[32] */
-  [data-slot="button"]:where([data-icon-only][data-size="lg"]) {
+  [data-slot~="button"]:where([data-icon-only][data-size="lg"]) {
     inline-size: var(--size-control-lg);
   }
 
   /* styles[33] */
-  [data-slot="button"]:where([data-full-width]) {
+  [data-slot~="button"]:where([data-full-width]) {
     inline-size: 100%;
   }
 
   /* styles[34] */
-  [data-slot="button"]:where(:focus-visible) {
+  [data-slot~="button"]:where(:focus-visible) {
     outline-width: var(--border-focus-width);
+    outline-style: solid;
   }
 
   /* styles[35] */
-  [data-slot="button"]:where([data-loading]:not(:is(:disabled, [data-disabled]))) {
+  [data-slot~="button"]:where([data-loading]:not(:is(:disabled, [data-disabled]))) {
     cursor: progress;
   }
 
   /* styles[36]: One disabled look for every variant, so a disabled button never borrows the weight of a live one. */
-  [data-slot="button"]:where(:is(:disabled, [data-disabled])) {
+  [data-slot~="button"]:where(:is(:disabled, [data-disabled])) {
     background-color: var(--color-interactive-primary-disabled);
     color: var(--color-text-disabled);
     cursor: not-allowed;
   }
 
   /* styles[37] */
-  [data-slot="button"]:where([data-variant="ghost"]:is(:disabled, [data-disabled])) {
+  [data-slot~="button"]:where([data-variant="ghost"]:is(:disabled, [data-disabled])) {
     background-color: transparent;
   }
 
   /* styles[38] */
   @media (prefers-reduced-motion: reduce) {
-    [data-slot="button"] {
+    [data-slot~="button"] {
       transition-property: background-color, border-color, color, box-shadow, opacity;
       transition-duration: 0s;
     }
   }
 
   /* styles[39] */
-  [data-slot="button"]:where([data-variant="outline"]:is(:disabled, [data-disabled])) {
+  [data-slot~="button"]:where([data-variant="outline"]:is(:disabled, [data-disabled])) {
     background-color: transparent;
     border-color: var(--color-border-primary-disabled);
   }

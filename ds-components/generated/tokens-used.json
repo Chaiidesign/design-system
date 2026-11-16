@@ -523,6 +523,20 @@
         "rules": 1
       },
       {
+        "token": "border/focus",
+        "collection": "Themes",
+        "cssVar": "--color-border-focus",
+        "origin": "figma",
+        "rules": 1
+      },
+      {
+        "token": "focus/offset",
+        "collection": "Border",
+        "cssVar": "--border-focus-offset",
+        "origin": "proposed",
+        "rules": 1
+      },
+      {
         "token": "dialog/sm",
         "collection": "Size",
         "cssVar": "--size-dialog-sm",
@@ -535,6 +549,13 @@
         "cssVar": "--duration-fast",
         "origin": "proposed",
         "rules": 2
+      },
+      {
+        "token": "focus/width",
+        "collection": "Border",
+        "cssVar": "--border-focus-width",
+        "origin": "proposed",
+        "rules": 1
       }
     ],
     "dropdown-menu": [
@@ -1187,6 +1208,13 @@
         "rules": 1
       },
       {
+        "token": "width/md",
+        "collection": "Border",
+        "cssVar": "--border-width-md",
+        "origin": "proposed",
+        "rules": 2
+      },
+      {
         "token": "container/small",
         "collection": "Radius",
         "cssVar": "--radius-container-small",
@@ -1317,13 +1345,6 @@
         "collection": "Themes",
         "cssVar": "--color-text-disabled",
         "origin": "figma",
-        "rules": 1
-      },
-      {
-        "token": "width/md",
-        "collection": "Border",
-        "cssVar": "--border-width-md",
-        "origin": "proposed",
         "rules": 1
       }
     ]

@@ -5,7 +5,7 @@
    block size or minimum size of a spec part: those belong to the spec. Tokens only, logical properties only. */
 @layer ds.extensions {
   /* The field group: label, control, description and error stacked, spaced by the spec's root gap. */
-  [data-slot="input"] {
+  [data-slot~="input"] {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -14,19 +14,19 @@
   }
 
   /* Long labels, descriptions and errors wrap inside the field instead of widening it. */
-  [data-slot="input-label"],
-  [data-slot="input-description"],
-  [data-slot="input-error-text"] {
+  [data-slot~="input-label"],
+  [data-slot~="input-description"],
+  [data-slot~="input-error-text"] {
     min-inline-size: 0;
     overflow-wrap: anywhere;
   }
-  [data-slot="input-description"],
-  [data-slot="input-error-message"] {
+  [data-slot~="input-description"],
+  [data-slot~="input-error-message"] {
     margin: 0;
   }
 
   /* The control: prefix, input and suffix on one row, centred vertically. */
-  [data-slot="input-control"] {
+  [data-slot~="input-control"] {
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -34,7 +34,7 @@
   }
 
   /* The input takes the width that is left and may shrink below its native width. */
-  [data-slot="input-input"] {
+  [data-slot~="input-input"] {
     flex: 1 1 auto;
     min-inline-size: 0;
     align-self: stretch;
@@ -44,8 +44,8 @@
   }
 
   /* Prefix and suffix keep their size and sit on the input's centre line. */
-  [data-slot="input-prefix"],
-  [data-slot="input-suffix"] {
+  [data-slot~="input-prefix"],
+  [data-slot~="input-suffix"] {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
@@ -54,8 +54,8 @@
     user-select: none;
   }
   /* An icon given as the prefix or suffix: the spec has no icon size for these parts, so the medium icon size. */
-  [data-slot="input-prefix"] > svg,
-  [data-slot="input-suffix"] > svg {
+  [data-slot~="input-prefix"] > svg,
+  [data-slot~="input-suffix"] > svg {
     display: block;
     flex-shrink: 0;
     inline-size: var(--size-icon-md);
@@ -63,16 +63,16 @@
   }
 
   /* The error message: the icon first, on the first line of the words. */
-  [data-slot="input-error-message"] {
+  [data-slot~="input-error-message"] {
     display: flex;
     align-items: flex-start;
   }
-  [data-slot="input-error-icon"] {
+  [data-slot~="input-error-icon"] {
     display: inline-flex;
     flex-shrink: 0;
     margin-block-start: calc((var(--line-height-body-small) - var(--size-icon-sm)) / 2);
   }
-  [data-slot="input-error-icon"] > svg {
+  [data-slot~="input-error-icon"] > svg {
     display: block;
     inline-size: 100%;
     block-size: 100%;

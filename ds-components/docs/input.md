@@ -60,9 +60,9 @@ Strongest first: disabled, readOnly, invalid, focus, hover, placeholderShown, fi
 | focus | control | `:focus-within` | native | `state=focus` | focus-by-keyboard | The input has focus, from the keyboard or a press. A text field shows the ring for both, because the person is about to type either way. |
 | disabled | root | `[data-disabled]` | prop | `state=disabled` | prop:disabled=true | The field cannot be used. |
 | readOnly | root | `[data-readonly]` | prop |  | prop:readOnly=true | The value can be read and copied but not changed. Figma has no state value for it. |
-| invalid | root | `[data-invalid]` | prop | `state=error` | prop:invalid=true,errorMessage=Enter an email address, such as name@example.com | The value is wrong and the error message is shown. The input has aria-invalid set to true at the same time and at no other time. Figma calls this state error. |
+| invalid | root | `[data-invalid]` | prop | `state=error` | example:invalid | The value is wrong and the error message is shown. The input has aria-invalid set to true at the same time and at no other time. Figma calls this state error. |
 | placeholderShown | input | `:placeholder-shown` | native | `state=placeholder` | prop:placeholder=name@example.com | The field is empty and shows its placeholder. The placeholder text takes the placeholderColor of the input part. |
-| filled | input | `:not(:placeholder-shown)` | native | `state=filled` | prop:defaultValue=Ada Lovelace | The field holds a value. The selector also matches an empty input that has no placeholder attribute, so it means the placeholder is not showing rather than that there is a value. It changes no style. |
+| filled | input | `:not(:placeholder-shown)` | native | `state=filled` | example:number | The field holds a value. The selector also matches an empty input that has no placeholder attribute, so it means the placeholder is not showing rather than that there is a value. It changes no style. |
 
 ## Tokens from Figma
 
@@ -152,7 +152,7 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 | MUST | `input-focus-visible` | While the input has focus the control shows a ring at least 2 pixels thick with at least 3 to 1 contrast against what is beside it, and the input shows no second outline of its own. | `test:input-focus-visible` | 2.4.7 |
 | MUST | `input-edge-contrast` | The control's edge has at least 3 to 1 contrast against the page in every state except disabled, in light and dark. | `test:input-edge-contrast` | 1.4.11 |
 | MUST | `input-text-contrast` | The value, label, description and error text have at least 4.5 to 1 contrast against their background in every state except disabled, in light and dark. | `axe:color-contrast` | 1.4.3 |
-| MUST | `input-placeholder-contrast` | The placeholder has at least 4.5 to 1 contrast against the control's fill in light and dark. It fails in light today until the text/placeholder override lands. | `test:input-placeholder-contrast` | 1.4.3 |
+| MUST | `input-placeholder-contrast` | The placeholder has at least 4.5 to 1 contrast against the control's fill in light and dark. | `test:input-placeholder-contrast` | 1.4.3 |
 | MUST | `input-no-ios-zoom` | Where the pointer is coarse the input's text is at least 16 pixels at every size, so iOS does not zoom the page on focus. (pattern) | `test:input-no-ios-zoom` |  |
 | MUST | `input-target-size` | The control is at least 24 by 24 pixels at every size. | `test:input-target-size` | 2.5.8 |
 | MUST | `input-reflow` | At 320 pixels wide and at 200 percent text size, nothing in the field is clipped or hidden: the control grows taller, and the label, description and error message wrap. | `test:input-reflow` | 1.4.10 |
@@ -229,6 +229,7 @@ Every rule of the spec, in order. The generated stylesheet keeps this order and 
 - Read-only has no Figma state value; the readOnly state exists in code only.
 - Layout written in the extensions stylesheet: the root is a column (which is what makes its gap work); the control is a row with its items centred vertically; the input takes the leftover width and may shrink while the prefix and suffix do not; the error message is a row with the icon first. Proven by input-field-stack and input-control-row, not by styles.
 - The icon set: prefix, suffix and the error icon take an icon node, but no Icon component spec exists yet.
+- The size of an icon given as the prefix or suffix: these parts hold an icon or short text, and no part kind in the schema takes both typography and iconSize (text takes typography, glyph takes iconSize, slot takes neither). They stay text parts, and the extensions stylesheet sizes an svg inside them at the medium icon size (--size-icon-md).
 - Validation logic and when to run it: the product decides when invalid becomes true.
 - Moving focus to the first invalid field after a failed submit, and an error summary at the top of the form: these belong to a Form component.
 - A multi-line text area, a select, a combobox, a date field and a field with a clear or show-password button inside it.

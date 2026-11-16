@@ -8,8 +8,8 @@
 // :focus-visible holds as it would for a keyboard user. Every "nothing happened" test first proves the same
 // press does count on a live example, so it cannot pass by measuring nothing.
 
-const ROOT = '[data-slot="button"]';
-const LABEL = '[data-slot="button-label"]';
+const ROOT = '[data-slot~="button"]';
+const LABEL = '[data-slot~="button-label"]';
 const ALL_EXAMPLES = ["secondary", "primary", "neutral", "ghost", "danger", "danger-soft", "outline", "success", "warning", "small", "large", "with-icons", "icon-only", "loading", "disabled", "full-width", "long-label", "as-link"];
 const VARIANT_EXAMPLES = ["secondary", "primary", "neutral", "ghost", "danger", "danger-soft", "outline", "success", "warning"];
 
@@ -92,15 +92,15 @@ export const tests = {
   "button-icons-hidden": async ({ page, open, expect }) => {
     await open("with-icons");
     for (const slot of ["button-icon-start", "button-icon-end"]) {
-      const el = page.locator(`[data-slot="${slot}"]`);
+      const el = page.locator(`[data-slot~="${slot}"]`);
       expect.equal(await el.count(), 1, `with-icons renders ${slot}`);
       expect.equal(await el.getAttribute("aria-hidden"), "true", `${slot} carries aria-hidden="true"`);
     }
     await open("icon-only");
-    expect.equal(await page.locator('[data-slot="button-icon-start"]').getAttribute("aria-hidden"), "true", "the icon of an icon-only button carries aria-hidden");
+    expect.equal(await page.locator('[data-slot~="button-icon-start"]').getAttribute("aria-hidden"), "true", "the icon of an icon-only button carries aria-hidden");
     expect.equal(await page.locator(ROOT).getAttribute("aria-label"), "Send message", "the icon-only button is named by ariaLabel, not by its icon");
     await open("loading");
-    const spinner = page.locator('[data-slot="button-spinner"]');
+    const spinner = page.locator('[data-slot~="button-spinner"]');
     expect.equal(await spinner.count(), 1, "loading shows the spinner");
     expect.equal(await spinner.getAttribute("aria-hidden"), "true", "the spinner carries aria-hidden");
   },

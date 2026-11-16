@@ -4,16 +4,17 @@
 // example and waits for it, and node:assert/strict. Each test has 30 seconds.
 //
 // The content is portalled to the end of <body>, so every part is found document-wide by its data-slot after the
-// menu opens. The trigger is a Souvenir Button passed with asChild: it carries data-slot="button", so it is found by
-// aria-haspopup="menu". What the examples did is read from window.__dropdownMenuEvents[<example id>]
+// menu opens, by the word ([data-slot~="x"]), because data-slot is a list. The trigger is a Souvenir Button passed
+// with asChild: it carries data-slot="button dropdown-menu-trigger", so it is found by its own slot word, which also
+// proves the merge. What the examples did is read from window.__dropdownMenuEvents[<example id>]
 // (select, openChange, checkedChange, valueChange), which dropdown-menu.examples.tsx records. Focus is reached with
 // real Tab presses and menus are driven by real keys and real mouse moves. Every "nothing happened" check first
 // proves that the same press does count on a live item, so it cannot pass by measuring nothing.
 
-const TRIGGER = '[aria-haspopup="menu"]';
-const CONTENT = '[data-slot="dropdown-menu-content"]';
-const ITEMS = '[data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"]';
-const LABEL = '[data-slot="dropdown-menu-item-label"]';
+const TRIGGER = '[data-slot~="dropdown-menu-trigger"]';
+const CONTENT = '[data-slot~="dropdown-menu-content"]';
+const ITEMS = '[data-slot~="dropdown-menu-item"], [data-slot~="dropdown-menu-checkbox-item"], [data-slot~="dropdown-menu-radio-item"]';
+const LABEL = '[data-slot~="dropdown-menu-item-label"]';
 const OPEN_EXAMPLES = ["actions", "model-selector", "with-descriptions", "with-shortcuts", "grouped", "disabled-items", "side-top", "align-end", "non-modal", "right-to-left", "long-label", "touch", "worst-case-320"];
 
 // Radix moves focus between items in a setTimeout after the keydown, so each key waits for that to land before the
@@ -206,8 +207,8 @@ export const tests = {
     for (const id of ["with-descriptions", "disabled-items", "worst-case-320"]) {
       await open(id);
       await waitOpen(page);
-      const items = await page.evaluate(({ items, label }) => [...document.querySelectorAll(items)].filter((e) => e.querySelector('[data-slot="dropdown-menu-item-description"]')).map((e) => {
-        const l = e.querySelector(label), d = e.querySelector('[data-slot="dropdown-menu-item-description"]');
+      const items = await page.evaluate(({ items, label }) => [...document.querySelectorAll(items)].filter((e) => e.querySelector('[data-slot~="dropdown-menu-item-description"]')).map((e) => {
+        const l = e.querySelector(label), d = e.querySelector('[data-slot~="dropdown-menu-item-description"]');
         // The text type-ahead matches is Radix's collection textValue, read from the React props of its item slot.
         const key = Object.keys(e).find((k) => k.startsWith("__reactFiber$"));
         let typeAhead = null;
@@ -245,8 +246,8 @@ export const tests = {
 
   "dropdown-menu-group-labelled": async ({ page, open, expect }) => {
     const problems = [];
-    const read = () => page.evaluate(() => [...document.querySelectorAll('[data-slot="dropdown-menu-group"], [data-slot="dropdown-menu-radio-group"]')].map((g) => {
-      const label = g.querySelector('[data-slot="dropdown-menu-label"]');
+    const read = () => page.evaluate(() => [...document.querySelectorAll('[data-slot~="dropdown-menu-group"], [data-slot~="dropdown-menu-radio-group"]')].map((g) => {
+      const label = g.querySelector('[data-slot~="dropdown-menu-label"]');
       const by = g.getAttribute("aria-labelledby");
       return { slot: g.getAttribute("data-slot"), role: g.getAttribute("role"), label: label?.textContent ?? null, labelId: label?.id ?? null, labelledby: by, pointsAt: by ? document.getElementById(by)?.textContent ?? "(no element with that id)" : null };
     }));
@@ -279,10 +280,10 @@ export const tests = {
   },
 
   "dropdown-menu-checked-state": async ({ page, open, expect }) => {
-    const read = () => page.evaluate(() => [...document.querySelectorAll('[data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"]')].map((e) => ({
-      slot: e.getAttribute("data-slot"), label: e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent,
+    const read = () => page.evaluate(() => [...document.querySelectorAll('[data-slot~="dropdown-menu-checkbox-item"], [data-slot~="dropdown-menu-radio-item"]')].map((e) => ({
+      slot: e.getAttribute("data-slot"), label: e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent,
       ariaChecked: e.getAttribute("aria-checked"), state: e.getAttribute("data-state"),
-      indicator: !!e.querySelector('[data-slot="dropdown-menu-item-indicator"]'),
+      indicator: !!e.querySelector('[data-slot~="dropdown-menu-item-indicator"]'),
     })));
     const check = (rows, want, when) => {
       const problems = [];
@@ -329,7 +330,7 @@ export const tests = {
     for (const id of ["with-descriptions", "with-shortcuts", "model-selector", "grouped", "actions", "disabled-items"]) {
       await open(id);
       await waitOpen(page);
-      const rows = await page.evaluate(() => [...document.querySelectorAll('[data-slot="dropdown-menu-item-indicator"], [data-slot="dropdown-menu-icon-start"], [data-slot="dropdown-menu-icon-end"], [data-slot="dropdown-menu-item-shortcut"]')].map((e) => ({ slot: e.getAttribute("data-slot"), hidden: e.getAttribute("aria-hidden") })));
+      const rows = await page.evaluate(() => [...document.querySelectorAll('[data-slot~="dropdown-menu-item-indicator"], [data-slot~="dropdown-menu-icon-start"], [data-slot~="dropdown-menu-icon-end"], [data-slot~="dropdown-menu-item-shortcut"]')].map((e) => ({ slot: e.getAttribute("data-slot"), hidden: e.getAttribute("aria-hidden") })));
       for (const r of rows) {
         seen[r.slot] = (seen[r.slot] ?? 0) + 1;
         if (r.hidden !== "true") problems.push(`${id}: a ${r.slot} has aria-hidden=${r.hidden}`);
@@ -340,18 +341,33 @@ export const tests = {
   },
 
   "dropdown-menu-shortcut-exposed": async ({ page, open, expect }) => {
+    // aria-keyshortcuts is key names joined by "+" (ARIA 1.2, KeyboardEvent.key values), never the hint's glyphs.
+    // The expected value is worked out here from the hint, with this test's own table, not the component's.
+    const NAMES = { "⌘": "Meta", "⇧": "Shift", "⌥": "Alt", "⌃": "Control", "⌫": "Backspace" };
+    const expected = (hint) => {
+      const keys = [];
+      let rest = "";
+      for (const ch of hint) { if (NAMES[ch]) keys.push(NAMES[ch]); else rest += ch; }
+      return [...keys, ...(rest ? [rest.toUpperCase()] : [])].join("+");
+    };
+    const SYNTAX = /^[A-Za-z0-9]+(\+[A-Za-z0-9]+)*$/;
     const problems = [];
     let withShortcut = 0;
-    for (const id of ["with-shortcuts", "disabled-items", "long-label", "right-to-left", "actions"]) {
+    for (const id of ["with-shortcuts", "disabled-items", "long-label", "right-to-left", "actions", "worst-case-320"]) {
       await open(id);
       await waitOpen(page);
-      const rows = await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => ({ label: e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent, hint: e.querySelector('[data-slot="dropdown-menu-item-shortcut"]')?.textContent ?? null, keys: e.getAttribute("aria-keyshortcuts") })), ITEMS);
+      const rows = await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => ({ label: e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent, hint: e.querySelector('[data-slot~="dropdown-menu-item-shortcut"]')?.textContent ?? null, keys: e.getAttribute("aria-keyshortcuts") })), ITEMS);
       for (const r of rows) {
-        if (r.hint !== null) withShortcut++;
-        if (r.hint !== r.keys) problems.push(`${id} "${r.label}": the hint is ${JSON.stringify(r.hint)} but aria-keyshortcuts is ${JSON.stringify(r.keys)}`);
+        if (r.hint === null) {
+          if (r.keys !== null) problems.push(`${id} "${r.label}": no hint but aria-keyshortcuts is ${JSON.stringify(r.keys)}`);
+          continue;
+        }
+        withShortcut++;
+        if (r.keys === null || !SYNTAX.test(r.keys)) problems.push(`${id} "${r.label}": aria-keyshortcuts ${JSON.stringify(r.keys)} is not key names joined by "+"`);
+        else if (r.keys !== expected(r.hint)) problems.push(`${id} "${r.label}": the hint ${JSON.stringify(r.hint)} should give aria-keyshortcuts ${JSON.stringify(expected(r.hint))}, not ${JSON.stringify(r.keys)}`);
       }
     }
-    expect.ok(withShortcut >= 5, `${withShortcut} items with a shortcut hint were checked`);
+    expect.ok(withShortcut >= 7, `${withShortcut} items with a shortcut hint were checked`);
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -605,7 +621,7 @@ export const tests = {
   "dropdown-menu-disabled-inert": async ({ page, open, expect }) => {
     await open("disabled-items");
     await waitOpen(page);
-    const attrs = await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => [e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent, e.getAttribute("aria-disabled"), e.hasAttribute("data-disabled")]), ITEMS);
+    const attrs = await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => [e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent, e.getAttribute("aria-disabled"), e.hasAttribute("data-disabled")]), ITEMS);
     expect.deepEqual(attrs, [["Rename chat", null, false], ["Share", "true", true], ["Pinned", "true", true], ["Delete chat", "true", true], ["Pro", "true", true], ["Standard", null, false]], "the four disabled items carry aria-disabled and data-disabled; the live ones do not");
     // Control: the live item highlights under the mouse and counts a click.
     await hover(page, itemByLabel(page, "Rename chat"));
@@ -725,10 +741,10 @@ export const tests = {
     // A checked item shows its glyph, never only a colour.
     await open("model-selector");
     await waitOpen(page);
-    const glyphs = await page.evaluate(() => [...document.querySelectorAll('[data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"]')].map((e) => {
-      const g = e.querySelector('[data-slot="dropdown-menu-item-indicator"] svg');
+    const glyphs = await page.evaluate(() => [...document.querySelectorAll('[data-slot~="dropdown-menu-checkbox-item"], [data-slot~="dropdown-menu-radio-item"]')].map((e) => {
+      const g = e.querySelector('[data-slot~="dropdown-menu-item-indicator"] svg');
       const r = g ? g.getBoundingClientRect() : null;
-      return [e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent, e.getAttribute("aria-checked"), !!r && r.width >= 8 && r.height >= 8 && g.checkVisibility()];
+      return [e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent, e.getAttribute("aria-checked"), !!r && r.width >= 8 && r.height >= 8 && g.checkVisibility()];
     }));
     for (const [label, checked, drawn] of glyphs) if ((checked === "true") !== drawn) problems.push(`${label} is aria-checked=${checked} but its glyph is ${drawn ? "drawn" : "not drawn"}`);
     expect.deepEqual(problems, [], problems.join("; "));
@@ -737,7 +753,7 @@ export const tests = {
   "dropdown-menu-text-contrast": async ({ page, open, expect }) => {
     const problems = [];
     let measured = 0;
-    const TEXT = '[data-slot="dropdown-menu-item-label"], [data-slot="dropdown-menu-item-description"], [data-slot="dropdown-menu-item-shortcut"], [data-slot="dropdown-menu-label"]';
+    const TEXT = '[data-slot~="dropdown-menu-item-label"], [data-slot~="dropdown-menu-item-description"], [data-slot~="dropdown-menu-item-shortcut"], [data-slot~="dropdown-menu-label"]';
     const measure = (where) => page.evaluate(({ text, where }) => {
       const C = window.__ddColour;
       const out = [];
@@ -777,7 +793,7 @@ export const tests = {
       else { await waitOpen(page); await press(page, "ArrowDown"); }
       const steps = id === "highlighted-keyboard" ? 4 : 2;
       for (let i = 0; i < steps; i++) {
-        const rows = await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => { const cs = getComputedStyle(e); return { label: e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent, lit: e.hasAttribute("data-highlighted"), style: cs.outlineStyle, width: parseFloat(cs.outlineWidth) || 0 }; }), ITEMS);
+        const rows = await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => { const cs = getComputedStyle(e); return { label: e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent, lit: e.hasAttribute("data-highlighted"), style: cs.outlineStyle, width: parseFloat(cs.outlineWidth) || 0 }; }), ITEMS);
         const lit = rows.filter((r) => r.lit);
         if (lit.length !== 1) problems.push(`${id} step ${i + 1}: ${lit.length} items highlighted`);
         for (const r of rows) {
@@ -802,7 +818,7 @@ export const tests = {
           const box = document.querySelector(content);
           const cs = getComputedStyle(box);
           const inner = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-          return [...document.querySelectorAll(items)].map((e) => { const r = e.getBoundingClientRect(); return { label: e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent.slice(0, 24), width: r.width, height: r.height, inner }; });
+          return [...document.querySelectorAll(items)].map((e) => { const r = e.getBoundingClientRect(); return { label: e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent.slice(0, 24), width: r.width, height: r.height, inner }; });
         }, { items: ITEMS, content: CONTENT });
         for (const r of rows) {
           measured++;
@@ -824,7 +840,7 @@ export const tests = {
       await open(id, { width: 375 });
       expect.equal(await page.evaluate(() => matchMedia("(pointer: coarse)").matches), true, "the page sees a coarse pointer, so the measurement means something");
       await waitOpen(page);
-      for (const r of await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => [e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent.slice(0, 24), e.getBoundingClientRect().height]), ITEMS)) {
+      for (const r of await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => [e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent.slice(0, 24), e.getBoundingClientRect().height]), ITEMS)) {
         measured++;
         if (r[1] < 44 - 0.01) problems.push(`${id}: "${r[0]}" is ${r[1]} px tall with a coarse pointer; needs 44`);
       }
@@ -837,10 +853,10 @@ export const tests = {
   "dropdown-menu-item-layout": async ({ page, open, expect }) => {
     const problems = [];
     const read = () => page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => {
-      const part = (slot) => { const p = e.querySelector(`:scope > [data-slot="dropdown-menu-${slot}"]`); if (!p) return null; const r = p.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height, ws: getComputedStyle(p).whiteSpace }; };
+      const part = (slot) => { const p = e.querySelector(`:scope > [data-slot~="dropdown-menu-${slot}"]`); if (!p) return null; const r = p.getBoundingClientRect(); return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height, ws: getComputedStyle(p).whiteSpace }; };
       const r = e.getBoundingClientRect(), cs = getComputedStyle(e);
       return {
-        label: e.querySelector('[data-slot="dropdown-menu-item-label"]').textContent.slice(0, 24),
+        label: e.querySelector('[data-slot~="dropdown-menu-item-label"]').textContent.slice(0, 24),
         innerLeft: r.left + parseFloat(cs.paddingLeft), innerRight: r.right - parseFloat(cs.paddingRight),
         parts: { lead: part("icon-start") ?? part("indicator-box"), text: part("item-label"), description: part("item-description"), end: part("icon-end"), shortcut: part("item-shortcut") },
       };
@@ -899,14 +915,14 @@ export const tests = {
         const r = e.getBoundingClientRect(), cs = getComputedStyle(e);
         const inner = { left: r.left + parseFloat(cs.paddingLeft), right: r.right - parseFloat(cs.paddingRight), top: r.top + parseFloat(cs.paddingTop), bottom: r.bottom - parseFloat(cs.paddingBottom) };
         const lines = (el) => { const range = document.createRange(); range.selectNodeContents(el); return new Set([...range.getClientRects()].map((x) => Math.round(x.top))).size; };
-        const text = [...e.querySelectorAll('[data-slot="dropdown-menu-item-label"], [data-slot="dropdown-menu-item-description"]')].map((t) => {
+        const text = [...e.querySelectorAll('[data-slot~="dropdown-menu-item-label"], [data-slot~="dropdown-menu-item-description"]')].map((t) => {
           const b = t.getBoundingClientRect();
           let clipped = null;
           for (let x = t; x && x !== e; x = x.parentElement) { const o = getComputedStyle(x); if ([o.overflowX, o.overflowY].some((v) => v !== "visible") || o.textOverflow === "ellipsis") clipped = x.getAttribute("data-slot"); }
           return { slot: t.getAttribute("data-slot").replace("dropdown-menu-", ""), lines: lines(t), left: b.left, right: b.right, top: b.top, bottom: b.bottom, scrollW: t.scrollWidth, clientW: t.clientWidth, clipped };
         });
-        const sc = e.querySelector('[data-slot="dropdown-menu-item-shortcut"]');
-        const label = e.querySelector('[data-slot="dropdown-menu-item-label"]');
+        const sc = e.querySelector('[data-slot~="dropdown-menu-item-shortcut"]');
+        const label = e.querySelector('[data-slot~="dropdown-menu-item-label"]');
         const firstLine = (() => { const range = document.createRange(); range.selectNodeContents(label); const rects = [...range.getClientRects()]; return rects.length ? rects[0] : null; })();
         const s = sc ? sc.getBoundingClientRect() : null;
         return { name: label.textContent.slice(0, 24), height: r.height, inner, text, shortcut: s && { left: s.left, right: s.right, top: s.top, bottom: s.bottom }, firstLine: firstLine && { top: firstLine.top, bottom: firstLine.bottom } };
@@ -949,7 +965,7 @@ export const tests = {
           const bcs = getComputedStyle(box);
           const innerLeft = box.getBoundingClientRect().left + box.clientLeft + parseFloat(bcs.paddingLeft);
           const innerRight = innerLeft + box.clientWidth - parseFloat(bcs.paddingLeft) - parseFloat(bcs.paddingRight);
-          return [...document.querySelectorAll('[data-slot="dropdown-menu-separator"]')].map((s) => {
+          return [...document.querySelectorAll('[data-slot~="dropdown-menu-separator"]')].map((s) => {
             const cs = getComputedStyle(s), r = s.getBoundingClientRect();
             const prev = s.previousElementSibling?.getBoundingClientRect(), next = s.nextElementSibling?.getBoundingClientRect();
             return {

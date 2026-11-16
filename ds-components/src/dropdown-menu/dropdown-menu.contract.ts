@@ -69,7 +69,7 @@ export interface DropdownMenuItemProps {
   iconStart?: React.ReactNode;
   /** An optional icon after the label, rendered in iconEnd. Figma calls the property suffix and adds a showSuffix switch, which code does not need. */
   iconEnd?: React.ReactNode;
-  /** An optional shortcut hint, rendered in itemShortcut at the end of the item and set as the item's aria-keyshortcuts. It only describes a shortcut that the product handles elsewhere; the menu does not listen for it. */
+  /** An optional shortcut hint, rendered as given in itemShortcut at the end of the item. The adapter also sets the item's aria-keyshortcuts to the same shortcut in the syntax ARIA requires, key names joined by + (KeyboardEvent.key values: ⌘ is Meta, ⇧ Shift, ⌥ Alt, ⌃ Control, ⌫ Backspace, so ⌘⇧M is Meta+Shift+M), never the glyphs shown to the eye. It only describes a shortcut that the product handles elsewhere; the menu does not listen for it. */
   shortcut?: string;
   /** The action is not available. Radix sets aria-disabled and data-disabled, skips the item with arrows and type-ahead, and ignores presses. Figma shows it as the state value disabled. */
   disabled?: boolean;

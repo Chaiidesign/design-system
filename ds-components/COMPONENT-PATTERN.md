@@ -53,6 +53,15 @@ if the error is in your own file.
   - Take names, defaults, slots and reflected attributes from the contract: `<NAME>_DEFAULTS`,
     `<NAME>_SLOTS.<part>`, `<NAME>_REFLECTS[<key>]`. Write `data-slot={X_SLOTS.part}`; the slots lint accepts
     that form.
+  - **data-slot is a list of slot names, like a class list.** One element can be two parts at once: a Button inside
+    `DropdownMenuTrigger asChild` or `DialogTrigger asChild` is both, and carries
+    `data-slot="button dropdown-menu-trigger"`. A component that can be the child of asChild (Button today; any
+    component whose root may sit inside a trigger or close part) takes an incoming `"data-slot"` prop and merges it:
+    its own name first, then each incoming word once, never overwriting. Button's `slotList(BUTTON_SLOTS.root,
+    incoming)` is the worked example. The slots lint reads every data-slot string word by word: each word must be a
+    part of your spec, and the `" "` a list is joined with is no part.
+  - Find a part by the word, never by the whole attribute: `[data-slot~="x"]` in CSS, tests and selectors.
+    `[data-slot="x"]` misses an element that carries a second name (check-specs reports it in a state selector).
   - A reflected enum is `data-x="value"`. A reflected boolean is the bare attribute, present only when true
     (`""` or undefined).
   - No `style`, and no class names for the look. Pass `className` and other native attributes through.
@@ -75,7 +84,10 @@ if the error is in your own file.
   - That layer beats ds.components whatever the selector. Never set colour, border, padding, outline, block size
     or minimum size there: you would silently override the spec.
   - Do set `box-sizing: border-box`, or a full-width part overflows at 320 px.
+  - Select parts by the word, `[data-slot~="x"]`, as the generated stylesheet does.
   - Raw times are lint errors. Use a token (`var(--duration-spin)` for a looping indicator) or a `calc()` of one.
+  - You may read a custom property the behaviour library sets at run time, limited to names starting `--radix-`
+    (`var(--radix-dropdown-menu-content-available-height)`). You may never declare one.
   - Every animation needs a `prefers-reduced-motion` rule.
 - `<slug>.examples.tsx`: `export const examples = { "<id>": () => <JSX/> }`, one top-level key per spec example,
   with exactly the props and content the spec gives (the runner predicts state colours from the spec's props).
@@ -86,11 +98,17 @@ if the error is in your own file.
   `expect` is node:assert/strict. Each test has 30 seconds.
 
 ## How the generated stylesheet reads
-Every rule for a part has the specificity of `[data-slot="..."]` alone: the generator wraps prop conditions,
+Every rule for a part has the specificity of `[data-slot~="..."]` alone (one attribute selector, matched by the
+word, because data-slot is a list): the generator wraps prop conditions,
 states, precedence exclusions and ancestor parts in `:where()`. Rules therefore apply in spec order. A later
 rule wins where two set the same property: ghost-disabled after disabled, and a size rule after a variant rule.
 A state rule also excludes every stronger state in `precedence`, so hover never shows on a disabled control.
 If two rules fight, reorder them in the spec; never raise specificity in extensions CSS.
+
+Outline: a block that sets `outlineWidth` also gets `outline-style`, written last. `outlineWidth: none` writes
+`outline-width: 0; outline-style: none`, which also turns off Chromium's automatic focus ring (`outline-style:
+auto`, painted at any width); a width token writes `outline-style: solid`. So "this part draws no outline" is
+`outlineWidth: none` in the spec, never an outline rule in extensions CSS.
 
 ## How examples expose state to tests
 - Every example records the events a test needs in a window global named after the component. Button: every
@@ -139,9 +157,58 @@ If two rules fight, reorder them in the spec; never raise specificity in extensi
   as the tree to build.
 - **Portalled parts and tests.** Menu content and the dialog overlay and content render in a portal at the end of
   `<body>`, outside the example's `section[data-example]`. Tests find every part document-wide by its data-slot,
-  for example `page.locator('[data-slot="dropdown-menu-content"]')`, never scoped to the section. The runner does
+  for example `page.locator('[data-slot~="dropdown-menu-content"]')`, never scoped to the section. The runner does
   the same for anatomy and for the colours of other parts in a state check. Wait for an opened part with
   `locator.waitFor()` before measuring.
+
+## How the runner reaches a state (the "reach" of a state)
+The schema's description of `reach` is the rule; the runner (`parseReach` in v2/tools/test-components.mjs) follows it
+exactly and reports anything else as "reach not understood", never guessed.
+- Steps are joined by ` > ` and run in order. A step is one of:
+  - `hover`, `press`, `focus-by-keyboard`, `click`, `key:<Key>`. `<Key>` is a key name only: `ArrowDown`,
+    `Escape`, `Shift+Tab`. Prose after it does not parse.
+  - `prop:<name>=<value>`, several joined by `&`. It chooses the example whose props say so. A plain name is one
+    of the example's own props (or the spec's default). A name `part.prop` (`item.disabled`) also matches that
+    prop anywhere inside the example's content structure: under its full key, or as the bare prop (`disabled`) on
+    an object whose `part` field names that part or that names no part (a list of tab descriptors).
+  - `open`. It clicks the component's trigger part (the part whose role is menubutton or dialogtrigger), or uses
+    the example as it is when the trigger already says it is open.
+  - `example:<id>`. It uses exactly that example.
+- An action step may end in `@<part>`, an anatomy key, to name the part it acts on: `click@trigger`, `hover@item`.
+  The state's own part is the default. A prop step takes no `@<part>`, so `prop:placeholder=name@example.com` works.
+- Examples: `hover`; `prop:disabled=true`; `prop:invalid=true&errorMessage=Enter an email address.`;
+  `open > key:ArrowDown@item`; `example:side-top > open > hover@item`; `prop:defaultOpen=true&content.side=bottom`.
+- Which instance it acts on, document-wide (portalled parts included): a visible one; not disabled unless the state
+  is the disabled one; for `focus-by-keyboard`, one that can take focus, reached by real Tab presses (tabindex not
+  -1 first; in a roving focus group, where Radix gives every tab -1 and the list forwards focus, the tab Tab lands
+  on) or, for a part that cannot take focus (Input's control), its focusable descendant, with the state then
+  checked on the part (`:focus-within`); never one already in a stronger state of `precedence` (a state not
+  listed in precedence yields to none, as in the generated CSS). An example whose every instance is disabled, or
+  that does not render an optional part (`required: false`) a step needs, is passed over, not failed; a required
+  part that is missing fails. A prop-only reach checks an instance already in the state. `open` on an example with
+  no trigger on the page counts it open when one of its parts carries `data-state="open"`.
+- A key step presses where focus is when focus is already inside the component (an open menu); otherwise it Tabs
+  to the part first. Name the part the key acts on: `open > key:Escape@content`, not `open > key:Escape` on a
+  state whose part is the trigger.
+- Colours: an optional part (`required: false`) that the chosen example does not render is counted "not present"
+  for that state, not failed. A required part that is missing still fails.
+
+## The focus rule (generic focus-visible check)
+Every control reached by real Tab presses must show an indicator, one of:
+- an outline at least 2 px wide on the focused element itself;
+- an outline at least 2 px wide on its nearest ancestor whose data-slot names a part that
+  `accessibility.focus.ring` names (as whole words matching anatomy keys or slots). Input's ring is `control`, drawn
+  through `:focus-within`, while the input itself draws none;
+- for a part whose role is menuitem, menuitemcheckbox or menuitemradio: the highlight, `[data-highlighted]` with a
+  background at least 3 to 1 against the menu surface (the nearest ancestor part whose role is menu).
+A focused element with none of these fails. Radix's focus guards (`data-radix-focus-guard`) are skipped. The lint's
+`no-hover-on-menu-items` keeps `:hover` and `:focus` off menu item parts, so the highlight is the only indicator.
+
+## Target size (generic target-size check)
+WCAG 2.5.8 as written. A target under 24 by 24 px passes when a 24 px circle centred on its box meets no other target
+and no other undersized target's circle (the spacing exception), or when it is inline in a sentence. Elements that
+take focus but are not pointer targets are not measured: a tabpanel, a dialog's own container, a scrollable region
+made focusable with tabindex.
 
 ## What cost Button a cycle
 - The gallery once set the type size on html, which made 1rem 14 px and every token 0.875 of its size (a 40 px

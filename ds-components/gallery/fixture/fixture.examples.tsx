@@ -19,8 +19,14 @@ export const examples = {
     </div>
   ),
 
-  // Fault: a control 16 pixels tall.
-  "small-target": () => <Fixture style={{ minBlockSize: 0, blockSize: "16px", paddingBlock: 0 }}>Tiny</Fixture>,
+  // Fault: two controls 16 pixels tall, edge to edge. One alone would pass WCAG 2.5.8 by its spacing exception;
+  // stacked with no gap, each one's 24 pixel circle meets the other control.
+  "small-target": () => (
+    <div style={{ display: "grid" }}>
+      <Fixture style={{ minBlockSize: 0, blockSize: "16px", paddingBlock: 0 }}>Tiny</Fixture>
+      <Fixture style={{ minBlockSize: 0, blockSize: "16px", paddingBlock: 0 }}>Tiny too</Fixture>
+    </div>
+  ),
 
   // Fault: a control with no focus outline (see fixture.css).
   "no-outline": () => <Fixture className="fixture-no-outline">No ring</Fixture>,

@@ -117,6 +117,7 @@ export const DIALOG_STATES = {
   overlayClosed: { on: 'overlay', selector: '[data-state="closed"]' },
   triggerOpen: { on: 'trigger', selector: '[data-state="open"]' },
   triggerClosed: { on: 'trigger', selector: '[data-state="closed"]' },
+  bodyFocus: { on: 'body', selector: ':focus-visible' },
 } as const;
 
 /** Each prop that styles can see, and the attribute it sets on its part. Keyed as in the spec. */

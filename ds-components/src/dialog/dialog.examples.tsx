@@ -12,9 +12,26 @@
 //   __dialogFixtures.mountUntitled("missing" | "empty")   mounts an open dialog whose content has no title, or an
 //                                             empty one, for the development-warning test; no spec example may
 //                                             lack a title, so this is a test hook, not an example
-import { useState } from "react";
+//   __dialogFixtures.mountNoControl()         mounts an open dialog with no control inside, for the focus-on-open
+//                                             branch "to the content when there is none". A spec example cannot have
+//                                             it: a dismissible dialog must show a close part (dialog-visible-close)
+//                                             and a non-dismissible one must offer a footer action
+//                                             (dialog-not-dismissible-has-way-out), and both are controls
+//
+// On a page that shows several examples (the component page, the index) every open dialog would cover the page at
+// once, so each example there starts hidden behind an "Open" button that mounts it (OnDemand). The page for one
+// example (?example=<id>), which the test runner loads, renders the example exactly as the spec gives it.
+import { useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { Button } from "../button/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+} from "../dropdown-menu/dropdown-menu";
+import { Icon } from "../../gallery/icons";
 import {
   Dialog,
   DialogBody,
@@ -29,11 +46,11 @@ import {
   DialogTrigger,
 } from "./dialog";
 
-type Log = Record<string, { openChange?: boolean[]; action?: string[] }>;
+type Log = Record<string, { openChange?: boolean[]; action?: string[]; menuOpenChange?: boolean[] }>;
 type DialogWindow = {
   __dialogEvents?: Log;
   __dialogControl?: Record<string, { setOpen: (open: boolean) => void }>;
-  __dialogFixtures?: { mountUntitled: (kind: "missing" | "empty") => void };
+  __dialogFixtures?: { mountUntitled: (kind: "missing" | "empty") => void; mountNoControl: () => void };
 };
 const win = () => window as unknown as DialogWindow;
 
@@ -135,172 +152,260 @@ function mountUntitled(kind: "missing" | "empty") {
     </Dialog>,
   );
 }
-if (typeof window !== "undefined") win().__dialogFixtures = { mountUntitled };
+// Test hook for dialog-focus-on-open, the branch with no control: header and body text only, nothing tabbable.
+function mountNoControl() {
+  const host = document.createElement("div");
+  host.setAttribute("data-dialog-fixture", "no-control");
+  document.body.appendChild(host);
+  createRoot(host).render(
+    <Dialog defaultOpen>
+      <DialogPortal>
+        <DialogOverlay>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Saving your address</DialogTitle>
+            </DialogHeader>
+            <DialogBody>This takes a moment.</DialogBody>
+          </DialogContent>
+        </DialogOverlay>
+      </DialogPortal>
+    </Dialog>,
+  );
+}
+if (typeof window !== "undefined") win().__dialogFixtures = { mountUntitled, mountNoControl };
+
+// Several examples on one page: each waits behind an "Open" button, and mounts afresh on every press so it opens
+// again after it closes. The single-example page renders the example as it is.
+const singleExample = () => typeof location !== "undefined" && new URLSearchParams(location.search).has("example");
+function OnDemand({ children }: { children: ReactNode }) {
+  const [shown, setShown] = useState(0);
+  if (singleExample()) return <>{children}</>;
+  return (
+    <>
+      <Button onClick={() => setShown((n) => n + 1)}>Open</Button>
+      {shown > 0 ? <div key={shown}>{children}</div> : null}
+    </>
+  );
+}
+
+function WithMenu() {
+  const id = "with-menu";
+  return (
+    <Dialog defaultOpen onOpenChange={recordOpen(id)}>
+      <DialogPortal>
+        <DialogOverlay>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delivery day</DialogTitle>
+              <DialogDescription>Choose when the courier comes.</DialogDescription>
+            </DialogHeader>
+            <DialogBody>
+              <DropdownMenu onOpenChange={(open: boolean) => (entry(id).menuOpenChange ??= []).push(open)}>
+                <DropdownMenuTrigger asChild>
+                  <Button iconEnd={<Icon name="chevron-down" />}>Tuesday 18 November</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Tuesday 18 November</DropdownMenuItem>
+                    <DropdownMenuItem>Wednesday 19 November</DropdownMenuItem>
+                    <DropdownMenuItem>Thursday 20 November</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenuPortal>
+              </DropdownMenu>
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button>Cancel</Button>
+              </DialogClose>
+              <Button variant="primary" onClick={recordAction(id, "Save day")}>
+                Save day
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </DialogOverlay>
+      </DialogPortal>
+    </Dialog>
+  );
+}
 
 export const examples = {
   default: () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("default")}>
-      <DialogTrigger asChild>
-        <Button>Change address</Button>
-      </DialogTrigger>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Change delivery address</DialogTitle>
-              <DialogDescription>Your order will go to the new address.</DialogDescription>
-            </DialogHeader>
-            <DialogBody>12 Harbour Street, Leith, Edinburgh EH6 6QW</DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Cancel</Button>
-              </DialogClose>
-              <Button variant="primary" onClick={recordAction("default", "Use this address")}>
-                Use this address
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("default")}>
+        <DialogTrigger asChild>
+          <Button>Change address</Button>
+        </DialogTrigger>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Change delivery address</DialogTitle>
+                <DialogDescription>Your order will go to the new address.</DialogDescription>
+              </DialogHeader>
+              <DialogBody>12 Harbour Street, Leith, Edinburgh EH6 6QW</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Cancel</Button>
+                </DialogClose>
+                <Button variant="primary" onClick={recordAction("default", "Use this address")}>
+                  Use this address
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   "confirm-step": () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("confirm-step")}>
-      <DialogTrigger asChild>
-        <Button variant="primary">Continue to payment</Button>
-      </DialogTrigger>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent size="sm">
-            <DialogHeader>
-              <DialogTitle>Use express delivery?</DialogTitle>
-              <DialogDescription>It arrives tomorrow and adds £4.99 to your order.</DialogDescription>
-            </DialogHeader>
-            <DialogBody>You can change this until the order ships.</DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Keep standard</Button>
-              </DialogClose>
-              <Button variant="primary" onClick={recordAction("confirm-step", "Add express delivery")}>
-                Add express delivery
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("confirm-step")}>
+        <DialogTrigger asChild>
+          <Button>Continue to payment</Button>
+        </DialogTrigger>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent size="sm">
+              <DialogHeader>
+                <DialogTitle>Use express delivery?</DialogTitle>
+                <DialogDescription>It arrives tomorrow and adds £4.99 to your order.</DialogDescription>
+              </DialogHeader>
+              <DialogBody>You can change this until the order ships.</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Keep standard</Button>
+                </DialogClose>
+                <Button variant="primary" onClick={recordAction("confirm-step", "Add express delivery")}>
+                  Add express delivery
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   small: () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("small")}>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent size="sm">
-            <DialogHeader>
-              <DialogTitle>Rename list</DialogTitle>
-            </DialogHeader>
-            <DialogBody>Weekend shopping</DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Cancel</Button>
-              </DialogClose>
-              <Button variant="primary" onClick={recordAction("small", "Save name")}>
-                Save name
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("small")}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent size="sm">
+              <DialogHeader>
+                <DialogTitle>Rename list</DialogTitle>
+              </DialogHeader>
+              <DialogBody>Weekend shopping</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Cancel</Button>
+                </DialogClose>
+                <Button variant="primary" onClick={recordAction("small", "Save name")}>
+                  Save name
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   medium: () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("medium")}>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent size="md">
-            <DialogHeader>
-              <DialogTitle>Delivery options</DialogTitle>
-            </DialogHeader>
-            <DialogBody>Standard: 3 to 5 working days, free. Express: next working day, £4.99.</DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Close</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("medium")}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent size="md">
+              <DialogHeader>
+                <DialogTitle>Delivery options</DialogTitle>
+              </DialogHeader>
+              <DialogBody>Standard: 3 to 5 working days, free. Express: next working day, £4.99.</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   "no-description": () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("no-description")}>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Order summary</DialogTitle>
-            </DialogHeader>
-            <DialogBody>
-              2 items: £38.00
-              <br />
-              Delivery: £4.99
-              <br />
-              Total: £42.99
-            </DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Close</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("no-description")}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Order summary</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                2 items: £38.00
+                <br />
+                Delivery: £4.99
+                <br />
+                Total: £42.99
+              </DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   "not-dismissible": () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("not-dismissible")}>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent dismissible={false}>
-            <DialogHeader>
-              <DialogTitle>Confirm your card</DialogTitle>
-              <DialogDescription>Your bank needs you to confirm this payment in its app.</DialogDescription>
-            </DialogHeader>
-            <DialogBody>Keep this window open until the app says the payment is confirmed.</DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Use a different card</Button>
-              </DialogClose>
-              <Button variant="primary" onClick={recordAction("not-dismissible", "I have confirmed it")}>
-                I have confirmed it
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("not-dismissible")}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent dismissible={false}>
+              <DialogHeader>
+                <DialogTitle>Confirm your card</DialogTitle>
+                <DialogDescription>Your bank needs you to confirm this payment in its app.</DialogDescription>
+              </DialogHeader>
+              <DialogBody>Keep this window open until the app says the payment is confirmed.</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Use a different card</Button>
+                </DialogClose>
+                <Button variant="primary" onClick={recordAction("not-dismissible", "I have confirmed it")}>
+                  I have confirmed it
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   "title-focus": () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("title-focus")}>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent initialFocus="title">
-            <DialogHeader>
-              <DialogTitle>Returns policy</DialogTitle>
-            </DialogHeader>
-            <DialogBody>
-              {POLICY.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Close</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("title-focus")}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent initialFocus="title">
+              <DialogHeader>
+                <DialogTitle>Returns policy</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                {POLICY.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   closed: () => (
     <Dialog defaultOpen={false} onOpenChange={recordOpen("closed")}>
@@ -324,63 +429,76 @@ export const examples = {
       </DialogPortal>
     </Dialog>
   ),
-  "controlled-without-trigger": () => <ControlledWithoutTrigger />,
+  "controlled-without-trigger": () => (
+    <OnDemand>
+      <ControlledWithoutTrigger />
+    </OnDemand>
+  ),
   "long-text": () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("long-text")}>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Choose how you would like us to deliver the items that are coming from our partner warehouse</DialogTitle>
-              <DialogDescription>
-                These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogBody>
-              {TERMS.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Back</Button>
-              </DialogClose>
-              <Button variant="primary" onClick={recordAction("long-text", "Deliver everything together")}>
-                Deliver everything together
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("long-text")}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Choose how you would like us to deliver the items that are coming from our partner warehouse</DialogTitle>
+                <DialogDescription>
+                  These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogBody>
+                {TERMS.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Back</Button>
+                </DialogClose>
+                <Button variant="primary" onClick={recordAction("long-text", "Deliver everything together")}>
+                  Deliver everything together
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
   ),
   "worst-case-320": () => (
-    <Dialog defaultOpen onOpenChange={recordOpen("worst-case-320")}>
-      <DialogPortal>
-        <DialogOverlay>
-          <DialogContent dismissible={false}>
-            <DialogHeader>
-              <DialogTitle>Choose how you would like us to deliver the items that are coming from our partner warehouse in Rotterdam</DialogTitle>
-              <DialogDescription>
-                These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature from someone at the address.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogBody>
-              {TERMS_DE.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button>Go back to my basket</Button>
-              </DialogClose>
-              <Button variant="primary" onClick={recordAction("worst-case-320", "Deliver everything together on the later date")}>
-                Deliver everything together on the later date
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+    <OnDemand>
+      <Dialog defaultOpen onOpenChange={recordOpen("worst-case-320")}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent dismissible={false}>
+              <DialogHeader>
+                <DialogTitle>Choose how you would like us to deliver the items that are coming from our partner warehouse in Rotterdam</DialogTitle>
+                <DialogDescription>
+                  These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature from someone at the address.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogBody>
+                {TERMS_DE.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Go back to my basket</Button>
+                </DialogClose>
+                <Button variant="primary" onClick={recordAction("worst-case-320", "Deliver everything together on the later date")}>
+                  Deliver everything together on the later date
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </OnDemand>
+  ),
+  "with-menu": () => (
+    <OnDemand>
+      <WithMenu />
+    </OnDemand>
   ),
 };

@@ -39,7 +39,7 @@
     "content.children": { "on": "content", "type": "node", "required": true, "figmaProperty": null, "description": "What the panel shows." }
   },
   "states": {
-    "unselected": { "on": "trigger", "selector": "[data-state=\"inactive\"]", "source": "primitive", "figma": { "property": "state", "value": "default" }, "reach": "click", "description": "A tab whose panel is not shown, reached by selecting another tab. Radix sets data-state to inactive and aria-selected to false. The base style rule draws it." },
+    "unselected": { "on": "trigger", "selector": "[data-state=\"inactive\"]", "source": "primitive", "figma": { "property": "state", "value": "default" }, "reach": "prop:variant=line", "description": "A tab whose panel is not shown, reached by selecting another tab. Radix sets data-state to inactive and aria-selected to false. The base style rule draws it." },
     "hover": { "on": "trigger", "selector": ":hover", "source": "native", "figma": { "property": "state", "value": "hover" }, "reach": "hover", "description": "The pointer is over a tab." },
     "focus": { "on": "trigger", "selector": ":focus-visible", "source": "native", "figma": null, "reach": "focus-by-keyboard", "description": "A tab has keyboard focus. The Figma copy that could be read has no focus value." },
     "selected": { "on": "trigger", "selector": "[data-state=\"active\"]", "source": "primitive", "figma": { "property": "state", "value": "selected" }, "reach": "click", "description": "The tab whose panel is shown. Radix sets data-state to active on it and aria-selected to true; every other tab has data-state inactive. Named selected, not active, so it is never confused with the pressed state :active." },
@@ -54,10 +54,10 @@
         "trigger": { "height": "control/md", "paddingInline": "static/120", "gap": "static/80", "radius": "height/40", "borderStyle": "none", "background": "transparent", "color": "text/secondary", "typography": "body-base", "cursor": "pointer", "duration": "duration/fast", "easing": "ease/standard", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" },
         "iconStart": { "iconSize": "icon/md", "color": "current" },
         "iconEnd": { "iconSize": "icon/md", "color": "current" },
-        "indicator": { "borderColor": "transparent" },
+        "indicator": { "borderColor": "transparent", "borderWidth": "width/md" },
         "content": { "radius": "container/small", "color": "text/primary", "typography": "body-base", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" }
       },
-      "why": "The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's edge and its width/md thickness are written in the extensions stylesheet, because a one-sided border cannot be said here; only its colour is set here, so the theme still drives it." },
+      "why": "The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's colour and its width/md thickness are set here, so the theme still drives them and forced colours can turn the thickness off; which one edge is drawn is written in the extensions stylesheet (a solid style on that edge only, every other edge has no style), because a one-sided border cannot be said here." },
     { "when": { "states": ["hover"] }, "parts": { "trigger": { "color": "text/primary" } } },
     { "when": { "states": ["selected"] }, "parts": {
         "trigger": { "color": "text/primary", "typography": "label-base" },
@@ -94,7 +94,8 @@
     { "when": { "states": ["disabled"] }, "parts": { "trigger": { "color": "text/disabled", "cursor": "not-allowed" } }, "why": "One disabled look for both variants. The icons follow the label's colour." },
     { "when": { "props": { "variant": "pill" }, "states": ["disabled"] }, "parts": { "trigger": { "background": "transparent" } } },
 
-    { "when": { "props": { "variant": "pill" }, "states": ["selected"], "media": "forced-colors" }, "parts": { "trigger": { "borderStyle": "solid", "borderWidth": "width/md", "borderColor": "current" } }, "why": "In forced colours the fill is removed, so the selected pill gets a 2 pixel border in the text colour on all four sides. The line variant needs no rule: its indicator is a border, which forced colours keep." },
+    { "when": { "props": { "variant": "pill" }, "states": ["selected"], "media": "forced-colors" }, "parts": { "trigger": { "borderStyle": "solid", "borderWidth": "width/md", "borderColor": "current" }, "indicator": { "borderWidth": "none" } }, "why": "In forced colours the fill is removed, so the selected pill gets a 2 pixel border in the text colour on all four sides. Its indicator gets no width: forced colours paint a transparent border in the text colour, so a selected pill would otherwise show a line under it too." },
+    { "when": { "states": ["unselected"], "media": "forced-colors" }, "parts": { "indicator": { "borderWidth": "none" } }, "why": "Forced colours paint every border in the text colour, transparent ones included, so with width/md every unselected indicator showed as a solid 2 pixel line (measured in Chromium: rgb(0, 0, 0) on every tab) and nothing marked the selected tab. An unselected indicator therefore has no width in forced colours; the selected line tab keeps width/md, so its line is the only one shown." },
     { "when": { "media": "reduced-motion" }, "parts": { "trigger": { "duration": "none" } } }
   ],
   "accessibility": {
@@ -159,7 +160,7 @@
     { "id": "tabs-selected-in-view-on-mount", "level": "SHOULD", "text": "When the list scrolls, the selected tab is scrolled into view when Tabs first renders.", "check": "test:tabs-selected-in-view-on-mount", "label": "assumption" },
     { "id": "tabs-orientation-layout", "level": "MUST", "text": "Horizontal tabs sit in a row above their panel; vertical tabs sit in a column at the inline start of their panel, each tab as wide as the list. The extensions stylesheet sets this from data-orientation, because the style declarations have no layout direction.", "check": "test:tabs-orientation-layout" },
     { "id": "tabs-behavior-fill", "level": "MUST", "text": "With list.behavior fill, the list is as wide as its container and every tab has the same width, within one pixel; with hug, each tab is as wide as its label and padding. When fill's labels do not fit, the list scrolls instead of cutting a label. The equal share is written in the extensions stylesheet.", "check": "test:tabs-behavior-fill" },
-    { "id": "tabs-indicator-edge", "level": "MUST", "text": "The indicator draws a border width/md thick on one edge only: the bottom edge of the tab when horizontal and the inline-start edge when vertical, along the tab's full length. It is written in the extensions stylesheet; the style rules set only its colour.", "check": "test:tabs-indicator-edge" },
+    { "id": "tabs-indicator-edge", "level": "MUST", "text": "The indicator draws a border width/md thick on one edge only: the bottom edge of the tab when horizontal and the inline-start edge when vertical, along the tab's full length. The style rules set its colour and its width/md thickness; the extensions stylesheet sets which edge, by giving that edge alone a solid style.", "check": "test:tabs-indicator-edge" },
     { "id": "tabs-no-width-shift", "level": "SHOULD", "text": "Selecting a tab does not change its width or move the tabs beside it, although the label's weight changes: the extensions stylesheet reserves the width of the heavier weight.", "check": "test:tabs-no-width-shift", "label": "pattern" },
     { "id": "tabs-target-size", "level": "MUST", "text": "Every tab is at least 24 by 24 pixels at every size.", "wcag": "2.5.8", "check": "test:tabs-target-size" },
     { "id": "tabs-touch-target", "level": "SHOULD", "text": "Where the pointer is coarse every tab is at least 44 pixels tall.", "check": "test:tabs-touch-target", "label": "pattern" },
@@ -235,6 +236,17 @@
         { "value": "care", "label": "Washing and care instructions", "panel": "Wash at 30 degrees." },
         { "value": "returns", "label": "Delivery and free returns", "panel": "Free returns within 30 days." }
       ], "note": "Labels longer than the content rules allow. They stay on one line and the list scrolls; the selected tab is in view on first render." },
+    { "id": "no-loop", "title": "Without wrapping", "props": { "orientation": "vertical", "list.loop": false, "list.ariaLabel": "Account settings", "defaultValue": "payments" }, "content": [
+        { "value": "profile", "label": "Profile", "panel": "Name and email." },
+        { "value": "addresses", "label": "Addresses", "panel": "Saved addresses." },
+        { "value": "payments", "label": "Payments", "panel": "Saved payment methods." }
+      ], "note": "list.loop is false: ArrowDown on the last tab and ArrowUp on the first do nothing." },
+    { "id": "disabled-ends", "title": "Disabled first and last tab", "props": { "list.ariaLabel": "Product information", "defaultValue": "delivery" }, "content": [
+        { "value": "sizes", "label": "Size guide", "disabled": true, "panel": "Not available for this product." },
+        { "value": "details", "label": "Details", "panel": "Organic cotton, relaxed fit." },
+        { "value": "delivery", "label": "Delivery", "panel": "Free delivery over £50." },
+        { "value": "care", "label": "Care", "disabled": true, "panel": "Not available for this product." }
+      ], "note": "Home and PageUp land on Details, the first tab that is not disabled; End and PageDown land on Delivery, the last." },
     { "id": "worst-case-320", "title": "Worst case at 320 pixels", "props": { "variant": "line", "size": "md", "list.ariaLabel": "Product information", "defaultValue": "questions" }, "content": [
         { "value": "details", "label": "Details", "panel": "Organic cotton, relaxed fit." },
         { "value": "reviews", "label": "Reviews (1,284)", "panel": "Average rating 4.6 out of 5." },
@@ -249,7 +261,7 @@
     "The live Figma component: its properties were read from a cached copy inside the Semantic Tokens file, which is older than the published library, so every figma mapping here is unconfirmed. That copy has a Tabs set with variant primary or secondary (default primary), behavior hug or fill (default hug), and the switches showOption1 to showOption10 and showScrollShadow; and a tab, _TabsElement, with variant primary or secondary, state default, hover, selected or disabled, orientation horizontal or vertical, a label text property, and prefix and suffix icons with showPrefix and showSuffix switches. The show switches are design-tool switches, not props in code: code renders the tabs and icons it is given.",
     "Which Figma variant is line and which is pill: Figma calls the property variant with the values primary and secondary, and their looks could not be read. The spec keeps its own names line and pill until the mapping is checked against the library.",
     "A size property in Figma, and a focus value of Figma's state property: neither is in the copy that could be read, so size and the focus state map to nothing in Figma.",
-    "Layout written in the extensions stylesheet: the list is a row or a column from data-orientation, and the root puts a vertical list beside its panel; the list scrolls sideways inside itself (overflow); each tab lays out its icons and label in a centred row and its label never wraps (white-space); vertical tabs are as wide as the list; the indicator's one-sided border, its edge and its width/md thickness; with list.behavior fill, the tabs share the list's width equally; and each label reserves the width of its heavier selected weight. Each is pinned by a requirement with a test.",
+    "Layout written in the extensions stylesheet: the list is a row or a column from data-orientation, and the root puts a vertical list beside its panel; the list scrolls sideways inside itself (overflow); each tab lays out its icons and label in a centred row and its label never wraps (white-space); vertical tabs are as wide as the list; the indicator's one-sided border (the solid style on its one edge; its colour and thickness are in the style rules); with list.behavior fill, the tabs share the list's width equally; and each label reserves the width of its heavier selected weight. Each is pinned by a requirement with a test.",
     "Scroll buttons or fade edges on a list that scrolls, which Figma's showScrollShadow draws. The list scrolls by touch, wheel and keyboard only.",
     "Badges or close buttons on a tab, and tabs that can be added, removed or reordered by the person using them (the Delete key in the Authoring Practices).",
     "A tab with a popup menu (Shift+F10 in the Authoring Practices).",

@@ -1,26 +1,26 @@
 /* Tabs: hand-written layout the spec cannot carry, as its notCarried list names it. Loaded by
    ds-components/src/styles.css after tabs.css. This layer outranks ds.components whatever the selector, so it never
-   sets a colour, padding, outline, block size or minimum size: those belong to the spec. The one border it sets is
-   the indicator's edge and thickness, which the spec hands to this file (requirement tabs-indicator-edge); its
-   colour stays with the spec, so only longhands for one edge's style and width are set here.
+   sets a colour, padding, outline, block size or minimum size: those belong to the spec. The one border property it
+   sets is the style of the indicator's one edge (requirement tabs-indicator-edge); the indicator's colour and its
+   width/md thickness stay with the spec, which also turns the thickness off in forced colours.
    Tokens only, logical properties only. */
 @layer ds.extensions {
   /* Root: the list above its panel, or beside it when vertical (tabs-orientation-layout). */
-  [data-slot="tabs"] {
+  [data-slot~="tabs"] {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     min-inline-size: 0;
     max-inline-size: 100%;
   }
-  [data-slot="tabs"][data-orientation="vertical"] {
+  [data-slot~="tabs"][data-orientation="vertical"] {
     flex-direction: row;
     align-items: flex-start;
   }
 
   /* List: a row that scrolls sideways inside itself, so the page never does (tabs-list-scrolls-inside). Its padding
      comes from the spec and keeps the first and last focus rings inside the scrolling box. */
-  [data-slot="tabs-list"] {
+  [data-slot~="tabs-list"] {
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -33,17 +33,17 @@
     scrollbar-width: thin;
   }
   /* hug: the list is as wide as its tabs, up to its container. */
-  [data-slot="tabs"][data-orientation="horizontal"] > [data-slot="tabs-list"][data-behavior="hug"] {
+  [data-slot~="tabs"][data-orientation="horizontal"] > [data-slot~="tabs-list"][data-behavior="hug"] {
     align-self: flex-start;
   }
   /* Vertical: a column at the inline start of the panel; every tab as wide as the list. */
-  [data-slot="tabs-list"][data-orientation="vertical"] {
+  [data-slot~="tabs-list"][data-orientation="vertical"] {
     flex-direction: column;
     flex: none;
   }
 
   /* Trigger: icons and label in a centred row on one line. */
-  [data-slot="tabs-trigger"] {
+  [data-slot~="tabs-trigger"] {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -57,24 +57,24 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
-  [data-slot="tabs-trigger"][data-orientation="vertical"] {
+  [data-slot~="tabs-trigger"][data-orientation="vertical"] {
     justify-content: flex-start;
   }
   /* fill: the tabs share the list's width equally; a label that does not fit keeps its width and the list scrolls. */
-  [data-slot="tabs-list"][data-behavior="fill"][data-orientation="horizontal"] > [data-slot="tabs-trigger"] {
+  [data-slot~="tabs-list"][data-behavior="fill"][data-orientation="horizontal"] > [data-slot~="tabs-trigger"] {
     flex: 1 0 0;
   }
 
   /* Label: one line, never cut off. A hidden copy in the selected weight reserves its width, so selecting a tab
      never moves the tabs beside it (tabs-no-width-shift). The copy has an empty alternative text and is hidden, so
      it never joins the tab's accessible name. */
-  [data-slot="tabs-trigger-label"] {
+  [data-slot~="tabs-trigger-label"] {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     white-space: nowrap;
   }
-  [data-slot="tabs-trigger-label"][data-label]::after {
+  [data-slot~="tabs-trigger-label"][data-label]::after {
     content: attr(data-label) / "";
     font-weight: var(--font-weight-label);
     line-height: 0;
@@ -85,56 +85,45 @@
   }
 
   /* Icons keep their size and sit on the label's centre line. */
-  [data-slot="tabs-trigger-icon-start"],
-  [data-slot="tabs-trigger-icon-end"] {
+  [data-slot~="tabs-trigger-icon-start"],
+  [data-slot~="tabs-trigger-icon-end"] {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
   }
-  [data-slot="tabs-trigger-icon-start"] > svg,
-  [data-slot="tabs-trigger-icon-end"] > svg {
+  [data-slot~="tabs-trigger-icon-start"] > svg,
+  [data-slot~="tabs-trigger-icon-end"] > svg {
     display: block;
     inline-size: 100%;
     block-size: 100%;
   }
 
-  /* Indicator: a border width/md thick on one edge only, along the tab's full length (tabs-indicator-edge). The
-     bottom edge when horizontal, the inline-start edge when vertical. */
-  [data-slot="tabs-indicator"] {
+  /* Indicator: a border on one edge only, along the tab's full length (tabs-indicator-edge): the bottom edge when
+     horizontal, the inline-start edge when vertical. Only that edge gets a style; every other edge keeps style none,
+     so it computes to no width whatever the spec's border-width says. */
+  [data-slot~="tabs-indicator"] {
     position: absolute;
     pointer-events: none;
     box-sizing: border-box;
   }
-  [data-slot="tabs-trigger"][data-orientation="horizontal"] > [data-slot="tabs-indicator"] {
+  [data-slot~="tabs-trigger"][data-orientation="horizontal"] > [data-slot~="tabs-indicator"] {
     inset-inline: 0;
     inset-block-end: 0;
     border-block-end-style: solid;
-    border-block-end-width: var(--border-width-md);
   }
-  [data-slot="tabs-trigger"][data-orientation="vertical"] > [data-slot="tabs-indicator"] {
+  [data-slot~="tabs-trigger"][data-orientation="vertical"] > [data-slot~="tabs-indicator"] {
     inset-block: 0;
     inset-inline-start: 0;
     border-inline-start-style: solid;
-    border-inline-start-width: var(--border-width-md);
-  }
-
-  /* Forced colours repaint every border in the text colour, transparent ones included, so every tab would show the
-     line. Only the selected line tab keeps its indicator; the pill variant marks the selected tab with the border
-     the spec gives it (tabs-selected-forced-colors). */
-  @media (forced-colors: active) {
-    [data-slot="tabs-trigger"]:not([data-state="active"]) > [data-slot="tabs-indicator"],
-    [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-indicator"] {
-      visibility: hidden;
-    }
   }
 
   /* Panel: may shrink beside a vertical list. No display here: the hidden attribute must keep hiding a panel. */
-  [data-slot="tabs-content"] {
+  [data-slot~="tabs-content"] {
     box-sizing: border-box;
     min-inline-size: 0;
   }
-  [data-slot="tabs"][data-orientation="vertical"] > [data-slot="tabs-content"] {
+  [data-slot~="tabs"][data-orientation="vertical"] > [data-slot~="tabs-content"] {
     flex: 1 1 0;
   }
 }

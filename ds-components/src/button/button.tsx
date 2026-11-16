@@ -33,6 +33,12 @@ type ButtonBaseProps = NativeButtonAttributes &
     onClick?: React.MouseEventHandler<HTMLElement>;
     /** React 19 passes ref as a prop. With asChild it reaches the child element. */
     ref?: React.Ref<HTMLButtonElement>;
+    /**
+     * Slot names the element also carries, set by a parent that renders this Button through asChild (DropdownMenuTrigger
+     * passes "dropdown-menu-trigger"). data-slot is a space-separated list: Button puts its own name first and keeps
+     * these after it, never overwriting them.
+     */
+    "data-slot"?: string;
   };
 
 /** A button with a visible label. ariaLabel may still override the name. */
@@ -78,6 +84,7 @@ export function Button(props: ButtonProps) {
     children,
     onClick,
     ref,
+    "data-slot": incomingSlots,
     ...native
   } = props;
 
@@ -128,7 +135,7 @@ export function Button(props: ButtonProps) {
   const shared = {
     ...native,
     ...reflected,
-    "data-slot": BUTTON_SLOTS.root,
+    "data-slot": slotList(BUTTON_SLOTS.root, incomingSlots),
     "aria-label": ariaLabel,
     "aria-busy": loading ? true : undefined,
     onClick: handleClick,
@@ -160,6 +167,13 @@ export function Button(props: ButtonProps) {
       {trail}
     </button>
   );
+}
+
+// data-slot is a list of slot names, like a class list: Button's own name first, then each incoming name once.
+function slotList(own: string, incoming: string | undefined): string {
+  const words = [own];
+  for (const w of (incoming ?? "").split(/\s+/)) if (w && !words.includes(w)) words.push(w);
+  return words.join(" ");
 }
 
 // The loading indicator: a three-quarter ring in the current text colour, turned by button.extensions.css.

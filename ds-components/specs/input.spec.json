@@ -323,7 +323,7 @@
         "property": "state",
         "value": "error"
       },
-      "reach": "prop:invalid=true,errorMessage=Enter an email address, such as name@example.com",
+      "reach": "example:invalid",
       "description": "The value is wrong and the error message is shown. The input has aria-invalid set to true at the same time and at no other time. Figma calls this state error."
     },
     "placeholderShown": {
@@ -345,7 +345,7 @@
         "property": "state",
         "value": "filled"
       },
-      "reach": "prop:defaultValue=Ada Lovelace",
+      "reach": "example:number",
       "description": "The field holds a value. The selector also matches an empty input that has no placeholder attribute, so it means the placeholder is not showing rather than that there is a value. It changes no style."
     }
   },
@@ -733,7 +733,7 @@
     {
       "id": "input-placeholder-contrast",
       "level": "MUST",
-      "text": "The placeholder has at least 4.5 to 1 contrast against the control's fill in light and dark. It fails in light today until the text/placeholder override lands.",
+      "text": "The placeholder has at least 4.5 to 1 contrast against the control's fill in light and dark.",
       "wcag": "1.4.3",
       "check": "test:input-placeholder-contrast"
     },
@@ -1056,6 +1056,7 @@
     "Read-only has no Figma state value; the readOnly state exists in code only.",
     "Layout written in the extensions stylesheet: the root is a column (which is what makes its gap work); the control is a row with its items centred vertically; the input takes the leftover width and may shrink while the prefix and suffix do not; the error message is a row with the icon first. Proven by input-field-stack and input-control-row, not by styles.",
     "The icon set: prefix, suffix and the error icon take an icon node, but no Icon component spec exists yet.",
+    "The size of an icon given as the prefix or suffix: these parts hold an icon or short text, and no part kind in the schema takes both typography and iconSize (text takes typography, glyph takes iconSize, slot takes neither). They stay text parts, and the extensions stylesheet sizes an svg inside them at the medium icon size (--size-icon-md).",
     "Validation logic and when to run it: the product decides when invalid becomes true.",
     "Moving focus to the first invalid field after a failed submit, and an error summary at the top of the form: these belong to a Form component.",
     "A multi-line text area, a select, a combobox, a date field and a field with a clear or show-password button inside it.",

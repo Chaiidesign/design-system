@@ -71,7 +71,7 @@ const TABBABLE = 'button, [href], input, select, textarea, summary, [tabindex], 
 function firstControl(container: HTMLElement): HTMLElement | null {
   for (const el of container.querySelectorAll<HTMLElement>(TABBABLE)) {
     if (el.tabIndex < 0 || el.matches(":disabled, a[href]")) continue;
-    if (el.getAttribute("data-slot") === DIALOG_SLOTS.body) continue;
+    if ((el.getAttribute("data-slot") ?? "").split(" ").includes(DIALOG_SLOTS.body)) continue;
     if (!el.checkVisibility({ visibilityProperty: true })) continue;
     return el;
   }
@@ -196,7 +196,7 @@ export function DialogContent({
     if (process.env.NODE_ENV === "production") return;
     const el = mounted;
     if (!el) return;
-    const title = el.querySelector(`[data-slot="${DIALOG_SLOTS.title}"]`);
+    const title = el.querySelector(`[data-slot~="${DIALOG_SLOTS.title}"]`);
     if (!title && !warned.missing) {
       warned.missing = true;
       console.warn("DialogContent: no DialogTitle inside. The dialog has no accessible name; add a DialogTitle with text.");
@@ -217,7 +217,7 @@ export function DialogContent({
     const el = node.current;
     if (!el) return;
     const target =
-      initialFocus === "title" ? el.querySelector<HTMLElement>(`[data-slot="${DIALOG_SLOTS.title}"]`) : firstControl(el);
+      initialFocus === "title" ? el.querySelector<HTMLElement>(`[data-slot~="${DIALOG_SLOTS.title}"]`) : firstControl(el);
     (target ?? el).focus({ preventScroll: true });
   };
 

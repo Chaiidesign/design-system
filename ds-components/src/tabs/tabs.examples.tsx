@@ -19,10 +19,10 @@ const record = (id: string) => (value: string) => {
 type Item = { value: string; label: string; panel: ReactNode; iconStart?: IconName; disabled?: boolean };
 
 // The list and panels for a spec example's content, in the order the spec gives them.
-function Parts({ items, list }: { items: Item[]; list: { ariaLabel: string; behavior?: "hug" | "fill" } }) {
+function Parts({ items, list }: { items: Item[]; list: { ariaLabel: string; behavior?: "hug" | "fill"; loop?: boolean } }) {
   return (
     <>
-      <TabsList ariaLabel={list.ariaLabel} behavior={list.behavior}>
+      <TabsList ariaLabel={list.ariaLabel} behavior={list.behavior} loop={list.loop}>
         {items.map((t) => (
           <TabsTrigger
             key={t.value}
@@ -172,6 +172,24 @@ export const examples = {
           { value: "details", label: "Details and materials", panel: "Organic cotton, relaxed fit." },
           { value: "care", label: "Washing and care instructions", panel: "Wash at 30 degrees." },
           { value: "returns", label: "Delivery and free returns", panel: "Free returns within 30 days." },
+        ]}
+      />
+    </Tabs>
+  ),
+  "no-loop": () => (
+    <Tabs orientation="vertical" defaultValue="payments" onValueChange={record("no-loop")}>
+      <Parts list={{ ariaLabel: "Account settings", loop: false }} items={account} />
+    </Tabs>
+  ),
+  "disabled-ends": () => (
+    <Tabs defaultValue="delivery" onValueChange={record("disabled-ends")}>
+      <Parts
+        list={{ ariaLabel: "Product information" }}
+        items={[
+          { value: "sizes", label: "Size guide", disabled: true, panel: "Not available for this product." },
+          { value: "details", label: "Details", panel: "Organic cotton, relaxed fit." },
+          { value: "delivery", label: "Delivery", panel: "Free delivery over £50." },
+          { value: "care", label: "Care", disabled: true, panel: "Not available for this product." },
         ]}
       />
     </Tabs>

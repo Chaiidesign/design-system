@@ -2,7 +2,7 @@
    This layer outranks ds.components whatever the selector, so it never sets a colour, border, padding, outline,
    block size or minimum size: those belong to the spec. Tokens only, logical properties only. */
 @layer ds.extensions {
-  [data-slot="button"] {
+  [data-slot~="button"] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -18,35 +18,35 @@
   }
 
   /* A long label wraps inside the inline padding instead of being cut off or widening the button. */
-  [data-slot="button-label"] {
+  [data-slot~="button-label"] {
     min-inline-size: 0;
     text-align: center;
     overflow-wrap: anywhere;
   }
 
   /* Icons and the spinner keep their size and sit on the label's centre line. */
-  [data-slot="button-icon-start"],
-  [data-slot="button-icon-end"],
-  [data-slot="button-spinner"] {
+  [data-slot~="button-icon-start"],
+  [data-slot~="button-icon-end"],
+  [data-slot~="button-spinner"] {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
   }
-  [data-slot="button-icon-start"] > svg,
-  [data-slot="button-icon-end"] > svg,
-  [data-slot="button-spinner"] > svg {
+  [data-slot~="button-icon-start"] > svg,
+  [data-slot~="button-icon-end"] > svg,
+  [data-slot~="button-spinner"] > svg {
     display: block;
     inline-size: 100%;
     block-size: 100%;
   }
 
   /* The spinner turns once per --duration-spin, the token for a looping indicator. */
-  [data-slot="button-spinner"] > svg {
+  [data-slot~="button-spinner"] > svg {
     animation: ds-button-spin var(--duration-spin) linear infinite;
   }
   @media (prefers-reduced-motion: reduce) {
-    [data-slot="button-spinner"] > svg {
+    [data-slot~="button-spinner"] > svg {
       animation: none;
     }
   }

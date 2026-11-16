@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Lints the hand-written component code in ds-components/src/ so that nothing off-system gets in.
 //
-//   node v2/tools/lint-components.mjs              run the ten checks below on the repo
+//   node v2/tools/lint-components.mjs              run the eleven checks below on the repo
 //   node v2/tools/lint-components.mjs --size       also bundle each component and write
 //                                                  ds-components/generated/size-report.json
 //   node v2/tools/lint-components.mjs --types      also write ds-components/tsconfig.json and run
@@ -23,7 +23,7 @@
 // A file whose first line says "generated" and "do not edit" is a generated file. Generated files are left
 // out of the hand-written checks (1, 2, 3, 5, 10 and the source side of 6) and are checked by check 4.
 //
-// The ten checks. Each finding is an error with a file and line; any error makes the exit code 1.
+// The eleven checks. Each finding is an error with a file and line; any error makes the exit code 1.
 //   raw-value            no raw colour or length in *.extensions.css declarations or in hand-written *.tsx.
 //                        Allowed lengths: 0, 100%, 50%, auto, 1fr, 1px inside calc(), and em or ch on the
 //                        inline-size properties (text measure). Raw times (ms, s) are reported too.
@@ -37,6 +37,9 @@
 //                        --<slug>-... that the same folder declares, in its CSS or as a style={{ '--x': v }}
 //                        key. A local property declared in CSS must carry that prefix and may not redefine a
 //                        token. A name proposed in ds-tokens/proposed/ but not merged yet is still reported.
+//                        One exception: a reference to a property the behaviour library sets on the element at
+//                        run time, limited to names starting --radix- (Radix's available width and height). Only
+//                        reading one is allowed; declaring a --radix- property is still reported.
 //   no-inline-style      style={{ ... }} in *.tsx may only set custom properties. A non-literal style
 //                        expression is allowed only when it is a pass-through named style.
 //   layer                every *.extensions.css is wrapped in @layer ds.extensions; any other CSS under src/
@@ -50,7 +53,9 @@
 //                        float/clear/text-align left or right in extensions CSS.
 //   slots                the hand-written component source mentions every anatomy part's data-slot value,
 //                        as a string or as <SLUG>_SLOTS.<part> read from the generated contract, and sets no
-//                        data-slot string the spec does not list. A part whose element is null (a Radix Root or
+//                        data-slot string the spec does not list. data-slot is a space-separated list of slot
+//                        names, like a class list (one element can be two parts), so every string is read word by
+//                        word: each word must be a part, and an empty word (the " " a list is joined with) is no part. A part whose element is null (a Radix Root or
 //                        Portal) renders nothing: it need not be mentioned, and a data-slot string naming it is an error.
 //   examples-and-tests   <slug>.examples.tsx exports an object with a top-level key per example id, and
 //                        <slug>.tests.mjs one with a key per test id. Nested keys do not count.
@@ -58,6 +63,11 @@
 //   one-primary-per-view in *.examples.tsx and gallery pages, one JSX tree holds at most one variant="primary".
 //   focus-not-removed    no outline: none / 0 in extensions CSS without a :focus-visible rule in the same
 //                        file that draws an outline.
+//   no-hover-on-menu-items  no :hover and no :focus (nor :focus-visible, :focus-within) in the compound selector of
+//                        a part whose role is menuitem, menuitemcheckbox or menuitemradio, in the generated <slug>.css
+//                        or the <slug>.extensions.css: a menu item's highlight is [data-highlighted] alone, which the
+//                        behaviour library sets for pointer and keyboard alike. The part is found by its data-slot
+//                        word ([data-slot="x"] or [data-slot~="x"]), also inside :is() / :where() lists.
 //
 // "No source yet": a spec whose folder is missing, or holds only generated files, is a note, and checks 6
 // to 8 skip it. A folder with hand-written .tsx/.ts but no <slug>.tsx is an error under slots. A spec that
@@ -91,7 +101,13 @@ const TOOL = 'v2/tools/lint-components.mjs';
 export const CHECKS = [
   'raw-value', 'primitive-reference', 'no-inline-style', 'layer', 'logical-properties',
   'slots', 'examples-and-tests', 'exports', 'one-primary-per-view', 'focus-not-removed',
+  'no-hover-on-menu-items',
 ];
+const MENU_ITEM_ROLES = new Set(['menuitem', 'menuitemcheckbox', 'menuitemradio']);
+// Custom properties a behaviour library sets on the element at run time. Components may read them, never declare them.
+const RUNTIME_PROPERTY_PREFIX = '--radix-';
+// The words of a data-slot value: it is a space-separated list of slot names.
+export const slotWords = (value) => String(value).split(/\s+/).filter(Boolean);
 
 const CSS_BUDGET = 2048; // bytes per component, the row in scripts/size.mjs and PROGRESS.md
 const JS_BUDGET = 5120;
@@ -186,7 +202,7 @@ export function scanValue(value, prop = '', { namedColours = true, lengths = tru
 
 // ---------------------------------------------------------------- CSS parsing
 // Comments and the inside of strings become spaces, so offsets and line numbers stay true.
-function blankCss(src) {
+function blankCss(src, { keepStrings = false } = {}) {
   let out = '';
   for (let i = 0; i < src.length;) {
     if (src[i] === '/' && src[i + 1] === '*') {
@@ -196,7 +212,7 @@ function blankCss(src) {
     if (src[i] === '"' || src[i] === "'") {
       const q = src[i]; let j = i + 1;
       while (j < src.length && src[j] !== q && src[j] !== '\n') { if (src[j] === '\\') j++; j++; }
-      out += q + src.slice(i + 1, j).replace(/[^\n]/g, ' ') + (j < src.length ? src[j] : ''); i = j + 1; continue;
+      out += q + (keepStrings ? src.slice(i + 1, j) : src.slice(i + 1, j).replace(/[^\n]/g, ' ')) + (j < src.length ? src[j] : ''); i = j + 1; continue;
     }
     out += src[i++];
   }
@@ -207,6 +223,7 @@ function blankCss(src) {
 // { type:'decl', prop, value, valueOffset, line }, plus statements { type:'at', text, line }.
 export function parseCss(src) {
   const s = blankCss(src); const starts = lineStarts(s);
+  const kept = blankCss(src, { keepStrings: true }); // same offsets, comments blanked, strings kept (for selectors)
   let i = 0;
   const firstNonSpace = (a, b) => { while (a < b && /\s/.test(s[a])) a++; return a; };
   function flush(nodes, segStart, end) {
@@ -227,8 +244,9 @@ export function parseCss(src) {
       if (c === '{') {
         const at = firstNonSpace(segStart, i);
         const prelude = s.slice(segStart, i).trim(); const line = lineAt(starts, at);
+        const selectorText = kept.slice(segStart, i).trim();
         i++; const children = parseList(true);
-        nodes.push({ type: 'block', prelude, line, children });
+        nodes.push({ type: 'block', prelude, selectorText, line, children });
         segStart = i; continue;
       }
       if (c === '}') {
@@ -253,6 +271,32 @@ function* declarations(nodes, context = []) {
   }
 }
 const declLine = (d, offsetInValue) => lineAt(d.starts, d.valueOffset + offsetInValue);
+// Every style rule's selector list, split at its top-level commas, with the line of its block. At-rule blocks
+// (@layer, @media) are walked into, not read as selectors.
+function* selectorsIn(nodes) {
+  for (const n of nodes) {
+    if (n.type !== 'block') continue;
+    if (!n.prelude.startsWith('@')) for (const sel of splitTop(n.selectorText, (c) => c === ',')) yield { selector: sel, line: n.line };
+    yield* selectorsIn(n.children);
+  }
+}
+// Splits at characters outside (), [] and quotes for which isSep is true; drops empty pieces.
+function splitTop(text, isSep) {
+  const out = []; let depth = 0, cur = '', quote = null;
+  for (const c of text) {
+    if (quote) { cur += c; if (c === quote) quote = null; continue; }
+    if (c === '"' || c === "'") { quote = c; cur += c; continue; }
+    if (c === '(' || c === '[') depth++;
+    else if (c === ')' || c === ']') depth--;
+    if (depth === 0 && isSep(c)) { if (cur.trim()) out.push(cur.trim()); cur = ''; continue; }
+    cur += c;
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+// The compound selectors of one complex selector: split at top-level combinators (space, >, +, ~). A ~ inside
+// [data-slot~="x"] sits inside brackets, so it is not a combinator.
+const compoundsOf = (selector) => splitTop(selector, (c) => /[\s>+~]/.test(c));
 function customPropertiesDeclared(nodes) {
   const names = new Set();
   for (const d of declarations(nodes)) if (d.prop.startsWith('--')) names.add(d.prop);
@@ -378,6 +422,7 @@ function loadSpecs(root, validate, findings, notes) {
       slots: Object.values(spec.anatomy).map((p) => p.slot),
       // A part whose element is null (a Radix Root or Portal) renders no element: nothing may carry its data-slot.
       emptySlots: Object.values(spec.anatomy).filter((p) => p.element === null).map((p) => p.slot),
+      menuItemSlots: Object.values(spec.anatomy).filter((p) => MENU_ITEM_ROLES.has(p.role) && p.element !== null).map((p) => p.slot),
       partBySlot: new Map(Object.entries(spec.anatomy).map(([k, p]) => [p.slot, k])),
       exampleIds: spec.examples.map((e) => e.id),
       testIds: spec.requirements.filter((r) => r.check.startsWith('test:')).map((r) => r.check.slice(5)),
@@ -478,6 +523,7 @@ export async function lintTree(root = REPO) {
 
   const checkVarName = (file, line, name, folder) => {
     if (tokens.names.has(name)) return;
+    if (name.startsWith(RUNTIME_PROPERTY_PREFIX) && name.length > RUNTIME_PROPERTY_PREFIX.length) return; // set by Radix at run time
     if (folder && name.startsWith(`--${folder}-`) && local.get(folder)?.has(name)) return;
     let why = `${name} is not a token defined in ds-tokens/dist/tokens.css`;
     if (tokens.proposed.has(name)) why += ' (it is proposed in ds-tokens/proposed/tokens.json but not merged into tokens.css yet)';
@@ -621,7 +667,7 @@ export async function lintTree(root = REPO) {
     for (const f of sources) {
       const sf = parsedTs.get(f) ?? parseTs(f, readText(f));
       visit(sf, (n) => {
-        if (isStringish(n)) strings.add(n.text);
+        if (isStringish(n)) { strings.add(n.text); for (const w of slotWords(n.text)) strings.add(w); }
         if (ts.isPropertyAccessExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === SLOTS_CONST) {
           const part = s.spec.anatomy[n.name.text];
           if (part) strings.add(part.slot);
@@ -632,9 +678,12 @@ export async function lintTree(root = REPO) {
         if (isSlotAttr || isSlotKey) {
           const target = n.initializer;
           if (!target) return;
+          // data-slot is a list of words; each word must be a part. A literal that is only spaces joins a list.
           for (const lit of stringsUnder(target)) {
-            if (!s.slots.includes(lit.text)) add('slots', rel(f), nodeLine(sf, lit), `data-slot "${lit.text}" is not an anatomy part of ${s.file}; the spec lists ${s.slots.join(', ')}.`);
-            else if (s.emptySlots.includes(lit.text)) add('slots', rel(f), nodeLine(sf, lit), `data-slot "${lit.text}" belongs to a part whose element is null in ${s.file}; that part renders nothing, so no element carries its data-slot.`);
+            for (const word of slotWords(lit.text)) {
+              if (!s.slots.includes(word)) add('slots', rel(f), nodeLine(sf, lit), `data-slot word "${word}"${word === lit.text ? '' : ` (in "${lit.text}")`} is not an anatomy part of ${s.file}; the spec lists ${s.slots.join(', ')}.`);
+              else if (s.emptySlots.includes(word)) add('slots', rel(f), nodeLine(sf, lit), `data-slot "${word}" belongs to a part whose element is null in ${s.file}; that part renders nothing, so no element carries its data-slot.`);
+            }
           }
         }
       });
@@ -661,6 +710,23 @@ export async function lintTree(root = REPO) {
       for (const s of withSource) {
         const re = new RegExp(`^\\./${s.slug}(/[^/]+)?(\\.(tsx?|js))?$`);
         if (!from.some((m) => re.test(m))) add('exports', rel(idx), 1, `does not export ${s.slug}: add export ... from './${s.slug}/${s.slug}'.`);
+      }
+    }
+  }
+
+  // ---- 11 no-hover-on-menu-items: in the generated <slug>.css and the <slug>.extensions.css of each spec whose
+  // anatomy has a menu item part, no compound selector on that part may hold :hover or :focus*.
+  for (const s of specs) {
+    if (!s.menuItemSlots.length) continue;
+    for (const f of [join(srcDir, s.slug, `${s.slug}.css`), join(srcDir, s.slug, `${s.slug}.extensions.css`)]) {
+      if (!existsSync(f)) continue;
+      const tree = parsedCss.get(f) ?? parseCss(readText(f));
+      for (const { selector, line } of selectorsIn(tree)) {
+        for (const compound of compoundsOf(selector)) {
+          const items = s.menuItemSlots.filter((slot) => new RegExp(`\\[data-slot~?=["']?${slot.replace(/-/g, '\\-')}["']?\\]`).test(compound));
+          const pseudo = compound.match(/:(hover|focus(?:-visible|-within)?)(?![\w-])/);
+          if (items.length && pseudo) add('no-hover-on-menu-items', rel(f), line, `the selector ${selector.trim()} puts :${pseudo[1]} on the menu item part ${items.join(', ')}; a menu item's highlight is [data-highlighted] alone (it covers pointer and keyboard).`);
+        }
       }
     }
   }
@@ -805,6 +871,7 @@ const FIXTURE_SPEC = {
     root: { kind: 'container', role: null, slot: 'chip', element: 'span', description: 'The root.' },
     label: { kind: 'text', role: null, slot: 'chip-label', element: 'span', description: 'The words.' },
     portal: { kind: 'slot', role: null, slot: 'chip-portal', element: null, description: 'Renders nothing; the clean source never mentions it.' },
+    option: { kind: 'container', role: 'menuitem', slot: 'chip-option', element: 'span', required: false, description: 'A menu item part, for no-hover-on-menu-items.' },
   },
   props: { variant: { on: 'root', type: 'enum', values: ['primary', 'secondary'], default: 'secondary', reflects: 'data-variant', description: 'Weight.' } },
   states: {},
@@ -828,10 +895,11 @@ function fixture() {
       "import './chip.css';",
       "import './chip.extensions.css';",
       "import type { CSSProperties, ReactNode } from 'react';",
-      "export function Chip({ variant = 'secondary', children, measure }: { variant?: 'primary' | 'secondary'; children: ReactNode; measure?: string }) {",
+      "export function Chip({ variant = 'secondary', children, measure, slot }: { variant?: 'primary' | 'secondary'; children: ReactNode; measure?: string; slot?: string }) {",
       '  return (',
-      "    <span data-slot=\"chip\" data-variant={variant} style={{ '--chip-measure': measure } as CSSProperties}>",
+      "    <span data-slot={['chip', slot].filter(Boolean).join(' ')} data-variant={variant} style={{ '--chip-measure': measure } as CSSProperties}>",
       '      <span data-slot="chip-label">{children}</span>',
+      '      <span data-slot="chip-option  chip-label" role="menuitem" />',
       '    </span>',
       '  );',
       '}',
@@ -849,6 +917,9 @@ function fixture() {
       '  [data-slot="chip"]:focus-visible {',
       '    outline: var(--border-focus-width) solid var(--color-border-focus);',
       '  }',
+      '  [data-slot~="chip"]:hover { display: inline-flex; }',
+      '  [data-slot~="chip-option"][data-highlighted] { display: block; }',
+      '  [data-slot~="chip-option"] { max-block-size: var(--radix-dropdown-menu-content-available-height); }',
       '}',
       '',
     ].join('\n'),
@@ -880,7 +951,17 @@ const PLANTS = {
   'exports': ['index.ts that exports nothing', (f) => ({ ...f, 'ds-components/src/index.ts': 'export {};\n' })],
   'one-primary-per-view': ['two variant="primary" in one example tree', edit('ds-components/src/chip/chip.examples.tsx', '<Chip>Other</Chip>', '<Chip variant="primary">Other</Chip>')],
   'focus-not-removed': ['outline: none with the :focus-visible rule removed', edit(EXT, '  [data-slot="chip"]:focus-visible {\n    outline: var(--border-focus-width) solid var(--color-border-focus);\n  }\n', '')],
+  'no-hover-on-menu-items': [':hover on the menu item part in the extensions CSS', edit(EXT, '[data-slot~="chip-option"][data-highlighted]', '[data-slot~="chip-option"]:hover')],
 };
+// More planted faults for checks whose rule changed: each must fire its check, and only that check.
+const MORE_PLANTS = [
+  ['slots', 'a data-slot list with a word that is not a part ("chip-option chip-txt")', edit('ds-components/src/chip/chip.tsx', '"chip-option  chip-label"', '"chip-option chip-txt"')],
+  ['slots', 'a data-slot list naming the part whose element is null ("chip chip-portal")', edit('ds-components/src/chip/chip.tsx', "['chip', slot]", "['chip chip-portal', slot]")],
+  ['primitive-reference', 'var(--radixy-x), a near miss of the --radix- prefix', edit(EXT, 'var(--radix-dropdown-menu-content-available-height)', 'var(--radixy-x)')],
+  ['primitive-reference', 'a --radix- property declared, not read', edit(EXT, '  [data-slot~="chip-option"] { max-block-size', '  [data-slot~="chip-option"] { --radix-own: 0; max-block-size')],
+  ['no-hover-on-menu-items', ':focus-visible on the item inside an :is() list', edit(EXT, '[data-slot~="chip-option"][data-highlighted]', ':is([data-slot="chip-option"], [data-slot="chip-label"]):focus-visible')],
+  ['no-hover-on-menu-items', ':where(:hover) after the item, as the generator writes it, in the generated CSS', edit('ds-components/src/chip/chip.css', '} }\n', '} [data-slot~="chip-option"]:where(:hover:not([data-disabled])) { background: var(--color-surface-primary); } }\n')],
+];
 
 function writeTree(dir, files) {
   for (const [p, text] of Object.entries(files)) { const f = join(dir, p); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, text); }
@@ -901,8 +982,8 @@ async function selfTest() {
       console.log(`FAIL baseline: the clean fixture should give 0 errors, 1 warning and a "no source yet" note; got ${errs0.length} errors, ${warn0.length} warnings, note ${noted ? 'present' : 'absent'}`);
       for (const f of r0.findings) console.log(`     ${f.check} ${f.file}:${f.line} ${f.message}`);
     }
-    for (const check of CHECKS) {
-      const [what, plant] = PLANTS[check];
+    const runs = [...CHECKS.map((c) => [c, ...PLANTS[c]]), ...MORE_PLANTS];
+    for (const [check, what, plant] of runs) {
       const dir = join(base, check); writeTree(dir, plant(fixture()));
       const r = await lintTree(dir);
       const errs = r.findings.filter((f) => f.severity === 'error');
@@ -912,7 +993,8 @@ async function selfTest() {
       else { failed++; console.log(`FAIL ${check}: planted ${what}; expected only ${check}, got ${errs.length ? [...new Set(errs.map((f) => f.check))].join(', ') : 'nothing'}`); }
     }
   } finally { rmSync(base, { recursive: true, force: true }); }
-  console.log(`lint-components self-test: ${CHECKS.length - Math.min(failed, CHECKS.length)} of ${CHECKS.length} checks caught their planted fault${failed ? `; ${failed} failure${failed === 1 ? '' : 's'}` : ''}.`);
+  const total = CHECKS.length + MORE_PLANTS.length;
+  console.log(`lint-components self-test: ${total - Math.min(failed, total)} of ${total} planted faults caught by their check alone (${CHECKS.length} checks, ${MORE_PLANTS.length} more plants)${failed ? `; ${failed} failure${failed === 1 ? '' : 's'}` : ''}.`);
   return failed ? 1 : 0;
 }
 

@@ -57,7 +57,7 @@
     { "id": "clean", "title": "Clean", "props": {}, "content": "Continue" },
     { "id": "disabled", "title": "Disabled", "props": { "disabled": true }, "content": "Unavailable" },
     { "id": "low-contrast", "title": "Fault: low-contrast text", "props": {}, "content": "Continue" },
-    { "id": "small-target", "title": "Fault: 16 pixel control", "props": {}, "content": "Tiny" },
+    { "id": "small-target", "title": "Fault: two 16 pixel controls, edge to edge", "props": {}, "content": "Tiny" },
     { "id": "no-outline", "title": "Fault: no focus outline", "props": {}, "content": "No ring" },
     { "id": "too-wide", "title": "Fault: wider than the viewport", "props": {}, "content": null },
     { "id": "image-no-alt", "title": "Fault: image with no alt", "props": {}, "content": null },

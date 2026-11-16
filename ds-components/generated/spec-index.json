@@ -724,48 +724,55 @@
           "on": "content",
           "selector": "[data-state=\"open\"]",
           "source": "primitive",
-          "reach": "click the trigger, or prop:open=true"
+          "reach": "open"
         },
         {
           "name": "closed",
           "on": "content",
           "selector": "[data-state=\"closed\"]",
           "source": "primitive",
-          "reach": "open the dialog, then key:Escape"
+          "reach": "prop:content.dismissible=true > open > key:Escape"
         },
         {
           "name": "overlayOpen",
           "on": "overlay",
           "selector": "[data-state=\"open\"]",
           "source": "primitive",
-          "reach": "click the trigger, or prop:open=true"
+          "reach": "open"
         },
         {
           "name": "overlayClosed",
           "on": "overlay",
           "selector": "[data-state=\"closed\"]",
           "source": "primitive",
-          "reach": "open the dialog, then key:Escape"
+          "reach": "prop:content.dismissible=true > open > key:Escape"
         },
         {
           "name": "triggerOpen",
           "on": "trigger",
           "selector": "[data-state=\"open\"]",
           "source": "primitive",
-          "reach": "click the trigger"
+          "reach": "open"
         },
         {
           "name": "triggerClosed",
           "on": "trigger",
           "selector": "[data-state=\"closed\"]",
           "source": "primitive",
-          "reach": "render with prop:open=false"
+          "reach": "example:closed"
+        },
+        {
+          "name": "bodyFocus",
+          "on": "body",
+          "selector": ":focus-visible",
+          "source": "native",
+          "reach": "example:long-text > focus-by-keyboard"
         }
       ],
       "tokens": {
         "fromFigma": {
-          "count": 10,
-          "uses": 19,
+          "count": 11,
+          "uses": 20,
           "tokens": [
             {
               "collection": "Density",
@@ -790,6 +797,11 @@
             {
               "collection": "Radius",
               "name": "container/large",
+              "uses": 1
+            },
+            {
+              "collection": "Themes",
+              "name": "border/focus",
               "uses": 1
             },
             {
@@ -820,9 +832,19 @@
           ]
         },
         "proposed": {
-          "count": 8,
-          "uses": 11,
+          "count": 10,
+          "uses": 13,
           "tokens": [
+            {
+              "collection": "Border",
+              "name": "focus/offset",
+              "uses": 1
+            },
+            {
+              "collection": "Border",
+              "name": "focus/width",
+              "uses": 1
+            },
             {
               "collection": "Border",
               "name": "width/sm",
@@ -1315,14 +1337,14 @@
           "on": "trigger",
           "selector": "[data-state=\"open\"]",
           "source": "primitive",
-          "reach": "click the trigger"
+          "reach": "open"
         },
         {
           "name": "triggerClosed",
           "on": "trigger",
           "selector": "[data-state=\"closed\"]",
           "source": "primitive",
-          "reach": "render with defaults"
+          "reach": "example:closed"
         },
         {
           "name": "triggerDisabled",
@@ -1343,98 +1365,98 @@
           "on": "content",
           "selector": "[data-side=\"top\"]",
           "source": "primitive",
-          "reach": "prop:content.side=top"
+          "reach": "example:side-top"
         },
         {
           "name": "sideBottom",
           "on": "content",
           "selector": "[data-side=\"bottom\"]",
           "source": "primitive",
-          "reach": "prop:defaultOpen=true"
+          "reach": "prop:defaultOpen=true&content.side=bottom"
         },
         {
           "name": "alignStart",
           "on": "content",
           "selector": "[data-align=\"start\"]",
           "source": "primitive",
-          "reach": "prop:defaultOpen=true"
+          "reach": "prop:defaultOpen=true&content.align=start"
         },
         {
           "name": "alignEnd",
           "on": "content",
           "selector": "[data-align=\"end\"]",
           "source": "primitive",
-          "reach": "prop:content.align=end"
+          "reach": "example:align-end"
         },
         {
           "name": "itemHighlighted",
           "on": "item",
           "selector": "[data-highlighted]",
           "source": "primitive",
-          "reach": "key:ArrowDown from the open content, or move a mouse over the item"
+          "reach": "example:actions > open > key:ArrowDown"
         },
         {
           "name": "itemDisabled",
           "on": "item",
           "selector": "[data-disabled]",
           "source": "primitive",
-          "reach": "prop:item.disabled=true"
+          "reach": "example:disabled-items"
         },
         {
           "name": "checkboxItemHighlighted",
           "on": "checkboxItem",
           "selector": "[data-highlighted]",
           "source": "primitive",
-          "reach": "key:ArrowDown to the checkbox item, or move a mouse over it"
+          "reach": "example:model-selector > open > key:End"
         },
         {
           "name": "checkboxItemDisabled",
           "on": "checkboxItem",
           "selector": "[data-disabled]",
           "source": "primitive",
-          "reach": "prop:checkboxItem.disabled=true"
+          "reach": "example:disabled-items"
         },
         {
           "name": "checkboxItemChecked",
           "on": "checkboxItem",
           "selector": "[data-state=\"checked\"]",
           "source": "primitive",
-          "reach": "prop:checkboxItem.checked=true"
+          "reach": "example:model-selector"
         },
         {
           "name": "checkboxItemUnchecked",
           "on": "checkboxItem",
           "selector": "[data-state=\"unchecked\"]",
           "source": "primitive",
-          "reach": "render with defaults"
+          "reach": "example:grouped"
         },
         {
           "name": "radioItemHighlighted",
           "on": "radioItem",
           "selector": "[data-highlighted]",
           "source": "primitive",
-          "reach": "key:ArrowDown to the radio item, or move a mouse over it"
+          "reach": "example:model-selector > open > key:ArrowDown"
         },
         {
           "name": "radioItemDisabled",
           "on": "radioItem",
           "selector": "[data-disabled]",
           "source": "primitive",
-          "reach": "prop:radioItem.disabled=true"
+          "reach": "example:disabled-items"
         },
         {
           "name": "radioItemChecked",
           "on": "radioItem",
           "selector": "[data-state=\"checked\"]",
           "source": "primitive",
-          "reach": "set radioGroup.value to this item's value"
+          "reach": "example:model-selector"
         },
         {
           "name": "radioItemUnchecked",
           "on": "radioItem",
           "selector": "[data-state=\"unchecked\"]",
           "source": "primitive",
-          "reach": "set radioGroup.value to another item's value"
+          "reach": "example:model-selector"
         }
       ],
       "tokens": {
@@ -1934,7 +1956,7 @@
           "on": "root",
           "selector": "[data-invalid]",
           "source": "prop",
-          "reach": "prop:invalid=true,errorMessage=Enter an email address, such as name@example.com"
+          "reach": "example:invalid"
         },
         {
           "name": "placeholderShown",
@@ -1948,7 +1970,7 @@
           "on": "input",
           "selector": ":not(:placeholder-shown)",
           "source": "native",
-          "reach": "prop:defaultValue=Ada Lovelace"
+          "reach": "example:number"
         }
       ],
       "tokens": {
@@ -2429,7 +2451,7 @@
           "on": "trigger",
           "selector": "[data-state=\"inactive\"]",
           "source": "primitive",
-          "reach": "click"
+          "reach": "prop:variant=line"
         },
         {
           "name": "hover",
@@ -2576,7 +2598,7 @@
         },
         "proposed": {
           "count": 10,
-          "uses": 14,
+          "uses": 15,
           "tokens": [
             {
               "collection": "Border",
@@ -2591,7 +2613,7 @@
             {
               "collection": "Border",
               "name": "width/md",
-              "uses": 1
+              "uses": 2
             },
             {
               "collection": "Motion",

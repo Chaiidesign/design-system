@@ -50,16 +50,17 @@ A compound component: each part with an element is exported as its own component
 
 ## State map
 
-Strongest first: closed, open, overlayClosed, overlayOpen, triggerOpen, triggerClosed.
+Strongest first: closed, open, overlayClosed, overlayOpen, triggerOpen, triggerClosed, bodyFocus.
 
 | State | Part | Selector | Set by | Figma | Test reaches it by | Description |
 |---|---|---|---|---|---|---|
-| open | content | `[data-state="open"]` | primitive |  | click the trigger, or prop:open=true | The dialog is showing. |
-| closed | content | `[data-state="closed"]` | primitive |  | open the dialog, then key:Escape | The dialog is leaving. Radix keeps the content in the page only while a closing animation runs, then removes it. |
-| overlayOpen | overlay | `[data-state="open"]` | primitive |  | click the trigger, or prop:open=true | The overlay is showing. |
-| overlayClosed | overlay | `[data-state="closed"]` | primitive |  | open the dialog, then key:Escape | The overlay is leaving. |
-| triggerOpen | trigger | `[data-state="open"]` | primitive |  | click the trigger | The dialog this trigger controls is open. The trigger also has aria-expanded set to true. |
-| triggerClosed | trigger | `[data-state="closed"]` | primitive |  | render with prop:open=false | The dialog this trigger controls is closed. |
+| open | content | `[data-state="open"]` | primitive |  | open | The dialog is showing. |
+| closed | content | `[data-state="closed"]` | primitive |  | prop:content.dismissible=true > open > key:Escape | The dialog is leaving. Radix keeps the content in the page only while a closing animation runs, then removes it. |
+| overlayOpen | overlay | `[data-state="open"]` | primitive |  | open | The overlay is showing. |
+| overlayClosed | overlay | `[data-state="closed"]` | primitive |  | prop:content.dismissible=true > open > key:Escape | The overlay is leaving. |
+| triggerOpen | trigger | `[data-state="open"]` | primitive |  | open | The dialog this trigger controls is open. The trigger also has aria-expanded set to true. |
+| triggerClosed | trigger | `[data-state="closed"]` | primitive |  | example:closed | The dialog this trigger controls is closed. |
+| bodyFocus | body | `:focus-visible` | native |  | example:long-text > focus-by-keyboard | The body has keyboard focus. Only a body that scrolls takes focus (it joins the Tab order so the keyboard can scroll it), and it then draws the focus ring. |
 
 ## Tokens from Figma
 
@@ -70,6 +71,7 @@ Strongest first: closed, open, overlayClosed, overlayOpen, triggerOpen, triggerC
 | Density | `static/160` | `--spacing-static-160` | styles[0] |
 | Density | `static/80` | `--spacing-static-80` | styles[0] |
 | Radius | `container/large` | `--radius-container-large` | styles[0] |
+| Themes | `border/focus` | `--color-border-focus` | styles[0] |
 | Themes | `surface/primary/default` | `--color-surface-primary` | styles[0] |
 | Themes | `text/primary` | `--color-text-primary` | styles[0] |
 | Themes | `text/secondary` | `--color-text-secondary` | styles[0] |
@@ -84,6 +86,8 @@ Strongest first: closed, open, overlayClosed, overlayOpen, triggerOpen, triggerC
 
 | Collection | Token | CSS name | Style entries using it |
 |---|---|---|---|
+| Border | `focus/offset` | `--border-focus-offset` | styles[0] |
+| Border | `focus/width` | `--border-focus-width` | styles[4] |
 | Border | `width/sm` | `--border-width-sm` | styles[0] |
 | Elevation | `shadow/lg` | `--shadow-lg` | styles[0] |
 | Motion | `duration/base` | `--duration-base` | styles[0] |
@@ -160,7 +164,7 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 | Id | Title | Props | Content | Note |
 |---|---|---|---|---|
 | `default` | Default | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{},"children":"Change address"},"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Change delivery address"},{"part":"description","children":"Your order will go to the new address."}]},{"part":"body","children":"12 Harbour Street, Leith, Edinburgh EH6 6QW"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"},{"component":"Button","props":{"variant":"primary"},"children":"Use this address"}]}]}]}}` |  |
-| `confirm-step` | Confirm step with primary and secondary actions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"primary"},"children":"Continue to payment"},"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"sm"},"children":[{"part":"header","children":[{"part":"title","children":"Use express delivery?"},{"part":"description","children":"It arrives tomorrow and adds £4.99 to your order."}]},{"part":"body","children":"You can change this until the order ships."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Keep standard"},{"component":"Button","props":{"variant":"primary"},"children":"Add express delivery"}]}]}]}}` | The secondary action is a close part; the primary action closes the dialog through onOpenChange once the change is saved. |
+| `confirm-step` | Confirm step with primary and secondary actions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{},"children":"Continue to payment"},"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"sm"},"children":[{"part":"header","children":[{"part":"title","children":"Use express delivery?"},{"part":"description","children":"It arrives tomorrow and adds £4.99 to your order."}]},{"part":"body","children":"You can change this until the order ships."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Keep standard"},{"component":"Button","props":{"variant":"primary"},"children":"Add express delivery"}]}]}]}}` | The secondary action is a close part; the primary action closes the dialog through onOpenChange once the change is saved. |
 | `small` | Small | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"sm"},"children":[{"part":"header","children":[{"part":"title","children":"Rename list"}]},{"part":"body","children":"Weekend shopping"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"},{"component":"Button","props":{"variant":"primary"},"children":"Save name"}]}]}]}}` |  |
 | `medium` | Medium | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"md"},"children":[{"part":"header","children":[{"part":"title","children":"Delivery options"}]},{"part":"body","children":"Standard: 3 to 5 working days, free. Express: next working day, £4.99."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |  |
 | `no-description` | Without a description | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Order summary"}]},{"part":"body","children":["2 items: £38.00","Delivery: £4.99","Total: £42.99"]},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |  |
@@ -170,6 +174,7 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 | `controlled-without-trigger` | Opened by the product, without a trigger | `{"open":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Your session is about to end"},{"part":"description","children":"Stay signed in to keep your basket."}]},{"part":"body","children":"You will be signed out in 2 minutes."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Sign out"},{"component":"Button","props":{"variant":"primary"},"children":"Stay signed in"}]}]}]}}` | Target for the test that focus returns to where it was when the dialog opened. |
 | `long-text` | Long text | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Choose how you would like us to deliver the items that are coming from our partner warehouse"},{"part":"description","children":"These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature."}]},{"part":"body","children":"Twelve paragraphs of delivery terms, taller than the viewport."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Back"},{"component":"Button","props":{"variant":"primary"},"children":"Deliver everything together"}]}]}]}}` |  |
 | `worst-case-320` | Worst case at 320 pixels | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.dismissible":false},"children":[{"part":"header","children":[{"part":"title","children":"Choose how you would like us to deliver the items that are coming from our partner warehouse in Rotterdam"},{"part":"description","children":"These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature from someone at the address."}]},{"part":"body","children":"Twelve paragraphs of delivery terms in German, with long compound words such as Lieferbedingungen and Versandkostenübernahme."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Go back to my basket"},{"component":"Button","props":{"variant":"primary"},"children":"Deliver everything together on the later date"}]}]}]}}` | Viewport 320 by 568. The title wraps over several lines, the body scrolls, the footer buttons wrap and stay visible, and the page has no horizontal scroll. |
+| `with-menu` | With a menu inside | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Delivery day"},{"part":"description","children":"Choose when the courier comes."}]},{"part":"body","children":[{"component":"DropdownMenu","content":{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Tuesday 18 November"},"content":[{"part":"item","children":"Tuesday 18 November"},{"part":"item","children":"Wednesday 19 November"},{"part":"item","children":"Thursday 20 November"}]}}]},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"},{"component":"Button","props":{"variant":"primary"},"children":"Save day"}]}]}]}}` | Target for the test that, while the menu is open, the first Escape closes only the menu and the second closes the dialog. |
 
 ## Style rules
 
@@ -177,11 +182,12 @@ Every rule of the spec, in order. The generated stylesheet keeps this order and 
 
 | Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| styles[0] | always | overlay: background surface/overlay, paddingInline static/160, paddingBlock static/160, duration duration/base, easing ease/standard<br>content: background surface/primary/default, color text/primary, radius container/large, shadow shadow/lg, borderWidth width/sm, borderStyle solid, borderColor transparent, width full, maxWidth dialog/md, duration duration/base, easing ease/standard<br>header: paddingInline scaled/240, paddingBlock scaled/240, gap static/80<br>title: typography heading-5, color text/primary<br>description: typography body-base, color text/secondary<br>body: paddingInline scaled/240, paddingBlock static/0, typography body-base, color text/primary<br>footer: paddingInline scaled/240, paddingBlock scaled/240, gap static/80 | The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. |
+| styles[0] | always | overlay: background surface/overlay, paddingInline static/160, paddingBlock static/160, duration duration/base, easing ease/standard<br>content: background surface/primary/default, color text/primary, radius container/large, shadow shadow/lg, borderWidth width/sm, borderStyle solid, borderColor transparent, width full, maxWidth dialog/md, duration duration/base, easing ease/standard<br>header: paddingInline scaled/240, paddingBlock scaled/240, gap static/80<br>title: typography heading-5, color text/primary<br>description: typography body-base, color text/secondary<br>body: paddingInline scaled/240, paddingBlock static/0, typography body-base, color text/primary, outlineColor border/focus, outlineWidth none, outlineOffset focus/offset<br>footer: paddingInline scaled/240, paddingBlock scaled/240, gap static/80 | The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. |
 | styles[1] | props {"content.size":"sm"} | content: maxWidth dialog/sm |  |
 | styles[2] | states closed | content: duration duration/fast | Leaving is quicker than arriving, so the page is back sooner. |
 | styles[3] | states overlayClosed | overlay: duration duration/fast |  |
-| styles[4] | media reduced-motion | overlay: duration none<br>content: duration none |  |
+| styles[4] | states bodyFocus | body: outlineWidth focus/width | A body that scrolls is in the Tab order (dialog-body-scroll-keyboard), so it shows the same focus ring as every control (WCAG 2.4.7). The ring sits outside the body, in the header's and the footer's padding, so nothing clips it. |
+| styles[5] | media reduced-motion | overlay: duration none<br>content: duration none |  |
 
 ## What the spec does not carry
 

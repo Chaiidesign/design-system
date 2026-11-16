@@ -2,16 +2,16 @@
 
 @layer ds.components {
 
-  /* styles[0]: The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's edge and its width/md thickness are written in the extensions stylesheet, because a one-sided border cannot be said here; only its colour is set here, so the theme still drives it. */
-  [data-slot="tabs"] {
+  /* styles[0]: The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's colour and its width/md thickness are set here, so the theme still drives them and forced colours can turn the thickness off; which one edge is drawn is written in the extensions stylesheet (a solid style on that edge only, every other edge has no style), because a one-sided border cannot be said here. */
+  [data-slot~="tabs"] {
     gap: var(--spacing-static-120);
   }
-  [data-slot="tabs-list"] {
+  [data-slot~="tabs-list"] {
     gap: var(--spacing-static-40);
     padding-inline: var(--spacing-static-40);
     padding-block: var(--spacing-static-40);
   }
-  [data-slot="tabs-trigger"] {
+  [data-slot~="tabs-trigger"] {
     block-size: var(--size-control-md);
     padding-inline: var(--spacing-static-120);
     gap: var(--spacing-static-80);
@@ -27,148 +27,163 @@
     transition-duration: var(--duration-fast);
     transition-timing-function: var(--ease-standard);
     outline-color: var(--color-border-focus);
-    outline-style: solid;
     outline-width: 0;
     outline-offset: var(--border-focus-offset);
+    outline-style: none;
   }
-  [data-slot="tabs-trigger-icon-start"] {
+  [data-slot~="tabs-trigger-icon-start"] {
     inline-size: var(--size-icon-md);
     block-size: var(--size-icon-md);
     color: currentColor;
   }
-  [data-slot="tabs-trigger-icon-end"] {
+  [data-slot~="tabs-trigger-icon-end"] {
     inline-size: var(--size-icon-md);
     block-size: var(--size-icon-md);
     color: currentColor;
   }
-  [data-slot="tabs-indicator"] {
+  [data-slot~="tabs-indicator"] {
     border-color: transparent;
+    border-width: var(--border-width-md);
   }
-  [data-slot="tabs-content"] {
+  [data-slot~="tabs-content"] {
     border-radius: var(--radius-container-small);
     color: var(--color-text-primary);
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     font-weight: var(--font-weight-body);
     outline-color: var(--color-border-focus);
-    outline-style: solid;
     outline-width: 0;
     outline-offset: var(--border-focus-offset);
+    outline-style: none;
   }
 
   /* styles[1] */
-  [data-slot="tabs-trigger"]:where(:hover:not([data-disabled]):not([data-state="active"])) {
+  [data-slot~="tabs-trigger"]:where(:hover:not([data-disabled]):not([data-state="active"])) {
     color: var(--color-text-primary);
   }
 
   /* styles[2]: The selected tab is shown three ways, not by colour alone: the label turns from body-base (weight 500) to label-base (weight 600) at the same 14 on 20 size, the label darkens to text/primary, and the brand line appears. The label is never set in text/brand, which is 3.83 to 1 in dark and fails for small text. border/brand is a non-text mark 2 pixels thick, 7.88 to 1 in light and 3.83 to 1 in dark against the page, which passes the 3 to 1 for non-text contrast in both themes. */
-  [data-slot="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
+  [data-slot~="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
     color: var(--color-text-primary);
     font-size: var(--font-size-label-base);
     line-height: var(--line-height-label-base);
     font-weight: var(--font-weight-label);
   }
-  :where([data-slot="tabs-trigger"][data-state="active"]:not([data-disabled])) [data-slot="tabs-indicator"] {
+  :where([data-slot~="tabs-trigger"][data-state="active"]:not([data-disabled])) [data-slot~="tabs-indicator"] {
     border-color: var(--color-border-brand);
   }
 
   /* styles[3] */
-  :where([data-slot="tabs"][data-size="sm"]) [data-slot="tabs-trigger"] {
+  :where([data-slot~="tabs"][data-size="sm"]) [data-slot~="tabs-trigger"] {
     block-size: var(--size-control-sm);
     padding-inline: var(--spacing-static-80);
     gap: var(--spacing-static-60);
     border-radius: var(--radius-height-32);
   }
-  :where([data-slot="tabs"][data-size="sm"]) [data-slot="tabs-trigger-icon-start"] {
+  :where([data-slot~="tabs"][data-size="sm"]) [data-slot~="tabs-trigger-icon-start"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
   }
-  :where([data-slot="tabs"][data-size="sm"]) [data-slot="tabs-trigger-icon-end"] {
+  :where([data-slot~="tabs"][data-size="sm"]) [data-slot~="tabs-trigger-icon-end"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
   }
 
   /* styles[4]: On a touch screen every tab is at least 44 pixels tall. */
   @media (pointer: coarse) {
-    [data-slot="tabs-trigger"] {
+    [data-slot~="tabs-trigger"] {
       min-block-size: var(--size-target-min);
     }
   }
 
   /* styles[5]: A vertical list sits beside its panel and needs more space between them than a list above its panel. The column layout itself is written in the extensions stylesheet from data-orientation; see the requirement tabs-orientation-layout. */
-  [data-slot="tabs"]:where([data-orientation="vertical"]) {
+  [data-slot~="tabs"]:where([data-orientation="vertical"]) {
     gap: var(--spacing-static-240);
   }
 
   /* styles[6]: With fill the list takes its container's width. The equal share between the tabs is written in the extensions stylesheet; see the requirement tabs-behavior-fill. */
-  [data-slot="tabs-list"]:where([data-behavior="fill"]) {
+  [data-slot~="tabs-list"]:where([data-behavior="fill"]) {
     inline-size: 100%;
   }
 
   /* styles[7]: The pill variant marks the selected tab with a fill, so its indicator stays transparent even when selected. */
-  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-list"] {
+  :where([data-slot~="tabs"][data-variant="pill"]) [data-slot~="tabs-list"] {
     gap: var(--spacing-static-80);
   }
-  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"] {
+  :where([data-slot~="tabs"][data-variant="pill"]) [data-slot~="tabs-trigger"] {
     border-radius: var(--radius-round-full);
     padding-inline: var(--spacing-static-160);
   }
-  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-indicator"] {
+  :where([data-slot~="tabs"][data-variant="pill"]) [data-slot~="tabs-indicator"] {
     border-color: transparent;
   }
 
   /* styles[8] */
-  :where([data-slot="tabs"][data-variant="pill"][data-size="sm"]) [data-slot="tabs-trigger"] {
+  :where([data-slot~="tabs"][data-variant="pill"][data-size="sm"]) [data-slot~="tabs-trigger"] {
     padding-inline: var(--spacing-static-120);
   }
 
   /* styles[9]: text/secondary on surface/primary/hover is 4.80 to 1 in light and 6.66 to 1 in dark. */
-  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where(:hover:not([data-disabled]):not([data-state="active"])) {
+  :where([data-slot~="tabs"][data-variant="pill"]) [data-slot~="tabs-trigger"]:where(:hover:not([data-disabled]):not([data-state="active"])) {
     background-color: var(--color-surface-primary-hover);
   }
 
   /* styles[10]: The pill's fill must stand out from the page by 3 to 1 and carry a readable label. interactive/neutral/default is 21 to 1 in light and 17.61 to 1 in dark against the page, and text/inverse on it is 21 to 1 and 17.61 to 1. text/primary cannot be used on this fill, so the rule that a selected label is text/primary holds for the line variant only. A pink fill is not used: a filled brand shape reads as the page's primary action. */
-  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
+  :where([data-slot~="tabs"][data-variant="pill"]) [data-slot~="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
     background-color: var(--color-interactive-neutral);
     color: var(--color-text-inverse);
   }
-  :where([data-slot="tabs"][data-variant="pill"]) :where([data-slot="tabs-trigger"][data-state="active"]:not([data-disabled])) [data-slot="tabs-indicator"] {
+  :where([data-slot~="tabs"][data-variant="pill"]) :where([data-slot~="tabs-trigger"][data-state="active"]:not([data-disabled])) [data-slot~="tabs-indicator"] {
     border-color: transparent;
   }
 
   /* styles[11] */
-  [data-slot="tabs-trigger"]:where(:focus-visible) {
+  [data-slot~="tabs-trigger"]:where(:focus-visible) {
     outline-width: var(--border-focus-width);
+    outline-style: solid;
   }
 
   /* styles[12] */
-  [data-slot="tabs-content"]:where(:focus-visible) {
+  [data-slot~="tabs-content"]:where(:focus-visible) {
     outline-width: var(--border-focus-width);
+    outline-style: solid;
   }
 
   /* styles[13]: One disabled look for both variants. The icons follow the label's colour. */
-  [data-slot="tabs-trigger"]:where([data-disabled]) {
+  [data-slot~="tabs-trigger"]:where([data-disabled]) {
     color: var(--color-text-disabled);
     cursor: not-allowed;
   }
 
   /* styles[14] */
-  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where([data-disabled]) {
+  :where([data-slot~="tabs"][data-variant="pill"]) [data-slot~="tabs-trigger"]:where([data-disabled]) {
     background-color: transparent;
   }
 
-  /* styles[15]: In forced colours the fill is removed, so the selected pill gets a 2 pixel border in the text colour on all four sides. The line variant needs no rule: its indicator is a border, which forced colours keep. */
+  /* styles[15]: In forced colours the fill is removed, so the selected pill gets a 2 pixel border in the text colour on all four sides. Its indicator gets no width: forced colours paint a transparent border in the text colour, so a selected pill would otherwise show a line under it too. */
   @media (forced-colors: active) {
-    :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
+    :where([data-slot~="tabs"][data-variant="pill"]) [data-slot~="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
       border-style: solid;
       border-width: var(--border-width-md);
       border-color: currentColor;
     }
   }
+  @media (forced-colors: active) {
+    :where([data-slot~="tabs"][data-variant="pill"]) :where([data-slot~="tabs-trigger"][data-state="active"]:not([data-disabled])) [data-slot~="tabs-indicator"] {
+      border-width: 0;
+    }
+  }
 
-  /* styles[16] */
+  /* styles[16]: Forced colours paint every border in the text colour, transparent ones included, so with width/md every unselected indicator showed as a solid 2 pixel line (measured in Chromium: rgb(0, 0, 0) on every tab) and nothing marked the selected tab. An unselected indicator therefore has no width in forced colours; the selected line tab keeps width/md, so its line is the only one shown. */
+  @media (forced-colors: active) {
+    :where([data-slot~="tabs-trigger"][data-state="inactive"]) [data-slot~="tabs-indicator"] {
+      border-width: 0;
+    }
+  }
+
+  /* styles[17] */
   @media (prefers-reduced-motion: reduce) {
-    [data-slot="tabs-trigger"] {
+    [data-slot~="tabs-trigger"] {
       transition-property: background-color, border-color, color, box-shadow, opacity;
       transition-duration: 0s;
     }

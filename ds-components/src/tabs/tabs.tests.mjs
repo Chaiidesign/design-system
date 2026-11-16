@@ -9,14 +9,14 @@
 // in a setTimeout, so every key press waits for focus to settle before anything is read. Every "nothing happened"
 // test first proves the same press does something on a live example, so it cannot pass by measuring nothing.
 
-const ROOT = '[data-slot="tabs"]';
-const LIST = '[data-slot="tabs-list"]';
-const TAB = '[data-slot="tabs-trigger"]';
-const LABEL = '[data-slot="tabs-trigger-label"]';
-const PANEL = '[data-slot="tabs-content"]';
-const INDICATOR = '[data-slot="tabs-indicator"]';
-const ALL_EXAMPLES = ["line", "pill", "fill", "with-icons", "small", "small-pill", "vertical", "vertical-pill", "disabled-tab", "manual", "rtl", "controlled", "long-labels", "worst-case-320"];
-const VARIANT_EXAMPLES = ["line", "pill", "small", "small-pill", "vertical", "vertical-pill", "with-icons", "disabled-tab"];
+const ROOT = '[data-slot~="tabs"]';
+const LIST = '[data-slot~="tabs-list"]';
+const TAB = '[data-slot~="tabs-trigger"]';
+const LABEL = '[data-slot~="tabs-trigger-label"]';
+const PANEL = '[data-slot~="tabs-content"]';
+const INDICATOR = '[data-slot~="tabs-indicator"]';
+const ALL_EXAMPLES = ["line", "pill", "fill", "with-icons", "small", "small-pill", "vertical", "vertical-pill", "disabled-tab", "manual", "rtl", "controlled", "long-labels", "no-loop", "disabled-ends", "worst-case-320"];
+const VARIANT_EXAMPLES = ["line", "pill", "small", "small-pill", "vertical", "vertical-pill", "with-icons", "disabled-tab", "no-loop", "disabled-ends"];
 
 // ---------------------------------------------------------------- helpers
 
@@ -282,7 +282,7 @@ export const tests = {
   "tabs-icons-hidden": async ({ page, open, expect }) => {
     await open("with-icons");
     const r = await page.evaluate(() => ({
-      icons: [...document.querySelectorAll('[data-slot="tabs-trigger-icon-start"], [data-slot="tabs-trigger-icon-end"]')].map((e) => ({ slot: e.getAttribute("data-slot"), hidden: e.getAttribute("aria-hidden"), svg: !!e.querySelector("svg") })),
+      icons: [...document.querySelectorAll('[data-slot~="tabs-trigger-icon-start"], [data-slot~="tabs-trigger-icon-end"]')].map((e) => ({ slot: e.getAttribute("data-slot"), hidden: e.getAttribute("aria-hidden"), svg: !!e.querySelector("svg") })),
     }));
     expect.equal(r.icons.length, 2, `with-icons renders ${r.icons.length} icon parts; expected one iconStart in each of the 2 tabs`);
     for (const i of r.icons) {
@@ -368,6 +368,11 @@ export const tests = {
     await tabIntoList(page);
     const skip = await walk(page, "ArrowRight", ["Delivery", "Details"]);
     if (JSON.stringify(skip) !== JSON.stringify(["Delivery", "Details"])) problems.push(`disabled-tab: ArrowRight goes ${JSON.stringify(skip)}, expected Delivery (skipping Size guide), then Details`);
+    // Disabled last tab: ArrowRight from Delivery wraps past Care to Details, skipping Size guide too.
+    await open("disabled-ends");
+    expect.equal(await tabIntoList(page), "Delivery", "Tab enters disabled-ends on Delivery");
+    const ends = await walk(page, "ArrowRight", ["Details", "Delivery"]);
+    if (JSON.stringify(ends) !== JSON.stringify(["Details", "Delivery"])) problems.push(`disabled-ends: ArrowRight goes ${JSON.stringify(ends)}, expected Details (wrapping past Care and Size guide), then Delivery`);
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -400,6 +405,14 @@ export const tests = {
     expect.equal(await tabIntoList(page), "Addresses", "Tab enters vertical-pill on Addresses");
     const p2 = await walk(page, "ArrowDown", ["Payments", "Profile"]);
     if (JSON.stringify(p2) !== JSON.stringify(["Payments", "Profile"])) problems.push(`vertical-pill: ArrowDown goes ${JSON.stringify(p2)}, expected Payments, Profile (wrapping)`);
+    // list.loop false: ArrowDown on the last tab stays there. The wraps above are the control.
+    await open("no-loop");
+    expect.equal(await tabIntoList(page), "Payments", "Tab enters no-loop on Payments, the last tab");
+    await press(page, "ArrowDown");
+    const nl = await read(page, "no-loop");
+    if (nl.focus !== "Payments" || JSON.stringify(nl.selected) !== JSON.stringify(["Payments"])) problems.push(`no-loop: with list.loop false ArrowDown on the last tab moved focus to "${nl.focus}" and selected ${JSON.stringify(nl.selected)}, expected it to stay on Payments`);
+    const up = await press(page, "ArrowUp", "Addresses");
+    if (up !== "Addresses") problems.push(`no-loop: control: ArrowUp from Payments moves focus to "${up}", expected Addresses`);
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -411,6 +424,14 @@ export const tests = {
     if (JSON.stringify(path) !== JSON.stringify(["Payments", "Addresses", "Profile"])) problems.push(`vertical: ArrowUp goes ${JSON.stringify(path)}, expected Payments (wrapping), Addresses, Profile`);
     const s = await read(page, "vertical");
     if (JSON.stringify(s.selected) !== JSON.stringify(["Profile"])) problems.push(`vertical: after the walk ${JSON.stringify(s.selected)} is selected, expected Profile (automatic activation)`);
+    // list.loop false: walk up to the first tab, then ArrowUp there stays. The wrap above is the control.
+    await open("no-loop");
+    await tabIntoList(page);
+    const upPath = await walk(page, "ArrowUp", ["Addresses", "Profile"]);
+    if (JSON.stringify(upPath) !== JSON.stringify(["Addresses", "Profile"])) problems.push(`no-loop: ArrowUp goes ${JSON.stringify(upPath)}, expected Addresses, Profile`);
+    await press(page, "ArrowUp");
+    const nl = await read(page, "no-loop");
+    if (nl.focus !== "Profile" || JSON.stringify(nl.selected) !== JSON.stringify(["Profile"])) problems.push(`no-loop: with list.loop false ArrowUp on the first tab moved focus to "${nl.focus}" and selected ${JSON.stringify(nl.selected)}, expected it to stay on Profile`);
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -425,6 +446,11 @@ export const tests = {
     await press(page, "ArrowLeft", "Delivery");
     const got2 = await press(page, "Home", "Details");
     if (got2 !== "Details") problems.push(`line: Home from Delivery moves focus to "${got2}", expected Details`);
+    // Disabled first tab: Home skips Size guide and lands on Details.
+    await open("disabled-ends");
+    expect.equal(await tabIntoList(page), "Delivery", "Tab enters disabled-ends on Delivery");
+    const got3 = await press(page, "Home", "Details");
+    if (got3 !== "Details") problems.push(`disabled-ends: Home moves focus to "${got3}", expected Details (the first tab that is not disabled; Size guide is disabled)`);
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -439,6 +465,12 @@ export const tests = {
     await press(page, "Home", "Details");
     const got2 = await press(page, "End", "Questions and answers");
     if (got2 !== "Questions and answers") problems.push(`worst-case-320: End moves focus to "${got2}", expected Questions and answers`);
+    // Disabled last tab: End skips Care and lands on Delivery.
+    await open("disabled-ends");
+    await tabIntoList(page);
+    await press(page, "Home", "Details");
+    const got3 = await press(page, "End", "Delivery");
+    if (got3 !== "Delivery") problems.push(`disabled-ends: End from Details moves focus to "${got3}", expected Delivery (the last tab that is not disabled; Care is disabled)`);
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -446,12 +478,19 @@ export const tests = {
     await open("worst-case-320", { width: 320 });
     expect.equal(await tabIntoList(page), "Questions and answers", "Tab enters worst-case-320 on the selected last tab");
     expect.equal(await press(page, "PageUp", "Details"), "Details", "PageUp moves focus to the first tab");
+    await open("disabled-ends");
+    expect.equal(await tabIntoList(page), "Delivery", "Tab enters disabled-ends on Delivery");
+    expect.equal(await press(page, "PageUp", "Details"), "Details", "disabled-ends: PageUp skips the disabled Size guide and lands on Details");
   },
 
   "tabs-page-down-last": async ({ page, open, expect }) => {
     await open("line");
     expect.equal(await tabIntoList(page), "Details", "Tab enters line on Details");
     expect.equal(await press(page, "PageDown", "Delivery"), "Delivery", "PageDown moves focus to the last tab");
+    await open("disabled-ends");
+    await tabIntoList(page);
+    expect.equal(await press(page, "Home", "Details"), "Details", "control: Home moves disabled-ends to Details");
+    expect.equal(await press(page, "PageDown", "Delivery"), "Delivery", "disabled-ends: PageDown skips the disabled Care and lands on Delivery");
   },
 
   "tabs-rtl-arrows": async ({ page, open, expect }) => {
@@ -637,7 +676,7 @@ export const tests = {
           const line = C.over(C.parse(ind[`border${edge}Color`]), page_);
           const lineWidth = parseFloat(ind[`border${edge}Width`]) || 0;
           const fill = C.over(C.parse(getComputedStyle(t).backgroundColor), page_);
-          return { variant: t.closest('[data-slot="tabs"]').getAttribute("data-variant"), line: C.hex(line), lineWidth, lineRatio: C.ratio(line, page_), fill: C.hex(fill), fillRatio: C.ratio(fill, page_), page: C.hex(page_) };
+          return { variant: t.closest('[data-slot~="tabs"]').getAttribute("data-variant"), line: C.hex(line), lineWidth, lineRatio: C.ratio(line, page_), fill: C.hex(fill), fillRatio: C.ratio(fill, page_), page: C.hex(page_) };
         }, { LIST, TAB, INDICATOR });
         if (r.variant === "line") {
           if (r.lineWidth < 1.99) problems.push(`${id} ${theme}: the selected tab's line is ${r.lineWidth} px`);
@@ -681,7 +720,7 @@ export const tests = {
 
   "tabs-selected-forced-colors": async ({ page, open, expect }) => {
     const problems = [];
-    for (const id of ["line", "vertical", "pill", "small-pill"]) {
+    for (const id of ["line", "vertical", "disabled-ends", "pill", "small-pill", "vertical-pill"]) {
       await open(id);
       await page.emulateMedia({ forcedColors: "active" });
       expect.equal(await page.evaluate(() => matchMedia("(forced-colors: active)").matches), true, "the page sees forced colours, so the measurement means something");
@@ -699,6 +738,8 @@ export const tests = {
       const sel = r.find((t) => t.selected), others = r.filter((t) => !t.selected);
       if (id.includes("pill")) {
         if (!sel.border.every(Boolean)) problems.push(`${id}: in forced colours the selected pill's border shows on ${sel.border.filter(Boolean).length} of 4 sides`);
+        // The pill's indicator is transparent, and forced colours paint a transparent border, so the spec gives it no width.
+        if (sel.line) problems.push(`${id}: in forced colours the selected pill also shows a line under it (${sel.raw})`);
         for (const o of others) if (o.border.some(Boolean) || o.line) problems.push(`${id}: in forced colours an unselected pill shows a border or line too, so nothing marks the selected one`);
       } else {
         if (!sel.line) problems.push(`${id}: in forced colours the selected tab's line is gone (${sel.raw})`);

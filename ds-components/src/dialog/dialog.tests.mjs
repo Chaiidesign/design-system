@@ -8,26 +8,28 @@
 //   window.__dialogControl["controlled-without-trigger"].setOpen   opens that dialog as a product would
 //   window.__dialogFixtures.mountUntitled(kind)      mounts a dialog without a title, for the warning test
 // The overlay and the content are portalled to the end of <body>, so every part is found document-wide.
-// The trigger and the close parts are Souvenir Buttons rendered through asChild. Button sets its own
-// data-slot="button" over the part's, so the trigger is found by aria-haspopup="dialog" and the close parts by
-// their text inside the footer.
+// The trigger and the close parts are Souvenir Buttons rendered through asChild, so each carries two slot names
+// (data-slot="button dialog-trigger"). Every part is found by the word, [data-slot~="..."].
 // Focus is reached with real Tab presses. Every "nothing happened" test first proves the same action does
 // something on a live example, so it cannot pass by measuring nothing.
 
-const OVERLAY = '[data-slot="dialog-overlay"]';
-const CONTENT = '[data-slot="dialog-content"]';
-const HEADER = '[data-slot="dialog-header"]';
-const TITLE = '[data-slot="dialog-title"]';
-const DESCRIPTION = '[data-slot="dialog-description"]';
-const BODY = '[data-slot="dialog-body"]';
-const FOOTER = '[data-slot="dialog-footer"]';
-const TRIGGER = '[aria-haspopup="dialog"]';
-const ALL_EXAMPLES = ["default", "confirm-step", "small", "medium", "no-description", "not-dismissible", "title-focus", "closed", "controlled-without-trigger", "long-text", "worst-case-320"];
+const OVERLAY = '[data-slot~="dialog-overlay"]';
+const CONTENT = '[data-slot~="dialog-content"]';
+const HEADER = '[data-slot~="dialog-header"]';
+const TITLE = '[data-slot~="dialog-title"]';
+const DESCRIPTION = '[data-slot~="dialog-description"]';
+const BODY = '[data-slot~="dialog-body"]';
+const FOOTER = '[data-slot~="dialog-footer"]';
+const TRIGGER = '[data-slot~="dialog-trigger"]';
+const CLOSE = '[data-slot~="dialog-close"]';
+const MENU_TRIGGER = '[data-slot~="dropdown-menu-trigger"]';
+const MENU_CONTENT = '[data-slot~="dropdown-menu-content"]';
+const ALL_EXAMPLES = ["default", "confirm-step", "small", "medium", "no-description", "not-dismissible", "title-focus", "closed", "controlled-without-trigger", "long-text", "worst-case-320", "with-menu"];
 const NOT_DISMISSIBLE = ["not-dismissible", "worst-case-320"];
 
 const events = (page, id) => page.evaluate((k) => {
   const e = (window.__dialogEvents && window.__dialogEvents[k]) || {};
-  return { openChange: e.openChange || [], action: e.action || [] };
+  return { openChange: e.openChange || [], action: e.action || [], menuOpenChange: e.menuOpenChange || [] };
 }, id);
 const openCount = (page) => page.locator(`${CONTENT}[data-state="open"]`).count();
 const waitOpen = (page) => page.locator(`${CONTENT}[data-state="open"]`).first().waitFor({ timeout: 5000 });
@@ -45,6 +47,7 @@ const box = async (page, sel) => {
 };
 const clickAt = (page, b) => page.mouse.click(b.x + b.width / 2, b.y + b.height / 2);
 const footerButton = (page, text) => page.locator(`${FOOTER} button`, { hasText: text }).first();
+const closePart = (page, text) => page.locator(`${FOOTER} ${CLOSE}`, { hasText: text }).first();
 
 // Opens an example and, for the closed one, presses its trigger, so the dialog is open either way.
 async function openDialog(page, open, id, opts = {}) {
@@ -69,8 +72,8 @@ async function outsidePoint(page) {
   const c = await box(page, CONTENT);
   const p = { x: o.x + 8, y: o.y + 8 };
   if (p.x >= c.x && p.x <= c.x + c.width && p.y >= c.y && p.y <= c.y + c.height) throw new Error("no overlay point outside the content");
-  const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.getAttribute("data-slot"), p);
-  if (hit !== "dialog-overlay") throw new Error(`the point ${p.x},${p.y} hits ${hit}, not the overlay`);
+  const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.getAttribute("data-slot") ?? "", p);
+  if (!hit.split(" ").includes("dialog-overlay")) throw new Error(`the point ${p.x},${p.y} hits ${hit}, not the overlay`);
   return p;
 }
 
@@ -175,7 +178,7 @@ export const tests = {
   "dialog-trigger-attributes": async ({ page, open, expect }) => {
     await open("closed");
     const trigger = page.locator(TRIGGER);
-    expect.equal(await trigger.count(), 1, "the closed example has one element with aria-haspopup=\"dialog\"");
+    expect.equal(await trigger.count(), 1, "the closed example has one trigger part");
     const read = () => trigger.evaluate((el) => ({ tag: el.tagName, haspopup: el.getAttribute("aria-haspopup"), expanded: el.getAttribute("aria-expanded"), controls: el.getAttribute("aria-controls"), state: el.getAttribute("data-state") }));
     const closed = await read();
     expect.equal(closed.tag, "BUTTON", "the trigger is a button element");
@@ -210,13 +213,33 @@ export const tests = {
   "dialog-focus-on-open": async ({ page, open, expect }) => {
     const problems = [];
     // [example, the first control that is not a link]. long-text's body scrolls and is tabbable, yet is not a control.
-    for (const [id, want] of [["default", "Cancel"], ["closed", "Cancel"], ["not-dismissible", "Use a different card"], ["long-text", "Back"], ["controlled-without-trigger", "Sign out"]]) {
+    for (const [id, want] of [["default", "Cancel"], ["closed", "Cancel"], ["not-dismissible", "Use a different card"], ["long-text", "Back"], ["controlled-without-trigger", "Sign out"], ["with-menu", "Tuesday 18 November"]]) {
       await openDialog(page, open, id);
       await page.waitForTimeout(50);
       const f = await focused(page);
       if (!f.inside) problems.push(`${id}: focus is on ${f.tag} "${f.text}", outside the dialog`);
       else if (f.text !== want) problems.push(`${id}: focus is on "${f.text}" (${f.slot}), expected the first control "${want}"`);
     }
+    // No control inside: focus goes to the content itself, which has tabindex -1. No spec example can lack a control
+    // (dialog-visible-close, dialog-not-dismissible-has-way-out), so a test hook mounts one on a page with none open.
+    await open("closed");
+    expect.equal(await openCount(page), 0, "the closed example starts with no dialog open");
+    await page.evaluate(() => window.__dialogFixtures.mountNoControl());
+    await waitOpen(page);
+    await page.waitForTimeout(50);
+    const r = await page.evaluate(({ content, title }) => {
+      const a = document.activeElement;
+      const c = document.querySelector(content);
+      return {
+        onContent: a === c, tabIndex: c.getAttribute("tabindex"), title: (c.querySelector(title)?.textContent || "").trim(),
+        controls: c.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])").length,
+        activeSlot: a ? a.getAttribute("data-slot") : null, activeTag: a ? a.tagName : null,
+      };
+    }, { content: CONTENT, title: TITLE });
+    if (r.title !== "Saving your address") problems.push(`no control: the open dialog is "${r.title}", not the hook's`);
+    if (r.controls !== 0) problems.push(`no control: the hook's dialog holds ${r.controls} tabbable elements, so it proves nothing`);
+    if (!r.onContent) problems.push(`no control: focus is on ${r.activeTag} (${r.activeSlot}), expected the content itself`);
+    if (r.tabIndex !== "-1") problems.push(`no control: the content's tabindex is ${r.tabIndex}, needs -1`);
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -272,8 +295,6 @@ export const tests = {
     expect.deepEqual(seen.map((f) => f.text), ["Use this address", "Cancel", "Use this address", "Cancel"], "Shift+Tab from the first control wraps to the last");
   },
 
-  // Not covered here: "when a DropdownMenu inside the dialog is open, the first Escape closes only the menu". No
-  // example in the spec holds a menu, and DropdownMenu is being built in parallel.
   "dialog-escape-closes": async ({ page, open, expect }) => {
     const problems = [];
     for (const id of ["default", "closed", "medium"]) {
@@ -283,6 +304,31 @@ export const tests = {
       const e = await events(page, id);
       const want = id === "closed" ? "[true,false]" : "[false]";
       if (JSON.stringify(e.openChange) !== want) problems.push(`${id}: onOpenChange calls were ${JSON.stringify(e.openChange)}, expected ${want}`);
+    }
+    // A DropdownMenu open inside the dialog: the first Escape closes only the menu, the second the dialog.
+    const id = "with-menu";
+    await openDialog(page, open, id);
+    await page.waitForTimeout(50);
+    const start = await focused(page);
+    if (!(start.slot || "").split(" ").includes("dropdown-menu-trigger")) problems.push(`${id}: focus starts on "${start.text}" (${start.slot}), not the menu trigger`);
+    await page.keyboard.press("Enter");
+    let menuOpened = true;
+    try { await page.locator(MENU_CONTENT).first().waitFor({ timeout: 5000 }); } catch { menuOpened = false; problems.push(`${id}: Enter on the menu trigger did not open the menu`); }
+    if (menuOpened) {
+      const inMenu = await page.evaluate((m) => !!document.activeElement?.closest(m), MENU_CONTENT);
+      if (!inMenu) problems.push(`${id}: with the menu open, focus is not inside the menu`);
+      await page.keyboard.press("Escape");
+      await page.waitForFunction((m) => !document.querySelector(m), MENU_CONTENT, { timeout: 3000 }).catch(() => problems.push(`${id}: the first Escape did not close the menu`));
+      await page.waitForTimeout(150);
+      const after1 = { dialogs: await openCount(page), events: await events(page, id), focus: await focused(page) };
+      if (after1.dialogs !== 1) problems.push(`${id}: after the first Escape ${after1.dialogs} dialogs are open; the dialog must stay open`);
+      if (after1.events.openChange.length) problems.push(`${id}: the first Escape called the dialog's onOpenChange with ${JSON.stringify(after1.events.openChange)}`);
+      if (JSON.stringify(after1.events.menuOpenChange) !== "[true,false]") problems.push(`${id}: the menu's onOpenChange calls were ${JSON.stringify(after1.events.menuOpenChange)}, expected [true,false]`);
+      if (!(after1.focus.slot || "").split(" ").includes("dropdown-menu-trigger")) problems.push(`${id}: after the first Escape focus is on "${after1.focus.text}" (${after1.focus.slot}), not back on the menu trigger`);
+      await page.keyboard.press("Escape");
+      try { await waitClosed(page); } catch { problems.push(`${id}: the second Escape did not close the dialog`); }
+      const e2 = await events(page, id);
+      if (JSON.stringify(e2.openChange) !== "[false]") problems.push(`${id}: after the second Escape the dialog's onOpenChange calls were ${JSON.stringify(e2.openChange)}, expected [false]`);
     }
     expect.deepEqual(problems, [], problems.join("; "));
   },
@@ -367,10 +413,10 @@ export const tests = {
     const problems = [];
     for (const how of ["press", "Enter", "Space"]) {
       await openDialog(page, open, "default");
-      if (how === "press") await clickAt(page, await footerButton(page, "Cancel").boundingBox());
+      if (how === "press") await clickAt(page, await closePart(page, "Cancel").boundingBox());
       else {
-        const f = await tabUntil(page, (x) => x.text === "Cancel");
-        if (!f) { problems.push(`${how}: Tab never reached Cancel`); continue; }
+        const f = await tabUntil(page, (x) => x.text === "Cancel" && (x.slot || "").split(" ").includes("dialog-close"));
+        if (!f) { problems.push(`${how}: Tab never reached the close part Cancel`); continue; }
         await page.keyboard.press(how);
       }
       try { await waitClosed(page); } catch { problems.push(`${how} on the close part did not close the dialog`); continue; }
@@ -380,18 +426,17 @@ export const tests = {
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
-  // The close part cannot be told from other footer buttons by an attribute (Button replaces its data-slot), so
-  // it is found by what it does: a visible footer button that closes the dialog when pressed.
+  // A close part in the footer, found by its slot word, that is visible in the viewport and closes the dialog.
   "dialog-visible-close": async ({ page, open, expect }) => {
     const problems = [];
     const dismissible = ALL_EXAMPLES.filter((id) => !NOT_DISMISSIBLE.includes(id));
     for (const id of dismissible) {
       await openDialog(page, open, id, { width: 375, height: 667 });
-      const count = await page.locator(`${FOOTER} button`).count();
+      const count = await page.locator(`${FOOTER} ${CLOSE}`).count();
       let found = null;
       for (let i = 0; i < count && !found; i++) {
         if (i > 0) await openDialog(page, open, id, { width: 375, height: 667 });
-        const b = page.locator(`${FOOTER} button`).nth(i);
+        const b = page.locator(`${FOOTER} ${CLOSE}`).nth(i);
         const r = await b.evaluate((el) => {
           const rect = el.getBoundingClientRect();
           return { text: (el.textContent || "").trim(), visible: el.checkVisibility({ opacityProperty: true, visibilityProperty: true }) && rect.width > 0 && rect.height > 0 && rect.top >= 0 && rect.bottom <= innerHeight && rect.left >= 0 && rect.right <= innerWidth };
@@ -400,7 +445,7 @@ export const tests = {
         await clickAt(page, await b.boundingBox());
         try { await waitClosed(page); found = r.text; } catch { /* not a close part */ }
       }
-      if (!found) problems.push(`${id}: no visible footer button closes the dialog (${count} footer buttons)`);
+      if (!found) problems.push(`${id}: no visible close part in the footer closes the dialog (${count} close parts)`);
     }
     expect.deepEqual(problems, [], problems.join("; "));
   },
@@ -420,7 +465,7 @@ export const tests = {
     await open("closed");
     await clickAt(page, await box(page, TRIGGER));
     await waitOpen(page);
-    await clickAt(page, await footerButton(page, "Cancel").boundingBox());
+    await clickAt(page, await closePart(page, "Cancel").boundingBox());
     await waitClosed(page);
     if (!(await onTrigger())) problems.push(`after Cancel focus is on ${JSON.stringify(await focused(page))}, not the trigger`);
     // Open on load (defaultOpen), with a trigger.
@@ -629,7 +674,7 @@ export const tests = {
           const lines = new Set(rects.map((r) => Math.round(r.top))).size;
           const right = Math.max(...rects.map((r) => r.right));
           let clipped = null;
-          for (let e = el; e && !e.matches('[data-slot="dialog-content"]'); e = e.parentElement) {
+          for (let e = el; e && !e.matches('[data-slot~="dialog-content"]'); e = e.parentElement) {
             const o = getComputedStyle(e);
             if ([o.overflowX, o.overflowY].some((v) => v !== "visible") || o.textOverflow === "ellipsis" || o.webkitLineClamp !== "none") { clipped = e.getAttribute("data-slot") || e.tagName; break; }
           }

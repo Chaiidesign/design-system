@@ -9,9 +9,9 @@
 // touch emulation, asserted through matchMedia before measuring. Every case is measured before anything is
 // asserted, so one failure message reports all of them.
 
-const ROOT = '[data-slot="input"]';
-const CONTROL = '[data-slot="input-control"]';
-const FIELD = '[data-slot="input-input"]';
+const ROOT = '[data-slot~="input"]';
+const CONTROL = '[data-slot~="input-control"]';
+const FIELD = '[data-slot~="input-input"]';
 const ALL_EXAMPLES = ["default", "with-description", "placeholder", "required", "invalid", "disabled", "read-only", "small", "large", "prefix-text", "suffix-text", "search", "password", "url", "number", "hover", "focus", "long-text", "worst-case-320"];
 
 // Presses Tab until the input has focus. Returns true when it got there.
@@ -78,7 +78,7 @@ export const tests = {
     const problems = [];
     for (const id of ALL_EXAMPLES) {
       await open(id);
-      const r = await page.locator(FIELD).evaluate((el) => ({ tag: el.tagName, editable: el.isContentEditable, count: document.querySelectorAll('[data-slot="input-input"]').length, ce: document.querySelectorAll("[contenteditable]").length }));
+      const r = await page.locator(FIELD).evaluate((el) => ({ tag: el.tagName, editable: el.isContentEditable, count: document.querySelectorAll('[data-slot~="input-input"]').length, ce: document.querySelectorAll("[contenteditable]").length }));
       if (r.count !== 1) problems.push(`${id}: ${r.count} input parts`);
       if (r.tag !== "INPUT") problems.push(`${id}: the input part is a ${r.tag}`);
       if (r.editable || r.ce) problems.push(`${id}: something is contenteditable`);
@@ -94,21 +94,21 @@ export const tests = {
     await page.goto(url.toString(), { waitUntil: "load" });
     await page.waitForFunction(() => document.documentElement.getAttribute("data-gallery-ready") === "true", null, { timeout: 15000 });
     const r = await page.evaluate(() => {
-      const roots = [...document.querySelectorAll('[data-slot="input"]')];
+      const roots = [...document.querySelectorAll('[data-slot~="input"]')];
       const problems = [];
       const ids = [];
       for (const root of roots) {
-        const input = root.querySelector('[data-slot="input-input"]');
+        const input = root.querySelector('[data-slot~="input-input"]');
         const id = input && input.id;
         if (!id) { problems.push("an input has no id"); continue; }
         ids.push(id);
         if (document.getElementById(id) !== input) problems.push(`the id ${id} does not lead back to its own input`);
-        const label = root.querySelector('[data-slot="input-label"]');
+        const label = root.querySelector('[data-slot~="input-label"]');
         if (label && label.htmlFor !== id) problems.push(`a label's for is ${label.htmlFor}, its input's id is ${id}`);
         if (label && !(input.labels && [...input.labels].includes(label))) problems.push(`the label is not in ${id}'s labels`);
-        const desc = root.querySelector('[data-slot="input-description"]');
+        const desc = root.querySelector('[data-slot~="input-description"]');
         if (desc && desc.id !== `${id}-description`) problems.push(`the description's id is ${desc.id}, not made from ${id}`);
-        const err = root.querySelector('[data-slot="input-error-message"]');
+        const err = root.querySelector('[data-slot~="input-error-message"]');
         if (err && err.id !== `${id}-error`) problems.push(`the error message's id is ${err.id}, not made from ${id}`);
       }
       const all = [...document.querySelectorAll("[id]")].map((e) => e.id);
@@ -151,7 +151,7 @@ export const tests = {
       await open(id);
       const r = await page.evaluate(({ root, field }) => {
         const input = document.querySelector(field);
-        const err = document.querySelector('[data-slot="input-error-message"]');
+        const err = document.querySelector('[data-slot~="input-error-message"]');
         return { ariaInvalid: input.getAttribute("aria-invalid"), error: !!err && err.getBoundingClientRect().height > 0 && getComputedStyle(err).visibility !== "hidden", dataInvalid: document.querySelector(root).hasAttribute("data-invalid") };
       }, { root: ROOT, field: FIELD });
       if (r.error) {
@@ -175,9 +175,9 @@ export const tests = {
       for (const theme of ["light", "dark"]) {
         await open(id, { theme });
         const r = await page.evaluate((control) => {
-          const err = document.querySelector('[data-slot="input-error-message"]');
-          const icon = document.querySelector('[data-slot="input-error-icon"]');
-          const text = document.querySelector('[data-slot="input-error-text"]');
+          const err = document.querySelector('[data-slot~="input-error-message"]');
+          const icon = document.querySelector('[data-slot~="input-error-icon"]');
+          const text = document.querySelector('[data-slot~="input-error-text"]');
           const svg = icon && icon.querySelector("svg");
           const ib = svg ? svg.getBoundingClientRect() : null;
           const cs = getComputedStyle(document.querySelector(control));
@@ -206,10 +206,10 @@ export const tests = {
       await open(id);
       const r = await page.evaluate((field) => {
         const input = document.querySelector(field);
-        const mark = document.querySelector('[data-slot="input-required-mark"]');
-        const label = document.querySelector('[data-slot="input-label"]');
+        const mark = document.querySelector('[data-slot~="input-required-mark"]');
+        const label = document.querySelector('[data-slot~="input-label"]');
         const b = mark ? mark.getBoundingClientRect() : null;
-        return { native: input.required, mark: mark ? mark.textContent.trim() : null, inLabel: !!(mark && label && label.contains(mark)), visible: !!b && b.width > 0 && b.height > 0 && getComputedStyle(mark).visibility !== "hidden" && getComputedStyle(mark).opacity !== "0", dataRequired: document.querySelector('[data-slot="input"]').hasAttribute("data-required") };
+        return { native: input.required, mark: mark ? mark.textContent.trim() : null, inLabel: !!(mark && label && label.contains(mark)), visible: !!b && b.width > 0 && b.height > 0 && getComputedStyle(mark).visibility !== "hidden" && getComputedStyle(mark).opacity !== "0", dataRequired: document.querySelector('[data-slot~="input"]').hasAttribute("data-required") };
       }, FIELD);
       if (want) {
         if (!r.native) problems.push(`${id}: the input has no native required attribute`);
@@ -403,7 +403,7 @@ export const tests = {
       await textAt200(page, expect);
       const m = await page.evaluate(() => {
         const vw = document.documentElement.clientWidth;
-        const q = (s) => document.querySelector(`[data-slot="${s}"]`);
+        const q = (s) => document.querySelector(`[data-slot~="${s}"]`);
         const root = q("input").getBoundingClientRect();
         const out = { vw, scrollWidth: document.documentElement.scrollWidth, problems: [] };
         for (const slot of ["input-label", "input-control", "input-description", "input-error-message", "input-error-text", "input-prefix", "input-suffix", "input-input"]) {
@@ -471,13 +471,13 @@ export const tests = {
       for (const width of [320, 1280]) {
         await open(id, { width });
         const m = await page.evaluate(() => {
-          const root = document.querySelector('[data-slot="input"]');
+          const root = document.querySelector('[data-slot~="input"]');
           const order = ["input-label", "input-control", "input-description", "input-error-message"];
           const kids = [...root.children].map((e) => e.getAttribute("data-slot"));
-          const parts = order.map((s) => root.querySelector(`:scope > [data-slot="${s}"]`)).filter(Boolean).map((e) => ({ slot: e.getAttribute("data-slot"), ...JSON.parse(JSON.stringify(e.getBoundingClientRect())) }));
+          const parts = order.map((s) => root.querySelector(`:scope > [data-slot~="${s}"]`)).filter(Boolean).map((e) => ({ slot: e.getAttribute("data-slot"), ...JSON.parse(JSON.stringify(e.getBoundingClientRect())) }));
           const gap = parseFloat(getComputedStyle(root).rowGap);
-          const icon = document.querySelector('[data-slot="input-error-icon"]');
-          const text = document.querySelector('[data-slot="input-error-text"]');
+          const icon = document.querySelector('[data-slot~="input-error-icon"]');
+          const text = document.querySelector('[data-slot~="input-error-text"]');
           let err = null;
           if (icon && text) {
             const r = document.createRange();
@@ -520,7 +520,7 @@ export const tests = {
           await page.keyboard.type(long);
         }
         const m = await page.evaluate(() => {
-          const q = (s) => document.querySelector(`[data-slot="${s}"]`);
+          const q = (s) => document.querySelector(`[data-slot~="${s}"]`);
           const c = q("input-control");
           const cs = getComputedStyle(c);
           const px = (v) => parseFloat(v) || 0;
@@ -555,7 +555,7 @@ export const tests = {
     for (const [id, slots] of Object.entries(want)) {
       await open(id);
       for (const slot of slots) {
-        const el = page.locator(`[data-slot="${slot}"]`);
+        const el = page.locator(`[data-slot~="${slot}"]`);
         const n = await el.count();
         if (n !== 1) { problems.push(`${id}: ${n} ${slot} parts`); continue; }
         const v = await el.getAttribute("aria-hidden");
@@ -582,7 +582,7 @@ export const tests = {
           const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.getAttribute("data-slot"), { x, y });
           if (hit !== "input-control") problems.push(`${id}: the padding point lands on ${hit}, not the control`);
         } else {
-          const b = await page.locator(`[data-slot="${t}"]`).boundingBox();
+          const b = await page.locator(`[data-slot~="${t}"]`).boundingBox();
           x = b.x + b.width / 2; y = b.y + b.height / 2;
         }
         await page.mouse.click(x, y);

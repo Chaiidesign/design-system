@@ -4,7 +4,7 @@
    Tokens only, logical properties only. No animation: the fade and scale are not carried yet. */
 @layer ds.extensions {
   /* dialog-overlay-covers-viewport: fixed to the viewport, covering it, centring its one child. */
-  [data-slot="dialog-overlay"] {
+  [data-slot~="dialog-overlay"] {
     position: fixed;
     inset: 0;
     display: flex;
@@ -14,7 +14,7 @@
   }
 
   /* dialog-body-scrolls: a column whose height is capped at the overlay's inner box. */
-  [data-slot="dialog-content"] {
+  [data-slot~="dialog-content"] {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -23,7 +23,7 @@
   }
 
   /* The header is a column; neither it nor the footer shrinks, so the title and the actions stay in view. */
-  [data-slot="dialog-header"] {
+  [data-slot~="dialog-header"] {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -31,7 +31,7 @@
   }
 
   /* The body takes the leftover height and is the only part that scrolls on the block axis. */
-  [data-slot="dialog-body"] {
+  [data-slot~="dialog-body"] {
     flex: 1 1 auto;
     box-sizing: border-box;
     overflow-y: auto;
@@ -39,17 +39,8 @@
     overflow-wrap: anywhere;
   }
 
-  /* A body that scrolls is in the Tab order (dialog-body-scroll-keyboard), so it needs a visible focus ring
-     (WCAG 2.4.7; the browser's own is 1 px). The spec carries none for the body yet, so this rule sets nothing
-     the spec sets; it uses the same focus tokens as every control, drawn inside so the content does not clip it.
-     Reported to the lead: the spec should carry it. */
-  [data-slot="dialog-body"]:focus-visible {
-    outline: var(--border-focus-width) solid var(--color-border-focus);
-    outline-offset: calc(-1 * var(--border-focus-width));
-  }
-
   /* dialog-footer-wraps: one row aligned to the end, wrapping when the actions do not fit. */
-  [data-slot="dialog-footer"] {
+  [data-slot~="dialog-footer"] {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -59,8 +50,8 @@
   }
 
   /* dialog-text-wraps: a long title or description wraps and breaks long words; nothing is cut off. */
-  [data-slot="dialog-title"],
-  [data-slot="dialog-description"] {
+  [data-slot~="dialog-title"],
+  [data-slot~="dialog-description"] {
     margin: 0;
     overflow-wrap: anywhere;
   }

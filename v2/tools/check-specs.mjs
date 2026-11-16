@@ -14,6 +14,12 @@
 // ds-tokens/proposed/tokens.json. Only the semantic file is used: components never name primitives.
 // A name present in both counts as from Figma.
 //
+// data-slot is a space-separated list of slot names, like a class list: one element can be two parts at once (a
+// Button inside DropdownMenuTrigger asChild carries data-slot="button dropdown-menu-trigger"). A slot name is one
+// word (the schema's pattern), and a state selector that finds a part must do it by the word, [data-slot~="x"];
+// [data-slot="x"] matches the whole attribute and misses an element that carries a second name, so state-target
+// reports it.
+//
 // opacity and layer have no token collection yet. A value for either that is not a keyword is
 // reported as a warning, never passed silently and never an error.
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
@@ -254,6 +260,9 @@ export function checkSpecs(entries, ctx, { specFilesOnDisk = null } = {}) {
     for (const [name, state] of Object.entries(states)) {
       const on = obj(state).on;
       if (!Object.prototype.hasOwnProperty.call(parts, on)) out('state-target', `states.${name}.on`, `the state ${name} is on ${q(on)}, which is not a part.`);
+      const sel = str(obj(state).selector) || '';
+      const whole = sel.match(/\[\s*data-slot\s*([|^$*]?=)/);
+      if (whole) out('state-target', `states.${name}.selector`, `the selector ${q(sel)} finds a part with [data-slot${whole[1]}...], which compares the whole attribute; data-slot is a list of words, so write [data-slot~="<slot>"].`);
     }
     arr(spec.precedence).forEach((name, i) => {
       if (!Object.prototype.hasOwnProperty.call(states, name)) out('state-target', `precedence[${i}]`, `${q(name)} is listed in precedence but is not a state.`);
@@ -439,6 +448,11 @@ const FAULTS = {
   'dark-label-on-brand': (s) => { s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { label: { color: 'text/brand' } } }); },
 };
 
+// More planted faults for checks whose rule changed: each must fire its check, and only that check.
+const MORE_FAULTS = [
+  ['state-target', 'a state selector that finds a part by the whole data-slot attribute', (s) => { s.states.hover.selector = ':where([data-slot="button-label"]) :hover'; }],
+];
+
 function selfTest(ctx) {
   const [base] = readSpecFiles([join(SPEC_DIR, 'button.spec.json')]);
   if (base.spec === undefined) { console.log(`self-test cannot run: button.spec.json: ${base.error}`); return 1; }
@@ -446,11 +460,11 @@ function selfTest(ctx) {
   const run = (spec) => checkSpecs([{ file: 'button.spec.json', spec }], ctx, { specFilesOnDisk: [] }).findings;
   const baseline = new Set(run(structuredClone(base.spec)).map(keyOf));
   let failed = 0;
-  for (const check of CHECKS) {
+  for (const [check, plant] of [...CHECKS.map((c) => [c, FAULTS[c]]), ...MORE_FAULTS.map(([c, , f]) => [c, f])]) {
     const copy = structuredClone(base.spec);
     let fresh;
     try {
-      FAULTS[check](copy);
+      plant(copy);
       fresh = run(copy).filter((f) => !baseline.has(keyOf(f)));
     } catch (e) {
       failed += 1;

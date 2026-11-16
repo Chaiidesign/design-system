@@ -376,7 +376,7 @@
       "component": "DropdownMenu",
       "requirement": "dropdown-menu-shortcut-exposed",
       "level": "SHOULD",
-      "text": "An item with a shortcut hint carries the same shortcut in aria-keyshortcuts."
+      "text": "An item with a shortcut hint carries the same shortcut in aria-keyshortcuts, written as key names joined by + (Meta+C for the hint ⌘C), never as the glyphs of the hint."
     },
     {
       "id": "dropdown-menu-trigger-enter-opens",
@@ -688,7 +688,7 @@
       "component": "Input",
       "requirement": "input-placeholder-contrast",
       "level": "MUST",
-      "text": "The placeholder has at least 4.5 to 1 contrast against the control's fill in light and dark. It fails in light today until the text/placeholder override lands."
+      "text": "The placeholder has at least 4.5 to 1 contrast against the control's fill in light and dark."
     },
     {
       "id": "input-no-ios-zoom",
@@ -1008,7 +1008,7 @@
       "component": "Tabs",
       "requirement": "tabs-indicator-edge",
       "level": "MUST",
-      "text": "The indicator draws a border width/md thick on one edge only: the bottom edge of the tab when horizontal and the inline-start edge when vertical, along the tab's full length. It is written in the extensions stylesheet; the style rules set only its colour."
+      "text": "The indicator draws a border width/md thick on one edge only: the bottom edge of the tab when horizontal and the inline-start edge when vertical, along the tab's full length. The style rules set its colour and its width/md thickness; the extensions stylesheet sets which edge, by giving that edge alone a solid style."
     },
     {
       "id": "tabs-no-width-shift",

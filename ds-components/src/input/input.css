@@ -3,22 +3,22 @@
 @layer ds.components {
 
   /* styles[0]: The edge uses border/strong/default because border/primary/default is only 1.35 to 1 against the page and an input's edge is the only thing that shows where it is. The native input has no border, background or outline so the browser's own focus outline never doubles the control's ring. The placeholder takes text/placeholder through placeholderColor; that token is being fixed by an override for light contrast, so keep using it. */
-  [data-slot="input"] {
+  [data-slot~="input"] {
     gap: var(--spacing-static-60);
   }
-  [data-slot="input-label"] {
+  [data-slot~="input-label"] {
     color: var(--color-text-primary);
     font-size: var(--font-size-label-base);
     line-height: var(--line-height-label-base);
     font-weight: var(--font-weight-label);
   }
-  [data-slot="input-required-mark"] {
+  [data-slot~="input-required-mark"] {
     color: var(--color-text-secondary);
     font-size: var(--font-size-body-small);
     line-height: var(--line-height-body-small);
     font-weight: var(--font-weight-body);
   }
-  [data-slot="input-control"] {
+  [data-slot~="input-control"] {
     min-block-size: var(--size-control-md);
     padding-inline: var(--spacing-static-120);
     padding-block: var(--spacing-static-40);
@@ -33,17 +33,17 @@
     transition-duration: var(--duration-fast);
     transition-timing-function: var(--ease-standard);
     outline-color: var(--color-border-focus);
-    outline-style: solid;
     outline-width: 0;
     outline-offset: var(--border-focus-offset);
+    outline-style: none;
   }
-  [data-slot="input-prefix"] {
+  [data-slot~="input-prefix"] {
     color: var(--color-text-secondary);
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     font-weight: var(--font-weight-body);
   }
-  [data-slot="input-input"] {
+  [data-slot~="input-input"] {
     inline-size: 100%;
     padding-inline: var(--spacing-static-0);
     padding-block: var(--spacing-static-0);
@@ -54,31 +54,32 @@
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     font-weight: var(--font-weight-body);
+    outline-style: none;
   }
-  [data-slot="input-input"]::placeholder {
+  [data-slot~="input-input"]::placeholder {
     color: var(--color-text-placeholder);
   }
-  [data-slot="input-suffix"] {
+  [data-slot~="input-suffix"] {
     color: var(--color-text-secondary);
     font-size: var(--font-size-body-base);
     line-height: var(--line-height-body-base);
     font-weight: var(--font-weight-body);
   }
-  [data-slot="input-description"] {
+  [data-slot~="input-description"] {
     color: var(--color-text-secondary);
     font-size: var(--font-size-body-small);
     line-height: var(--line-height-body-small);
     font-weight: var(--font-weight-body);
   }
-  [data-slot="input-error-message"] {
+  [data-slot~="input-error-message"] {
     gap: var(--spacing-static-40);
   }
-  [data-slot="input-error-icon"] {
+  [data-slot~="input-error-icon"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
     color: var(--color-icon-error);
   }
-  [data-slot="input-error-text"] {
+  [data-slot~="input-error-text"] {
     color: var(--color-text-error);
     font-size: var(--font-size-body-small);
     line-height: var(--line-height-body-small);
@@ -86,17 +87,18 @@
   }
 
   /* styles[1] */
-  [data-slot="input-control"]:where(:hover:not(:focus-within)) {
+  [data-slot~="input-control"]:where(:hover:not(:focus-within)) {
     border-color: var(--color-border-strong-hover);
   }
 
   /* styles[2] */
-  [data-slot="input-control"]:where(:focus-within) {
+  [data-slot~="input-control"]:where(:focus-within) {
     outline-width: var(--border-focus-width);
+    outline-style: solid;
   }
 
   /* styles[3] */
-  :where([data-slot="input"][data-size="sm"]) [data-slot="input-control"] {
+  :where([data-slot~="input"][data-size="sm"]) [data-slot~="input-control"] {
     min-block-size: var(--size-control-sm);
     padding-inline: var(--spacing-static-100);
     gap: var(--spacing-static-60);
@@ -104,22 +106,22 @@
   }
 
   /* styles[4] */
-  :where([data-slot="input"][data-size="lg"]) [data-slot="input-control"] {
+  :where([data-slot~="input"][data-size="lg"]) [data-slot~="input-control"] {
     min-block-size: var(--size-control-lg);
     padding-inline: var(--spacing-static-160);
     border-radius: var(--radius-height-44);
   }
-  :where([data-slot="input"][data-size="lg"]) [data-slot="input-prefix"] {
+  :where([data-slot~="input"][data-size="lg"]) [data-slot~="input-prefix"] {
     font-size: var(--font-size-body-large);
     line-height: var(--line-height-body-large);
     font-weight: var(--font-weight-body);
   }
-  :where([data-slot="input"][data-size="lg"]) [data-slot="input-input"] {
+  :where([data-slot~="input"][data-size="lg"]) [data-slot~="input-input"] {
     font-size: var(--font-size-body-large);
     line-height: var(--line-height-body-large);
     font-weight: var(--font-weight-body);
   }
-  :where([data-slot="input"][data-size="lg"]) [data-slot="input-suffix"] {
+  :where([data-slot~="input"][data-size="lg"]) [data-slot~="input-suffix"] {
     font-size: var(--font-size-body-large);
     line-height: var(--line-height-body-large);
     font-weight: var(--font-weight-body);
@@ -127,26 +129,26 @@
 
   /* styles[5]: iOS zooms the page when a focused field's text is under 16 pixels, and a finger needs a 44 pixel target. Where the pointer is coarse the text is body-large at every size. */
   @media (pointer: coarse) {
-    [data-slot="input-control"] {
+    [data-slot~="input-control"] {
       min-block-size: var(--size-target-min);
     }
   }
   @media (pointer: coarse) {
-    [data-slot="input-prefix"] {
+    [data-slot~="input-prefix"] {
       font-size: var(--font-size-body-large);
       line-height: var(--line-height-body-large);
       font-weight: var(--font-weight-body);
     }
   }
   @media (pointer: coarse) {
-    [data-slot="input-input"] {
+    [data-slot~="input-input"] {
       font-size: var(--font-size-body-large);
       line-height: var(--line-height-body-large);
       font-weight: var(--font-weight-body);
     }
   }
   @media (pointer: coarse) {
-    [data-slot="input-suffix"] {
+    [data-slot~="input-suffix"] {
       font-size: var(--font-size-body-large);
       line-height: var(--line-height-body-large);
       font-weight: var(--font-weight-body);
@@ -154,40 +156,40 @@
   }
 
   /* styles[6]: A thicker edge as well as a colour change, and the error message carries an icon and words, so the error never rests on colour alone. */
-  :where([data-slot="input"][data-invalid]:not([data-disabled]):not([data-readonly])) [data-slot="input-control"] {
+  :where([data-slot~="input"][data-invalid]:not([data-disabled]):not([data-readonly])) [data-slot~="input-control"] {
     border-color: var(--color-border-error);
     border-width: var(--border-width-md);
   }
 
   /* styles[7]: The edge stays at full strength and the text at text/primary: a read-only value must stay as readable as an editable one. Only the fill says it cannot be changed. */
-  :where([data-slot="input"][data-readonly]:not([data-disabled])) [data-slot="input-control"] {
+  :where([data-slot~="input"][data-readonly]:not([data-disabled])) [data-slot~="input-control"] {
     background-color: var(--color-surface-secondary);
     cursor: default;
   }
 
   /* styles[8]: The label keeps text/primary so a disabled field still says what it is. The border width goes back to width/sm in case the field was also invalid. */
-  :where([data-slot="input"][data-disabled]) [data-slot="input-control"] {
+  :where([data-slot~="input"][data-disabled]) [data-slot~="input-control"] {
     background-color: var(--color-surface-primary-disabled);
     border-color: var(--color-border-primary-disabled);
     border-width: var(--border-width-sm);
     cursor: not-allowed;
   }
-  :where([data-slot="input"][data-disabled]) [data-slot="input-input"] {
+  :where([data-slot~="input"][data-disabled]) [data-slot~="input-input"] {
     color: var(--color-text-disabled);
   }
-  :where([data-slot="input"][data-disabled]) [data-slot="input-input"]::placeholder {
+  :where([data-slot~="input"][data-disabled]) [data-slot~="input-input"]::placeholder {
     color: var(--color-text-disabled);
   }
-  :where([data-slot="input"][data-disabled]) [data-slot="input-prefix"] {
+  :where([data-slot~="input"][data-disabled]) [data-slot~="input-prefix"] {
     color: var(--color-text-disabled);
   }
-  :where([data-slot="input"][data-disabled]) [data-slot="input-suffix"] {
+  :where([data-slot~="input"][data-disabled]) [data-slot~="input-suffix"] {
     color: var(--color-text-disabled);
   }
 
   /* styles[9] */
   @media (prefers-reduced-motion: reduce) {
-    [data-slot="input-control"] {
+    [data-slot~="input-control"] {
       transition-property: background-color, border-color, color, box-shadow, opacity;
       transition-duration: 0s;
     }
