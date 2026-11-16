@@ -46,7 +46,7 @@
   --sv-size-mark-inset: var(--size-icon-md);
   --sv-border-thin: var(--border-width-sm);
   --sv-border-thick: var(--border-width-md);
-  --sv-focus-width: var(--border-focus-width);
-  --sv-focus-offset: var(--border-focus-offset);
+  --sv-focus-width: var(--border-ring-width);
+  --sv-focus-offset: var(--border-ring-offset);
   --sv-duration-quick: var(--duration-fast);
 }

@@ -317,8 +317,8 @@ rose/glow-fade [C] #fb5b8e00 | #b80a4100 ~ var(--gradient-rose-glow-fade) ~ FRAM
 ## Border | modes: default | vars: 4
 width/sm [F] 1 ~ var(--border-width-sm) ~ STROKE_FLOAT ~ "The edge of a control or a divider."
 width/md [F] 2 ~ var(--border-width-md) ~ STROKE_FLOAT ~ "The edge of a selected or invalid control, and the active tab&#39;s underline."
-focus/width [F] 2 ~ var(--border-focus-width) ~ STROKE_FLOAT ~ "The thickness of the focus ring."
-focus/offset [F] 2 ~ var(--border-focus-offset) ~ GAP ~ "The gap between a control and its focus ring."
+ring/width [F] 2 ~ var(--border-ring-width) ~ STROKE_FLOAT ~ "The thickness of the focus ring."
+ring/offset [F] 2 ~ var(--border-ring-offset) ~ GAP ~ "The gap between a control and its focus ring."
 ## Size | modes: default | vars: 10
 control/sm [F] 32 ~ var(--size-control-sm) ~ WIDTH_HEIGHT ~ "Height of a small control."
 control/md [F] 40 ~ var(--size-control-md) ~ WIDTH_HEIGHT ~ "Height of a default control."

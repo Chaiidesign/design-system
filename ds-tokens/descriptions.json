@@ -1861,13 +1861,13 @@
   },
   {
     "collection": "Border",
-    "name": "focus/width",
+    "name": "ring/width",
     "description": "The thickness of the focus ring.",
     "source": "proposed, ds-tokens/proposed/tokens.json"
   },
   {
     "collection": "Border",
-    "name": "focus/offset",
+    "name": "ring/offset",
     "description": "The gap between a control and its focus ring.",
     "source": "proposed, ds-tokens/proposed/tokens.json"
   },

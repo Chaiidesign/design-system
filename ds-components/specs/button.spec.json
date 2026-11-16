@@ -249,7 +249,7 @@
           "easing": "ease/standard",
           "outlineColor": "border/focus",
           "outlineWidth": "none",
-          "outlineOffset": "focus/offset",
+          "outlineOffset": "ring/offset",
           "minHeight": "control/md",
           "paddingBlock": "static/80"
         },
@@ -754,7 +754,7 @@
       },
       "parts": {
         "root": {
-          "outlineWidth": "focus/width"
+          "outlineWidth": "ring/width"
         }
       }
     },

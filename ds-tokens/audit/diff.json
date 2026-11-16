@@ -3246,8 +3246,8 @@
       },
       {
         "collection": "Border",
-        "token": "focus/width",
-        "cssVar": "--border-focus-width",
+        "token": "ring/width",
+        "cssVar": "--border-ring-width",
         "type": "dimension",
         "values": {
           "default": "2"
@@ -3259,8 +3259,8 @@
       },
       {
         "collection": "Border",
-        "token": "focus/offset",
-        "cssVar": "--border-focus-offset",
+        "token": "ring/offset",
+        "cssVar": "--border-ring-offset",
         "type": "dimension",
         "values": {
           "default": "2"

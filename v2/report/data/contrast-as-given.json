@@ -1,7 +1,7 @@
 {
   "$description": "WCAG 2 contrast of every colour pair declared in v2/tools/contrast-pairs.json, written by v2/tools/audit-contrast.mjs. pass is decided on the unrounded ratio.",
   "source": "Figma snapshot (v2/figma via v2/tools/lib/snapshot.mjs)",
-  "generated": "2026-11-16T15:17:28.305Z",
+  "generated": "2026-11-16T17:20:48.525Z",
   "counts": {
     "measured": 726,
     "pass": 459,

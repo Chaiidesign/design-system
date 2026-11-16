@@ -125,7 +125,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/32"
     },
     "iconStart": {
@@ -346,7 +346,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -567,7 +567,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/44"
     },
     "iconStart": {
@@ -788,7 +788,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -1009,7 +1009,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/32"
     },
     "iconStart": {
@@ -1230,7 +1230,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -1451,7 +1451,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/44"
     },
     "iconStart": {
@@ -1672,7 +1672,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -1893,7 +1893,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -2114,7 +2114,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -2335,7 +2335,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -2556,7 +2556,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -2777,7 +2777,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -2966,7 +2966,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/32"
     },
     "iconStart": {
@@ -3121,7 +3121,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -3276,7 +3276,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/44"
     },
     "iconStart": {
@@ -3431,7 +3431,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/32"
     },
     "iconStart": {
@@ -3586,7 +3586,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "iconStart": {
@@ -3741,7 +3741,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/44"
     },
     "iconStart": {
@@ -3922,7 +3922,7 @@
     },
     "control/focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/32"
     },
     "control/input": {
@@ -4257,7 +4257,7 @@
     },
     "control/focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "control/input": {
@@ -4592,7 +4592,7 @@
     },
     "control/focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/44"
     },
     "control/input": {
@@ -4888,7 +4888,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/32"
     },
     "label": {
@@ -4998,7 +4998,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|height/40"
     },
     "label": {
@@ -5108,7 +5108,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|round/full"
     },
     "label": {
@@ -5218,7 +5218,7 @@
     },
     "focusRing": {
      "s": "Themes (DS V2)|border/focus",
-     "sw": "Border (DS V2)|focus/width",
+     "sw": "Border (DS V2)|ring/width",
      "r": "Radius (DS V2)|round/full"
     },
     "label": {

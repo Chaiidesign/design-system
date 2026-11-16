@@ -2,7 +2,7 @@
 
 @layer ds.components {
 
-  /* styles[0]: The edge uses border/strong/default because border/primary/default is only 1.35 to 1 against the page and an input's edge is the only thing that shows where it is. The native input has no border, background or outline so the browser's own focus outline never doubles the control's ring. The placeholder takes text/placeholder through placeholderColor; that token is being fixed by an override for light contrast, so keep using it. */
+  /* styles[0]: The edge uses border/strong/default because border/primary/default is only 1.35 to 1 against the page and an input's edge is the only thing that shows where it is. The native input has no border, background or outline so the browser's own focus outline never doubles the control's ring. The placeholder takes text/placeholder through placeholderColor; with the repo's fix (the light and dark overrides in ds-tokens/overrides.json) it passes 4.5 to 1 on the field's surface, surface/primary/default. */
   [data-slot~="input"] {
     gap: var(--spacing-static-60);
   }
@@ -34,7 +34,7 @@
     transition-timing-function: var(--ease-standard);
     outline-color: var(--color-border-focus);
     outline-width: 0;
-    outline-offset: var(--border-focus-offset);
+    outline-offset: var(--border-ring-offset);
     outline-style: none;
   }
   [data-slot~="input-prefix"] {
@@ -93,7 +93,7 @@
 
   /* styles[2] */
   [data-slot~="input-control"]:where(:focus-within) {
-    outline-width: var(--border-focus-width);
+    outline-width: var(--border-ring-width);
     outline-style: solid;
   }
 

@@ -10,7 +10,7 @@
   "extraBindings": 0
  },
  "readAt": [
-  "2026-11-16T15:46:45.074Z"
+  "2026-11-16T16:58:22.190Z"
  ],
  "owners": [
   "Button",
@@ -30,7 +30,7 @@
   {
    "file": "3WGIouA6dby5LNzVkdaA48",
    "page": "4039:2",
-   "readAt": "2026-11-16T15:46:45.074Z",
+   "readAt": "2026-11-16T16:58:22.190Z",
    "owners": [
     "Button",
     "Input",
@@ -57,7 +57,7 @@
     "Themes (DS V2)|interactive/primary/hover",
     "Themes (DS V2)|interactive/primary/active",
     "Themes (DS V2)|border/focus",
-    "Border (DS V2)|focus/width",
+    "Border (DS V2)|ring/width",
     "Themes (DS V2)|interactive/primary/disabled",
     "Themes (DS V2)|text/disabled",
     "Radius (DS V2)|height/40",

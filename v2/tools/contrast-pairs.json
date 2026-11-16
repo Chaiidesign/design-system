@@ -273,7 +273,7 @@
     {
       "id": "focus-ring",
       "min": 3,
-      "why": "The focus ring is drawn focus/offset away from its control, so what sits beside it is the surface, not the control's fill (WCAG 2.4.13, 1.4.11). It must reach 3 to 1 against every surface it can be drawn on.",
+      "why": "The focus ring is drawn ring/offset away from its control, so what sits beside it is the surface, not the control's fill (WCAG 2.4.13, 1.4.11). It must reach 3 to 1 against every surface it can be drawn on.",
       "fg": [
         "border/focus"
       ],
@@ -349,7 +349,7 @@
     },
     {
       "id": "focus-ring-beside-fills",
-      "why": "Reported only: how the focus ring would compare with a fill if a component drew it with no gap. The ring is always drawn with focus/offset, so these do not fail.",
+      "why": "Reported only: how the focus ring would compare with a fill if a component drew it with no gap. The ring is always drawn with ring/offset, so these do not fail.",
       "fg": [
         "border/focus"
       ],

@@ -4,10 +4,7 @@ name-case (standard rule 1): Names are lowercase kebab-case, slash between level
   [breaks the standard] These names have a part that is not lowercase kebab-case (capital letters, spaces, a leading or trailing hyphen, or other characters). (1)
       primitive Colors: neutral/dark/-100
 
-state-segment (standard rule 3): A state is always its own last segment. 1 finding.
-  [breaks the standard] A state word sits before the last segment; the state must be the last segment. Fix: rename so the state word is not a group name, for example ring/width instead of focus/width. (2)
-      Border: focus/width
-      Border: focus/offset
+state-segment (standard rule 3): A state is always its own last segment. 0 findings.
 
 state-set (standard rule 3): State groups are complete and siblings are written the same way. 2 findings.
   [decide] These surface or interactive groups have a hover state but no active or disabled state. Either the set is incomplete or these groups are meant to have only hover. (33)
@@ -74,8 +71,8 @@ alias (standard rule 6): Every semantic token aliases a primitive, written the s
       Typography: font-family/sans holds Geist = primitive Typography typography/font-family/font
       Radius: round/full holds 9999 = primitive Radius rounded-full
       Border: width/md holds 2 = primitive Space 2 or Radius 2
-      Border: focus/width holds 2 = primitive Space 2 or Radius 2
-      Border: focus/offset holds 2 = primitive Space 2 or Radius 2
+      Border: ring/width holds 2 = primitive Space 2 or Radius 2
+      Border: ring/offset holds 2 = primitive Space 2 or Radius 2
       Size: control/sm holds 32 = primitive Typography typography/font-size/32 or Typography typography/line-height/32 or Space 32 or Radius 32
       Size: control/md holds 40 = primitive Typography typography/font-size/40 or Typography typography/line-height/40 or Space 40
       Size: control/lg holds 44 = primitive Typography typography/line-height/44 or Space 44
@@ -299,4 +296,4 @@ missing-categories (not in the standard): Token categories that have not been st
       category: breakpoint
 
 Wrote ds-tokens/audit/lint.json.
-18 rules, 50 findings: 15 break the standard, 28 to decide, 7 notes
+18 rules, 49 findings: 14 break the standard, 28 to decide, 7 notes

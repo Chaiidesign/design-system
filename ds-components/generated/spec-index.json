@@ -398,12 +398,12 @@
           "tokens": [
             {
               "collection": "Border",
-              "name": "focus/offset",
+              "name": "ring/offset",
               "uses": 1
             },
             {
               "collection": "Border",
-              "name": "focus/width",
+              "name": "ring/width",
               "uses": 1
             },
             {
@@ -837,12 +837,12 @@
           "tokens": [
             {
               "collection": "Border",
-              "name": "focus/offset",
+              "name": "ring/offset",
               "uses": 1
             },
             {
               "collection": "Border",
-              "name": "focus/width",
+              "name": "ring/width",
               "uses": 1
             },
             {
@@ -1567,7 +1567,7 @@
           "tokens": [
             {
               "collection": "Border",
-              "name": "focus/width",
+              "name": "ring/width",
               "uses": 3
             },
             {
@@ -2116,12 +2116,12 @@
           "tokens": [
             {
               "collection": "Border",
-              "name": "focus/offset",
+              "name": "ring/offset",
               "uses": 1
             },
             {
               "collection": "Border",
-              "name": "focus/width",
+              "name": "ring/width",
               "uses": 1
             },
             {
@@ -2602,12 +2602,12 @@
           "tokens": [
             {
               "collection": "Border",
-              "name": "focus/offset",
+              "name": "ring/offset",
               "uses": 2
             },
             {
               "collection": "Border",
-              "name": "focus/width",
+              "name": "ring/width",
               "uses": 2
             },
             {

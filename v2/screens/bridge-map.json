@@ -40,8 +40,8 @@
     { "sv": "--sv-size-mark-inset", "v2": "--size-icon-md", "why": "The status mark. 20px, same value." },
     { "sv": "--sv-border-thin", "v2": "--border-width-sm", "why": "1px, same value." },
     { "sv": "--sv-border-thick", "v2": "--border-width-md", "why": "2px, same value: control borders." },
-    { "sv": "--sv-focus-width", "v2": "--border-focus-width", "why": "Focus outline width. V2 proposes 2px where 0.2 has 3px." },
-    { "sv": "--sv-focus-offset", "v2": "--border-focus-offset", "why": "Gap between a control and its focus outline. 2px, same value." },
+    { "sv": "--sv-focus-width", "v2": "--border-ring-width", "why": "Focus outline width. V2 proposes 2px where 0.2 has 3px." },
+    { "sv": "--sv-focus-offset", "v2": "--border-ring-offset", "why": "Gap between a control and its focus outline. 2px, same value." },
     { "sv": "--sv-duration-quick", "v2": "--duration-fast", "why": "Short state change. V2's fast is 100ms, 0.2's quick is 120ms." }
   ],
   "notMapped": [

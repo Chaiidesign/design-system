@@ -388,7 +388,7 @@
           "easing": "ease/standard",
           "outlineColor": "border/focus",
           "outlineWidth": "none",
-          "outlineOffset": "focus/offset"
+          "outlineOffset": "ring/offset"
         },
         "prefix": {
           "color": "text/secondary",
@@ -425,7 +425,7 @@
           "typography": "body-small"
         }
       },
-      "why": "The edge uses border/strong/default because border/primary/default is only 1.35 to 1 against the page and an input's edge is the only thing that shows where it is. The native input has no border, background or outline so the browser's own focus outline never doubles the control's ring. The placeholder takes text/placeholder through placeholderColor; that token is being fixed by an override for light contrast, so keep using it."
+      "why": "The edge uses border/strong/default because border/primary/default is only 1.35 to 1 against the page and an input's edge is the only thing that shows where it is. The native input has no border, background or outline so the browser's own focus outline never doubles the control's ring. The placeholder takes text/placeholder through placeholderColor; with the repo's fix (the light and dark overrides in ds-tokens/overrides.json) it passes 4.5 to 1 on the field's surface, surface/primary/default."
     },
     {
       "when": {
@@ -447,7 +447,7 @@
       },
       "parts": {
         "control": {
-          "outlineWidth": "focus/width"
+          "outlineWidth": "ring/width"
         }
       }
     },

@@ -20,7 +20,7 @@
       "id": "state-segment",
       "standardRule": "3",
       "title": "A state is always its own last segment",
-      "findings": 1
+      "findings": 0
     },
     {
       "id": "state-set",
@@ -121,13 +121,13 @@
   ],
   "counts": {
     "rules": 18,
-    "findings": 50,
-    "breaksTheStandard": 15,
+    "findings": 49,
+    "breaksTheStandard": 14,
     "decide": 28,
     "notes": 7,
     "byRule": {
       "name-case": 1,
-      "state-segment": 1,
+      "state-segment": 0,
       "state-set": 2,
       "size-scale": 3,
       "primitive-hygiene": 2,
@@ -155,17 +155,6 @@
       "count": 1,
       "tokens": [
         "primitive Colors: neutral/dark/-100"
-      ]
-    },
-    {
-      "rule": "state-segment",
-      "standardRule": "3",
-      "severity": "breaks the standard",
-      "message": "A state word sits before the last segment; the state must be the last segment. Fix: rename so the state word is not a group name, for example ring/width instead of focus/width.",
-      "count": 2,
-      "tokens": [
-        "Border: focus/width",
-        "Border: focus/offset"
       ]
     },
     {
@@ -487,8 +476,8 @@
         "Typography: font-family/sans holds Geist = primitive Typography typography/font-family/font",
         "Radius: round/full holds 9999 = primitive Radius rounded-full",
         "Border: width/md holds 2 = primitive Space 2 or Radius 2",
-        "Border: focus/width holds 2 = primitive Space 2 or Radius 2",
-        "Border: focus/offset holds 2 = primitive Space 2 or Radius 2",
+        "Border: ring/width holds 2 = primitive Space 2 or Radius 2",
+        "Border: ring/offset holds 2 = primitive Space 2 or Radius 2",
         "Size: control/sm holds 32 = primitive Typography typography/font-size/32 or Typography typography/line-height/32 or Space 32 or Radius 32",
         "Size: control/md holds 40 = primitive Typography typography/font-size/40 or Typography typography/line-height/40 or Space 40",
         "Size: control/lg holds 44 = primitive Typography typography/line-height/44 or Space 44",

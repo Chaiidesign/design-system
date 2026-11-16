@@ -119,10 +119,10 @@
     { "when": { "media": "coarse-pointer" }, "parts": { "item": { "minHeight": "target/min" }, "checkboxItem": { "minHeight": "target/min" }, "radioItem": { "minHeight": "target/min" } },
       "why": "On a touch screen every item is at least 44 pixels tall." },
 
-    { "when": { "media": "forced-colors", "states": ["itemHighlighted"] }, "parts": { "item": { "outlineColor": "border/focus", "outlineWidth": "focus/width", "outlineOffset": "none" } },
+    { "when": { "media": "forced-colors", "states": ["itemHighlighted"] }, "parts": { "item": { "outlineColor": "border/focus", "outlineWidth": "ring/width", "outlineOffset": "none" } },
       "why": "Forced colours remove background fills, so in that mode the highlight is drawn as an outline with no offset. The 4 pixel padding of the content leaves room for it." },
-    { "when": { "media": "forced-colors", "states": ["checkboxItemHighlighted"] }, "parts": { "checkboxItem": { "outlineColor": "border/focus", "outlineWidth": "focus/width", "outlineOffset": "none" } } },
-    { "when": { "media": "forced-colors", "states": ["radioItemHighlighted"] }, "parts": { "radioItem": { "outlineColor": "border/focus", "outlineWidth": "focus/width", "outlineOffset": "none" } } },
+    { "when": { "media": "forced-colors", "states": ["checkboxItemHighlighted"] }, "parts": { "checkboxItem": { "outlineColor": "border/focus", "outlineWidth": "ring/width", "outlineOffset": "none" } } },
+    { "when": { "media": "forced-colors", "states": ["radioItemHighlighted"] }, "parts": { "radioItem": { "outlineColor": "border/focus", "outlineWidth": "ring/width", "outlineOffset": "none" } } },
 
     { "when": { "states": ["itemDisabled"] }, "parts": { "item": { "background": "transparent", "color": "text/disabled", "cursor": "not-allowed" }, "itemShortcut": { "color": "text/disabled" }, "itemDescription": { "color": "text/disabled" } },
       "why": "One disabled look for every variant, so a disabled danger item does not still look dangerous." },

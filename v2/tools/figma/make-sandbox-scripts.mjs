@@ -69,7 +69,7 @@ function scopesFor(t) {
   if (c === 'Typography') out = { 'font-size': ['FONT_SIZE'], 'line-height': ['LINE_HEIGHT'], 'font-weight': ['FONT_STYLE'], 'font-family': ['FONT_FAMILY'] }[s[0]];
   else if (c === 'Radius') out = ['CORNER_RADIUS'];
   else if (c === 'Density') out = owner.length ? owner : ['WIDTH_HEIGHT', 'GAP'];
-  else if (c === 'Border') out = t.name === 'focus/offset' ? ['GAP'] : ['STROKE_FLOAT'];
+  else if (c === 'Border') out = t.name === 'ring/offset' ? ['GAP'] : ['STROKE_FLOAT'];
   else if (c === 'Size') out = ['WIDTH_HEIGHT'];
   else if (c === 'Motion') out = []; // no Figma scope fits a duration or an easing
   else if (c === 'Themes') {

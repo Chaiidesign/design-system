@@ -51,7 +51,7 @@
     color: var(--color-text-primary);
     outline-color: var(--color-border-focus);
     outline-width: 0;
-    outline-offset: var(--border-focus-offset);
+    outline-offset: var(--border-ring-offset);
     outline-style: none;
   }
   [data-slot~="dialog-footer"] {
@@ -79,7 +79,7 @@
 
   /* styles[4]: A body that scrolls is in the Tab order (dialog-body-scroll-keyboard), so it shows the same focus ring as every control (WCAG 2.4.7). The ring sits outside the body, in the header's and the footer's padding, so nothing clips it. */
   [data-slot~="dialog-body"]:where(:focus-visible) {
-    outline-width: var(--border-focus-width);
+    outline-width: var(--border-ring-width);
     outline-style: solid;
   }
 

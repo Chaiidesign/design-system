@@ -87,9 +87,9 @@
         "rules": 1
       },
       {
-        "token": "focus/offset",
+        "token": "ring/offset",
         "collection": "Border",
-        "cssVar": "--border-focus-offset",
+        "cssVar": "--border-ring-offset",
         "origin": "proposed",
         "rules": 1
       },
@@ -353,9 +353,9 @@
         "rules": 1
       },
       {
-        "token": "focus/width",
+        "token": "ring/width",
         "collection": "Border",
-        "cssVar": "--border-focus-width",
+        "cssVar": "--border-ring-width",
         "origin": "proposed",
         "rules": 1
       },
@@ -530,9 +530,9 @@
         "rules": 1
       },
       {
-        "token": "focus/offset",
+        "token": "ring/offset",
         "collection": "Border",
-        "cssVar": "--border-focus-offset",
+        "cssVar": "--border-ring-offset",
         "origin": "proposed",
         "rules": 1
       },
@@ -551,9 +551,9 @@
         "rules": 2
       },
       {
-        "token": "focus/width",
+        "token": "ring/width",
         "collection": "Border",
-        "cssVar": "--border-focus-width",
+        "cssVar": "--border-ring-width",
         "origin": "proposed",
         "rules": 1
       }
@@ -777,9 +777,9 @@
         "rules": 3
       },
       {
-        "token": "focus/width",
+        "token": "ring/width",
         "collection": "Border",
-        "cssVar": "--border-focus-width",
+        "cssVar": "--border-ring-width",
         "origin": "proposed",
         "rules": 3
       },
@@ -933,9 +933,9 @@
         "rules": 1
       },
       {
-        "token": "focus/offset",
+        "token": "ring/offset",
         "collection": "Border",
-        "cssVar": "--border-focus-offset",
+        "cssVar": "--border-ring-offset",
         "origin": "proposed",
         "rules": 1
       },
@@ -996,9 +996,9 @@
         "rules": 1
       },
       {
-        "token": "focus/width",
+        "token": "ring/width",
         "collection": "Border",
-        "cssVar": "--border-focus-width",
+        "cssVar": "--border-ring-width",
         "origin": "proposed",
         "rules": 1
       },
@@ -1194,9 +1194,9 @@
         "rules": 1
       },
       {
-        "token": "focus/offset",
+        "token": "ring/offset",
         "collection": "Border",
-        "cssVar": "--border-focus-offset",
+        "cssVar": "--border-ring-offset",
         "origin": "proposed",
         "rules": 1
       },
@@ -1334,9 +1334,9 @@
         "rules": 1
       },
       {
-        "token": "focus/width",
+        "token": "ring/width",
         "collection": "Border",
-        "cssVar": "--border-focus-width",
+        "cssVar": "--border-ring-width",
         "origin": "proposed",
         "rules": 2
       },

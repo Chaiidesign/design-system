@@ -21,7 +21,7 @@
     transition-timing-function: var(--ease-standard);
     outline-color: var(--color-border-focus);
     outline-width: 0;
-    outline-offset: var(--border-focus-offset);
+    outline-offset: var(--border-ring-offset);
     min-block-size: var(--size-control-md);
     padding-block: var(--spacing-static-80);
     outline-style: none;
@@ -244,7 +244,7 @@
 
   /* styles[34] */
   [data-slot~="button"]:where(:focus-visible) {
-    outline-width: var(--border-focus-width);
+    outline-width: var(--border-ring-width);
     outline-style: solid;
   }
 

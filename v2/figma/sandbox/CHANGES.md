@@ -165,3 +165,7 @@ Delete the pages "DS V2 Â· Screens (added by Claude)" (4048:2) and then "DS V2 Â
 was added. To rebuild: run `component-scripts/00`, `01a`, `01b`, `02`, `03`, `04`, `05`, `06`, then `screen-scripts/01` and `02`.
 Rerunning a component script rebuilds its variants in place, which drops overrides on screen instances (the swapped icons), so rerun
 the screen scripts after any component script.
+
+---
+
+- 16 November 2026 (third step): in "Border (DS V2)" (VariableCollectionId:4030:112) two variables were renamed, ids unchanged: VariableID:4030:115 "focus/width" to "ring/width" (WEB code syntax var(--border-ring-width)) and VariableID:4030:116 "focus/offset" to "ring/offset" (var(--border-ring-offset)); values, scopes and descriptions unchanged. Reason: a state word may only be the last segment of a token name. Nothing was added: "Motion (DS V2)" already held duration/spin (VariableID:4030:131, 800, var(--duration-spin)). Counts before and after: 20 collections, 961 variables. `scripts/`, `component-scripts/` and `expected.json` were regenerated; `semantic.txt` was rewritten by `predict-snapshot.mjs` and proved by `figma-verify.mjs` against fresh `semantic.hashes.txt` from hash.figma.js (exit 0; only lines 301 to 325 and the total changed); `primitives.txt` and its hashes are unchanged and still pass. Read-back after the rename (saved in `readback-parts/01-all.json`): "174 variants, 3623 bindings checked, 0 mismatches, 0 raw values".

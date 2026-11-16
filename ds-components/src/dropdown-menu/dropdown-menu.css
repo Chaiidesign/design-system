@@ -175,7 +175,7 @@
   @media (forced-colors: active) {
     [data-slot~="dropdown-menu-item"]:where([data-highlighted]:not([data-disabled])) {
       outline-color: var(--color-border-focus);
-      outline-width: var(--border-focus-width);
+      outline-width: var(--border-ring-width);
       outline-offset: 0;
       outline-style: solid;
     }
@@ -185,7 +185,7 @@
   @media (forced-colors: active) {
     [data-slot~="dropdown-menu-checkbox-item"]:where([data-highlighted]:not([data-disabled])) {
       outline-color: var(--color-border-focus);
-      outline-width: var(--border-focus-width);
+      outline-width: var(--border-ring-width);
       outline-offset: 0;
       outline-style: solid;
     }
@@ -195,7 +195,7 @@
   @media (forced-colors: active) {
     [data-slot~="dropdown-menu-radio-item"]:where([data-highlighted]:not([data-disabled])) {
       outline-color: var(--color-border-focus);
-      outline-width: var(--border-focus-width);
+      outline-width: var(--border-ring-width);
       outline-offset: 0;
       outline-style: solid;
     }

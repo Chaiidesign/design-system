@@ -362,7 +362,7 @@
           "color": "text/primary",
           "outlineColor": "border/focus",
           "outlineWidth": "none",
-          "outlineOffset": "focus/offset"
+          "outlineOffset": "ring/offset"
         },
         "footer": {
           "paddingInline": "scaled/240",
@@ -417,7 +417,7 @@
       },
       "parts": {
         "body": {
-          "outlineWidth": "focus/width"
+          "outlineWidth": "ring/width"
         }
       },
       "why": "A body that scrolls is in the Tab order (dialog-body-scroll-keyboard), so it shows the same focus ring as every control (WCAG 2.4.7). The ring sits outside the body, in the header's and the footer's padding, so nothing clips it."

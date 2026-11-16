@@ -2,7 +2,7 @@
 
 @layer ds.components {
 
-  /* styles[0]: The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's colour and its width/md thickness are set here, so the theme still drives them and forced colours can turn the thickness off; which one edge is drawn is written in the extensions stylesheet (a solid style on that edge only, every other edge has no style), because a one-sided border cannot be said here. */
+  /* styles[0]: The list's padding is static/40, 4 pixels, which is ring/width plus ring/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's colour and its width/md thickness are set here, so the theme still drives them and forced colours can turn the thickness off; which one edge is drawn is written in the extensions stylesheet (a solid style on that edge only, every other edge has no style), because a one-sided border cannot be said here. */
   [data-slot~="tabs"] {
     gap: var(--spacing-static-120);
   }
@@ -28,7 +28,7 @@
     transition-timing-function: var(--ease-standard);
     outline-color: var(--color-border-focus);
     outline-width: 0;
-    outline-offset: var(--border-focus-offset);
+    outline-offset: var(--border-ring-offset);
     outline-style: none;
   }
   [data-slot~="tabs-trigger-icon-start"] {
@@ -53,7 +53,7 @@
     font-weight: var(--font-weight-body);
     outline-color: var(--color-border-focus);
     outline-width: 0;
-    outline-offset: var(--border-focus-offset);
+    outline-offset: var(--border-ring-offset);
     outline-style: none;
   }
 
@@ -139,13 +139,13 @@
 
   /* styles[11] */
   [data-slot~="tabs-trigger"]:where(:focus-visible) {
-    outline-width: var(--border-focus-width);
+    outline-width: var(--border-ring-width);
     outline-style: solid;
   }
 
   /* styles[12] */
   [data-slot~="tabs-content"]:where(:focus-visible) {
-    outline-width: var(--border-focus-width);
+    outline-width: var(--border-ring-width);
     outline-style: solid;
   }
 

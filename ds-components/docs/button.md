@@ -99,8 +99,8 @@ Strongest first: disabled, loading, active, hover.
 
 | Collection | Token | CSS name | Style entries using it |
 |---|---|---|---|
-| Border | `focus/offset` | `--border-focus-offset` | styles[0] |
-| Border | `focus/width` | `--border-focus-width` | styles[34] |
+| Border | `ring/offset` | `--border-ring-offset` | styles[0] |
+| Border | `ring/width` | `--border-ring-width` | styles[34] |
 | Border | `width/sm` | `--border-width-sm` | styles[0] |
 | Motion | `duration/fast` | `--duration-fast` | styles[0] |
 | Motion | `ease/standard` | `--ease-standard` | styles[0] |
@@ -184,7 +184,7 @@ Every rule of the spec, in order. The generated stylesheet keeps this order and 
 
 | Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| styles[0] | always | root: paddingInline static/160, gap static/80, radius height/40, borderWidth width/sm, borderStyle solid, borderColor transparent, background interactive/secondary/default, color text/primary, typography label-base, cursor pointer, duration duration/fast, easing ease/standard, outlineColor border/focus, outlineWidth none, outlineOffset focus/offset, minHeight control/md, paddingBlock static/80<br>iconStart: iconSize icon/md, color current<br>iconEnd: iconSize icon/md, color current<br>spinner: iconSize icon/md, color current | The height is a least height: a label that wraps makes the button taller instead of being cut off. |
+| styles[0] | always | root: paddingInline static/160, gap static/80, radius height/40, borderWidth width/sm, borderStyle solid, borderColor transparent, background interactive/secondary/default, color text/primary, typography label-base, cursor pointer, duration duration/fast, easing ease/standard, outlineColor border/focus, outlineWidth none, outlineOffset ring/offset, minHeight control/md, paddingBlock static/80<br>iconStart: iconSize icon/md, color current<br>iconEnd: iconSize icon/md, color current<br>spinner: iconSize icon/md, color current | The height is a least height: a label that wraps makes the button taller instead of being cut off. |
 | styles[1] | states hover | root: background interactive/secondary/hover |  |
 | styles[2] | states active | root: background interactive/secondary/active |  |
 | styles[3] | props {"variant":"primary"} | root: background interactive/primary/default, color text/on |  |
@@ -218,7 +218,7 @@ Every rule of the spec, in order. The generated stylesheet keeps this order and 
 | styles[31] | props {"iconOnly":true,"size":"sm"} | root: width control/sm |  |
 | styles[32] | props {"iconOnly":true,"size":"lg"} | root: width control/lg |  |
 | styles[33] | props {"fullWidth":true} | root: width full |  |
-| styles[34] | states focus | root: outlineWidth focus/width |  |
+| styles[34] | states focus | root: outlineWidth ring/width |  |
 | styles[35] | states loading | root: cursor progress |  |
 | styles[36] | states disabled | root: background interactive/primary/disabled, color text/disabled, cursor not-allowed | One disabled look for every variant, so a disabled button never borrows the weight of a live one. |
 | styles[37] | props {"variant":"ghost"}; states disabled | root: background transparent |  |

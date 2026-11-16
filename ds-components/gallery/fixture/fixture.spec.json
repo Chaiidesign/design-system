@@ -30,12 +30,12 @@
   "styles": [
     { "when": {}, "parts": {
         "root": { "gap": "static/80" },
-        "control": { "minHeight": "control/md", "paddingInline": "static/160", "radius": "height/40", "borderWidth": "width/sm", "borderStyle": "solid", "borderColor": "transparent", "background": "interactive/secondary/default", "color": "text/primary", "typography": "label-base", "cursor": "pointer", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" }
+        "control": { "minHeight": "control/md", "paddingInline": "static/160", "radius": "height/40", "borderWidth": "width/sm", "borderStyle": "solid", "borderColor": "transparent", "background": "interactive/secondary/default", "color": "text/primary", "typography": "label-base", "cursor": "pointer", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "ring/offset" }
     } },
     { "when": { "states": ["hover"] }, "parts": { "control": { "background": "interactive/secondary/hover" } } },
     { "when": { "states": ["pressed"] }, "parts": { "control": { "background": "interactive/secondary/active" } } },
     { "when": { "props": { "tone": "off" }, "states": ["hover"] }, "parts": { "control": { "background": "interactive/primary/hover" } }, "why": "PLANTED FAULT: fixture.css paints interactive/error/hover instead." },
-    { "when": { "states": ["focus"] }, "parts": { "control": { "outlineWidth": "focus/width" } } },
+    { "when": { "states": ["focus"] }, "parts": { "control": { "outlineWidth": "ring/width" } } },
     { "when": { "states": ["disabled"] }, "parts": { "control": { "background": "interactive/primary/disabled", "color": "text/disabled", "cursor": "not-allowed" } } }
   ],
   "accessibility": {
@@ -50,7 +50,8 @@
     { "id": "fixture-planted-failure", "level": "MUST", "text": "PLANTED FAULT: this test exists and fails.", "check": "test:fixture-planted-failure" },
     { "id": "fixture-name", "level": "MUST", "text": "The control has an accessible name.", "check": "axe:button-name" },
     { "id": "fixture-image-alt", "level": "MUST", "text": "Every image has a text alternative. The image-no-alt example breaks this on purpose.", "check": "axe:image-alt" },
-    { "id": "fixture-one-per-view", "level": "SHOULD", "text": "Checked by a lint rule, so this tool lists it as not run.", "check": "lint:fixture-one-per-view" },
+    { "id": "fixture-one-per-view", "level": "SHOULD", "text": "PLANTED FAULT: names a lint rule that does not exist, so this tool reports no such lint rule.", "check": "lint:fixture-one-per-view" },
+    { "id": "fixture-focus-kept", "level": "MUST", "text": "Names a real lint rule, but the lint reads no source for the fixture, so this tool lists it as not run, never as a pass.", "check": "lint:focus-not-removed" },
     { "id": "fixture-label-words", "level": "COULD", "text": "Checked by a person, so this tool lists it as not run.", "check": "manual:fixture-label-words" }
   ],
   "examples": [

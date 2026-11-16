@@ -51,13 +51,13 @@
     { "when": {}, "parts": {
         "root": { "gap": "static/120" },
         "list": { "gap": "static/40", "paddingInline": "static/40", "paddingBlock": "static/40" },
-        "trigger": { "height": "control/md", "paddingInline": "static/120", "gap": "static/80", "radius": "height/40", "borderStyle": "none", "background": "transparent", "color": "text/secondary", "typography": "body-base", "cursor": "pointer", "duration": "duration/fast", "easing": "ease/standard", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" },
+        "trigger": { "height": "control/md", "paddingInline": "static/120", "gap": "static/80", "radius": "height/40", "borderStyle": "none", "background": "transparent", "color": "text/secondary", "typography": "body-base", "cursor": "pointer", "duration": "duration/fast", "easing": "ease/standard", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "ring/offset" },
         "iconStart": { "iconSize": "icon/md", "color": "current" },
         "iconEnd": { "iconSize": "icon/md", "color": "current" },
         "indicator": { "borderColor": "transparent", "borderWidth": "width/md" },
-        "content": { "radius": "container/small", "color": "text/primary", "typography": "body-base", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "focus/offset" }
+        "content": { "radius": "container/small", "color": "text/primary", "typography": "body-base", "outlineColor": "border/focus", "outlineWidth": "none", "outlineOffset": "ring/offset" }
       },
-      "why": "The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's colour and its width/md thickness are set here, so the theme still drives them and forced colours can turn the thickness off; which one edge is drawn is written in the extensions stylesheet (a solid style on that edge only, every other edge has no style), because a one-sided border cannot be said here." },
+      "why": "The list's padding is static/40, 4 pixels, which is ring/width plus ring/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's colour and its width/md thickness are set here, so the theme still drives them and forced colours can turn the thickness off; which one edge is drawn is written in the extensions stylesheet (a solid style on that edge only, every other edge has no style), because a one-sided border cannot be said here." },
     { "when": { "states": ["hover"] }, "parts": { "trigger": { "color": "text/primary" } } },
     { "when": { "states": ["selected"] }, "parts": {
         "trigger": { "color": "text/primary", "typography": "label-base" },
@@ -89,8 +89,8 @@
       },
       "why": "The pill's fill must stand out from the page by 3 to 1 and carry a readable label. interactive/neutral/default is 21 to 1 in light and 17.61 to 1 in dark against the page, and text/inverse on it is 21 to 1 and 17.61 to 1. text/primary cannot be used on this fill, so the rule that a selected label is text/primary holds for the line variant only. A pink fill is not used: a filled brand shape reads as the page's primary action." },
 
-    { "when": { "states": ["focus"] }, "parts": { "trigger": { "outlineWidth": "focus/width" } } },
-    { "when": { "states": ["contentFocus"] }, "parts": { "content": { "outlineWidth": "focus/width" } } },
+    { "when": { "states": ["focus"] }, "parts": { "trigger": { "outlineWidth": "ring/width" } } },
+    { "when": { "states": ["contentFocus"] }, "parts": { "content": { "outlineWidth": "ring/width" } } },
     { "when": { "states": ["disabled"] }, "parts": { "trigger": { "color": "text/disabled", "cursor": "not-allowed" } }, "why": "One disabled look for both variants. The icons follow the label's colour." },
     { "when": { "props": { "variant": "pill" }, "states": ["disabled"] }, "parts": { "trigger": { "background": "transparent" } } },
 

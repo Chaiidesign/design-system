@@ -35,7 +35,7 @@
         }
       }
     },
-    "focus": {
+    "ring": {
       "width": {
         "$type": "dimension",
         "$value": {
@@ -47,7 +47,7 @@
           "com.souvenir.proposed": true,
           "com.souvenir.why": "WCAG 2.4.13 measures a focus indicator against a 2 pixel perimeter.",
           "com.souvenir.codeSyntax": {
-            "WEB": "var(--border-focus-width)"
+            "WEB": "var(--border-ring-width)"
           },
           "com.souvenir.descriptionSource": "proposed"
         }
@@ -63,7 +63,7 @@
           "com.souvenir.proposed": true,
           "com.souvenir.why": "The gap keeps the blue ring readable beside a pink or black fill.",
           "com.souvenir.codeSyntax": {
-            "WEB": "var(--border-focus-offset)"
+            "WEB": "var(--border-ring-offset)"
           },
           "com.souvenir.descriptionSource": "proposed"
         }

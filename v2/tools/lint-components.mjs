@@ -886,7 +886,7 @@ const FIXTURE_SPEC = {
 };
 function fixture() {
   return {
-    'ds-tokens/dist/tokens.css': ':root { --color-surface-primary: #ffffff; --color-text-primary: #111111; --spacing-static-80: 8px; --border-focus-width: 2px; --color-border-focus: #0000ff; }\n',
+    'ds-tokens/dist/tokens.css': ':root { --color-surface-primary: #ffffff; --color-text-primary: #111111; --spacing-static-80: 8px; --border-ring-width: 2px; --color-border-focus: #0000ff; }\n',
     'ds-components/specs/chip.spec.json': JSON.stringify(FIXTURE_SPEC, null, 2),
     'ds-components/specs/later.spec.json': JSON.stringify({ ...FIXTURE_SPEC, name: 'Later', slug: 'later' }, null, 2),
     'ds-components/specs/half-written.spec.json': '{ "schemaVersion": "0.1.0", "name": ',
@@ -915,7 +915,7 @@ function fixture() {
       '    outline: none;',
       '  }',
       '  [data-slot="chip"]:focus-visible {',
-      '    outline: var(--border-focus-width) solid var(--color-border-focus);',
+      '    outline: var(--border-ring-width) solid var(--color-border-focus);',
       '  }',
       '  [data-slot~="chip"]:hover { display: inline-flex; }',
       '  [data-slot~="chip-option"][data-highlighted] { display: block; }',
@@ -950,7 +950,7 @@ const PLANTS = {
   'examples-and-tests': ['no key chip-renders in chip.tests.mjs', (f) => ({ ...f, 'ds-components/src/chip/chip.tests.mjs': 'export const tests = {};\n' })],
   'exports': ['index.ts that exports nothing', (f) => ({ ...f, 'ds-components/src/index.ts': 'export {};\n' })],
   'one-primary-per-view': ['two variant="primary" in one example tree', edit('ds-components/src/chip/chip.examples.tsx', '<Chip>Other</Chip>', '<Chip variant="primary">Other</Chip>')],
-  'focus-not-removed': ['outline: none with the :focus-visible rule removed', edit(EXT, '  [data-slot="chip"]:focus-visible {\n    outline: var(--border-focus-width) solid var(--color-border-focus);\n  }\n', '')],
+  'focus-not-removed': ['outline: none with the :focus-visible rule removed', edit(EXT, '  [data-slot="chip"]:focus-visible {\n    outline: var(--border-ring-width) solid var(--color-border-focus);\n  }\n', '')],
   'no-hover-on-menu-items': [':hover on the menu item part in the extensions CSS', edit(EXT, '[data-slot~="chip-option"][data-highlighted]', '[data-slot~="chip-option"]:hover')],
 };
 // More planted faults for checks whose rule changed: each must fire its check, and only that check.

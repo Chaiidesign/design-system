@@ -22,7 +22,7 @@
     {
       "component": "button",
       "status": "measured",
-      "cssBytes": 1320,
+      "cssBytes": 1322,
       "jsOwnBytes": 915,
       "jsWithRadixBytes": 2202,
       "css": "within",
@@ -32,7 +32,7 @@
     {
       "component": "dialog",
       "status": "measured",
-      "cssBytes": 781,
+      "cssBytes": 782,
       "jsOwnBytes": 1582,
       "jsWithRadixBytes": 15214,
       "css": "within",
@@ -42,7 +42,7 @@
     {
       "component": "dropdown-menu",
       "status": "measured",
-      "cssBytes": 1279,
+      "cssBytes": 1281,
       "jsOwnBytes": 2339,
       "jsWithRadixBytes": 32914,
       "css": "within",
@@ -52,7 +52,7 @@
     {
       "component": "input",
       "status": "measured",
-      "cssBytes": 1171,
+      "cssBytes": 1172,
       "jsOwnBytes": 1064,
       "jsWithRadixBytes": 1064,
       "css": "within",
@@ -62,7 +62,7 @@
     {
       "component": "tabs",
       "status": "measured",
-      "cssBytes": 1394,
+      "cssBytes": 1396,
       "jsOwnBytes": 1333,
       "jsWithRadixBytes": 10654,
       "css": "within",

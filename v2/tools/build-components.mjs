@@ -844,10 +844,10 @@ function selfTest() {
   s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineWidth: 'none', outlineColor: 'border/focus' } } });
   ob = outlineBlock(cssOf(s), `/* styles[${s.styles.length - 1}] */`);
   check('outlineWidth none before outlineColor still ends with outline-style none', lastStyle(ob) === 'none' && lastDecl(ob) === 'outline-style: none;', ob || 'rule not found');
-  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineWidth: 'focus/width' } } });
+  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineWidth: 'ring/width' } } });
   ob = outlineBlock(cssOf(s), `/* styles[${s.styles.length - 1}] */`);
-  check('an outlineWidth token writes outline-style solid', lastStyle(ob) === 'solid' && ob.includes('outline-width: var(--border-focus-width);'), ob || 'rule not found');
-  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineOffset: 'focus/offset' } } });
+  check('an outlineWidth token writes outline-style solid', lastStyle(ob) === 'solid' && ob.includes('outline-width: var(--border-ring-width);'), ob || 'rule not found');
+  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' } }, parts: { root: { outlineOffset: 'ring/offset' } } });
   ob = outlineBlock(cssOf(s), `/* styles[${s.styles.length - 1}] */`);
   check('a rule with no outlineWidth writes no outline-style', ob.includes('outline-offset') && lastStyle(ob) === null, ob || 'rule not found');
 

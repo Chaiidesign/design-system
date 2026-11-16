@@ -130,7 +130,7 @@ Strongest first: itemDisabled, checkboxItemDisabled, radioItemDisabled, itemHigh
 
 | Collection | Token | CSS name | Style entries using it |
 |---|---|---|---|
-| Border | `focus/width` | `--border-focus-width` | styles[7], styles[8], styles[9] |
+| Border | `ring/width` | `--border-ring-width` | styles[7], styles[8], styles[9] |
 | Border | `width/sm` | `--border-width-sm` | styles[0] |
 | Elevation | `shadow/md` | `--shadow-md` | styles[0] |
 | Size | `control/sm` | `--size-control-sm` | styles[0] |
@@ -256,9 +256,9 @@ Every rule of the spec, in order. The generated stylesheet keeps this order and 
 | styles[4] | props {"item.variant":"danger"} | item: color text/error | text/error is 4.83 to 1 on the content in light and 6.36 to 1 in dark. The icons follow it through current. |
 | styles[5] | props {"item.variant":"danger"}; states itemHighlighted | item: background interactive/error/default, color text/on<br>itemShortcut: color current<br>itemDescription: color current | text/on on interactive/error/default is 4.83 to 1 in both themes; the fill is 4.83 to 1 against the content in light and 3.65 to 1 in dark. |
 | styles[6] | media coarse-pointer | item: minHeight target/min<br>checkboxItem: minHeight target/min<br>radioItem: minHeight target/min | On a touch screen every item is at least 44 pixels tall. |
-| styles[7] | states itemHighlighted; media forced-colors | item: outlineColor border/focus, outlineWidth focus/width, outlineOffset none | Forced colours remove background fills, so in that mode the highlight is drawn as an outline with no offset. The 4 pixel padding of the content leaves room for it. |
-| styles[8] | states checkboxItemHighlighted; media forced-colors | checkboxItem: outlineColor border/focus, outlineWidth focus/width, outlineOffset none |  |
-| styles[9] | states radioItemHighlighted; media forced-colors | radioItem: outlineColor border/focus, outlineWidth focus/width, outlineOffset none |  |
+| styles[7] | states itemHighlighted; media forced-colors | item: outlineColor border/focus, outlineWidth ring/width, outlineOffset none | Forced colours remove background fills, so in that mode the highlight is drawn as an outline with no offset. The 4 pixel padding of the content leaves room for it. |
+| styles[8] | states checkboxItemHighlighted; media forced-colors | checkboxItem: outlineColor border/focus, outlineWidth ring/width, outlineOffset none |  |
+| styles[9] | states radioItemHighlighted; media forced-colors | radioItem: outlineColor border/focus, outlineWidth ring/width, outlineOffset none |  |
 | styles[10] | states itemDisabled | item: background transparent, color text/disabled, cursor not-allowed<br>itemShortcut: color text/disabled<br>itemDescription: color text/disabled | One disabled look for every variant, so a disabled danger item does not still look dangerous. |
 | styles[11] | states checkboxItemDisabled | checkboxItem: background transparent, color text/disabled, cursor not-allowed<br>itemDescription: color text/disabled |  |
 | styles[12] | states radioItemDisabled | radioItem: background transparent, color text/disabled, cursor not-allowed<br>itemDescription: color text/disabled |  |

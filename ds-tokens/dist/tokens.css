@@ -843,8 +843,8 @@
 :root {
   --border-width-sm: 1px;
   --border-width-md: 2px;
-  --border-focus-width: 2px;
-  --border-focus-offset: 2px;
+  --border-ring-width: 2px;
+  --border-ring-offset: 2px;
   --size-control-sm: 2rem;
   --size-control-md: 2.5rem;
   --size-control-lg: 2.75rem;

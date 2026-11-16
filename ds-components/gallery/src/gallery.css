@@ -36,8 +36,8 @@ main[data-gallery] { display: block; padding: var(--spacing-static-160); }
   font: inherit;
 }
 .g-header a:focus-visible, .g-control select:focus-visible {
-  outline: var(--border-focus-width) solid var(--color-border-focus);
-  outline-offset: var(--border-focus-offset);
+  outline: var(--border-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--border-ring-offset);
 }
 @media (min-width: 48rem) { .g-nav { flex: 1 1 auto; } }
 

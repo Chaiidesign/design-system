@@ -88,8 +88,8 @@ Tokens the repo proposes that Figma does not hold as variables. The snapshot rea
 | --- | --- | --- | --- |
 | Border | width/sm | default: 1 | The Border collection is empty. Every control needs an edge width. |
 | Border | width/md | default: 2 | A state shown only by a colour change of a 1 pixel line is easy to miss. |
-| Border | focus/width | default: 2 | WCAG 2.4.13 measures a focus indicator against a 2 pixel perimeter. |
-| Border | focus/offset | default: 2 | The gap keeps the blue ring readable beside a pink or black fill. |
+| Border | ring/width | default: 2 | WCAG 2.4.13 measures a focus indicator against a 2 pixel perimeter. |
+| Border | ring/offset | default: 2 | The gap keeps the blue ring readable beside a pink or black fill. |
 | Size | control/sm | default: 32 | Radius has height/32, so a 32 pixel control exists in the design; nothing names its height. |
 | Size | control/md | default: 40 | Radius has height/40. |
 | Size | control/lg | default: 44 | Radius has height/44. |

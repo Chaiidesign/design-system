@@ -86,8 +86,8 @@ Strongest first: closed, open, overlayClosed, overlayOpen, triggerOpen, triggerC
 
 | Collection | Token | CSS name | Style entries using it |
 |---|---|---|---|
-| Border | `focus/offset` | `--border-focus-offset` | styles[0] |
-| Border | `focus/width` | `--border-focus-width` | styles[4] |
+| Border | `ring/offset` | `--border-ring-offset` | styles[0] |
+| Border | `ring/width` | `--border-ring-width` | styles[4] |
 | Border | `width/sm` | `--border-width-sm` | styles[0] |
 | Elevation | `shadow/lg` | `--shadow-lg` | styles[0] |
 | Motion | `duration/base` | `--duration-base` | styles[0] |
@@ -182,11 +182,11 @@ Every rule of the spec, in order. The generated stylesheet keeps this order and 
 
 | Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| styles[0] | always | overlay: background surface/overlay, paddingInline static/160, paddingBlock static/160, duration duration/base, easing ease/standard<br>content: background surface/primary/default, color text/primary, radius container/large, shadow shadow/lg, borderWidth width/sm, borderStyle solid, borderColor transparent, width full, maxWidth dialog/md, duration duration/base, easing ease/standard<br>header: paddingInline scaled/240, paddingBlock scaled/240, gap static/80<br>title: typography heading-5, color text/primary<br>description: typography body-base, color text/secondary<br>body: paddingInline scaled/240, paddingBlock static/0, typography body-base, color text/primary, outlineColor border/focus, outlineWidth none, outlineOffset focus/offset<br>footer: paddingInline scaled/240, paddingBlock scaled/240, gap static/80 | The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. |
+| styles[0] | always | overlay: background surface/overlay, paddingInline static/160, paddingBlock static/160, duration duration/base, easing ease/standard<br>content: background surface/primary/default, color text/primary, radius container/large, shadow shadow/lg, borderWidth width/sm, borderStyle solid, borderColor transparent, width full, maxWidth dialog/md, duration duration/base, easing ease/standard<br>header: paddingInline scaled/240, paddingBlock scaled/240, gap static/80<br>title: typography heading-5, color text/primary<br>description: typography body-base, color text/secondary<br>body: paddingInline scaled/240, paddingBlock static/0, typography body-base, color text/primary, outlineColor border/focus, outlineWidth none, outlineOffset ring/offset<br>footer: paddingInline scaled/240, paddingBlock scaled/240, gap static/80 | The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. |
 | styles[1] | props {"content.size":"sm"} | content: maxWidth dialog/sm |  |
 | styles[2] | states closed | content: duration duration/fast | Leaving is quicker than arriving, so the page is back sooner. |
 | styles[3] | states overlayClosed | overlay: duration duration/fast |  |
-| styles[4] | states bodyFocus | body: outlineWidth focus/width | A body that scrolls is in the Tab order (dialog-body-scroll-keyboard), so it shows the same focus ring as every control (WCAG 2.4.7). The ring sits outside the body, in the header's and the footer's padding, so nothing clips it. |
+| styles[4] | states bodyFocus | body: outlineWidth ring/width | A body that scrolls is in the Tab order (dialog-body-scroll-keyboard), so it shows the same focus ring as every control (WCAG 2.4.7). The ring sits outside the body, in the header's and the footer's padding, so nothing clips it. |
 | styles[5] | media reduced-motion | overlay: duration none<br>content: duration none |  |
 
 ## What the spec does not carry

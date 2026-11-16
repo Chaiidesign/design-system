@@ -17,12 +17,12 @@
   font-weight: var(--font-weight-label);
   cursor: pointer;
   outline: 0 solid var(--color-border-focus);
-  outline-offset: var(--border-focus-offset);
+  outline-offset: var(--border-ring-offset);
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 [data-slot="fixture-control"]:hover { background: var(--color-interactive-secondary-hover); }
 [data-slot="fixture-control"]:active { background: var(--color-interactive-secondary-active); }
-[data-slot="fixture-control"]:focus-visible { outline-width: var(--border-focus-width); outline-style: solid; }
+[data-slot="fixture-control"]:focus-visible { outline-width: var(--border-ring-width); outline-style: solid; }
 [data-slot="fixture-control"]:disabled { background: var(--color-interactive-primary-disabled); color: var(--color-text-disabled); cursor: not-allowed; }
 
 /* PLANTED FAULT (state colour): the spec says interactive/primary/hover for tone "off" on hover. */

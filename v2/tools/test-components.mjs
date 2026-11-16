@@ -24,7 +24,10 @@
 //      target-size (WCAG 2.5.8 as written: a target under 24 by 24 passes when a 24 px circle centred on its box
 //      meets no other target and no other undersized target's circle, or when it is inline in a sentence; a
 //      tabpanel, a dialog's own container, a scrollable region made focusable with tabindex and Radix's focus
-//      guards take focus but are not pointer targets, and are not measured),
+//      guards take focus but are not pointer targets, and are not measured; an element with tabindex -1 is measured
+//      when it sits in a roving focus group: role tab, menuitem, menuitemcheckbox, menuitemradio, radio, option,
+//      treeitem or gridcell, inside a group (tablist, menu, menubar, radiogroup, listbox, tree, grid, treegrid,
+//      toolbar) that takes focus itself or holds an item with tabindex 0),
 //      focus-visible (every control reached by real Tab presses shows an indicator: an outline at least 2 px wide
 //      on itself or on its nearest ancestor whose data-slot names a part the spec's accessibility.focus.ring names,
 //      as Input's control draws the ring through :focus-within; for a menuitem, menuitemcheckbox or menuitemradio
@@ -43,7 +46,15 @@
 //   d. requirement: test:<id> runs <slug>.tests.mjs; axe:<rule> passes when no example breaks that rule;
 //      type:<id> passes when "npx tsc -p ds-components/tsconfig.json" exits 0 (run once per run) and a line of the
 //      component's hand-written source holds both "@ts-expect-error" and <id>, and is "not proven" otherwise;
-//      lint: and manual: are listed as not run.
+//      lint:<rule> runs v2/tools/lint-components.mjs's lintTree once per run and passes when <rule> is one of its
+//      checks and reports no finding in ds-components/src/<slug>/, fails on a finding there, fails as "no such
+//      lint rule" when <rule> names no check, and is not run for a component whose source the lint does not read
+//      (the test fixture); manual: is listed as not run.
+//   A state whose reach removes the part from the page (a dialog closed with Escape) is looked for while the part is
+//   still attached: from the moment the instance is chosen, a MutationObserver records it each time it matches the
+//   state's selector while connected. If it is detached at the end, it passes only on such a sighting (and its
+//   colours are the ones read then); removed without ever matching while attached, it is "not reached: the part
+//   was removed", never a pass.
 // Writes ds-components/generated/test-report.json (not in --self-test, or when filtered by --component or --example,
 // unless --report names a file) and exits 1 on any failure. The last line counts components, examples, checks,
 // passes, failures and checks not reached, not run or not proven.
@@ -58,6 +69,7 @@ import { chromium } from "playwright-core";
 import { createServer } from "../../scripts/serve.mjs";
 import { spawnSync } from "node:child_process";
 import { buildGallery, discoverComponents, REPO, DEFAULT_DIST } from "./build-gallery.mjs";
+import { lintTree, CHECKS as LINT_RULES } from "./lint-components.mjs";
 
 const require = createRequire(import.meta.url);
 const SPECS = join(REPO, "ds-components", "specs");
@@ -409,7 +421,8 @@ function pageLib() {
     // WCAG 2.5.8 as written. A target under 24 by 24 passes when a 24 px circle centred on its box meets no other
     // target and no other undersized target's circle (the spacing exception), or when it is inline in a sentence.
     // Elements that take focus but are not pointer targets are not measured: role tabpanel, dialog or alertdialog,
-    // a scrollable region made focusable with tabindex, and Radix's focus guards.
+    // a scrollable region made focusable with tabindex, and Radix's focus guards. An item of a roving focus group
+    // (tabindex -1, role tab, menuitem and similar) is measured.
     targets() {
       const sel = 'a[href], area[href], button, input:not([type="hidden"]), select, textarea, summary, iframe, [tabindex], [contenteditable="true"], [contenteditable=""]';
       const NATIVE = 'a[href], area[href], button, input, select, textarea, summary, iframe, [contenteditable="true"], [contenteditable=""]';
@@ -418,8 +431,21 @@ function pageLib() {
       let notTargets = 0, spaced = 0, inline = 0;
       const scrollRegion = (el, cs) => !el.matches(NATIVE) && el.hasAttribute("tabindex") &&
         ((/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1) || (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 1));
+      // A roving focus group gives every item but one (or all of them) tabindex -1 and moves focus with arrow keys;
+      // each item is still pressed with a pointer, so it is a target. The group takes focus when it is focusable
+      // itself (it has a tabindex, as Radix's menu content and a forwarding tablist do) or one of its items is in
+      // the Tab order.
+      const ROVING_ITEM = ["tab", "menuitem", "menuitemcheckbox", "menuitemradio", "radio", "option", "treeitem", "gridcell"];
+      const ROVING_GROUP = '[role="tablist"], [role="menu"], [role="menubar"], [role="radiogroup"], [role="listbox"], [role="tree"], [role="grid"], [role="treegrid"], [role="toolbar"]';
+      const roving = (el) => {
+        if (!ROVING_ITEM.includes(el.getAttribute("role"))) return false;
+        const group = el.parentElement && el.parentElement.closest(ROVING_GROUP);
+        if (!group) return false;
+        if (group.hasAttribute("tabindex")) return true;
+        return [...group.querySelectorAll(ROVING_ITEM.map((r) => `[role="${r}"]`).join(", "))].some((s) => s !== el && s.tabIndex >= 0 && !s.matches(":disabled"));
+      };
       for (const el of document.querySelectorAll(sel)) {
-        if (el.matches(":disabled") || el.tabIndex < 0) continue;
+        if (el.matches(":disabled") || (el.tabIndex < 0 && !roving(el))) continue;
         if (el.hasAttribute("data-radix-focus-guard")) continue;
         if (!el.checkVisibility({ visibilityProperty: true })) continue;
         const r = el.getBoundingClientRect();
@@ -530,6 +556,42 @@ function pageLib() {
       if (f) f.setAttribute("data-ct-focus", "");
       return { index: all.indexOf(el), of: all.length, via: f && f !== el ? describe(f) : null, matched: stateSel ? !!safe(el, partSel + stateSel) : null };
     },
+    // Reads the chosen instance (window.__ctOwn): whether it matches the state's selector, which states are on, and
+    // the colours of every part. Only an instance still in the document is read. A detached one is { removed: true },
+    // unless watch() saw it match while it was attached: then that sighting is returned, marked removedAfterMatch.
+    seenNow({ partSel, stateSel, kind, allStates, parts }, live = false) {
+      let el = window.__ctOwn;
+      if (!el) return { lost: true };
+      if (!el.isConnected) {
+        if (live) return null;
+        if (window.__ctWatch) { window.__ctWatch.disconnect(); window.__ctWatch = null; }
+        return window.__ctSeen ? { ...window.__ctSeen, removedAfterMatch: true } : { removed: true };
+      }
+      const safe = (e, sel) => { try { return e.matches(sel); } catch { return false; } };
+      let matched = safe(el, stateSel);
+      if (!matched && kind === "key") { const alt = [...document.querySelectorAll(partSel)].find((e) => safe(e, stateSel)); if (alt) { el = alt; matched = true; } }
+      const active = allStates.filter(([, , ps, sel]) => (ps === partSel ? safe(el, ps + sel) : [...document.querySelectorAll(ps)].some((e) => safe(e, ps + sel)))).map(([n]) => n);
+      const colours = {};
+      for (const [partKey, ps] of parts) {
+        const t = ps === partSel ? el : el.querySelector(ps) || el.closest(ps) || document.querySelector(ps);
+        if (!t) continue;
+        const cs = getComputedStyle(t);
+        colours[partKey] = { background: cs.backgroundColor, color: cs.color, borderColor: [cs.borderTopColor, cs.borderRightColor, cs.borderBottomColor, cs.borderLeftColor] };
+      }
+      return { matched, active, colours };
+    },
+    // Watches the chosen instance from now on: every time the DOM changes and the instance is still attached and
+    // matches the state's selector, the reading is kept in window.__ctSeen. A part that leaves the page in the same
+    // change that puts it in the state (Radix removing a closed dialog) is never seen attached, so nothing is kept.
+    watch(args) {
+      if (window.__ctWatch) window.__ctWatch.disconnect();
+      window.__ctSeen = null;
+      // Only changes after this point count: a match the instance had already when it was chosen is not a sighting.
+      const look = () => { const r = window.__ct.seenNow(args, true); if (r && r.matched) window.__ctSeen = r; };
+      const mo = new MutationObserver(look);
+      mo.observe(document.documentElement, { subtree: true, childList: true, attributes: true });
+      window.__ctWatch = mo;
+    },
     overflow() {
       const de = document.documentElement;
       const cw = de.clientWidth, sw = de.scrollWidth;
@@ -573,6 +635,9 @@ class Run {
   clean(s) { return String(s ?? "").split(this.base).join("http://gallery"); }
 
   typeCheck() { return (this.tsc ??= runTypeCheck()); }
+
+  // v2/tools/lint-components.mjs's checks, run once per run (in memory; it writes nothing). { result } or { error }.
+  lint() { return (this.lintRun ??= lintTree(REPO).then((result) => ({ result }), (e) => ({ error: e.message.split("\n")[0] }))); }
 
   record(entry) {
     const c = { component: entry.component, check: entry.check, example: entry.example ?? null, config: entry.config ? cfgLabel(entry.config) : null, requirement: entry.requirement ?? null, status: entry.status, detail: this.clean(entry.detail ?? "") };
@@ -773,6 +838,11 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
     // The last action on the state's own part is where the state is looked for; with none, the state is set by the
     // example (props) or by an action on another part, and an instance already in the state is chosen afterwards.
     const lastOwn = [...actions].reverse().find((s) => s.kind !== "open" && (s.target ?? state.on) === state.on);
+    const seenArgs = {
+      partSel, stateSel, kind: lastOwn ? lastOwn.kind : "prop",
+      allStates: stateNames.filter((s) => isObj(states[s]) && isObj(anatomy[states[s].on])).map((s) => [s, states[s].on, slotSel(anatomy[states[s].on].slot), states[s].selector ?? ""]),
+      parts: Object.entries(anatomy).filter(([, p]) => isObj(p) && p.slot && p.element !== null).map(([k, p]) => [k, slotSel(p.slot)]),
+    };
     let reachedAny = false;
     const skipped = [];
     for (const ex of candidates) {
@@ -798,6 +868,9 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
               allowDisabled: own && disabledish(name, state), focus: focus, prefer: own ? "unmatched" : null, own,
             });
             if (pick.badSelector) throw new Error(`the selector ${stateSel} is not valid CSS`);
+            // From here on the chosen instance is watched, so a part that leaves the page once in the state (a dialog
+            // closed with Escape) can still be seen in it while attached, and is never read only after removal.
+            if (own && !pick.none && !pick.hidden) await page.evaluate((a) => window.__ct.watch(a), seenArgs);
             if (pick.stronger) { skip = `${ex.id} (${pick.stronger.join(", ")})`; break; }
             // An example whose every instance is disabled cannot show any other state, and one that does not render an
             // optional part (required: false) cannot show it there: passed over, not failed. A required part missing fails.
@@ -840,28 +913,10 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
             if ((pick.none || pick.hidden) && part.required === false) { skipped.push(`${ex.id} (renders no ${state.on}, an optional part)`); continue; }
             if (pick.none || pick.hidden) { rec({ check, example: ex.id, config, status: "fail", detail: `after "${reach}", no visible ${state.on} part (data-slot="${part.slot}") is on the page` }); continue; }
           }
-          const seen = await page.evaluate(({ partSel, stateSel, kind, allStates, parts }) => {
-            let el = window.__ctOwn;
-            if (!el) return { lost: true };
-            const safe = (e, sel) => { try { return e.matches(sel); } catch { return false; } };
-            let matched = safe(el, stateSel);
-            if (!matched && kind === "key") { const alt = [...document.querySelectorAll(partSel)].find((e) => safe(e, stateSel)); if (alt) { el = alt; matched = true; } }
-            const active = allStates.filter(([, , ps, sel]) => (ps === partSel ? safe(el, ps + sel) : [...document.querySelectorAll(ps)].some((e) => safe(e, ps + sel)))).map(([n]) => n);
-            const colours = {};
-            for (const [partKey, ps] of parts) {
-              const t = ps === partSel ? el : el.querySelector(ps) || el.closest(ps) || document.querySelector(ps);
-              if (!t) continue;
-              const cs = getComputedStyle(t);
-              colours[partKey] = { background: cs.backgroundColor, color: cs.color, borderColor: [cs.borderTopColor, cs.borderRightColor, cs.borderBottomColor, cs.borderLeftColor] };
-            }
-            return { matched, active, colours };
-          }, {
-            partSel, stateSel, kind: lastOwn ? lastOwn.kind : "prop",
-            allStates: stateNames.filter((s) => isObj(states[s]) && isObj(anatomy[states[s].on])).map((s) => [s, states[s].on, slotSel(anatomy[states[s].on].slot), states[s].selector ?? ""]),
-            parts: Object.entries(anatomy).filter(([, p]) => isObj(p) && p.slot && p.element !== null).map(([k, p]) => [k, slotSel(p.slot)]),
-          });
+          const seen = await page.evaluate((a) => window.__ct.seenNow(a), seenArgs);
           if (pressed) { await page.mouse.up(); pressed = false; }
           if (seen.lost) throw new Error("no instance of the part was chosen");
+          if (seen.removed) { rec({ check, example: ex.id, config, status: "not-reached", detail: `not reached: the part was removed: after "${reach}" the ${state.on} part left the page without ever matching ${stateSel} while it was attached` }); continue; }
           if (!seen.matched) { rec({ check, example: ex.id, config, status: "fail", detail: `after "${reach}", the part does not match ${stateSel}` }); continue; }
           reachedAny = true;
 
@@ -875,7 +930,7 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
             return Object.entries(obj(w.props)).every(([k, v]) => propEquals(effective[k], v));
           });
           const { problems, compared, notPresent } = compareStateColours({ anatomy, applies, name, colours: seen.colours, theme, colourTokens });
-          const absent = notPresent.length ? `; not present (optional, not rendered by this example): ${notPresent.join(", ")}` : "";
+          const absent = (notPresent.length ? `; not present (optional, not rendered by this example): ${notPresent.join(", ")}` : "") + (seen.removedAfterMatch ? "; seen in the state while attached, then removed from the page" : "");
           rec({ check, example: ex.id, config, status: problems.length ? "fail" : "pass", detail: problems.length ? problems.join("; ") + absent : compared.length ? `matches ${state.selector}; ${compared.join(", ")} equal their tokens${absent}` : `matches ${state.selector}; no colour rule names this state${absent}` });
         } catch (e) {
           if (pressed) await page.mouse.up().catch(() => {});
@@ -932,6 +987,9 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
         const broken = [...axeByExample.entries()].filter(([, s]) => s.has(id)).map(([e]) => e);
         rec({ ...base, status: broken.length ? "fail" : "pass", detail: broken.length ? `axe:${id} is violated in ${broken.join(", ")}` : `axe:${id}: no violation in ${axeByExample.size} examples` });
       }
+    } else if (how === "lint") {
+      const r = lintRequirement(id, slug, await run.lint());
+      rec({ ...base, status: r.status, detail: r.detail });
     } else if (how === "type") {
       const r = proveType(id, target.fixture ? null : join(SRC, slug), run.typeCheck());
       rec({ ...base, status: r.status, detail: r.detail });
@@ -970,6 +1028,25 @@ export async function tabToEligible(page, own = false) {
     if (ok) return true;
   }
   return false;
+}
+
+// ---------------------------------------------------------------- lint: requirements
+
+// A lint:<rule> requirement. lint is what Run.lint() returns: { result } from lintTree, or { error }. The rule must be one
+// of lint-components.mjs's checks ("no such lint rule" fails otherwise); it passes when that rule reports no finding in
+// ds-components/src/<slug>/ and fails, naming each file and line, when it does. A component the lint read no source
+// for is "not run".
+export function lintRequirement(rule, slug, lint, rules = LINT_RULES) {
+  if (!rules.includes(rule)) return { status: "fail", detail: `lint:${rule}: no such lint rule (v2/tools/lint-components.mjs has ${rules.join(", ")})` };
+  if (!lint || lint.error || !lint.result) return { status: "fail", detail: `lint:${rule}: v2/tools/lint-components.mjs could not run${lint && lint.error ? ` (${lint.error})` : ""}` };
+  // The lint reads only ds-components/src/<slug>/ for a spec in ds-components/specs/; no finding for a component it
+  // never read proves nothing (the test fixture lives in the gallery), so that is not run, never a pass.
+  if (!(lint.result.withSource || []).includes(slug)) return { status: "not-run", detail: `lint:${rule}: v2/tools/lint-components.mjs reads no source for ${slug}, so the rule was not run on it` };
+  const dir = `ds-components/src/${slug}/`;
+  const mine = lint.result.findings.filter((f) => f.check === rule && String(f.file).startsWith(dir));
+  if (mine.length) return { status: "fail", detail: `lint:${rule}: ${mine.length} finding${mine.length === 1 ? "" : "s"} in ${dir}: ${mine.map((f) => `${f.file}:${f.line} ${f.message}`).join("; ")}` };
+  const all = lint.result.findings.filter((f) => f.check === rule).length;
+  return { status: "pass", detail: `lint:${rule}: no finding in ${dir}${all ? ` (${all} elsewhere)` : ""}` };
 }
 
 // ---------------------------------------------------------------- type: requirements
@@ -1211,6 +1288,8 @@ const PLANTED = [
   ["a named test that fails", (c) => c.check === "requirement" && c.requirement === "fixture-planted-failure" && c.status === "fail" && c.detail.includes("planted")],
   ["an axe requirement an example breaks", (c) => c.check === "requirement" && c.requirement === "fixture-image-alt" && c.status === "fail"],
   ["a state no example reaches", (c) => c.check === "state:busy" && c.status === "not-reached"],
+  ["a lint requirement that names no lint rule", (c) => c.check === "requirement" && c.requirement === "fixture-one-per-view" && c.status === "fail" && c.detail.includes("no such lint rule")],
+  ["a lint requirement on a component whose source the lint never reads", (c) => c.check === "requirement" && c.requirement === "fixture-focus-kept" && c.status === "not-run" && c.detail.includes("reads no source")],
 ];
 // What must pass, so the checks are not simply failing everything.
 const MUST_PASS = [
@@ -1240,6 +1319,21 @@ async function selfTest(argv) {
     say(proveType("chip-other", typeDir, ok).status === "not-proven", "type: an id named off the directive line is not proven");
     say(proveType("chip-needs", typeDir, ok).status === "not-proven", "type: a prefix of a tagged id is not proven");
     say(proveType("chip-generated", typeDir, ok).status === "not-proven", "type: a directive in a generated file does not count");
+    // lint:<rule>: a finding of that rule in the component's folder fails; elsewhere passes; an unknown rule is "no such lint rule".
+    const planted = { result: { withSource: ["chip", "badge"], findings: [
+      { check: "one-primary-per-view", file: "ds-components/src/chip/chip.examples.tsx", line: 12, message: "two primaries" },
+      { check: "raw-value", file: "ds-components/src/badge/badge.extensions.css", line: 3, message: "raw colour" },
+    ] } };
+    let lr = lintRequirement("one-primary-per-view", "chip", planted);
+    say(lr.status === "fail" && lr.detail.includes("chip.examples.tsx:12"), `lint: a planted one-primary-per-view finding in src/chip/ fails chip's requirement (${lr.detail.slice(0, 90)})`);
+    lr = lintRequirement("raw-value", "chip", planted);
+    say(lr.status === "pass", `lint: a raw-value finding in another component's folder does not fail chip (${lr.detail})`);
+    lr = lintRequirement("one-primary-per-views", "chip", planted);
+    say(lr.status === "fail" && lr.detail.includes("no such lint rule"), `lint: a misspelled rule is no such lint rule (${lr.detail.slice(0, 60)})`);
+    lr = lintRequirement("raw-value", "fixture", planted);
+    say(lr.status === "not-run" && lr.detail.includes("reads no source"), `lint: a component the lint reads no source for is not run, never a vacuous pass (${lr.detail})`);
+    lr = lintRequirement("raw-value", "chip", { error: "boom" });
+    say(lr.status === "fail" && lr.detail.includes("could not run"), `lint: a lint run that throws fails the requirement, never passes it (${lr.detail})`);
     // The reach grammar: what parses, what is "reach not understood", and that a prop value may hold "@".
     const keys = ["root", "trigger", "content", "item", "control"];
     const steps = (r) => { const p = parseReach(r, keys); return p.error ? null : p.steps; };
@@ -1319,6 +1413,36 @@ async function selfTest(argv) {
       say(t.failures.length === 0 && t.inline === 2, `target size: two links inline in a sentence pass (${t.inline} inline)`);
       t = await targets(`<div role="tabpanel" tabindex="0" style="height:20px">Panel</div><div tabindex="0" style="height:20px;overflow:auto"><p style="height:200px;margin:0">Long</p></div><div role="dialog" tabindex="0" style="height:20px">D</div><div style="padding:40px"><div tabindex="0" style="height:20px;width:40px">a</div><div tabindex="0" style="height:20px;width:40px">b</div></div>`);
       say(t.notTargets === 3 && t.failures.length === 2, `target size: a tabpanel, a scrolling region and a dialog are not measured, two small focusable divs still fail (${t.notTargets} not targets, ${t.failures.length} failures)`);
+      // Roving focus groups: every item is a pointer target even with tabindex -1.
+      const TAB = (ti) => `<button role="tab" tabindex="${ti}" style="all:unset;display:inline-block;width:16px;height:16px">t</button>`;
+      t = await targets(`<div style="padding:40px"><div role="tablist">${TAB(0)}${TAB(-1)}${TAB(-1)}</div></div>`);
+      say(t.checked === 3 && t.failures.length === 3, `target size: three 16 px tabs edge to edge, two with tabindex -1, are all measured and fail (${t.checked} checked, ${t.failures.length} failures)`);
+      t = await targets(`<div style="padding:40px"><div role="menu" tabindex="-1"><div role="menuitem" tabindex="-1" style="height:16px;width:60px">a</div><div role="menuitem" tabindex="-1" style="height:16px;width:60px">b</div></div></div>`);
+      say(t.checked >= 2 && t.failures.length === 2, `target size: menu items with tabindex -1 in a menu that takes focus are measured and fail at 16 px (${t.checked} checked, ${t.failures.length} failures)`);
+      t = await targets(`<div style="padding:40px"><div tabindex="-1" style="height:16px;width:60px">a</div><div role="tab" tabindex="-1" style="height:16px;width:60px">b</div></div>`);
+      say(t.checked === 0, `target size: a tabindex -1 element outside any roving group, and a lone tab with no group, are not measured (${t.checked} checked)`);
+      // A part that leaves the page: passes only if seen in the state while attached.
+      const WATCH = { partSel: '[data-slot~="d"]', stateSel: '[data-slot~="d"][data-state="closed"]', kind: "key", allStates: [], parts: [["d", '[data-slot~="d"]']] };
+      const closing = async (separate) => {
+        await onPage(`<div data-slot="d" data-state="open" style="background:#ffffff;color:#000000">Dialog</div>`);
+        await upage.evaluate((a) => { window.__ct.pick({ partSel: a.partSel, stateSel: '[data-state="closed"]', prefer: "unmatched", own: true }); window.__ct.watch(a); }, WATCH);
+        await upage.evaluate(async (separate) => {
+          const d = document.querySelector('[data-slot="d"]');
+          d.setAttribute("data-state", "closed");
+          if (separate) await new Promise((r) => setTimeout(r, 20));
+          d.remove();
+        }, separate);
+        return upage.evaluate((a) => window.__ct.seenNow(a), WATCH);
+      };
+      let w = await closing(false);
+      say(w.removed === true && !w.matched, `removed part: closed and removed in one change is "removed", not a pass (${JSON.stringify(w)})`);
+      w = await closing(true);
+      say(w.matched === true && w.removedAfterMatch === true && /255/.test(w.colours.d.background), `removed part: seen closed while attached, then removed, passes on that sighting with its colours (${JSON.stringify({ matched: w.matched, removedAfterMatch: w.removedAfterMatch, bg: w.colours && w.colours.d && w.colours.d.background })})`);
+      await onPage(`<div data-slot="d" data-state="closed">Dialog</div>`);
+      await upage.evaluate((a) => { window.__ct.pick({ partSel: a.partSel, stateSel: '[data-state="closed"]', own: true }); window.__ct.watch(a); }, WATCH);
+      await upage.evaluate(() => document.querySelector('[data-slot="d"]').remove());
+      w = await upage.evaluate((a) => window.__ct.seenNow(a), WATCH);
+      say(w.removed === true, `removed part: a match it already had when chosen, then removal, is "removed", not a pass (${JSON.stringify(w)})`);
       // Choosing the instance.
       const TABS = `<div><button data-slot="t" tabindex="-1" data-state="inactive">A</button><button data-slot="t" tabindex="0" data-state="active">B</button><button data-slot="t" tabindex="-1" data-state="inactive" disabled data-disabled>C</button><button data-slot="t" style="display:none">D</button></div>`;
       const pickOn = async (html, o) => { await onPage(html); return upage.evaluate((x) => { const r = window.__ct.pick(x); const t = document.querySelector("[data-ct-target]"); return { ...r, text: t ? t.textContent : null }; }, o); };

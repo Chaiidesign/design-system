@@ -3,10 +3,10 @@
   "summary": {
     "components": 5,
     "examples": 81,
-    "checks": 3131,
-    "passed": 3050,
+    "checks": 3140,
+    "passed": 3022,
     "failed": 60,
-    "notRun": 21,
+    "notRun": 58,
     "notProven": 0
   },
   "configs": [
@@ -5843,8 +5843,8 @@
       "example": null,
       "config": null,
       "requirement": "button-one-primary",
-      "status": "not-run",
-      "detail": "lint:one-primary-per-view is not checked by this tool"
+      "status": "pass",
+      "detail": "lint:one-primary-per-view: no finding in ds-components/src/button/"
     },
     {
       "component": "button",
@@ -9389,8 +9389,8 @@
       "example": "default",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9398,8 +9398,8 @@
       "example": "default",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9407,8 +9407,8 @@
       "example": "confirm-step",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9416,8 +9416,8 @@
       "example": "confirm-step",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9425,8 +9425,8 @@
       "example": "small",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9434,8 +9434,8 @@
       "example": "small",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9443,8 +9443,8 @@
       "example": "medium",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9452,8 +9452,8 @@
       "example": "medium",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9461,8 +9461,8 @@
       "example": "no-description",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9470,8 +9470,8 @@
       "example": "no-description",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9479,8 +9479,8 @@
       "example": "title-focus",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9488,8 +9488,8 @@
       "example": "title-focus",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9497,8 +9497,8 @@
       "example": "closed",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9506,8 +9506,8 @@
       "example": "closed",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9515,8 +9515,8 @@
       "example": "controlled-without-trigger",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9524,8 +9524,8 @@
       "example": "controlled-without-trigger",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9533,8 +9533,8 @@
       "example": "long-text",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9542,8 +9542,8 @@
       "example": "long-text",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9551,8 +9551,8 @@
       "example": "with-menu",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9560,8 +9560,8 @@
       "example": "with-menu",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the content part left the page without ever matching [data-slot~=\"dialog-content\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9785,8 +9785,8 @@
       "example": "default",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9794,8 +9794,8 @@
       "example": "default",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9803,8 +9803,8 @@
       "example": "confirm-step",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9812,8 +9812,8 @@
       "example": "confirm-step",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9821,8 +9821,8 @@
       "example": "small",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9830,8 +9830,8 @@
       "example": "small",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9839,8 +9839,8 @@
       "example": "medium",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9848,8 +9848,8 @@
       "example": "medium",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9857,8 +9857,8 @@
       "example": "no-description",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9866,8 +9866,8 @@
       "example": "no-description",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9875,8 +9875,8 @@
       "example": "title-focus",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9884,8 +9884,8 @@
       "example": "title-focus",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9893,8 +9893,8 @@
       "example": "closed",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9902,8 +9902,8 @@
       "example": "closed",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9911,8 +9911,8 @@
       "example": "controlled-without-trigger",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9920,8 +9920,8 @@
       "example": "controlled-without-trigger",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9929,8 +9929,8 @@
       "example": "long-text",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9938,8 +9938,8 @@
       "example": "long-text",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9947,8 +9947,8 @@
       "example": "with-menu",
       "config": "light 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -9956,8 +9956,8 @@
       "example": "with-menu",
       "config": "dark 1280",
       "requirement": null,
-      "status": "pass",
-      "detail": "matches [data-state=\"closed\"]; no colour rule names this state"
+      "status": "not-reached",
+      "detail": "not reached: the part was removed: after \"prop:content.dismissible=true > open > key:Escape\" the overlay part left the page without ever matching [data-slot~=\"dialog-overlay\"][data-state=\"closed\"] while it was attached"
     },
     {
       "component": "dialog",
@@ -10307,8 +10307,8 @@
       "example": null,
       "config": null,
       "requirement": "dialog-one-primary",
-      "status": "not-run",
-      "detail": "lint:one-primary-per-view is not checked by this tool"
+      "status": "pass",
+      "detail": "lint:one-primary-per-view: no finding in ds-components/src/dialog/"
     },
     {
       "component": "dialog",
@@ -10650,7 +10650,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -10704,7 +10704,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -10758,7 +10758,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -10812,7 +10812,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -10866,7 +10866,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -10920,7 +10920,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -10974,7 +10974,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11028,7 +11028,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11082,7 +11082,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11136,7 +11136,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11190,7 +11190,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11244,7 +11244,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11298,7 +11298,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11352,7 +11352,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11406,7 +11406,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11460,7 +11460,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11514,7 +11514,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11568,7 +11568,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11622,7 +11622,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11676,7 +11676,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11730,7 +11730,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11784,7 +11784,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11838,7 +11838,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11892,7 +11892,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -11946,7 +11946,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "5 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12270,7 +12270,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "7 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12324,7 +12324,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "7 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12378,7 +12378,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "7 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12432,7 +12432,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "7 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12486,7 +12486,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "7 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12675,7 +12675,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12729,7 +12729,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12783,7 +12783,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12837,7 +12837,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12891,7 +12891,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12945,7 +12945,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -12999,7 +12999,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13053,7 +13053,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13107,7 +13107,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13161,7 +13161,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13215,7 +13215,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13269,7 +13269,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13323,7 +13323,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13377,7 +13377,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13431,7 +13431,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13485,7 +13485,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13539,7 +13539,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13593,7 +13593,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13647,7 +13647,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13701,7 +13701,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13755,7 +13755,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13809,7 +13809,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13863,7 +13863,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13917,7 +13917,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -13971,7 +13971,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14025,7 +14025,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14079,7 +14079,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14133,7 +14133,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14187,7 +14187,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14241,7 +14241,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "3 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14295,7 +14295,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14349,7 +14349,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14403,7 +14403,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14457,7 +14457,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -14511,7 +14511,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets"
+      "detail": "4 targets"
     },
     {
       "component": "dropdown-menu",
@@ -16004,8 +16004,8 @@
       "example": null,
       "config": null,
       "requirement": "dropdown-menu-no-hover-selector",
-      "status": "not-run",
-      "detail": "lint:no-hover-on-menu-items is not checked by this tool"
+      "status": "pass",
+      "detail": "lint:no-hover-on-menu-items: no finding in ds-components/src/dropdown-menu/"
     },
     {
       "component": "dropdown-menu",
@@ -22278,7 +22278,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22332,7 +22332,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22386,7 +22386,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22440,7 +22440,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22494,7 +22494,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22548,7 +22548,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22602,7 +22602,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22656,7 +22656,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22710,7 +22710,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22764,7 +22764,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22818,7 +22818,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22872,7 +22872,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22926,7 +22926,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -22980,7 +22980,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23034,7 +23034,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23088,7 +23088,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23142,7 +23142,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23196,7 +23196,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23250,7 +23250,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23304,7 +23304,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23358,7 +23358,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23412,7 +23412,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23466,7 +23466,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23520,7 +23520,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23574,7 +23574,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23628,7 +23628,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23682,7 +23682,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23736,7 +23736,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23790,7 +23790,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23844,7 +23844,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23898,7 +23898,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -23952,7 +23952,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24006,7 +24006,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24060,7 +24060,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24114,7 +24114,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24168,7 +24168,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24222,7 +24222,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24276,7 +24276,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24330,7 +24330,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24384,7 +24384,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24438,7 +24438,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24492,7 +24492,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24546,7 +24546,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24600,7 +24600,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24654,7 +24654,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24708,7 +24708,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24762,7 +24762,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24816,7 +24816,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24870,7 +24870,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24924,7 +24924,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -24978,7 +24978,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25032,7 +25032,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25086,7 +25086,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25140,7 +25140,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25194,7 +25194,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25248,7 +25248,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25302,7 +25302,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25356,7 +25356,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25410,7 +25410,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25464,7 +25464,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25513,6 +25513,15 @@
     },
     {
       "component": "tabs",
+      "check": "target-size",
+      "example": "long-labels",
+      "config": "light 320",
+      "requirement": null,
+      "status": "pass",
+      "detail": "3 targets (2 focusable but not pointer targets, not measured)"
+    },
+    {
+      "component": "tabs",
       "check": "focus-visible",
       "example": "long-labels",
       "config": "light 320",
@@ -25563,7 +25572,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25609,6 +25618,15 @@
       "requirement": null,
       "status": "pass",
       "detail": "4 text runs"
+    },
+    {
+      "component": "tabs",
+      "check": "target-size",
+      "example": "long-labels",
+      "config": "dark 320",
+      "requirement": null,
+      "status": "pass",
+      "detail": "3 targets (2 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25662,7 +25680,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25708,6 +25726,15 @@
       "requirement": null,
       "status": "pass",
       "detail": "4 text runs"
+    },
+    {
+      "component": "tabs",
+      "check": "target-size",
+      "example": "long-labels",
+      "config": "light 320 compact",
+      "requirement": null,
+      "status": "pass",
+      "detail": "3 targets (2 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25761,7 +25788,7 @@
       "config": "light 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25815,7 +25842,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25869,7 +25896,7 @@
       "config": "dark 320",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25923,7 +25950,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -25977,7 +26004,7 @@
       "config": "light 320 compact",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "4 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26026,6 +26053,15 @@
     },
     {
       "component": "tabs",
+      "check": "target-size",
+      "example": "disabled-ends",
+      "config": "light 320",
+      "requirement": null,
+      "status": "pass",
+      "detail": "2 targets (2 focusable but not pointer targets, not measured)"
+    },
+    {
+      "component": "tabs",
       "check": "focus-visible",
       "example": "disabled-ends",
       "config": "light 320",
@@ -26076,7 +26112,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26122,6 +26158,15 @@
       "requirement": null,
       "status": "pass",
       "detail": "3 text runs"
+    },
+    {
+      "component": "tabs",
+      "check": "target-size",
+      "example": "disabled-ends",
+      "config": "dark 320",
+      "requirement": null,
+      "status": "pass",
+      "detail": "2 targets (2 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26175,7 +26220,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "3 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26221,6 +26266,15 @@
       "requirement": null,
       "status": "pass",
       "detail": "3 text runs"
+    },
+    {
+      "component": "tabs",
+      "check": "target-size",
+      "example": "disabled-ends",
+      "config": "light 320 compact",
+      "requirement": null,
+      "status": "pass",
+      "detail": "2 targets (2 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26269,6 +26323,15 @@
     },
     {
       "component": "tabs",
+      "check": "target-size",
+      "example": "worst-case-320",
+      "config": "light 320",
+      "requirement": null,
+      "status": "pass",
+      "detail": "5 targets (2 focusable but not pointer targets, not measured)"
+    },
+    {
+      "component": "tabs",
       "check": "focus-visible",
       "example": "worst-case-320",
       "config": "light 320",
@@ -26319,7 +26382,7 @@
       "config": "light 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "6 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26365,6 +26428,15 @@
       "requirement": null,
       "status": "pass",
       "detail": "6 text runs"
+    },
+    {
+      "component": "tabs",
+      "check": "target-size",
+      "example": "worst-case-320",
+      "config": "dark 320",
+      "requirement": null,
+      "status": "pass",
+      "detail": "5 targets (2 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26418,7 +26490,7 @@
       "config": "dark 1280",
       "requirement": null,
       "status": "pass",
-      "detail": "1 targets (1 focusable but not pointer targets, not measured)"
+      "detail": "6 targets (1 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
@@ -26464,6 +26536,15 @@
       "requirement": null,
       "status": "pass",
       "detail": "6 text runs"
+    },
+    {
+      "component": "tabs",
+      "check": "target-size",
+      "example": "worst-case-320",
+      "config": "light 320 compact",
+      "requirement": null,
+      "status": "pass",
+      "detail": "5 targets (2 focusable but not pointer targets, not measured)"
     },
     {
       "component": "tabs",
