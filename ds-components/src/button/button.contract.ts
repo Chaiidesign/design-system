@@ -9,7 +9,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 /** The native button type. The default is button, never submit, so a button inside a form cannot submit it by accident. */
 export type ButtonType = 'button' | 'submit' | 'reset';
 
-/** Props of the root part (data-slot="button"). */
+/** Props of Button: every prop, whichever part it lands on (named in each comment). */
 export interface ButtonProps {
   /** How much weight the action has. primary, secondary, outline, ghost, danger and dangerSoft are the values of the Figma variant property; neutral, success and warning exist because the tokens interactive/neutral, interactive/success and interactive/warning do. Figma also has tertiary, whose look could not be read. The default is secondary so that a primary button is always a deliberate choice. */
   variant?: ButtonVariant;
@@ -21,8 +21,14 @@ export interface ButtonProps {
   fullWidth?: boolean;
   /** The action is running. The button stays focusable, ignores further presses and is announced as busy. */
   loading?: boolean;
-  /** The action is not available. Sets the native disabled attribute. */
+  /** The action is not available. Sets the native disabled attribute and data-disabled. */
   disabled?: boolean;
+  /** The icon before the label. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out. On the iconStart part. */
+  iconStart?: React.ReactNode;
+  /** The icon after the label. Figma calls the property suffix. On the iconEnd part. */
+  iconEnd?: React.ReactNode;
+  /** The label. A verb that names the result, such as Save changes. Required unless iconOnly is set, which the exported props type enforces. On the label part. */
+  children?: React.ReactNode;
   /** The native button type. The default is button, never submit, so a button inside a form cannot submit it by accident. */
   type?: ButtonType;
   /** The accessible name when there is no visible label. Required with iconOnly. */
@@ -33,25 +39,7 @@ export interface ButtonProps {
   onClick?: (...args: never[]) => void;
 }
 
-/** Props of the iconStart part (data-slot="button-icon-start"). */
-export interface ButtonIconStartProps {
-  /** The icon before the label. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out. */
-  iconStart?: React.ReactNode;
-}
-
-/** Props of the label part (data-slot="button-label"). */
-export interface ButtonLabelProps {
-  /** The label. A verb that names the result, such as Save changes. */
-  children: React.ReactNode;
-}
-
-/** Props of the iconEnd part (data-slot="button-icon-end"). */
-export interface ButtonIconEndProps {
-  /** The icon after the label. Figma calls the property suffix. */
-  iconEnd?: React.ReactNode;
-}
-
-/** Every prop that has a default, with that default. */
+/** Every prop that has a default, with that default. Keyed as in the spec. */
 export const BUTTON_DEFAULTS = {
   variant: 'secondary',
   size: 'md',
@@ -63,7 +51,7 @@ export const BUTTON_DEFAULTS = {
   asChild: false,
 } as const;
 
-/** Each part's data-slot value. */
+/** Each part's data-slot value. A part that renders nothing has a name here but no element carries it. */
 export const BUTTON_SLOTS = {
   root: 'button',
   iconStart: 'button-icon-start',
@@ -77,15 +65,16 @@ export const BUTTON_STATES = {
   hover: { on: 'root', selector: ':hover' },
   active: { on: 'root', selector: ':active' },
   focus: { on: 'root', selector: ':focus-visible' },
-  disabled: { on: 'root', selector: ':is(:disabled, [aria-disabled="true"])' },
+  disabled: { on: 'root', selector: ':is(:disabled, [data-disabled])' },
   loading: { on: 'root', selector: '[data-loading]' },
 } as const;
 
-/** Each prop that styles can see, and the attribute it sets on its part. */
+/** Each prop that styles can see, and the attribute it sets on its part. Keyed as in the spec. */
 export const BUTTON_REFLECTS = {
   variant: 'data-variant',
   size: 'data-size',
   iconOnly: 'data-icon-only',
   fullWidth: 'data-full-width',
   loading: 'data-loading',
+  disabled: 'data-disabled',
 } as const;

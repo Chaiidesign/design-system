@@ -7,76 +7,91 @@ A modal window for one short task or decision. The page behind is dimmed and unr
 
 Stage: **alpha**. Figma: none (mapping not yet confirmed against the Components file). Behaviour: `@radix-ui/react-dialog`.
 
+A compound component: each part with an element is exported as its own component (Dialog<Part>), and a prop keyed `part.prop` is a prop of that part's component. Parts whose element is null render nothing of their own.
+
 ## Anatomy
 
-| Part | data-slot | Element | Role | Wraps |
-|---|---|---|---|---|
-| root | `dialog` |  |  | `Dialog.Root` |
-| trigger (optional) | `dialog-trigger` | `button` | dialogtrigger | `Dialog.Trigger` |
-| portal | `dialog-portal` |  |  | `Dialog.Portal` |
-| overlay | `dialog-overlay` | `div` | scrim | `Dialog.Overlay` |
-| content | `dialog-content` | `div` | dialog | `Dialog.Content` |
-| header | `dialog-header` | `div` |  |  |
-| title | `dialog-title` | `h2` | dialogtitle | `Dialog.Title` |
-| description (optional) | `dialog-description` | `p` | dialogdescription | `Dialog.Description` |
-| body | `dialog-body` | `div` |  |  |
-| footer (optional) | `dialog-footer` | `div` |  |  |
-| close (optional) | `dialog-close` | `button` | dialogclose | `Dialog.Close` |
+| Part | data-slot | Element | Kind | Role | Wraps | Description |
+|---|---|---|---|---|---|---|
+| root | `dialog` | none (renders nothing) | slot |  | `Dialog.Root` | Holds the open state and links the parts together. It renders no element, so it takes no styles or states and its data-slot never reaches the page. Exported as Dialog. |
+| trigger (optional) | `dialog-trigger` | `button` | control | dialogtrigger | `Dialog.Trigger` | The control that opens the dialog: a Souvenir Button rendered through trigger.asChild, so the button keeps its own look. Optional: a dialog opened by the open prop alone has no trigger. Exported as DialogTrigger. |
+| portal | `dialog-portal` | none (renders nothing) | slot |  | `Dialog.Portal` | Moves the overlay and the content to the end of the body so no ancestor can clip them. It renders no element, so it takes no styles or states. Exported as DialogPortal. |
+| overlay | `dialog-overlay` | `div` | layer | scrim | `Dialog.Overlay` | Covers the whole viewport and dims the page. The content is its child, so its padding is the margin between the content and the screen edge. Exported as DialogOverlay. |
+| content | `dialog-content` | `div` | container | dialog | `Dialog.Content` | The dialog window, inside the overlay. It holds a header, a body and an optional footer, and its height never exceeds the overlay's inner box. Exported as DialogContent. |
+| header | `dialog-header` | `div` | container |  |  | Souvenir's own layout part. Holds the title and the description and never scrolls away. Exported as DialogHeader. |
+| title | `dialog-title` | `h2` | text | dialogtitle | `Dialog.Title` | The dialog's name. Required: its id is what aria-labelledby on the content points at. Exported as DialogTitle. |
+| description (optional) | `dialog-description` | `p` | text | dialogdescription | `Dialog.Description` | One short sentence under the title. When present its id is added to aria-describedby on the content. Exported as DialogDescription. |
+| body | `dialog-body` | `div` | container |  |  | Souvenir's own layout part. The task: text, fields or a summary. It is the only part that scrolls when the dialog is taller than the screen. Exported as DialogBody. |
+| footer (optional) | `dialog-footer` | `div` | container |  |  | Souvenir's own layout part. The actions, as Souvenir Buttons, least weighty first. It never scrolls away. Exported as DialogFooter. |
+| close (optional) | `dialog-close` | `button` | control | dialogclose | `Dialog.Close` | Closes the dialog when pressed. Wraps a footer Button through close.asChild, such as Cancel or Back. Any number of footer actions may be close parts. Exported as DialogClose. |
 
 ## Props
 
-| Prop | Part | Type or values | Default | Reflects | In Figma |
-|---|---|---|---|---|---|
-| `open` | root | boolean | `null` |  | code only |
-| `defaultOpen` | root | boolean | `false` |  | code only |
-| `onOpenChange` | root | handler |  |  | code only |
-| `trigger.asChild` | trigger | boolean | `false` |  | code only |
-| `trigger.children` | trigger | node | required |  | code only |
-| `content.size` | content | `sm` `md` | `"md"` | `data-size` | code only |
-| `content.dismissible` | content | boolean | `true` |  | code only |
-| `content.initialFocus` | content | `control` `title` | `"control"` |  | code only |
-| `content.onOpenAutoFocus` | content | handler |  |  | code only |
-| `content.onCloseAutoFocus` | content | handler |  |  | code only |
-| `content.children` | content | node | required |  | code only |
-| `header.children` | header | node | required |  | code only |
-| `title.children` | title | node | required |  | code only |
-| `description.children` | description | node | required |  | code only |
-| `body.children` | body | node | required |  | code only |
-| `footer.children` | footer | node | required |  | code only |
-| `close.asChild` | close | boolean | `false` |  | code only |
-| `close.children` | close | node | required |  | code only |
+| Prop | Taken by | Lands on part | Type or values | Default | Reflects | In Figma | Description |
+|---|---|---|---|---|---|---|---|
+| `open` | Dialog `open` | root | boolean | unset unless given |  | code only | Whether the dialog is open, for a dialog whose state the product holds. Left unset (null), the dialog holds its own state and starts from defaultOpen. |
+| `defaultOpen` | Dialog `defaultOpen` | root | boolean | `false` |  | code only | Whether a dialog that holds its own state starts open. |
+| `onOpenChange` | Dialog `onOpenChange` | root | handler |  |  | code only | Called with true or false when the trigger, a close part, Escape or an outside press asks to open or close. |
+| `trigger.asChild` | DialogTrigger `asChild` | trigger | boolean | `false` |  | code only | Renders the child, a Souvenir Button, as the trigger, so it keeps the button's look and gains the trigger's behaviour and attributes. Set it whenever the child is a Button. |
+| `trigger.children` | DialogTrigger `children` | trigger | node | required |  | code only | With trigger.asChild, the Souvenir Button; without it, the trigger's label. |
+| `content.size` | DialogContent `size` | content | `sm` `md` | `"md"` | `data-size` | code only | The widest the dialog grows: 400 pixels for sm, 560 for md. On a narrower screen both fill the width less the overlay's 16 pixel padding each side. |
+| `content.dismissible` | DialogContent `dismissible` | content | boolean | `true` |  | code only | Whether Escape and a press outside close the dialog. Set it to false for a step that must not be lost by accident; a footer action must then offer the way out. |
+| `content.initialFocus` | DialogContent `initialFocus` | content | `control` `title` | `"control"` |  | code only | Where focus goes on open. control: the first control in the dialog that is not a link. title: the title itself, for a body of long text whose start must not scroll out of view. |
+| `content.onOpenAutoFocus` | DialogContent `onOpenAutoFocus` | content | handler |  |  | code only | Called when the dialog is about to move focus inside on open. Calling preventDefault on the event stops the move so the product can place focus itself. |
+| `content.onCloseAutoFocus` | DialogContent `onCloseAutoFocus` | content | handler |  |  | code only | Called when the dialog is about to return focus on close. Calling preventDefault on the event lets the product place focus on the next step instead. Without it, focus returns to the trigger, or for a dialog without a trigger to the element that had focus when it opened. |
+| `content.children` | DialogContent `children` | content | node | required |  | code only | The header, the body and, when there are actions, the footer, in that order. |
+| `header.children` | DialogHeader `children` | header | node | required |  | code only | The title, then the description when there is one. |
+| `title.children` | DialogTitle `children` | title | node | required |  | code only | The dialog's name, a short phrase in sentence case. |
+| `description.children` | DialogDescription `children` | description | node | required |  | code only | One short sentence that says what the dialog is for. Leave the whole description part out when the body is structured, such as a list or a cost summary. |
+| `body.children` | DialogBody `children` | body | node | required |  | code only | What the person reads or fills in. |
+| `footer.children` | DialogFooter `children` | footer | node | required |  | code only | The actions as Souvenir Buttons, least weighty first and the primary action last. Actions that only close the dialog are close parts. |
+| `close.asChild` | DialogClose `asChild` | close | boolean | `false` |  | code only | Renders the child, a Souvenir Button, as the close part, so it keeps the button's look and closes the dialog when pressed. Set it whenever the child is a Button. |
+| `close.children` | DialogClose `children` | close | node | required |  | code only | With close.asChild, the Souvenir Button; without it, the label. |
 
 ## State map
 
 Strongest first: closed, open, overlayClosed, overlayOpen, triggerOpen, triggerClosed.
 
-| State | Part | Selector | Set by | Figma | Test reaches it by |
-|---|---|---|---|---|---|
-| open | content | `[data-state="open"]` | primitive |  | click the trigger, or prop:open=true |
-| closed | content | `[data-state="closed"]` | primitive |  | open the dialog, then key:Escape |
-| overlayOpen | overlay | `[data-state="open"]` | primitive |  | click the trigger, or prop:open=true |
-| overlayClosed | overlay | `[data-state="closed"]` | primitive |  | open the dialog, then key:Escape |
-| triggerOpen | trigger | `[data-state="open"]` | primitive |  | click the trigger |
-| triggerClosed | trigger | `[data-state="closed"]` | primitive |  | render with prop:open=false |
+| State | Part | Selector | Set by | Figma | Test reaches it by | Description |
+|---|---|---|---|---|---|---|
+| open | content | `[data-state="open"]` | primitive |  | click the trigger, or prop:open=true | The dialog is showing. |
+| closed | content | `[data-state="closed"]` | primitive |  | open the dialog, then key:Escape | The dialog is leaving. Radix keeps the content in the page only while a closing animation runs, then removes it. |
+| overlayOpen | overlay | `[data-state="open"]` | primitive |  | click the trigger, or prop:open=true | The overlay is showing. |
+| overlayClosed | overlay | `[data-state="closed"]` | primitive |  | open the dialog, then key:Escape | The overlay is leaving. |
+| triggerOpen | trigger | `[data-state="open"]` | primitive |  | click the trigger | The dialog this trigger controls is open. The trigger also has aria-expanded set to true. |
+| triggerClosed | trigger | `[data-state="closed"]` | primitive |  | render with prop:open=false | The dialog this trigger controls is closed. |
 
 ## Tokens from Figma
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Density | `scaled/240` `--spacing-scaled-240` 1<br>`static/0` `--spacing-static-0` 1<br>`static/160` `--spacing-static-160` 1<br>`static/80` `--spacing-static-80` 1 |
-| Radius | `container/large` `--radius-container-large` 1 |
-| Themes | `surface/primary/default` `--color-surface-primary` 1<br>`text/primary` `--color-text-primary` 1<br>`text/secondary` `--color-text-secondary` 1 |
-| Typography | `font-size/body-base` `--font-size-body-base` 1<br>`font-size/heading-5` `--font-size-heading-5` 1<br>`font-weight/body` `--font-weight-body` 1<br>`font-weight/heading` `--font-weight-heading` 1<br>`line-height/body-base` `--line-height-body-base` 1<br>`line-height/heading-5` `--line-height-heading-5` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Density | `scaled/240` | `--spacing-scaled-240` | styles[0] |
+| Density | `static/0` | `--spacing-static-0` | styles[0] |
+| Density | `static/160` | `--spacing-static-160` | styles[0] |
+| Density | `static/80` | `--spacing-static-80` | styles[0] |
+| Radius | `container/large` | `--radius-container-large` | styles[0] |
+| Themes | `surface/primary/default` | `--color-surface-primary` | styles[0] |
+| Themes | `text/primary` | `--color-text-primary` | styles[0] |
+| Themes | `text/secondary` | `--color-text-secondary` | styles[0] |
+| Typography | `font-size/body-base` | `--font-size-body-base` | styles[0] |
+| Typography | `font-size/heading-5` | `--font-size-heading-5` | styles[0] |
+| Typography | `font-weight/body` | `--font-weight-body` | styles[0] |
+| Typography | `font-weight/heading` | `--font-weight-heading` | styles[0] |
+| Typography | `line-height/body-base` | `--line-height-body-base` | styles[0] |
+| Typography | `line-height/heading-5` | `--line-height-heading-5` | styles[0] |
 
 ## Tokens proposed in the repo
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Border | `width/sm` `--border-width-sm` 1 |
-| Elevation | `shadow/lg` `--shadow-lg` 1 |
-| Motion | `duration/base` `--duration-base` 1<br>`duration/fast` `--duration-fast` 2<br>`ease/standard` `--ease-standard` 1 |
-| Size | `dialog/md` `--size-dialog-md` 1<br>`dialog/sm` `--size-dialog-sm` 1 |
-| Themes | `surface/overlay` `--color-surface-overlay` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Border | `width/sm` | `--border-width-sm` | styles[0] |
+| Elevation | `shadow/lg` | `--shadow-lg` | styles[0] |
+| Motion | `duration/base` | `--duration-base` | styles[0] |
+| Motion | `duration/fast` | `--duration-fast` | styles[2], styles[3] |
+| Motion | `ease/standard` | `--ease-standard` | styles[0] |
+| Size | `dialog/md` | `--size-dialog-md` | styles[0] |
+| Size | `dialog/sm` | `--size-dialog-sm` | styles[1] |
+| Themes | `surface/overlay` | `--color-surface-overlay` | styles[0] |
 
 ## Keyboard
 
@@ -142,19 +157,31 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 
 ## Examples
 
-| Id | Title | Props | Content |
+| Id | Title | Props | Content | Note |
+|---|---|---|---|---|
+| `default` | Default | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{},"children":"Change address"},"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Change delivery address"},{"part":"description","children":"Your order will go to the new address."}]},{"part":"body","children":"12 Harbour Street, Leith, Edinburgh EH6 6QW"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"},{"component":"Button","props":{"variant":"primary"},"children":"Use this address"}]}]}]}}` |  |
+| `confirm-step` | Confirm step with primary and secondary actions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"primary"},"children":"Continue to payment"},"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"sm"},"children":[{"part":"header","children":[{"part":"title","children":"Use express delivery?"},{"part":"description","children":"It arrives tomorrow and adds £4.99 to your order."}]},{"part":"body","children":"You can change this until the order ships."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Keep standard"},{"component":"Button","props":{"variant":"primary"},"children":"Add express delivery"}]}]}]}}` | The secondary action is a close part; the primary action closes the dialog through onOpenChange once the change is saved. |
+| `small` | Small | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"sm"},"children":[{"part":"header","children":[{"part":"title","children":"Rename list"}]},{"part":"body","children":"Weekend shopping"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"},{"component":"Button","props":{"variant":"primary"},"children":"Save name"}]}]}]}}` |  |
+| `medium` | Medium | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"md"},"children":[{"part":"header","children":[{"part":"title","children":"Delivery options"}]},{"part":"body","children":"Standard: 3 to 5 working days, free. Express: next working day, £4.99."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |  |
+| `no-description` | Without a description | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Order summary"}]},{"part":"body","children":["2 items: £38.00","Delivery: £4.99","Total: £42.99"]},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |  |
+| `not-dismissible` | Not dismissible | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.dismissible":false},"children":[{"part":"header","children":[{"part":"title","children":"Confirm your card"},{"part":"description","children":"Your bank needs you to confirm this payment in its app."}]},{"part":"body","children":"Keep this window open until the app says the payment is confirmed."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Use a different card"},{"component":"Button","props":{"variant":"primary"},"children":"I have confirmed it"}]}]}]}}` | Escape and an outside press do nothing; the footer offers the way out. |
+| `title-focus` | Focus on the title | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.initialFocus":"title"},"children":[{"part":"header","children":[{"part":"title","children":"Returns policy"}]},{"part":"body","children":"Five paragraphs of policy text, taller than the viewport."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |  |
+| `closed` | Closed | `{"defaultOpen":false}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{},"children":"Change address"},"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Change delivery address"}]},{"part":"body","children":"12 Harbour Street, Leith, Edinburgh EH6 6QW"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"}]}]}]}}` | Only the trigger shows, with data-state closed and aria-expanded false. A test opens it to reach the open state and presses Escape to reach the closed state. |
+| `controlled-without-trigger` | Opened by the product, without a trigger | `{"open":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Your session is about to end"},{"part":"description","children":"Stay signed in to keep your basket."}]},{"part":"body","children":"You will be signed out in 2 minutes."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Sign out"},{"component":"Button","props":{"variant":"primary"},"children":"Stay signed in"}]}]}]}}` | Target for the test that focus returns to where it was when the dialog opened. |
+| `long-text` | Long text | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Choose how you would like us to deliver the items that are coming from our partner warehouse"},{"part":"description","children":"These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature."}]},{"part":"body","children":"Twelve paragraphs of delivery terms, taller than the viewport."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Back"},{"component":"Button","props":{"variant":"primary"},"children":"Deliver everything together"}]}]}]}}` |  |
+| `worst-case-320` | Worst case at 320 pixels | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.dismissible":false},"children":[{"part":"header","children":[{"part":"title","children":"Choose how you would like us to deliver the items that are coming from our partner warehouse in Rotterdam"},{"part":"description","children":"These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature from someone at the address."}]},{"part":"body","children":"Twelve paragraphs of delivery terms in German, with long compound words such as Lieferbedingungen and Versandkostenübernahme."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Go back to my basket"},{"component":"Button","props":{"variant":"primary"},"children":"Deliver everything together on the later date"}]}]}]}}` | Viewport 320 by 568. The title wraps over several lines, the body scrolls, the footer buttons wrap and stay visible, and the page has no horizontal scroll. |
+
+## Style rules
+
+Every rule of the spec, in order. The generated stylesheet keeps this order and gives every rule for a part the same specificity, so a later rule wins where two set the same property.
+
+| Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| `default` | Default | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{},"children":"Change address"},"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Change delivery address"},{"part":"description","children":"Your order will go to the new address."}]},{"part":"body","children":"12 Harbour Street, Leith, Edinburgh EH6 6QW"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"},{"component":"Button","props":{"variant":"primary"},"children":"Use this address"}]}]}]}}` |
-| `confirm-step` | Confirm step with primary and secondary actions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"primary"},"children":"Continue to payment"},"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"sm"},"children":[{"part":"header","children":[{"part":"title","children":"Use express delivery?"},{"part":"description","children":"It arrives tomorrow and adds £4.99 to your order."}]},{"part":"body","children":"You can change this until the order ships."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Keep standard"},{"component":"Button","props":{"variant":"primary"},"children":"Add express delivery"}]}]}]}}` |
-| `small` | Small | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"sm"},"children":[{"part":"header","children":[{"part":"title","children":"Rename list"}]},{"part":"body","children":"Weekend shopping"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"},{"component":"Button","props":{"variant":"primary"},"children":"Save name"}]}]}]}}` |
-| `medium` | Medium | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.size":"md"},"children":[{"part":"header","children":[{"part":"title","children":"Delivery options"}]},{"part":"body","children":"Standard: 3 to 5 working days, free. Express: next working day, £4.99."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |
-| `no-description` | Without a description | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Order summary"}]},{"part":"body","children":["2 items: £38.00","Delivery: £4.99","Total: £42.99"]},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |
-| `not-dismissible` | Not dismissible | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.dismissible":false},"children":[{"part":"header","children":[{"part":"title","children":"Confirm your card"},{"part":"description","children":"Your bank needs you to confirm this payment in its app."}]},{"part":"body","children":"Keep this window open until the app says the payment is confirmed."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Use a different card"},{"component":"Button","props":{"variant":"primary"},"children":"I have confirmed it"}]}]}]}}` |
-| `title-focus` | Focus on the title | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.initialFocus":"title"},"children":[{"part":"header","children":[{"part":"title","children":"Returns policy"}]},{"part":"body","children":"Five paragraphs of policy text, taller than the viewport."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Close"}]}]}]}}` |
-| `closed` | Closed | `{"defaultOpen":false}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{},"children":"Change address"},"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Change delivery address"}]},{"part":"body","children":"12 Harbour Street, Leith, Edinburgh EH6 6QW"},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Cancel"}]}]}]}}` |
-| `controlled-without-trigger` | Opened by the product, without a trigger | `{"open":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Your session is about to end"},{"part":"description","children":"Stay signed in to keep your basket."}]},{"part":"body","children":"You will be signed out in 2 minutes."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Sign out"},{"component":"Button","props":{"variant":"primary"},"children":"Stay signed in"}]}]}]}}` |
-| `long-text` | Long text | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","children":[{"part":"header","children":[{"part":"title","children":"Choose how you would like us to deliver the items that are coming from our partner warehouse"},{"part":"description","children":"These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature."}]},{"part":"body","children":"Twelve paragraphs of delivery terms, taller than the viewport."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Back"},{"component":"Button","props":{"variant":"primary"},"children":"Deliver everything together"}]}]}]}}` |
-| `worst-case-320` | Worst case at 320 pixels | `{"defaultOpen":true}` | `{"portal":{"part":"overlay","children":[{"part":"content","props":{"content.dismissible":false},"children":[{"part":"header","children":[{"part":"title","children":"Choose how you would like us to deliver the items that are coming from our partner warehouse in Rotterdam"},{"part":"description","children":"These items ship separately from the rest of your order, so they can arrive on a different day and may need a signature from someone at the address."}]},{"part":"body","children":"Twelve paragraphs of delivery terms in German, with long compound words such as Lieferbedingungen and Versandkostenübernahme."},{"part":"footer","children":[{"part":"close","props":{"close.asChild":true},"button":{},"children":"Go back to my basket"},{"component":"Button","props":{"variant":"primary"},"children":"Deliver everything together on the later date"}]}]}]}}` |
+| styles[0] | always | overlay: background surface/overlay, paddingInline static/160, paddingBlock static/160, duration duration/base, easing ease/standard<br>content: background surface/primary/default, color text/primary, radius container/large, shadow shadow/lg, borderWidth width/sm, borderStyle solid, borderColor transparent, width full, maxWidth dialog/md, duration duration/base, easing ease/standard<br>header: paddingInline scaled/240, paddingBlock scaled/240, gap static/80<br>title: typography heading-5, color text/primary<br>description: typography body-base, color text/secondary<br>body: paddingInline scaled/240, paddingBlock static/0, typography body-base, color text/primary<br>footer: paddingInline scaled/240, paddingBlock scaled/240, gap static/80 | The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. |
+| styles[1] | props {"content.size":"sm"} | content: maxWidth dialog/sm |  |
+| styles[2] | states closed | content: duration duration/fast | Leaving is quicker than arriving, so the page is back sooner. |
+| styles[3] | states overlayClosed | overlay: duration duration/fast |  |
+| styles[4] | media reduced-motion | overlay: duration none<br>content: duration none |  |
 
 ## What the spec does not carry
 

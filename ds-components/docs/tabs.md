@@ -7,72 +7,101 @@ Switches between related views of the same thing, one at a time, without leaving
 
 Stage: **alpha**. Figma: `Tabs` (mapping not yet confirmed against the Components file). Behaviour: `@radix-ui/react-tabs`.
 
+A compound component: each part with an element is exported as its own component (Tabs<Part>), and a prop keyed `part.prop` is a prop of that part's component. Parts whose element is null render nothing of their own.
+
 ## Anatomy
 
-| Part | data-slot | Element | Role | Wraps |
-|---|---|---|---|---|
-| root | `tabs` | `div` |  | `Tabs.Root` |
-| list | `tabs-list` | `div` | tablist | `Tabs.List` |
-| trigger | `tabs-trigger` | `button` | tab | `Tabs.Trigger` |
-| iconStart (optional) | `tabs-trigger-icon-start` | `span` | indicator |  |
-| label | `tabs-trigger-label` | `span` |  |  |
-| iconEnd (optional) | `tabs-trigger-icon-end` | `span` | indicator |  |
-| indicator | `tabs-indicator` | `span` | indicator |  |
-| content | `tabs-content` | `div` | tabpanel | `Tabs.Content` |
+| Part | data-slot | Element | Kind | Role | Wraps | Description |
+|---|---|---|---|---|---|---|
+| root | `tabs` | `div` | container |  | `Tabs.Root` | Exported as Tabs. Holds the list and the panels. It carries variant, size, orientation and the selected value. Radix sets data-orientation and dir on it. |
+| list | `tabs-list` | `div` | container | tablist | `Tabs.List` | Exported as TabsList. The row of tabs, or the column when vertical. When the tabs are wider than the space, the list scrolls sideways inside itself and the page never scrolls. It keeps padding on every side so a focus ring is never clipped by that scrolling. |
+| trigger | `tabs-trigger` | `button` | control | tab | `Tabs.Trigger` | Exported as TabsTrigger. One tab. Its label is its accessible name. Pressing it, or focusing it when activation is automatic, selects it and shows its panel. The label stays on one line. |
+| iconStart (optional) | `tabs-trigger-icon-start` | `span` | glyph | indicator |  | An optional icon before the tab's label, inside the trigger. Figma calls it prefix. Hidden from assistive technology. |
+| label | `tabs-trigger-label` | `span` | text |  |  | The tab's words, inside the trigger. They are the tab's accessible name. |
+| iconEnd (optional) | `tabs-trigger-icon-end` | `span` | glyph | indicator |  | An optional icon after the tab's label, inside the trigger. Figma calls it suffix. Hidden from assistive technology. |
+| indicator | `tabs-indicator` | `span` | layer | indicator |  | A line inside each tab, drawn by its border on one edge only: the bottom edge when the tabs are horizontal and the inline-start edge when vertical. It runs the full length of that edge. It is transparent until its tab is selected and is used only by the line variant. Hidden from assistive technology with aria-hidden; the tab already exposes aria-selected. |
+| content | `tabs-content` | `div` | container | tabpanel | `Tabs.Content` | Exported as TabsContent. The panel for one tab. Only the selected tab's panel is shown; the others carry the hidden attribute and their children are not rendered. Radix makes the panel focusable with tabindex 0 so keyboard users can reach it even when it holds no control. |
 
 ## Props
 
-| Prop | Part | Type or values | Default | Reflects | In Figma |
-|---|---|---|---|---|---|
-| `variant` | root | `line` `pill` | `"line"` | `data-variant` | `variant` |
-| `size` | root | `sm` `md` | `"md"` | `data-size` | code only |
-| `orientation` | root | `horizontal` `vertical` | `"horizontal"` | `data-orientation` | `orientation` |
-| `activationMode` | root | `automatic` `manual` | `"automatic"` |  | code only |
-| `dir` | root | `ltr` `rtl` | `null` | `dir` | code only |
-| `value` | root | string | `null` |  | code only |
-| `defaultValue` | root | string |  |  | code only |
-| `onValueChange` | root | handler |  |  | code only |
-| `list.behavior` | list | `hug` `fill` | `"hug"` | `data-behavior` | `behavior` |
-| `list.loop` | list | boolean | `true` |  | code only |
-| `list.ariaLabel` | list | string |  |  | code only |
-| `list.ariaLabelledby` | list | string |  |  | code only |
-| `trigger.value` | trigger | string | required |  | code only |
-| `trigger.disabled` | trigger | boolean | `false` | `data-disabled` | code only |
-| `trigger.children` | trigger | node | required |  | `label` |
-| `trigger.iconStart` | trigger | node |  |  | `prefix` |
-| `trigger.iconEnd` | trigger | node |  |  | `suffix` |
-| `content.value` | content | string | required |  | code only |
-| `content.children` | content | node | required |  | code only |
+| Prop | Taken by | Lands on part | Type or values | Default | Reflects | In Figma | Description |
+|---|---|---|---|---|---|---|---|
+| `variant` | Tabs `variant` | root | `line` `pill` | `"line"` | `data-variant` | `variant` | How the selected tab is marked. line puts a brand-coloured line under the selected tab and sets its label in a heavier weight; use it to switch sections of a page. pill fills the selected tab with the neutral fill and sets its label heavier; use it as a compact switch between a few views, such as Delivery and Collection. Figma calls this property variant, with the values primary (its default) and secondary; which of the two is line and which is pill could not be read, so the names here are the spec's own. |
+| `size` | Tabs `size` | root | `sm` `md` | `"md"` | `data-size` | code only | Tab height: 32 or 40 pixels. Where the pointer is coarse both grow to at least 44. There is no large size: a tab is navigation, never the main action. The Figma copy that could be read has no size property, so this exists only in code for now. |
+| `orientation` | Tabs `orientation` | root | `horizontal` `vertical` | `"horizontal"` | `data-orientation` | `orientation` | Lays the tabs out in a row or a column and decides which arrow keys move between them. Radix sets data-orientation on the root, list, every tab and every panel, and aria-orientation on the list. In Figma the property sits on each tab (_TabsElement), not on the Tabs set. |
+| `activationMode` | Tabs `activationMode` | root | `automatic` `manual` | `"automatic"` |  | code only | automatic selects a tab as soon as it gets focus. manual moves focus with the arrow keys and selects only on Enter, Space or a press. Use manual when a panel takes time to load. |
+| `dir` | Tabs `dir` | root | `ltr` `rtl` | unset unless given | `dir` | code only | Reading direction. Unset unless given: it is then inherited from a Radix DirectionProvider and falls back to ltr. In rtl, ArrowLeft and ArrowRight swap. |
+| `value` | Tabs `value` | root | string | unset unless given |  | code only | The value of the selected tab, when the parent holds the state. Unset unless given. Give either value or defaultValue. |
+| `defaultValue` | Tabs `defaultValue` | root | string |  |  | code only | The value of the tab selected at first, when Tabs holds its own state. Without value or defaultValue no tab would be selected, so one of the two is required by the type of the props. |
+| `onValueChange` | Tabs `onValueChange` | root | handler |  |  | code only | Called with the new value when a different tab is selected. |
+| `list.behavior` | TabsList `behavior` | list | `hug` `fill` | `"hug"` | `data-behavior` | `behavior` | How the tabs share the list's width. hug sizes each tab to its label. fill makes the list as wide as its container and shares that width equally between the tabs; when the labels do not fit, the list scrolls as it does with hug. Figma has this property on the Tabs set, with the same values and hug as the default. |
+| `list.loop` | TabsList `loop` | list | boolean | `true` |  | code only | Whether the arrow keys wrap from the last tab to the first and back. |
+| `list.ariaLabel` | TabsList `ariaLabel` | list | string |  |  | code only | The accessible name of the list when no visible heading names it, such as Product information. Give this or list.ariaLabelledby. |
+| `list.ariaLabelledby` | TabsList `ariaLabelledby` | list | string |  |  | code only | The id of a visible heading that names the list. Preferred over list.ariaLabel when such a heading exists. |
+| `trigger.value` | TabsTrigger `value` | trigger | string | required |  | code only | The value that identifies the tab. It must match the content.value of one panel. |
+| `trigger.disabled` | TabsTrigger `disabled` | trigger | boolean | `false` | `data-disabled` | code only | The tab cannot be selected. Radix sets the native disabled attribute and data-disabled, and the arrow keys skip the tab. In Figma this is the disabled value of the state property, not a property of its own. |
+| `trigger.children` | TabsTrigger `children` | trigger | node | required |  | `label` | The words on the tab, rendered in the label part. They are the tab's accessible name. |
+| `trigger.iconStart` | TabsTrigger `iconStart` | trigger | node |  |  | `prefix` | An icon before the label, rendered in the iconStart part. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out. |
+| `trigger.iconEnd` | TabsTrigger `iconEnd` | trigger | node |  |  | `suffix` | An icon after the label, rendered in the iconEnd part. Figma calls the property suffix and adds a showSuffix switch, which code does not need. |
+| `content.value` | TabsContent `value` | content | string | required |  | code only | The value of the tab this panel belongs to. |
+| `content.children` | TabsContent `children` | content | node | required |  | code only | What the panel shows. |
 
 ## State map
 
 Strongest first: disabled, selected, hover.
 
-| State | Part | Selector | Set by | Figma | Test reaches it by |
-|---|---|---|---|---|---|
-| unselected | trigger | `[data-state="inactive"]` | primitive | `state=default` | click |
-| hover | trigger | `:hover` | native | `state=hover` | hover |
-| focus | trigger | `:focus-visible` | native |  | focus-by-keyboard |
-| selected | trigger | `[data-state="active"]` | primitive | `state=selected` | click |
-| disabled | trigger | `[data-disabled]` | primitive | `state=disabled` | prop:trigger.disabled=true |
-| contentFocus | content | `:focus-visible` | native |  | focus-by-keyboard |
+| State | Part | Selector | Set by | Figma | Test reaches it by | Description |
+|---|---|---|---|---|---|---|
+| unselected | trigger | `[data-state="inactive"]` | primitive | `state=default` | click | A tab whose panel is not shown, reached by selecting another tab. Radix sets data-state to inactive and aria-selected to false. The base style rule draws it. |
+| hover | trigger | `:hover` | native | `state=hover` | hover | The pointer is over a tab. |
+| focus | trigger | `:focus-visible` | native |  | focus-by-keyboard | A tab has keyboard focus. The Figma copy that could be read has no focus value. |
+| selected | trigger | `[data-state="active"]` | primitive | `state=selected` | click | The tab whose panel is shown. Radix sets data-state to active on it and aria-selected to true; every other tab has data-state inactive. Named selected, not active, so it is never confused with the pressed state :active. |
+| disabled | trigger | `[data-disabled]` | primitive | `state=disabled` | prop:trigger.disabled=true | The tab cannot be selected. Radix sets data-disabled and the native disabled attribute. |
+| contentFocus | content | `:focus-visible` | native |  | focus-by-keyboard | The shown panel has keyboard focus, reached with Tab from the selected tab. |
 
 ## Tokens from Figma
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Density | `static/120` `--spacing-static-120` 2<br>`static/160` `--spacing-static-160` 1<br>`static/240` `--spacing-static-240` 1<br>`static/40` `--spacing-static-40` 1<br>`static/60` `--spacing-static-60` 1<br>`static/80` `--spacing-static-80` 3 |
-| Radius | `container/small` `--radius-container-small` 1<br>`height/32` `--radius-height-32` 1<br>`height/40` `--radius-height-40` 1<br>`round/full` `--radius-round-full` 1 |
-| Themes | `border/brand` `--color-border-brand` 1<br>`border/focus` `--color-border-focus` 1<br>`interactive/neutral/default` `--color-interactive-neutral` 1<br>`surface/primary/hover` `--color-surface-primary-hover` 1<br>`text/disabled` `--color-text-disabled` 1<br>`text/inverse` `--color-text-inverse` 1<br>`text/primary` `--color-text-primary` 3<br>`text/secondary` `--color-text-secondary` 1 |
-| Typography | `font-size/body-base` `--font-size-body-base` 1<br>`font-size/label-base` `--font-size-label-base` 1<br>`font-weight/body` `--font-weight-body` 1<br>`font-weight/label` `--font-weight-label` 1<br>`line-height/body-base` `--line-height-body-base` 1<br>`line-height/label-base` `--line-height-label-base` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Density | `static/120` | `--spacing-static-120` | styles[0], styles[8] |
+| Density | `static/160` | `--spacing-static-160` | styles[7] |
+| Density | `static/240` | `--spacing-static-240` | styles[5] |
+| Density | `static/40` | `--spacing-static-40` | styles[0] |
+| Density | `static/60` | `--spacing-static-60` | styles[3] |
+| Density | `static/80` | `--spacing-static-80` | styles[0], styles[3], styles[7] |
+| Radius | `container/small` | `--radius-container-small` | styles[0] |
+| Radius | `height/32` | `--radius-height-32` | styles[3] |
+| Radius | `height/40` | `--radius-height-40` | styles[0] |
+| Radius | `round/full` | `--radius-round-full` | styles[7] |
+| Themes | `border/brand` | `--color-border-brand` | styles[2] |
+| Themes | `border/focus` | `--color-border-focus` | styles[0] |
+| Themes | `interactive/neutral/default` | `--color-interactive-neutral` | styles[10] |
+| Themes | `surface/primary/hover` | `--color-surface-primary-hover` | styles[9] |
+| Themes | `text/disabled` | `--color-text-disabled` | styles[13] |
+| Themes | `text/inverse` | `--color-text-inverse` | styles[10] |
+| Themes | `text/primary` | `--color-text-primary` | styles[0], styles[1], styles[2] |
+| Themes | `text/secondary` | `--color-text-secondary` | styles[0] |
+| Typography | `font-size/body-base` | `--font-size-body-base` | styles[0] |
+| Typography | `font-size/label-base` | `--font-size-label-base` | styles[2] |
+| Typography | `font-weight/body` | `--font-weight-body` | styles[0] |
+| Typography | `font-weight/label` | `--font-weight-label` | styles[2] |
+| Typography | `line-height/body-base` | `--line-height-body-base` | styles[0] |
+| Typography | `line-height/label-base` | `--line-height-label-base` | styles[2] |
 
 ## Tokens proposed in the repo
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Border | `focus/offset` `--border-focus-offset` 1<br>`focus/width` `--border-focus-width` 2<br>`width/md` `--border-width-md` 1 |
-| Motion | `duration/fast` `--duration-fast` 1<br>`ease/standard` `--ease-standard` 1 |
-| Size | `control/md` `--size-control-md` 1<br>`control/sm` `--size-control-sm` 1<br>`icon/md` `--size-icon-md` 1<br>`icon/sm` `--size-icon-sm` 1<br>`target/min` `--size-target-min` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Border | `focus/offset` | `--border-focus-offset` | styles[0] |
+| Border | `focus/width` | `--border-focus-width` | styles[11], styles[12] |
+| Border | `width/md` | `--border-width-md` | styles[15] |
+| Motion | `duration/fast` | `--duration-fast` | styles[0] |
+| Motion | `ease/standard` | `--ease-standard` | styles[0] |
+| Size | `control/md` | `--size-control-md` | styles[0] |
+| Size | `control/sm` | `--size-control-sm` | styles[3] |
+| Size | `icon/md` | `--size-icon-md` | styles[0] |
+| Size | `icon/sm` | `--size-icon-sm` | styles[3] |
+| Size | `target/min` | `--size-target-min` | styles[4] |
 
 ## Keyboard
 
@@ -152,22 +181,46 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 
 ## Examples
 
-| Id | Title | Props | Content |
+| Id | Title | Props | Content | Note |
+|---|---|---|---|---|
+| `line` | Line | `{"list.ariaLabel":"Product information","defaultValue":"details"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"reviews","label":"Reviews (124)","panel":"Average rating 4.6 out of 5."},{"value":"delivery","label":"Delivery","panel":"Free delivery over £50."}]` |  |
+| `pill` | Pill | `{"variant":"pill","list.ariaLabel":"How to receive your order","defaultValue":"delivery"}` | `[{"value":"delivery","label":"Delivery","panel":"Delivered in 2 to 3 working days."},{"value":"collection","label":"Collection","panel":"Collect from a store near you."}]` |  |
+| `fill` | Fill | `{"variant":"pill","list.behavior":"fill","list.ariaLabel":"How to receive your order","defaultValue":"delivery"}` | `[{"value":"delivery","label":"Delivery","panel":"Delivered in 2 to 3 working days."},{"value":"collection","label":"Collection","panel":"Collect from a store near you."}]` | The two tabs share the list's full width equally. |
+| `with-icons` | With icons | `{"list.ariaLabel":"How to receive your order","defaultValue":"delivery"}` | `[{"value":"delivery","label":"Delivery","iconStart":"truck","panel":"Delivered in 2 to 3 working days."},{"value":"collection","label":"Collection","iconStart":"store","panel":"Collect from a store near you."}]` | The icons are hidden from assistive technology; each tab is named by its label. |
+| `small` | Small | `{"size":"sm","list.ariaLabel":"Order filter","defaultValue":"all"}` | `[{"value":"all","label":"All","panel":"All orders."},{"value":"open","label":"Open","panel":"Orders on their way."},{"value":"returned","label":"Returned","panel":"Returned orders."}]` |  |
+| `small-pill` | Small pill | `{"variant":"pill","size":"sm","list.ariaLabel":"Order filter","defaultValue":"open"}` | `[{"value":"all","label":"All","panel":"All orders."},{"value":"open","label":"Open","panel":"Orders on their way."},{"value":"returned","label":"Returned","panel":"Returned orders."}]` |  |
+| `vertical` | Vertical | `{"orientation":"vertical","list.ariaLabel":"Account settings","defaultValue":"profile"}` | `[{"value":"profile","label":"Profile","panel":"Name and email."},{"value":"addresses","label":"Addresses","panel":"Saved addresses."},{"value":"payments","label":"Payments","panel":"Saved payment methods."}]` |  |
+| `vertical-pill` | Vertical pill | `{"orientation":"vertical","variant":"pill","list.ariaLabel":"Account settings","defaultValue":"addresses"}` | `[{"value":"profile","label":"Profile","panel":"Name and email."},{"value":"addresses","label":"Addresses","panel":"Saved addresses."},{"value":"payments","label":"Payments","panel":"Saved payment methods."}]` |  |
+| `disabled-tab` | With a disabled tab | `{"list.ariaLabel":"Product information","defaultValue":"details"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"sizes","label":"Size guide","disabled":true,"panel":"Not available for this product."},{"value":"delivery","label":"Delivery","panel":"Free delivery over £50."}]` | Shows the disabled state and that the arrow keys skip the disabled tab. |
+| `manual` | Manual activation | `{"activationMode":"manual","list.ariaLabel":"Order history","defaultValue":"recent"}` | `[{"value":"recent","label":"Recent","panel":"Orders from the last 30 days."},{"value":"older","label":"Older","panel":"Loaded when selected."}]` | The arrow keys move focus only; Enter or Space selects. |
+| `rtl` | Right to left | `{"dir":"rtl","list.ariaLabel":"معلومات المنتج","defaultValue":"details"}` | `[{"value":"details","label":"التفاصيل","panel":"قطن عضوي."},{"value":"reviews","label":"المراجعات","panel":"التقييم 4.6 من 5."}]` | ArrowLeft moves to the next tab. |
+| `controlled` | Controlled | `{"value":"reviews","onValueChange":"setTab","list.ariaLabel":"Product information"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"reviews","label":"Reviews (124)","panel":"Average rating 4.6 out of 5."}]` |  |
+| `long-labels` | Long labels | `{"list.ariaLabel":"Product information","defaultValue":"care"}` | `[{"value":"details","label":"Details and materials","panel":"Organic cotton, relaxed fit."},{"value":"care","label":"Washing and care instructions","panel":"Wash at 30 degrees."},{"value":"returns","label":"Delivery and free returns","panel":"Free returns within 30 days."}]` | Labels longer than the content rules allow. They stay on one line and the list scrolls; the selected tab is in view on first render. |
+| `worst-case-320` | Worst case at 320 pixels | `{"variant":"line","size":"md","list.ariaLabel":"Product information","defaultValue":"questions"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"reviews","label":"Reviews (1,284)","panel":"Average rating 4.6 out of 5."},{"value":"sizes","label":"Size guide","disabled":true,"panel":"Not available."},{"value":"delivery","label":"Delivery","panel":"Free delivery over £50."},{"value":"returns","label":"Returns","panel":"Free returns within 30 days."},{"value":"questions","label":"Questions and answers","panel":"12 questions."}]` | Rendered at 320 pixels wide with a coarse pointer: six tabs, one disabled, the selected one last and off screen at first. The page must not scroll sideways, the list scrolls, the selected tab is scrolled into view, and focus rings on the first and last tab are not clipped. |
+
+## Style rules
+
+Every rule of the spec, in order. The generated stylesheet keeps this order and gives every rule for a part the same specificity, so a later rule wins where two set the same property.
+
+| Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| `line` | Line | `{"list.ariaLabel":"Product information","defaultValue":"details"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"reviews","label":"Reviews (124)","panel":"Average rating 4.6 out of 5."},{"value":"delivery","label":"Delivery","panel":"Free delivery over £50."}]` |
-| `pill` | Pill | `{"variant":"pill","list.ariaLabel":"How to receive your order","defaultValue":"delivery"}` | `[{"value":"delivery","label":"Delivery","panel":"Delivered in 2 to 3 working days."},{"value":"collection","label":"Collection","panel":"Collect from a store near you."}]` |
-| `fill` | Fill | `{"variant":"pill","list.behavior":"fill","list.ariaLabel":"How to receive your order","defaultValue":"delivery"}` | `[{"value":"delivery","label":"Delivery","panel":"Delivered in 2 to 3 working days."},{"value":"collection","label":"Collection","panel":"Collect from a store near you."}]` |
-| `with-icons` | With icons | `{"list.ariaLabel":"How to receive your order","defaultValue":"delivery"}` | `[{"value":"delivery","label":"Delivery","iconStart":"truck","panel":"Delivered in 2 to 3 working days."},{"value":"collection","label":"Collection","iconStart":"store","panel":"Collect from a store near you."}]` |
-| `small` | Small | `{"size":"sm","list.ariaLabel":"Order filter","defaultValue":"all"}` | `[{"value":"all","label":"All","panel":"All orders."},{"value":"open","label":"Open","panel":"Orders on their way."},{"value":"returned","label":"Returned","panel":"Returned orders."}]` |
-| `small-pill` | Small pill | `{"variant":"pill","size":"sm","list.ariaLabel":"Order filter","defaultValue":"open"}` | `[{"value":"all","label":"All","panel":"All orders."},{"value":"open","label":"Open","panel":"Orders on their way."},{"value":"returned","label":"Returned","panel":"Returned orders."}]` |
-| `vertical` | Vertical | `{"orientation":"vertical","list.ariaLabel":"Account settings","defaultValue":"profile"}` | `[{"value":"profile","label":"Profile","panel":"Name and email."},{"value":"addresses","label":"Addresses","panel":"Saved addresses."},{"value":"payments","label":"Payments","panel":"Saved payment methods."}]` |
-| `vertical-pill` | Vertical pill | `{"orientation":"vertical","variant":"pill","list.ariaLabel":"Account settings","defaultValue":"addresses"}` | `[{"value":"profile","label":"Profile","panel":"Name and email."},{"value":"addresses","label":"Addresses","panel":"Saved addresses."},{"value":"payments","label":"Payments","panel":"Saved payment methods."}]` |
-| `disabled-tab` | With a disabled tab | `{"list.ariaLabel":"Product information","defaultValue":"details"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"sizes","label":"Size guide","disabled":true,"panel":"Not available for this product."},{"value":"delivery","label":"Delivery","panel":"Free delivery over £50."}]` |
-| `manual` | Manual activation | `{"activationMode":"manual","list.ariaLabel":"Order history","defaultValue":"recent"}` | `[{"value":"recent","label":"Recent","panel":"Orders from the last 30 days."},{"value":"older","label":"Older","panel":"Loaded when selected."}]` |
-| `rtl` | Right to left | `{"dir":"rtl","list.ariaLabel":"معلومات المنتج","defaultValue":"details"}` | `[{"value":"details","label":"التفاصيل","panel":"قطن عضوي."},{"value":"reviews","label":"المراجعات","panel":"التقييم 4.6 من 5."}]` |
-| `controlled` | Controlled | `{"value":"reviews","onValueChange":"setTab","list.ariaLabel":"Product information"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"reviews","label":"Reviews (124)","panel":"Average rating 4.6 out of 5."}]` |
-| `long-labels` | Long labels | `{"list.ariaLabel":"Product information","defaultValue":"care"}` | `[{"value":"details","label":"Details and materials","panel":"Organic cotton, relaxed fit."},{"value":"care","label":"Washing and care instructions","panel":"Wash at 30 degrees."},{"value":"returns","label":"Delivery and free returns","panel":"Free returns within 30 days."}]` |
-| `worst-case-320` | Worst case at 320 pixels | `{"variant":"line","size":"md","list.ariaLabel":"Product information","defaultValue":"questions"}` | `[{"value":"details","label":"Details","panel":"Organic cotton, relaxed fit."},{"value":"reviews","label":"Reviews (1,284)","panel":"Average rating 4.6 out of 5."},{"value":"sizes","label":"Size guide","disabled":true,"panel":"Not available."},{"value":"delivery","label":"Delivery","panel":"Free delivery over £50."},{"value":"returns","label":"Returns","panel":"Free returns within 30 days."},{"value":"questions","label":"Questions and answers","panel":"12 questions."}]` |
+| styles[0] | always | root: gap static/120<br>list: gap static/40, paddingInline static/40, paddingBlock static/40<br>trigger: height control/md, paddingInline static/120, gap static/80, radius height/40, borderStyle none, background transparent, color text/secondary, typography body-base, cursor pointer, duration duration/fast, easing ease/standard, outlineColor border/focus, outlineWidth none, outlineOffset focus/offset<br>iconStart: iconSize icon/md, color current<br>iconEnd: iconSize icon/md, color current<br>indicator: borderColor transparent<br>content: radius container/small, color text/primary, typography body-base, outlineColor border/focus, outlineWidth none, outlineOffset focus/offset | The list's padding is static/40, 4 pixels, which is focus/width plus focus/offset, so the focus ring of the first and last tab is not cut off by the list's sideways scrolling. An unselected label is text/secondary, 5.10 to 1 in light and 7.66 to 1 in dark against the page. The indicator's edge and its width/md thickness are written in the extensions stylesheet, because a one-sided border cannot be said here; only its colour is set here, so the theme still drives it. |
+| styles[1] | states hover | trigger: color text/primary |  |
+| styles[2] | states selected | trigger: color text/primary, typography label-base<br>indicator: borderColor border/brand | The selected tab is shown three ways, not by colour alone: the label turns from body-base (weight 500) to label-base (weight 600) at the same 14 on 20 size, the label darkens to text/primary, and the brand line appears. The label is never set in text/brand, which is 3.83 to 1 in dark and fails for small text. border/brand is a non-text mark 2 pixels thick, 7.88 to 1 in light and 3.83 to 1 in dark against the page, which passes the 3 to 1 for non-text contrast in both themes. |
+| styles[3] | props {"size":"sm"} | trigger: height control/sm, paddingInline static/80, gap static/60, radius height/32<br>iconStart: iconSize icon/sm<br>iconEnd: iconSize icon/sm |  |
+| styles[4] | media coarse-pointer | trigger: minHeight target/min | On a touch screen every tab is at least 44 pixels tall. |
+| styles[5] | props {"orientation":"vertical"} | root: gap static/240 | A vertical list sits beside its panel and needs more space between them than a list above its panel. The column layout itself is written in the extensions stylesheet from data-orientation; see the requirement tabs-orientation-layout. |
+| styles[6] | props {"list.behavior":"fill"} | list: width full | With fill the list takes its container's width. The equal share between the tabs is written in the extensions stylesheet; see the requirement tabs-behavior-fill. |
+| styles[7] | props {"variant":"pill"} | list: gap static/80<br>trigger: radius round/full, paddingInline static/160<br>indicator: borderColor transparent | The pill variant marks the selected tab with a fill, so its indicator stays transparent even when selected. |
+| styles[8] | props {"variant":"pill","size":"sm"} | trigger: paddingInline static/120 |  |
+| styles[9] | props {"variant":"pill"}; states hover | trigger: background surface/primary/hover | text/secondary on surface/primary/hover is 4.80 to 1 in light and 6.66 to 1 in dark. |
+| styles[10] | props {"variant":"pill"}; states selected | trigger: background interactive/neutral/default, color text/inverse<br>indicator: borderColor transparent | The pill's fill must stand out from the page by 3 to 1 and carry a readable label. interactive/neutral/default is 21 to 1 in light and 17.61 to 1 in dark against the page, and text/inverse on it is 21 to 1 and 17.61 to 1. text/primary cannot be used on this fill, so the rule that a selected label is text/primary holds for the line variant only. A pink fill is not used: a filled brand shape reads as the page's primary action. |
+| styles[11] | states focus | trigger: outlineWidth focus/width |  |
+| styles[12] | states contentFocus | content: outlineWidth focus/width |  |
+| styles[13] | states disabled | trigger: color text/disabled, cursor not-allowed | One disabled look for both variants. The icons follow the label's colour. |
+| styles[14] | props {"variant":"pill"}; states disabled | trigger: background transparent |  |
+| styles[15] | props {"variant":"pill"}; states selected; media forced-colors | trigger: borderStyle solid, borderWidth width/md, borderColor current | In forced colours the fill is removed, so the selected pill gets a 2 pixel border in the text colour on all four sides. The line variant needs no rule: its indicator is a border, which forced colours keep. |
+| styles[16] | media reduced-motion | trigger: duration none |  |
 
 ## What the spec does not carry
 

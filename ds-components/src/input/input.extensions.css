@@ -1,0 +1,80 @@
+/* Input: hand-written layout the spec cannot carry (its notCarried list: the root is a column, the control is a
+   row centred vertically, the input takes the leftover width and may shrink while the prefix and suffix do not,
+   the error message is a row with the icon first). Loaded by ds-components/src/styles.css after input.css.
+   This layer outranks ds.components whatever the selector, so it never sets a colour, border, padding, outline,
+   block size or minimum size of a spec part: those belong to the spec. Tokens only, logical properties only. */
+@layer ds.extensions {
+  /* The field group: label, control, description and error stacked, spaced by the spec's root gap. */
+  [data-slot="input"] {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  /* Long labels, descriptions and errors wrap inside the field instead of widening it. */
+  [data-slot="input-label"],
+  [data-slot="input-description"],
+  [data-slot="input-error-text"] {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+  [data-slot="input-description"],
+  [data-slot="input-error-message"] {
+    margin: 0;
+  }
+
+  /* The control: prefix, input and suffix on one row, centred vertically. */
+  [data-slot="input-control"] {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-inline-size: 0;
+  }
+
+  /* The input takes the width that is left and may shrink below its native width. */
+  [data-slot="input-input"] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    align-self: stretch;
+    margin: 0;
+    font-family: inherit;
+    letter-spacing: inherit;
+  }
+
+  /* Prefix and suffix keep their size and sit on the input's centre line. */
+  [data-slot="input-prefix"],
+  [data-slot="input-suffix"] {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    user-select: none;
+  }
+  /* An icon given as the prefix or suffix: the spec has no icon size for these parts, so the medium icon size. */
+  [data-slot="input-prefix"] > svg,
+  [data-slot="input-suffix"] > svg {
+    display: block;
+    flex-shrink: 0;
+    inline-size: var(--size-icon-md);
+    block-size: var(--size-icon-md);
+  }
+
+  /* The error message: the icon first, on the first line of the words. */
+  [data-slot="input-error-message"] {
+    display: flex;
+    align-items: flex-start;
+  }
+  [data-slot="input-error-icon"] {
+    display: inline-flex;
+    flex-shrink: 0;
+    margin-block-start: calc((var(--line-height-body-small) - var(--size-icon-sm)) / 2);
+  }
+  [data-slot="input-error-icon"] > svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+}

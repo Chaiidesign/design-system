@@ -12,5 +12,6 @@
     "allowImportingTsExtensions": true,
     "paths": { "@gallery/registry": ["./gallery/src/registry.generated.ts"] }
   },
-  "include": ["src", "gallery"]
+  "include": ["src", "gallery"],
+  "exclude": ["gallery/dist", "gallery/dist-*"]
 }

@@ -8,7 +8,7 @@ Every state of every built component: the part it is on, the selector that match
 | Button | hover | root | `:hover` | native | `state=hover` |
 | Button | active | root | `:active` | native |  |
 | Button | focus | root | `:focus-visible` | native | `state=focus` |
-| Button | disabled | root | `:is(:disabled, [aria-disabled="true"])` | native | `state=disabled` |
+| Button | disabled | root | `:is(:disabled, [data-disabled])` | native | `state=disabled` |
 | Button | loading | root | `[data-loading]` | prop |  |
 | Dialog | open | content | `[data-state="open"]` | primitive |  |
 | Dialog | closed | content | `[data-state="closed"]` | primitive |  |

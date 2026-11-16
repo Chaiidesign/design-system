@@ -3,13 +3,6 @@
   "components": {
     "button": [
       {
-        "token": "control/md",
-        "collection": "Size",
-        "cssVar": "--size-control-md",
-        "origin": "proposed",
-        "rules": 2
-      },
-      {
         "token": "static/160",
         "collection": "Density",
         "cssVar": "--spacing-static-160",
@@ -99,6 +92,13 @@
         "cssVar": "--border-focus-offset",
         "origin": "proposed",
         "rules": 1
+      },
+      {
+        "token": "control/md",
+        "collection": "Size",
+        "cssVar": "--size-control-md",
+        "origin": "proposed",
+        "rules": 2
       },
       {
         "token": "icon/md",
@@ -269,13 +269,6 @@
         "rules": 2
       },
       {
-        "token": "control/sm",
-        "collection": "Size",
-        "cssVar": "--size-control-sm",
-        "origin": "proposed",
-        "rules": 2
-      },
-      {
         "token": "static/120",
         "collection": "Density",
         "cssVar": "--spacing-static-120",
@@ -297,18 +290,18 @@
         "rules": 1
       },
       {
+        "token": "control/sm",
+        "collection": "Size",
+        "cssVar": "--size-control-sm",
+        "origin": "proposed",
+        "rules": 2
+      },
+      {
         "token": "icon/sm",
         "collection": "Size",
         "cssVar": "--size-icon-sm",
         "origin": "proposed",
         "rules": 1
-      },
-      {
-        "token": "control/lg",
-        "collection": "Size",
-        "cssVar": "--size-control-lg",
-        "origin": "proposed",
-        "rules": 2
       },
       {
         "token": "static/200",
@@ -337,6 +330,13 @@
         "cssVar": "--line-height-label-large",
         "origin": "figma",
         "rules": 1
+      },
+      {
+        "token": "control/lg",
+        "collection": "Size",
+        "cssVar": "--size-control-lg",
+        "origin": "proposed",
+        "rules": 2
       },
       {
         "token": "target/min",

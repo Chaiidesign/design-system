@@ -7,63 +7,111 @@ Runs an action. One primary button per view; everything else is secondary, neutr
 
 Stage: **alpha**. Figma: `Button` (mapping not yet confirmed against the Components file). Behaviour: `@radix-ui/react-slot`.
 
+A single-piece component: one exported component, Button, takes every prop.
+
 ## Anatomy
 
-| Part | data-slot | Element | Role | Wraps |
-|---|---|---|---|---|
-| root | `button` | `button` | button |  |
-| iconStart (optional) | `button-icon-start` | `span` | indicator |  |
-| label | `button-label` | `span` |  |  |
-| iconEnd (optional) | `button-icon-end` | `span` | indicator |  |
-| spinner (optional) | `button-spinner` | `span` | indicator |  |
+| Part | data-slot | Element | Kind | Role | Wraps | Description |
+|---|---|---|---|---|---|---|
+| root | `button` | `button` | control | button |  | The pressable control. It carries every prop and every state. |
+| iconStart (optional) | `button-icon-start` | `span` | glyph | indicator |  | An optional icon before the label. Hidden from assistive technology. |
+| label | `button-label` | `span` | text |  |  | The words. They are the button's accessible name unless ariaLabel is given. |
+| iconEnd (optional) | `button-icon-end` | `span` | glyph | indicator |  | An optional icon after the label. Hidden from assistive technology. |
+| spinner (optional) | `button-spinner` | `span` | glyph | indicator |  | Shown in place of iconStart while loading. Hidden from assistive technology; the busy state is announced by the root. |
 
 ## Props
 
-| Prop | Part | Type or values | Default | Reflects | In Figma |
-|---|---|---|---|---|---|
-| `variant` | root | `primary` `neutral` `secondary` `outline` `ghost` `danger` `dangerSoft` `success` `warning` | `"secondary"` | `data-variant` | `variant` |
-| `size` | root | `sm` `md` `lg` | `"md"` | `data-size` | `size` |
-| `iconOnly` | root | boolean | `false` | `data-icon-only` | `iconOnly` |
-| `fullWidth` | root | boolean | `false` | `data-full-width` | `fullWidth` |
-| `loading` | root | boolean | `false` | `data-loading` | code only |
-| `disabled` | root | boolean | `false` |  | `disabled` |
-| `iconStart` | iconStart | node |  |  | `prefix` |
-| `iconEnd` | iconEnd | node |  |  | `suffix` |
-| `children` | label | node | required |  | `label` |
-| `type` | root | `button` `submit` `reset` | `"button"` |  | code only |
-| `ariaLabel` | root | string |  |  | code only |
-| `asChild` | root | boolean | `false` |  | code only |
-| `onClick` | root | handler |  |  | code only |
+| Prop | Taken by | Lands on part | Type or values | Default | Reflects | In Figma | Description |
+|---|---|---|---|---|---|---|---|
+| `variant` | Button | root | `primary` `neutral` `secondary` `outline` `ghost` `danger` `dangerSoft` `success` `warning` | `"secondary"` | `data-variant` | `variant` | How much weight the action has. primary, secondary, outline, ghost, danger and dangerSoft are the values of the Figma variant property; neutral, success and warning exist because the tokens interactive/neutral, interactive/success and interactive/warning do. Figma also has tertiary, whose look could not be read. The default is secondary so that a primary button is always a deliberate choice. |
+| `size` | Button | root | `sm` `md` `lg` | `"md"` | `data-size` | `size` | Height: 32, 40 or 44 pixels. On a touch screen sm and md grow to at least 44. |
+| `iconOnly` | Button | root | boolean | `false` | `data-icon-only` | `iconOnly` | A square button holding one icon and no visible label. ariaLabel is then required. |
+| `fullWidth` | Button | root | boolean | `false` | `data-full-width` | `fullWidth` | Fills the width of its container. |
+| `loading` | Button | root | boolean | `false` | `data-loading` | code only | The action is running. The button stays focusable, ignores further presses and is announced as busy. |
+| `disabled` | Button | root | boolean | `false` | `data-disabled` | `disabled` | The action is not available. Sets the native disabled attribute and data-disabled. |
+| `iconStart` | Button | iconStart | node |  |  | `prefix` | The icon before the label. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out. |
+| `iconEnd` | Button | iconEnd | node |  |  | `suffix` | The icon after the label. Figma calls the property suffix. |
+| `children` | Button | label | node |  |  | `label` | The label. A verb that names the result, such as Save changes. Required unless iconOnly is set, which the exported props type enforces. |
+| `type` | Button | root | `button` `submit` `reset` | `"button"` |  | code only | The native button type. The default is button, never submit, so a button inside a form cannot submit it by accident. |
+| `ariaLabel` | Button | root | string |  |  | code only | The accessible name when there is no visible label. Required with iconOnly. |
+| `asChild` | Button | root | boolean | `false` |  | code only | Renders the child element with the button's look and props, for a link that should look like a button. |
+| `onClick` | Button | root | handler |  |  | code only | Called on press by pointer, Enter or Space. Not called while disabled or loading. |
 
 ## State map
 
 Strongest first: disabled, loading, active, hover.
 
-| State | Part | Selector | Set by | Figma | Test reaches it by |
-|---|---|---|---|---|---|
-| hover | root | `:hover` | native | `state=hover` | hover |
-| active | root | `:active` | native |  | press |
-| focus | root | `:focus-visible` | native | `state=focus` | focus-by-keyboard |
-| disabled | root | `:is(:disabled, [aria-disabled="true"])` | native | `state=disabled` | prop:disabled=true |
-| loading | root | `[data-loading]` | prop |  | prop:loading=true |
+| State | Part | Selector | Set by | Figma | Test reaches it by | Description |
+|---|---|---|---|---|---|---|
+| hover | root | `:hover` | native | `state=hover` | hover | The pointer is over the button. |
+| active | root | `:active` | native |  | press | The button is being pressed. The Figma copy that could be read has no pressed value; the library's description mentions one. |
+| focus | root | `:focus-visible` | native | `state=focus` | focus-by-keyboard | The button has keyboard focus. Hover and focus are states in Figma and never props in code. |
+| disabled | root | `:is(:disabled, [data-disabled])` | native | `state=disabled` | prop:disabled=true | Not available. The native disabled attribute on a button; data-disabled on a link rendered with asChild, which has no disabled attribute. |
+| loading | root | `[data-loading]` | prop |  | prop:loading=true | The action is running. The button keeps the look of its variant, shows the spinner, and is announced as busy and unavailable through aria-busy and aria-disabled; it is not dimmed, because it is working, not unavailable. |
 
 ## Tokens from Figma
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Density | `static/0` `--spacing-static-0` 1<br>`static/120` `--spacing-static-120` 1<br>`static/160` `--spacing-static-160` 1<br>`static/200` `--spacing-static-200` 1<br>`static/60` `--spacing-static-60` 1<br>`static/80` `--spacing-static-80` 1 |
-| Radius | `height/32` `--radius-height-32` 1<br>`height/40` `--radius-height-40` 1<br>`height/44` `--radius-height-44` 1 |
-| Themes | `border/focus` `--color-border-focus` 1<br>`border/primary/disabled` `--color-border-primary-disabled` 1<br>`interactive/error/default` `--color-interactive-error` 1<br>`interactive/error/hover` `--color-interactive-error-hover` 2<br>`interactive/neutral/active` `--color-interactive-neutral-active` 1<br>`interactive/neutral/default` `--color-interactive-neutral` 1<br>`interactive/neutral/hover` `--color-interactive-neutral-hover` 1<br>`interactive/primary/active` `--color-interactive-primary-active` 1<br>`interactive/primary/default` `--color-interactive-primary` 1<br>`interactive/primary/disabled` `--color-interactive-primary-disabled` 1<br>`interactive/primary/hover` `--color-interactive-primary-hover` 1<br>`interactive/secondary/active` `--color-interactive-secondary-active` 1<br>`interactive/secondary/default` `--color-interactive-secondary` 1<br>`interactive/secondary/hover` `--color-interactive-secondary-hover` 1<br>`interactive/success/default` `--color-interactive-success` 1<br>`interactive/success/hover` `--color-interactive-success-hover` 2<br>`interactive/warning/default` `--color-interactive-warning` 1<br>`interactive/warning/hover` `--color-interactive-warning-hover` 2<br>`surface/accent/red/subtlest/hover` `--color-surface-accent-red-subtlest-hover` 2<br>`surface/error` `--color-surface-error` 1<br>`surface/primary/active` `--color-surface-primary-active` 2<br>`surface/primary/hover` `--color-surface-primary-hover` 2<br>`text/disabled` `--color-text-disabled` 1<br>`text/error` `--color-text-error` 1<br>`text/inverse` `--color-text-inverse` 1<br>`text/on` `--color-text-on` 4<br>`text/primary` `--color-text-primary` 3 |
-| Typography | `font-size/label-base` `--font-size-label-base` 1<br>`font-size/label-large` `--font-size-label-large` 1<br>`font-weight/label` `--font-weight-label` 2<br>`line-height/label-base` `--line-height-label-base` 1<br>`line-height/label-large` `--line-height-label-large` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Density | `static/0` | `--spacing-static-0` | styles[30] |
+| Density | `static/120` | `--spacing-static-120` | styles[27] |
+| Density | `static/160` | `--spacing-static-160` | styles[0] |
+| Density | `static/200` | `--spacing-static-200` | styles[28] |
+| Density | `static/60` | `--spacing-static-60` | styles[27] |
+| Density | `static/80` | `--spacing-static-80` | styles[0] |
+| Radius | `height/32` | `--radius-height-32` | styles[27] |
+| Radius | `height/40` | `--radius-height-40` | styles[0] |
+| Radius | `height/44` | `--radius-height-44` | styles[28] |
+| Themes | `border/focus` | `--color-border-focus` | styles[0] |
+| Themes | `border/primary/disabled` | `--color-border-primary-disabled` | styles[39] |
+| Themes | `interactive/error/default` | `--color-interactive-error` | styles[12] |
+| Themes | `interactive/error/hover` | `--color-interactive-error-hover` | styles[13], styles[14] |
+| Themes | `interactive/neutral/active` | `--color-interactive-neutral-active` | styles[8] |
+| Themes | `interactive/neutral/default` | `--color-interactive-neutral` | styles[6] |
+| Themes | `interactive/neutral/hover` | `--color-interactive-neutral-hover` | styles[7] |
+| Themes | `interactive/primary/active` | `--color-interactive-primary-active` | styles[5] |
+| Themes | `interactive/primary/default` | `--color-interactive-primary` | styles[3] |
+| Themes | `interactive/primary/disabled` | `--color-interactive-primary-disabled` | styles[36] |
+| Themes | `interactive/primary/hover` | `--color-interactive-primary-hover` | styles[4] |
+| Themes | `interactive/secondary/active` | `--color-interactive-secondary-active` | styles[2] |
+| Themes | `interactive/secondary/default` | `--color-interactive-secondary` | styles[0] |
+| Themes | `interactive/secondary/hover` | `--color-interactive-secondary-hover` | styles[1] |
+| Themes | `interactive/success/default` | `--color-interactive-success` | styles[15] |
+| Themes | `interactive/success/hover` | `--color-interactive-success-hover` | styles[16], styles[17] |
+| Themes | `interactive/warning/default` | `--color-interactive-warning` | styles[18] |
+| Themes | `interactive/warning/hover` | `--color-interactive-warning-hover` | styles[19], styles[20] |
+| Themes | `surface/accent/red/subtlest/hover` | `--color-surface-accent-red-subtlest-hover` | styles[25], styles[26] |
+| Themes | `surface/error` | `--color-surface-error` | styles[24] |
+| Themes | `surface/primary/active` | `--color-surface-primary-active` | styles[11], styles[23] |
+| Themes | `surface/primary/hover` | `--color-surface-primary-hover` | styles[10], styles[22] |
+| Themes | `text/disabled` | `--color-text-disabled` | styles[36] |
+| Themes | `text/error` | `--color-text-error` | styles[24] |
+| Themes | `text/inverse` | `--color-text-inverse` | styles[6] |
+| Themes | `text/on` | `--color-text-on` | styles[3], styles[12], styles[15], styles[18] |
+| Themes | `text/primary` | `--color-text-primary` | styles[0], styles[9], styles[21] |
+| Typography | `font-size/label-base` | `--font-size-label-base` | styles[0] |
+| Typography | `font-size/label-large` | `--font-size-label-large` | styles[28] |
+| Typography | `font-weight/label` | `--font-weight-label` | styles[0], styles[28] |
+| Typography | `line-height/label-base` | `--line-height-label-base` | styles[0] |
+| Typography | `line-height/label-large` | `--line-height-label-large` | styles[28] |
 
 ## Tokens proposed in the repo
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Border | `focus/offset` `--border-focus-offset` 1<br>`focus/width` `--border-focus-width` 1<br>`width/sm` `--border-width-sm` 1 |
-| Motion | `duration/fast` `--duration-fast` 1<br>`ease/standard` `--ease-standard` 1 |
-| Size | `control/lg` `--size-control-lg` 2<br>`control/md` `--size-control-md` 2<br>`control/sm` `--size-control-sm` 2<br>`icon/md` `--size-icon-md` 1<br>`icon/sm` `--size-icon-sm` 1<br>`target/min` `--size-target-min` 1 |
-| Themes | `border/strong/default` `--color-border-strong` 1<br>`border/strong/hover` `--color-border-strong-hover` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Border | `focus/offset` | `--border-focus-offset` | styles[0] |
+| Border | `focus/width` | `--border-focus-width` | styles[34] |
+| Border | `width/sm` | `--border-width-sm` | styles[0] |
+| Motion | `duration/fast` | `--duration-fast` | styles[0] |
+| Motion | `ease/standard` | `--ease-standard` | styles[0] |
+| Size | `control/lg` | `--size-control-lg` | styles[28], styles[32] |
+| Size | `control/md` | `--size-control-md` | styles[0], styles[30] |
+| Size | `control/sm` | `--size-control-sm` | styles[27], styles[31] |
+| Size | `icon/md` | `--size-icon-md` | styles[0] |
+| Size | `icon/sm` | `--size-icon-sm` | styles[27] |
+| Size | `target/min` | `--size-target-min` | styles[29] |
+| Themes | `border/strong/default` | `--color-border-strong` | styles[21] |
+| Themes | `border/strong/hover` | `--color-border-strong-hover` | styles[22] |
 
 ## Keyboard
 
@@ -90,11 +138,12 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 | MUST | `button-space-activates` | Space calls onClick once. | `test:button-space-activates` | 2.1.1 |
 | MUST | `button-disabled-inert` | While disabled, a press does not call onClick. | `test:button-disabled-inert` |  |
 | MUST | `button-loading-inert` | While loading, a press does not call onClick. | `test:button-loading-inert` |  |
-| MUST | `button-loading-stays-focusable` | While loading, the button keeps keyboard focus and stays in the Tab order, with aria-busy and aria-disabled set to true and the native disabled attribute absent. | `test:button-loading-stays-focusable` | 2.4.3 |
+| MUST | `button-loading-stays-focusable` | While loading, the button keeps keyboard focus and stays in the Tab order, with aria-busy and aria-disabled set to true and neither the native disabled attribute nor data-disabled. | `test:button-loading-stays-focusable` | 2.4.3 |
 | MUST | `button-focus-visible` | With keyboard focus the root shows a ring at least 2 pixels thick with at least 3 to 1 contrast against what is beside it. | `test:button-focus-visible` | 2.4.7 |
 | MUST | `button-label-contrast` | In every variant and state except disabled, the label has at least 4.5 to 1 contrast against the fill, in light and dark. | `test:button-label-contrast` | 1.4.3 |
 | MUST | `button-target-size` | The root is at least 24 by 24 pixels at every size. | `test:button-target-size` | 2.5.8 |
 | MUST | `button-label-wraps` | A label too long for one line wraps inside the button and keeps its padding; it is never cut off. | `test:button-label-wraps` | 1.4.10 |
+| MUST | `button-loading-keeps-look` | While loading, the fill and label keep the colours of the button's variant; the button does not take the disabled look. | `test:button-loading-keeps-look` |  |
 | SHOULD | `button-touch-target` | Where the pointer is coarse the root is at least 44 pixels tall. (pattern) | `test:button-touch-target` |  |
 | SHOULD | `button-one-primary` | A view has at most one primary button. (pattern) | `lint:one-primary-per-view` |  |
 | SHOULD | `button-error-not-colour-alone` | A danger button states the destructive action in its label, such as Delete project, because in the dark theme its fill is close in colour to the primary fill. (pattern) | `manual:button-error-not-colour-alone` | 1.4.1 |
@@ -108,26 +157,73 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 
 ## Examples
 
-| Id | Title | Props | Content |
+| Id | Title | Props | Content | Note |
+|---|---|---|---|---|
+| `secondary` | Secondary |  | Cancel |  |
+| `primary` | Primary | `{"variant":"primary"}` | Save changes |  |
+| `neutral` | Neutral | `{"variant":"neutral"}` | Continue |  |
+| `ghost` | Ghost | `{"variant":"ghost"}` | Skip |  |
+| `danger` | Danger | `{"variant":"danger"}` | Delete project |  |
+| `danger-soft` | Danger, soft | `{"variant":"dangerSoft"}` | Remove member |  |
+| `outline` | Outline | `{"variant":"outline"}` | Export |  |
+| `success` | Success | `{"variant":"success"}` | Approve |  |
+| `warning` | Warning | `{"variant":"warning"}` | Archive |  |
+| `small` | Small | `{"size":"sm"}` | Edit |  |
+| `large` | Large | `{"variant":"primary","size":"lg"}` | Get started |  |
+| `with-icons` | With icons | `{"variant":"primary","iconStart":"plus","iconEnd":"arrow-right"}` | New chat |  |
+| `icon-only` | Icon only | `{"iconOnly":true,"ariaLabel":"Send message","iconStart":"arrow-up","variant":"primary"}` |  |  |
+| `loading` | Loading | `{"variant":"primary","loading":true}` | Saving… |  |
+| `disabled` | Disabled | `{"variant":"primary","disabled":true}` | Save changes |  |
+| `full-width` | Full width | `{"variant":"primary","fullWidth":true}` | Continue |  |
+| `long-label` | Long label | `{"variant":"primary"}` | Move the event to Thursday and send the message to Priya | Worst case for wrapping at 320 pixels. |
+| `as-link` | As a link | `{"asChild":true,"variant":"secondary"}` | Open settings | The child is a link element; the button gives it its look. |
+
+## Style rules
+
+Every rule of the spec, in order. The generated stylesheet keeps this order and gives every rule for a part the same specificity, so a later rule wins where two set the same property.
+
+| Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| `secondary` | Secondary |  | Cancel |
-| `primary` | Primary | `{"variant":"primary"}` | Save changes |
-| `neutral` | Neutral | `{"variant":"neutral"}` | Continue |
-| `ghost` | Ghost | `{"variant":"ghost"}` | Skip |
-| `danger` | Danger | `{"variant":"danger"}` | Delete project |
-| `danger-soft` | Danger, soft | `{"variant":"dangerSoft"}` | Remove member |
-| `outline` | Outline | `{"variant":"outline"}` | Export |
-| `success` | Success | `{"variant":"success"}` | Approve |
-| `warning` | Warning | `{"variant":"warning"}` | Archive |
-| `small` | Small | `{"size":"sm"}` | Edit |
-| `large` | Large | `{"variant":"primary","size":"lg"}` | Get started |
-| `with-icons` | With icons | `{"variant":"primary","iconStart":"plus","iconEnd":"arrow-right"}` | New chat |
-| `icon-only` | Icon only | `{"iconOnly":true,"ariaLabel":"Send message","iconStart":"arrow-up","variant":"primary"}` |  |
-| `loading` | Loading | `{"variant":"primary","loading":true}` | Saving… |
-| `disabled` | Disabled | `{"variant":"primary","disabled":true}` | Save changes |
-| `full-width` | Full width | `{"variant":"primary","fullWidth":true}` | Continue |
-| `long-label` | Long label | `{"variant":"primary"}` | Move the event to Thursday and send the message to Priya |
-| `as-link` | As a link | `{"asChild":true,"variant":"secondary"}` | Open settings |
+| styles[0] | always | root: paddingInline static/160, gap static/80, radius height/40, borderWidth width/sm, borderStyle solid, borderColor transparent, background interactive/secondary/default, color text/primary, typography label-base, cursor pointer, duration duration/fast, easing ease/standard, outlineColor border/focus, outlineWidth none, outlineOffset focus/offset, minHeight control/md, paddingBlock static/80<br>iconStart: iconSize icon/md, color current<br>iconEnd: iconSize icon/md, color current<br>spinner: iconSize icon/md, color current | The height is a least height: a label that wraps makes the button taller instead of being cut off. |
+| styles[1] | states hover | root: background interactive/secondary/hover |  |
+| styles[2] | states active | root: background interactive/secondary/active |  |
+| styles[3] | props {"variant":"primary"} | root: background interactive/primary/default, color text/on |  |
+| styles[4] | props {"variant":"primary"}; states hover | root: background interactive/primary/hover |  |
+| styles[5] | props {"variant":"primary"}; states active | root: background interactive/primary/active |  |
+| styles[6] | props {"variant":"neutral"} | root: background interactive/neutral/default, color text/inverse |  |
+| styles[7] | props {"variant":"neutral"}; states hover | root: background interactive/neutral/hover |  |
+| styles[8] | props {"variant":"neutral"}; states active | root: background interactive/neutral/active |  |
+| styles[9] | props {"variant":"ghost"} | root: background transparent, color text/primary |  |
+| styles[10] | props {"variant":"ghost"}; states hover | root: background surface/primary/hover |  |
+| styles[11] | props {"variant":"ghost"}; states active | root: background surface/primary/active |  |
+| styles[12] | props {"variant":"danger"} | root: background interactive/error/default, color text/on |  |
+| styles[13] | props {"variant":"danger"}; states hover | root: background interactive/error/hover |  |
+| styles[14] | props {"variant":"danger"}; states active | root: background interactive/error/hover | Figma has no interactive/error/active yet; the hover step is reused until it does. |
+| styles[15] | props {"variant":"success"} | root: background interactive/success/default, color text/on |  |
+| styles[16] | props {"variant":"success"}; states hover | root: background interactive/success/hover |  |
+| styles[17] | props {"variant":"success"}; states active | root: background interactive/success/hover | Figma has no interactive/success/active yet. |
+| styles[18] | props {"variant":"warning"} | root: background interactive/warning/default, color text/on |  |
+| styles[19] | props {"variant":"warning"}; states hover | root: background interactive/warning/hover |  |
+| styles[20] | props {"variant":"warning"}; states active | root: background interactive/warning/hover | Figma has no interactive/warning/active yet. |
+| styles[21] | props {"variant":"outline"} | root: background transparent, borderColor border/strong/default, color text/primary |  |
+| styles[22] | props {"variant":"outline"}; states hover | root: background surface/primary/hover, borderColor border/strong/hover |  |
+| styles[23] | props {"variant":"outline"}; states active | root: background surface/primary/active |  |
+| styles[24] | props {"variant":"dangerSoft"} | root: background surface/error, color text/error | A destructive action that should not shout: tinted, not filled. It also differs from the primary button in more than hue, which matters in the dark theme where the pink and the red fills are close. |
+| styles[25] | props {"variant":"dangerSoft"}; states hover | root: background surface/accent/red/subtlest/hover |  |
+| styles[26] | props {"variant":"dangerSoft"}; states active | root: background surface/accent/red/subtlest/hover | The next red step fails 4.5 to 1 with the error text in dark, so pressed reuses the hover step. |
+| styles[27] | props {"size":"sm"} | root: paddingInline static/120, gap static/60, radius height/32, minHeight control/sm, paddingBlock static/60<br>iconStart: iconSize icon/sm<br>iconEnd: iconSize icon/sm<br>spinner: iconSize icon/sm |  |
+| styles[28] | props {"size":"lg"} | root: paddingInline static/200, radius height/44, typography label-large, minHeight control/lg |  |
+| styles[29] | media coarse-pointer | root: minHeight target/min | On a touch screen every size is at least 44 pixels tall. |
+| styles[30] | props {"iconOnly":true} | root: paddingInline static/0, width control/md, paddingBlock static/0 |  |
+| styles[31] | props {"iconOnly":true,"size":"sm"} | root: width control/sm |  |
+| styles[32] | props {"iconOnly":true,"size":"lg"} | root: width control/lg |  |
+| styles[33] | props {"fullWidth":true} | root: width full |  |
+| styles[34] | states focus | root: outlineWidth focus/width |  |
+| styles[35] | states loading | root: cursor progress |  |
+| styles[36] | states disabled | root: background interactive/primary/disabled, color text/disabled, cursor not-allowed | One disabled look for every variant, so a disabled button never borrows the weight of a live one. |
+| styles[37] | props {"variant":"ghost"}; states disabled | root: background transparent |  |
+| styles[38] | media reduced-motion | root: duration none |  |
+| styles[39] | props {"variant":"outline"}; states disabled | root: background transparent, borderColor border/primary/disabled |  |
 
 ## What the spec does not carry
 

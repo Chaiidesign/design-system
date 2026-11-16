@@ -129,6 +129,7 @@ export const tests = {
     expect.equal(await clicks(page, "primary"), 1, "control: a click on a live primary button counts once");
     await open("disabled");
     expect.equal(await page.locator(ROOT).evaluate((el) => el.disabled), true, "the disabled example sets the native disabled attribute");
+    expect.equal(await page.locator(ROOT).getAttribute("data-disabled"), "", "the disabled prop reflects data-disabled");
     await clickCentre(page);
     await page.locator(ROOT).dispatchEvent("click");
     expect.equal(await clicks(page, "disabled"), 0, "a click on a disabled button does not call onClick");
@@ -153,12 +154,13 @@ export const tests = {
     expect.ok(await tabToButton(page), "Tab reaches the loading button");
     const seen = await page.evaluate((sel) => {
       const el = document.querySelector(sel);
-      return { focused: document.activeElement === el, busy: el.getAttribute("aria-busy"), unavailable: el.getAttribute("aria-disabled"), nativeDisabled: el.hasAttribute("disabled"), tabIndex: el.tabIndex };
+      return { focused: document.activeElement === el, busy: el.getAttribute("aria-busy"), unavailable: el.getAttribute("aria-disabled"), nativeDisabled: el.hasAttribute("disabled"), dataDisabled: el.hasAttribute("data-disabled"), tabIndex: el.tabIndex };
     }, ROOT);
     expect.equal(seen.focused, true, "the loading button is document.activeElement");
     expect.equal(seen.busy, "true", "aria-busy is true");
     expect.equal(seen.unavailable, "true", "aria-disabled is true");
     expect.equal(seen.nativeDisabled, false, "the native disabled attribute is absent");
+    expect.equal(seen.dataDisabled, false, "data-disabled is absent: loading is busy, not unavailable");
     expect.ok(seen.tabIndex >= 0, "the button stays in the Tab order");
     await page.keyboard.press("Enter");
     expect.equal(await page.evaluate((sel) => document.activeElement === document.querySelector(sel), ROOT), true, "focus stays on the button after a press while loading");
@@ -215,6 +217,33 @@ export const tests = {
     }
     expect.ok(measured === VARIANT_EXAMPLES.length * 6, `measured ${measured} label and fill pairs`);
     expect.deepEqual(problems, [], `${problems.length} of ${measured} label and fill pairs are under 4.5 to 1: ${problems.join("; ")}`);
+  },
+
+  // Loading keeps the variant's look: the loading example (primary, loading) must paint exactly as the live primary
+  // example does, and must not take the disabled look. Measured in both themes before anything is asserted.
+  "button-loading-keeps-look": async ({ page, open, expect }) => {
+    const look = () => page.evaluate(({ root, label }) => {
+      const el = document.querySelector(root);
+      const cs = getComputedStyle(el);
+      return {
+        background: cs.backgroundColor, color: getComputedStyle(el.querySelector(label)).color, opacity: cs.opacity,
+        borderColor: cs.borderTopColor, disabledSelector: el.matches(":is(:disabled, [data-disabled])"),
+      };
+    }, { root: ROOT, label: LABEL });
+    const problems = [];
+    for (const theme of ["light", "dark"]) {
+      await open("primary", { theme });
+      const live = await look();
+      await open("disabled", { theme });
+      const off = await look();
+      await open("loading", { theme });
+      const busy = await look();
+      if (off.background === live.background) problems.push(`${theme}: the disabled and live primary fills are both ${live.background}, so this test could not tell them apart`);
+      for (const k of ["background", "color", "opacity", "borderColor"]) if (busy[k] !== live[k]) problems.push(`${theme}: loading ${k} is ${busy[k]}, the live primary button's is ${live[k]}`);
+      if (busy.disabledSelector) problems.push(`${theme}: the loading button matches the disabled state's selector`);
+      if (busy.background === off.background) problems.push(`${theme}: the loading fill ${busy.background} is the disabled fill`);
+    }
+    expect.deepEqual(problems, [], problems.join("; "));
   },
 
   "button-target-size": async ({ page, open, expect }) => {

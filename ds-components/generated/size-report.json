@@ -22,28 +22,52 @@
     {
       "component": "button",
       "status": "measured",
-      "cssBytes": 1293,
-      "jsOwnBytes": 822,
-      "jsWithRadixBytes": 2142,
+      "cssBytes": 1310,
+      "jsOwnBytes": 838,
+      "jsWithRadixBytes": 2154,
       "css": "within",
       "jsOwn": "within",
       "jsWithRadix": "within"
     },
     {
       "component": "dialog",
-      "status": "no source yet"
+      "status": "measured",
+      "cssBytes": 766,
+      "jsOwnBytes": 1563,
+      "jsWithRadixBytes": 15203,
+      "css": "within",
+      "jsOwn": "within",
+      "jsWithRadix": "over"
     },
     {
       "component": "dropdown-menu",
-      "status": "no source yet"
+      "status": "measured",
+      "cssBytes": 1267,
+      "jsOwnBytes": 1988,
+      "jsWithRadixBytes": 32591,
+      "css": "within",
+      "jsOwn": "within",
+      "jsWithRadix": "over"
     },
     {
       "component": "input",
-      "status": "no source yet"
+      "status": "measured",
+      "cssBytes": 1159,
+      "jsOwnBytes": 1062,
+      "jsWithRadixBytes": 1062,
+      "css": "within",
+      "jsOwn": "within",
+      "jsWithRadix": "within"
     },
     {
       "component": "tabs",
-      "status": "no source yet"
+      "status": "measured",
+      "cssBytes": 1396,
+      "jsOwnBytes": 1331,
+      "jsWithRadixBytes": 10652,
+      "css": "within",
+      "jsOwn": "within",
+      "jsWithRadix": "over"
     }
   ]
 }

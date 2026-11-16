@@ -15,7 +15,7 @@ export type TabsDir = 'ltr' | 'rtl';
 /** How the tabs share the list's width. hug sizes each tab to its label. fill makes the list as wide as its container and shares that width equally between the tabs; when the labels do not fit, the list scrolls as it does with hug. Figma has this property on the Tabs set, with the same values and hug as the default. */
 export type TabsListBehavior = 'hug' | 'fill';
 
-/** Props of the root part (data-slot="tabs"). */
+/** Props of Tabs, the root part (root): the plain keys of the spec. */
 export interface TabsProps {
   /** How the selected tab is marked. line puts a brand-coloured line under the selected tab and sets its label in a heavier weight; use it to switch sections of a page. pill fills the selected tab with the neutral fill and sets its label heavier; use it as a compact switch between a few views, such as Delivery and Collection. Figma calls this property variant, with the values primary (its default) and secondary; which of the two is line and which is pill could not be read, so the names here are the spec's own. */
   variant?: TabsVariant;
@@ -25,9 +25,9 @@ export interface TabsProps {
   orientation?: TabsOrientation;
   /** automatic selects a tab as soon as it gets focus. manual moves focus with the arrow keys and selects only on Enter, Space or a press. Use manual when a panel takes time to load. */
   activationMode?: TabsActivationMode;
-  /** Reading direction. Unset unless given: it is then inherited from a Radix DirectionProvider and falls back to ltr. In rtl, ArrowLeft and ArrowRight swap. */
+  /** Reading direction. Unset unless given: it is then inherited from a Radix DirectionProvider and falls back to ltr. In rtl, ArrowLeft and ArrowRight swap. Unset unless given. */
   dir?: TabsDir;
-  /** The value of the selected tab, when the parent holds the state. Unset unless given. Give either value or defaultValue. */
+  /** The value of the selected tab, when the parent holds the state. Unset unless given. Give either value or defaultValue. Unset unless given. */
   value?: string;
   /** The value of the tab selected at first, when Tabs holds its own state. Without value or defaultValue no tab would be selected, so one of the two is required by the type of the props. */
   defaultValue?: string;
@@ -35,54 +35,56 @@ export interface TabsProps {
   onValueChange?: (...args: never[]) => void;
 }
 
-/** Props of the list part (data-slot="tabs-list"). */
+/** Props of TabsList, the list part (data-slot="tabs-list"). Keyed list.<prop> in the spec. */
 export interface TabsListProps {
   /** How the tabs share the list's width. hug sizes each tab to its label. fill makes the list as wide as its container and shares that width equally between the tabs; when the labels do not fit, the list scrolls as it does with hug. Figma has this property on the Tabs set, with the same values and hug as the default. */
-  'list.behavior'?: TabsListBehavior;
+  behavior?: TabsListBehavior;
   /** Whether the arrow keys wrap from the last tab to the first and back. */
-  'list.loop'?: boolean;
+  loop?: boolean;
   /** The accessible name of the list when no visible heading names it, such as Product information. Give this or list.ariaLabelledby. */
-  'list.ariaLabel'?: string;
+  ariaLabel?: string;
   /** The id of a visible heading that names the list. Preferred over list.ariaLabel when such a heading exists. */
-  'list.ariaLabelledby'?: string;
+  ariaLabelledby?: string;
 }
 
-/** Props of the trigger part (data-slot="tabs-trigger"). */
+/** Props of TabsTrigger, the trigger part (data-slot="tabs-trigger"). Keyed trigger.<prop> in the spec. */
 export interface TabsTriggerProps {
   /** The value that identifies the tab. It must match the content.value of one panel. */
-  'trigger.value': string;
+  value: string;
   /** The tab cannot be selected. Radix sets the native disabled attribute and data-disabled, and the arrow keys skip the tab. In Figma this is the disabled value of the state property, not a property of its own. */
-  'trigger.disabled'?: boolean;
+  disabled?: boolean;
   /** The words on the tab, rendered in the label part. They are the tab's accessible name. */
-  'trigger.children': React.ReactNode;
+  children: React.ReactNode;
   /** An icon before the label, rendered in the iconStart part. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out. */
-  'trigger.iconStart'?: React.ReactNode;
+  iconStart?: React.ReactNode;
   /** An icon after the label, rendered in the iconEnd part. Figma calls the property suffix and adds a showSuffix switch, which code does not need. */
-  'trigger.iconEnd'?: React.ReactNode;
+  iconEnd?: React.ReactNode;
 }
 
-/** Props of the content part (data-slot="tabs-content"). */
+/** Props of TabsContent, the content part (data-slot="tabs-content"). Keyed content.<prop> in the spec. */
 export interface TabsContentProps {
   /** The value of the tab this panel belongs to. */
-  'content.value': string;
+  value: string;
   /** What the panel shows. */
-  'content.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Every prop that has a default, with that default. */
+/** Every prop that has a default, with that default. Keyed as in the spec. */
 export const TABS_DEFAULTS = {
+  // Tabs
   variant: 'line',
   size: 'md',
   orientation: 'horizontal',
   activationMode: 'automatic',
-  dir: null,
-  value: null,
+  // TabsList
   'list.behavior': 'hug',
   'list.loop': true,
+  // TabsTrigger
   'trigger.disabled': false,
+  // Unset unless given (default null): dir, value.
 } as const;
 
-/** Each part's data-slot value. */
+/** Each part's data-slot value. A part that renders nothing has a name here but no element carries it. */
 export const TABS_SLOTS = {
   root: 'tabs',
   list: 'tabs-list',
@@ -104,12 +106,15 @@ export const TABS_STATES = {
   contentFocus: { on: 'content', selector: ':focus-visible' },
 } as const;
 
-/** Each prop that styles can see, and the attribute it sets on its part. */
+/** Each prop that styles can see, and the attribute it sets on its part. Keyed as in the spec. */
 export const TABS_REFLECTS = {
+  // Tabs
   variant: 'data-variant',
   size: 'data-size',
   orientation: 'data-orientation',
   dir: 'dir',
+  // TabsList
   'list.behavior': 'data-behavior',
+  // TabsTrigger
   'trigger.disabled': 'data-disabled',
 } as const;

@@ -102,49 +102,49 @@
   }
 
   /* styles[1]: The highlight is the only sign of keyboard focus in a menu, so it must be seen, and it is a filled block with inverted text rather than a change of hue: interactive/neutral/default is 21 to 1 against the content in light and 17.6 to 1 in dark. The subtle fills fail: surface/primary/hover is 1.06 to 1 and surface/tertiary/default 1.13 to 1 in light. The description and shortcut follow the inverted text, because text/secondary on the dark fill would fail. */
-  [data-slot="dropdown-menu-item"][data-highlighted]:not([data-disabled]) {
+  [data-slot="dropdown-menu-item"]:where([data-highlighted]:not([data-disabled])) {
     background-color: var(--color-interactive-neutral);
     color: var(--color-text-inverse);
   }
-  [data-slot="dropdown-menu-item"][data-highlighted]:not([data-disabled]) [data-slot="dropdown-menu-item-shortcut"] {
+  :where([data-slot="dropdown-menu-item"][data-highlighted]:not([data-disabled])) [data-slot="dropdown-menu-item-shortcut"] {
     color: currentColor;
   }
-  [data-slot="dropdown-menu-item"][data-highlighted]:not([data-disabled]) [data-slot="dropdown-menu-item-description"] {
+  :where([data-slot="dropdown-menu-item"][data-highlighted]:not([data-disabled])) [data-slot="dropdown-menu-item-description"] {
     color: currentColor;
   }
 
   /* styles[2] */
-  [data-slot="dropdown-menu-checkbox-item"][data-highlighted]:not([data-disabled]) {
+  [data-slot="dropdown-menu-checkbox-item"]:where([data-highlighted]:not([data-disabled])) {
     background-color: var(--color-interactive-neutral);
     color: var(--color-text-inverse);
   }
-  [data-slot="dropdown-menu-checkbox-item"][data-highlighted]:not([data-disabled]) [data-slot="dropdown-menu-item-description"] {
+  :where([data-slot="dropdown-menu-checkbox-item"][data-highlighted]:not([data-disabled])) [data-slot="dropdown-menu-item-description"] {
     color: currentColor;
   }
 
   /* styles[3] */
-  [data-slot="dropdown-menu-radio-item"][data-highlighted]:not([data-disabled]) {
+  [data-slot="dropdown-menu-radio-item"]:where([data-highlighted]:not([data-disabled])) {
     background-color: var(--color-interactive-neutral);
     color: var(--color-text-inverse);
   }
-  [data-slot="dropdown-menu-radio-item"][data-highlighted]:not([data-disabled]) [data-slot="dropdown-menu-item-description"] {
+  :where([data-slot="dropdown-menu-radio-item"][data-highlighted]:not([data-disabled])) [data-slot="dropdown-menu-item-description"] {
     color: currentColor;
   }
 
   /* styles[4]: text/error is 4.83 to 1 on the content in light and 6.36 to 1 in dark. The icons follow it through current. */
-  [data-slot="dropdown-menu-item"][data-variant="danger"] {
+  [data-slot="dropdown-menu-item"]:where([data-variant="danger"]) {
     color: var(--color-text-error);
   }
 
   /* styles[5]: text/on on interactive/error/default is 4.83 to 1 in both themes; the fill is 4.83 to 1 against the content in light and 3.65 to 1 in dark. */
-  [data-slot="dropdown-menu-item"][data-variant="danger"][data-highlighted]:not([data-disabled]) {
+  [data-slot="dropdown-menu-item"]:where([data-variant="danger"][data-highlighted]:not([data-disabled])) {
     background-color: var(--color-interactive-error);
     color: var(--color-text-on);
   }
-  [data-slot="dropdown-menu-item"][data-variant="danger"][data-highlighted]:not([data-disabled]) [data-slot="dropdown-menu-item-shortcut"] {
+  :where([data-slot="dropdown-menu-item"][data-variant="danger"][data-highlighted]:not([data-disabled])) [data-slot="dropdown-menu-item-shortcut"] {
     color: currentColor;
   }
-  [data-slot="dropdown-menu-item"][data-variant="danger"][data-highlighted]:not([data-disabled]) [data-slot="dropdown-menu-item-description"] {
+  :where([data-slot="dropdown-menu-item"][data-variant="danger"][data-highlighted]:not([data-disabled])) [data-slot="dropdown-menu-item-description"] {
     color: currentColor;
   }
 
@@ -167,7 +167,7 @@
 
   /* styles[7]: Forced colours remove background fills, so in that mode the highlight is drawn as an outline with no offset. The 4 pixel padding of the content leaves room for it. */
   @media (forced-colors: active) {
-    [data-slot="dropdown-menu-item"][data-highlighted]:not([data-disabled]) {
+    [data-slot="dropdown-menu-item"]:where([data-highlighted]:not([data-disabled])) {
       outline-color: var(--color-border-focus);
       outline-style: solid;
       outline-width: var(--border-focus-width);
@@ -177,7 +177,7 @@
 
   /* styles[8] */
   @media (forced-colors: active) {
-    [data-slot="dropdown-menu-checkbox-item"][data-highlighted]:not([data-disabled]) {
+    [data-slot="dropdown-menu-checkbox-item"]:where([data-highlighted]:not([data-disabled])) {
       outline-color: var(--color-border-focus);
       outline-style: solid;
       outline-width: var(--border-focus-width);
@@ -187,7 +187,7 @@
 
   /* styles[9] */
   @media (forced-colors: active) {
-    [data-slot="dropdown-menu-radio-item"][data-highlighted]:not([data-disabled]) {
+    [data-slot="dropdown-menu-radio-item"]:where([data-highlighted]:not([data-disabled])) {
       outline-color: var(--color-border-focus);
       outline-style: solid;
       outline-width: var(--border-focus-width);
@@ -196,35 +196,35 @@
   }
 
   /* styles[10]: One disabled look for every variant, so a disabled danger item does not still look dangerous. */
-  [data-slot="dropdown-menu-item"][data-disabled] {
+  [data-slot="dropdown-menu-item"]:where([data-disabled]) {
     background-color: transparent;
     color: var(--color-text-disabled);
     cursor: not-allowed;
   }
-  [data-slot="dropdown-menu-item"][data-disabled] [data-slot="dropdown-menu-item-shortcut"] {
+  :where([data-slot="dropdown-menu-item"][data-disabled]) [data-slot="dropdown-menu-item-shortcut"] {
     color: var(--color-text-disabled);
   }
-  [data-slot="dropdown-menu-item"][data-disabled] [data-slot="dropdown-menu-item-description"] {
+  :where([data-slot="dropdown-menu-item"][data-disabled]) [data-slot="dropdown-menu-item-description"] {
     color: var(--color-text-disabled);
   }
 
   /* styles[11] */
-  [data-slot="dropdown-menu-checkbox-item"][data-disabled] {
+  [data-slot="dropdown-menu-checkbox-item"]:where([data-disabled]) {
     background-color: transparent;
     color: var(--color-text-disabled);
     cursor: not-allowed;
   }
-  [data-slot="dropdown-menu-checkbox-item"][data-disabled] [data-slot="dropdown-menu-item-description"] {
+  :where([data-slot="dropdown-menu-checkbox-item"][data-disabled]) [data-slot="dropdown-menu-item-description"] {
     color: var(--color-text-disabled);
   }
 
   /* styles[12] */
-  [data-slot="dropdown-menu-radio-item"][data-disabled] {
+  [data-slot="dropdown-menu-radio-item"]:where([data-disabled]) {
     background-color: transparent;
     color: var(--color-text-disabled);
     cursor: not-allowed;
   }
-  [data-slot="dropdown-menu-radio-item"][data-disabled] [data-slot="dropdown-menu-item-description"] {
+  :where([data-slot="dropdown-menu-radio-item"][data-disabled]) [data-slot="dropdown-menu-item-description"] {
     color: var(--color-text-disabled);
   }
 }

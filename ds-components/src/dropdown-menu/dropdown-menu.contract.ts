@@ -11,9 +11,9 @@ export type DropdownMenuContentAlign = 'start' | 'center' | 'end';
 /** danger marks an action that destroys or removes something, such as Delete chat. Its words use the error tokens; the label must still say what is destroyed. Figma calls the property type, which means the element type in code, so code calls it variant. */
 export type DropdownMenuItemVariant = 'initial' | 'danger';
 
-/** Props of the root part (data-slot="dropdown-menu"). */
+/** Props of DropdownMenu, the root part (root): the plain keys of the spec. */
 export interface DropdownMenuProps {
-  /** Whether the menu is open, when the parent controls it. Unset unless given: a renderer passes open only when the parent sets it, because passing false would hold the menu shut. Leave it out to let the menu manage itself. */
+  /** Whether the menu is open, when the parent controls it. Unset unless given: a renderer passes open only when the parent sets it, because passing false would hold the menu shut. Leave it out to let the menu manage itself. Unset unless given. */
   open?: boolean;
   /** Whether the menu starts open when nothing controls it. Stories and tests use it to show the open menu. */
   defaultOpen?: boolean;
@@ -21,124 +21,127 @@ export interface DropdownMenuProps {
   onOpenChange?: (...args: never[]) => void;
   /** While open, the rest of the page is hidden from assistive technology, cannot be pressed or scrolled, and focus stays in the menu. Radix's default, kept. Set false only for a menu that must sit beside a live page. */
   modal?: boolean;
-  /** Reading direction. Unset unless given: a renderer passes dir only when it is set, so the nearest direction provider wins, and Radix falls back to left to right when there is none. */
+  /** Reading direction. Unset unless given: a renderer passes dir only when it is set, so the nearest direction provider wins, and Radix falls back to left to right when there is none. Unset unless given. */
   dir?: DropdownMenuDir;
 }
 
-/** Props of the trigger part (data-slot="dropdown-menu-trigger"). */
+/** Props of DropdownMenuTrigger, the trigger part (data-slot="dropdown-menu-trigger"). Keyed trigger.<prop> in the spec. */
 export interface DropdownMenuTriggerProps {
   /** Renders the child, normally a Souvenir Button, as the trigger, merging the menu's attributes and handlers into it. Set it whenever the trigger is a Button, so there is never a button inside a button. */
-  'trigger.asChild'?: boolean;
+  asChild?: boolean;
   /** The menu cannot be opened. Sets the native disabled attribute; Radix also sets data-disabled. */
-  'trigger.disabled'?: boolean;
+  disabled?: boolean;
   /** What the trigger shows: with asChild, the Button element itself. */
-  'trigger.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the content part (data-slot="dropdown-menu-content"). */
+/** Props of DropdownMenuContent, the content part (data-slot="dropdown-menu-content"). Keyed content.<prop> in the spec. */
 export interface DropdownMenuContentProps {
   /** The preferred side of the trigger to open on. Radix's default, kept. When there is no room Radix flips to the other side, and data-side always names the side actually used. */
-  'content.side'?: DropdownMenuContentSide;
+  side?: DropdownMenuContentSide;
   /** How the content lines up with the trigger along that side. Souvenir's default is start, not Radix's center, so the menu's first letters sit under the trigger's. data-align names the alignment actually used. */
-  'content.align'?: DropdownMenuContentAlign;
+  align?: DropdownMenuContentAlign;
   /** The gap in pixels between trigger and content. Souvenir's default is 4, the value of static/40; Radix's is 0. The adapter reads the token's value rather than writing the number. */
-  'content.sideOffset'?: number;
+  sideOffset?: number;
   /** The least distance in pixels the content keeps from the edges of the screen. Souvenir's default is 8, the value of static/80; Radix's is 0, which lets a menu touch the edge of a phone screen. */
-  'content.collisionPadding'?: number;
+  collisionPadding?: number;
   /** Whether ArrowDown on the last item goes to the first and ArrowUp on the first goes to the last. Radix's default, kept: Home and End reach the ends. */
-  'content.loop'?: boolean;
+  loop?: boolean;
   /** The groups, labels, items and separators. Figma's showGroups and showDivider switches have no prop: a group or a separator is there when it is composed. */
-  'content.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the label part (data-slot="dropdown-menu-label"). */
+/** Props of DropdownMenuLabel, the label part (data-slot="dropdown-menu-label"). Keyed label.<prop> in the spec. */
 export interface DropdownMenuLabelProps {
   /** The group's heading, a short noun phrase such as Models. */
-  'label.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the item part (data-slot="dropdown-menu-item"). */
+/** Props of DropdownMenuItem, the item part (data-slot="dropdown-menu-item"). Keyed item.<prop> in the spec. */
 export interface DropdownMenuItemProps {
   /** danger marks an action that destroys or removes something, such as Delete chat. Its words use the error tokens; the label must still say what is destroyed. Figma calls the property type, which means the element type in code, so code calls it variant. */
-  'item.variant'?: DropdownMenuItemVariant;
+  variant?: DropdownMenuItemVariant;
   /** The label of an action item, rendered in itemLabel. A verb that names the result, such as Rename chat. */
-  'item.children': React.ReactNode;
+  children: React.ReactNode;
   /** An optional second line under the label, rendered in itemDescription, such as what the action affects. The item is described by it, not named by it. */
-  'item.description'?: React.ReactNode;
+  description?: React.ReactNode;
   /** An optional icon before the label, rendered in iconStart. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out. */
-  'item.iconStart'?: React.ReactNode;
+  iconStart?: React.ReactNode;
   /** An optional icon after the label, rendered in iconEnd. Figma calls the property suffix and adds a showSuffix switch, which code does not need. */
-  'item.iconEnd'?: React.ReactNode;
+  iconEnd?: React.ReactNode;
   /** An optional shortcut hint, rendered in itemShortcut at the end of the item and set as the item's aria-keyshortcuts. It only describes a shortcut that the product handles elsewhere; the menu does not listen for it. */
-  'item.shortcut'?: string;
+  shortcut?: string;
   /** The action is not available. Radix sets aria-disabled and data-disabled, skips the item with arrows and type-ahead, and ignores presses. Figma shows it as the state value disabled. */
-  'item.disabled'?: boolean;
+  disabled?: boolean;
   /** Called when the item is chosen by pointer, Enter or Space. The menu then closes, unless the handler calls preventDefault on the event. */
-  'item.onSelect'?: (...args: never[]) => void;
+  onSelect?: (...args: never[]) => void;
   /** The text type-ahead matches. The adapter sets it from the label when the item has a description, so the description is never matched; give it yourself when the label is not plain text. */
-  'item.textValue'?: string;
+  textValue?: string;
 }
 
-/** Props of the checkboxItem part (data-slot="dropdown-menu-checkbox-item"). */
+/** Props of DropdownMenuCheckboxItem, the checkboxItem part (data-slot="dropdown-menu-checkbox-item"). Keyed checkboxItem.<prop> in the spec. */
 export interface DropdownMenuCheckboxItemProps {
   /** The name of the setting, rendered in itemLabel, such as Extended thinking. It names the setting, not the action of turning it on. */
-  'checkboxItem.children': React.ReactNode;
+  children: React.ReactNode;
   /** An optional second line under the name, rendered in itemDescription. The item is described by it, not named by it. */
-  'checkboxItem.description'?: React.ReactNode;
-  /** Whether the setting is on. Unset unless given, which Radix renders as off; Radix keeps no checked state of its own for a menu item. Radix sets aria-checked and data-state from it. Radix also accepts indeterminate; Souvenir does not offer it yet. */
-  'checkboxItem.checked'?: boolean;
+  description?: React.ReactNode;
+  /** Whether the setting is on. Unset unless given, which Radix renders as off; Radix keeps no checked state of its own for a menu item. Radix sets aria-checked and data-state from it. Radix also accepts indeterminate; Souvenir does not offer it yet. Unset unless given. */
+  checked?: boolean;
   /** Called with the new value when the item is chosen. The menu then closes, as with any item. */
-  'checkboxItem.onCheckedChange'?: (...args: never[]) => void;
+  onCheckedChange?: (...args: never[]) => void;
   /** The setting cannot be changed here. Same behaviour as item.disabled. */
-  'checkboxItem.disabled'?: boolean;
+  disabled?: boolean;
 }
 
-/** Props of the radioGroup part (data-slot="dropdown-menu-radio-group"). */
+/** Props of DropdownMenuRadioGroup, the radioGroup part (data-slot="dropdown-menu-radio-group"). Keyed radioGroup.<prop> in the spec. */
 export interface DropdownMenuRadioGroupProps {
-  /** The value of the chosen radio item. Unset unless given, when no radio item is checked. */
-  'radioGroup.value'?: string;
+  /** The value of the chosen radio item. Unset unless given, when no radio item is checked. Unset unless given. */
+  value?: string;
   /** Called with the value of the radio item just chosen. The menu then closes. */
-  'radioGroup.onValueChange'?: (...args: never[]) => void;
+  onValueChange?: (...args: never[]) => void;
 }
 
-/** Props of the radioItem part (data-slot="dropdown-menu-radio-item"). */
+/** Props of DropdownMenuRadioItem, the radioItem part (data-slot="dropdown-menu-radio-item"). Keyed radioItem.<prop> in the spec. */
 export interface DropdownMenuRadioItemProps {
   /** The value this item stands for. The item is checked when it equals radioGroup.value. */
-  'radioItem.value': string;
+  value: string;
   /** The name of the choice, rendered in itemLabel, such as Standard. */
-  'radioItem.children': React.ReactNode;
+  children: React.ReactNode;
   /** An optional second line under the name, rendered in itemDescription, such as what the choice is best for. The item is described by it, not named by it. */
-  'radioItem.description'?: React.ReactNode;
+  description?: React.ReactNode;
   /** The choice is not available. Same behaviour as item.disabled. */
-  'radioItem.disabled'?: boolean;
+  disabled?: boolean;
 }
 
-/** Every prop that has a default, with that default. */
+/** Every prop that has a default, with that default. Keyed as in the spec. */
 export const DROPDOWN_MENU_DEFAULTS = {
-  open: null,
+  // DropdownMenu
   defaultOpen: false,
   modal: true,
-  dir: null,
+  // DropdownMenuTrigger
   'trigger.asChild': false,
   'trigger.disabled': false,
+  // DropdownMenuContent
   'content.side': 'bottom',
   'content.align': 'start',
   'content.sideOffset': 4,
   'content.collisionPadding': 8,
   'content.loop': false,
+  // DropdownMenuItem
   'item.variant': 'initial',
   'item.disabled': false,
-  'checkboxItem.checked': null,
+  // DropdownMenuCheckboxItem
   'checkboxItem.disabled': false,
-  'radioGroup.value': null,
+  // DropdownMenuRadioItem
   'radioItem.disabled': false,
+  // Unset unless given (default null): open, dir, checkboxItem.checked, radioGroup.value.
 } as const;
 
-/** Each part's data-slot value. */
+/** Each part's data-slot value. A part that renders nothing has a name here but no element carries it. */
 export const DROPDOWN_MENU_SLOTS = {
-  root: 'dropdown-menu',
+  root: 'dropdown-menu', // renders nothing: element is null, so set no data-slot for it
   trigger: 'dropdown-menu-trigger',
-  portal: 'dropdown-menu-portal',
+  portal: 'dropdown-menu-portal', // renders nothing: element is null, so set no data-slot for it
   content: 'dropdown-menu-content',
   group: 'dropdown-menu-group',
   label: 'dropdown-menu-label',
@@ -178,13 +181,18 @@ export const DROPDOWN_MENU_STATES = {
   radioItemUnchecked: { on: 'radioItem', selector: '[data-state="unchecked"]' },
 } as const;
 
-/** Each prop that styles can see, and the attribute it sets on its part. */
+/** Each prop that styles can see, and the attribute it sets on its part. Keyed as in the spec. */
 export const DROPDOWN_MENU_REFLECTS = {
+  // DropdownMenuTrigger
   'trigger.disabled': 'data-disabled',
+  // DropdownMenuContent
   'content.side': 'data-side',
   'content.align': 'data-align',
+  // DropdownMenuItem
   'item.variant': 'data-variant',
   'item.disabled': 'data-disabled',
+  // DropdownMenuCheckboxItem
   'checkboxItem.disabled': 'data-disabled',
+  // DropdownMenuRadioItem
   'radioItem.disabled': 'data-disabled',
 } as const;

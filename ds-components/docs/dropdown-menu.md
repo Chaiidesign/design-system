@@ -7,111 +7,138 @@ A button that opens a list of actions or choices. Use it for commands and settin
 
 Stage: **alpha**. Figma: `Dropdown` (mapping not yet confirmed against the Components file). Behaviour: `@radix-ui/react-dropdown-menu`.
 
+A compound component: each part with an element is exported as its own component (DropdownMenu<Part>), and a prop keyed `part.prop` is a prop of that part's component. Parts whose element is null render nothing of their own.
+
 ## Anatomy
 
-| Part | data-slot | Element | Role | Wraps |
-|---|---|---|---|---|
-| root | `dropdown-menu` |  |  | `DropdownMenu.Root` |
-| trigger | `dropdown-menu-trigger` | `button` | menubutton | `DropdownMenu.Trigger` |
-| portal | `dropdown-menu-portal` |  |  | `DropdownMenu.Portal` |
-| content | `dropdown-menu-content` | `div` | menu | `DropdownMenu.Content` |
-| group (optional) | `dropdown-menu-group` | `div` | group | `DropdownMenu.Group` |
-| label (optional) | `dropdown-menu-label` | `div` | grouplabel | `DropdownMenu.Label` |
-| item (optional) | `dropdown-menu-item` | `div` | menuitem | `DropdownMenu.Item` |
-| checkboxItem (optional) | `dropdown-menu-checkbox-item` | `div` | menuitemcheckbox | `DropdownMenu.CheckboxItem` |
-| radioGroup (optional) | `dropdown-menu-radio-group` | `div` | group | `DropdownMenu.RadioGroup` |
-| radioItem (optional) | `dropdown-menu-radio-item` | `div` | menuitemradio | `DropdownMenu.RadioItem` |
-| indicatorBox (optional) | `dropdown-menu-indicator-box` | `span` |  |  |
-| itemIndicator (optional) | `dropdown-menu-item-indicator` | `span` | indicator | `DropdownMenu.ItemIndicator` |
-| iconStart (optional) | `dropdown-menu-icon-start` | `span` | indicator |  |
-| itemLabel | `dropdown-menu-item-label` | `span` |  |  |
-| itemDescription (optional) | `dropdown-menu-item-description` | `span` |  |  |
-| iconEnd (optional) | `dropdown-menu-icon-end` | `span` | indicator |  |
-| itemShortcut (optional) | `dropdown-menu-item-shortcut` | `span` |  |  |
-| separator (optional) | `dropdown-menu-separator` | `div` | separator | `DropdownMenu.Separator` |
+| Part | data-slot | Element | Kind | Role | Wraps | Description |
+|---|---|---|---|---|---|---|
+| root | `dropdown-menu` | none (renders nothing) | slot |  | `DropdownMenu.Root` | Holds the open state and wires the trigger to the content. It renders no element of its own, so no element in the page carries data-slot="dropdown-menu"; the slot value is reserved for it. It takes no styles and no states. |
+| trigger | `dropdown-menu-trigger` | `button` | control | menubutton | `DropdownMenu.Trigger` | The button that opens and closes the menu. Usually a Souvenir Button passed with asChild, which keeps its own look; this spec gives the trigger no styles of its own. |
+| portal | `dropdown-menu-portal` | none (renders nothing) | slot |  | `DropdownMenu.Portal` | Moves the content to the end of the body so that no parent's overflow or stacking can clip it. It renders no element of its own and takes no styles and no states. |
+| content | `dropdown-menu-content` | `div` | container | menu | `DropdownMenu.Content` | The floating list: Figma's Dropdown. It is placed next to the trigger, flips to the other side when there is no room, and is named by the trigger. |
+| group (optional) | `dropdown-menu-group` | `div` | container | group | `DropdownMenu.Group` | A set of related items under one label. |
+| label (optional) | `dropdown-menu-label` | `div` | container | grouplabel | `DropdownMenu.Label` | The heading of a group. It is not focusable and cannot be chosen. It is a container rather than a text part because it needs padding to line up with the item text. |
+| item (optional) | `dropdown-menu-item` | `div` | control | menuitem | `DropdownMenu.Item` | One action: Figma's DropdownItem. Choosing it runs the action and closes the menu. |
+| checkboxItem (optional) | `dropdown-menu-checkbox-item` | `div` | control | menuitemcheckbox | `DropdownMenu.CheckboxItem` | A setting that is on or off, independent of the others. Figma draws it as a DropdownItem in its selected state when on. |
+| radioGroup (optional) | `dropdown-menu-radio-group` | `div` | container | group | `DropdownMenu.RadioGroup` | A set of radio items of which exactly one is chosen. |
+| radioItem (optional) | `dropdown-menu-radio-item` | `div` | control | menuitemradio | `DropdownMenu.RadioItem` | One of several exclusive choices inside a radio group. Figma draws the chosen one as a DropdownItem in its selected state. |
+| indicatorBox (optional) | `dropdown-menu-indicator-box` | `span` | container |  |  | A fixed-width box at the start of every checkbox and radio item. It is always present, so the label does not move sideways when the item is checked or unchecked. |
+| itemIndicator (optional) | `dropdown-menu-item-indicator` | `span` | glyph | indicator | `DropdownMenu.ItemIndicator` | The check mark or dot inside the indicator box. Radix mounts it only while the item is checked. Hidden from assistive technology; aria-checked on the item says the same thing. |
+| iconStart (optional) | `dropdown-menu-icon-start` | `span` | glyph | indicator |  | An optional icon before the label of an action item. Figma's prefix. Hidden from assistive technology. |
+| itemLabel | `dropdown-menu-item-label` | `span` | text |  |  | The words of any item kind: Figma's title. They are the item's accessible name and its type-ahead text. A long label wraps. |
+| itemDescription (optional) | `dropdown-menu-item-description` | `span` | text |  |  | An optional second line under the label of any item kind: Figma's description. It is the item's accessible description, never part of its name or its type-ahead text. |
+| iconEnd (optional) | `dropdown-menu-icon-end` | `span` | glyph | indicator |  | An optional icon after the label of an action item. Figma's suffix. Hidden from assistive technology. |
+| itemShortcut (optional) | `dropdown-menu-item-shortcut` | `span` | text |  |  | An optional keyboard shortcut hint at the end of an action item, such as ⌘C. Hidden from assistive technology; the item carries the same shortcut in aria-keyshortcuts so it is not read as part of the name. |
+| separator (optional) | `dropdown-menu-separator` | `div` | layer | separator | `DropdownMenu.Separator` | A horizontal line between groups, one Border width/sm thick. Not focusable. |
 
 ## Props
 
-| Prop | Part | Type or values | Default | Reflects | In Figma |
-|---|---|---|---|---|---|
-| `open` | root | boolean | `null` |  | code only |
-| `defaultOpen` | root | boolean | `false` |  | code only |
-| `onOpenChange` | root | handler |  |  | code only |
-| `modal` | root | boolean | `true` |  | code only |
-| `dir` | root | `ltr` `rtl` | `null` |  | code only |
-| `trigger.asChild` | trigger | boolean | `false` |  | code only |
-| `trigger.disabled` | trigger | boolean | `false` | `data-disabled` | code only |
-| `trigger.children` | trigger | node | required |  | code only |
-| `content.side` | content | `top` `right` `bottom` `left` | `"bottom"` | `data-side` | code only |
-| `content.align` | content | `start` `center` `end` | `"start"` | `data-align` | code only |
-| `content.sideOffset` | content | number | `4` |  | code only |
-| `content.collisionPadding` | content | number | `8` |  | code only |
-| `content.loop` | content | boolean | `false` |  | code only |
-| `content.children` | content | node | required |  | code only |
-| `label.children` | label | node | required |  | code only |
-| `item.variant` | item | `initial` `danger` | `"initial"` | `data-variant` | `type` |
-| `item.children` | item | node | required |  | `title` |
-| `item.description` | item | node |  |  | `description` |
-| `item.iconStart` | item | node |  |  | `prefix` |
-| `item.iconEnd` | item | node |  |  | `suffix` |
-| `item.shortcut` | item | string |  |  | code only |
-| `item.disabled` | item | boolean | `false` | `data-disabled` | code only |
-| `item.onSelect` | item | handler |  |  | code only |
-| `item.textValue` | item | string |  |  | code only |
-| `checkboxItem.children` | checkboxItem | node | required |  | `title` |
-| `checkboxItem.description` | checkboxItem | node |  |  | `description` |
-| `checkboxItem.checked` | checkboxItem | boolean | `null` |  | code only |
-| `checkboxItem.onCheckedChange` | checkboxItem | handler |  |  | code only |
-| `checkboxItem.disabled` | checkboxItem | boolean | `false` | `data-disabled` | code only |
-| `radioGroup.value` | radioGroup | string | `null` |  | code only |
-| `radioGroup.onValueChange` | radioGroup | handler |  |  | code only |
-| `radioItem.value` | radioItem | string | required |  | code only |
-| `radioItem.children` | radioItem | node | required |  | `title` |
-| `radioItem.description` | radioItem | node |  |  | `description` |
-| `radioItem.disabled` | radioItem | boolean | `false` | `data-disabled` | code only |
+| Prop | Taken by | Lands on part | Type or values | Default | Reflects | In Figma | Description |
+|---|---|---|---|---|---|---|---|
+| `open` | DropdownMenu `open` | root | boolean | unset unless given |  | code only | Whether the menu is open, when the parent controls it. Unset unless given: a renderer passes open only when the parent sets it, because passing false would hold the menu shut. Leave it out to let the menu manage itself. |
+| `defaultOpen` | DropdownMenu `defaultOpen` | root | boolean | `false` |  | code only | Whether the menu starts open when nothing controls it. Stories and tests use it to show the open menu. |
+| `onOpenChange` | DropdownMenu `onOpenChange` | root | handler |  |  | code only | Called with true or false when the menu opens or closes, by the trigger, Escape, choosing an item, a press outside, or the window losing focus. |
+| `modal` | DropdownMenu `modal` | root | boolean | `true` |  | code only | While open, the rest of the page is hidden from assistive technology, cannot be pressed or scrolled, and focus stays in the menu. Radix's default, kept. Set false only for a menu that must sit beside a live page. |
+| `dir` | DropdownMenu `dir` | root | `ltr` `rtl` | unset unless given |  | code only | Reading direction. Unset unless given: a renderer passes dir only when it is set, so the nearest direction provider wins, and Radix falls back to left to right when there is none. |
+| `trigger.asChild` | DropdownMenuTrigger `asChild` | trigger | boolean | `false` |  | code only | Renders the child, normally a Souvenir Button, as the trigger, merging the menu's attributes and handlers into it. Set it whenever the trigger is a Button, so there is never a button inside a button. |
+| `trigger.disabled` | DropdownMenuTrigger `disabled` | trigger | boolean | `false` | `data-disabled` | code only | The menu cannot be opened. Sets the native disabled attribute; Radix also sets data-disabled. |
+| `trigger.children` | DropdownMenuTrigger `children` | trigger | node | required |  | code only | What the trigger shows: with asChild, the Button element itself. |
+| `content.side` | DropdownMenuContent `side` | content | `top` `right` `bottom` `left` | `"bottom"` | `data-side` | code only | The preferred side of the trigger to open on. Radix's default, kept. When there is no room Radix flips to the other side, and data-side always names the side actually used. |
+| `content.align` | DropdownMenuContent `align` | content | `start` `center` `end` | `"start"` | `data-align` | code only | How the content lines up with the trigger along that side. Souvenir's default is start, not Radix's center, so the menu's first letters sit under the trigger's. data-align names the alignment actually used. |
+| `content.sideOffset` | DropdownMenuContent `sideOffset` | content | number | `4` |  | code only | The gap in pixels between trigger and content. Souvenir's default is 4, the value of static/40; Radix's is 0. The adapter reads the token's value rather than writing the number. |
+| `content.collisionPadding` | DropdownMenuContent `collisionPadding` | content | number | `8` |  | code only | The least distance in pixels the content keeps from the edges of the screen. Souvenir's default is 8, the value of static/80; Radix's is 0, which lets a menu touch the edge of a phone screen. |
+| `content.loop` | DropdownMenuContent `loop` | content | boolean | `false` |  | code only | Whether ArrowDown on the last item goes to the first and ArrowUp on the first goes to the last. Radix's default, kept: Home and End reach the ends. |
+| `content.children` | DropdownMenuContent `children` | content | node | required |  | code only | The groups, labels, items and separators. Figma's showGroups and showDivider switches have no prop: a group or a separator is there when it is composed. |
+| `label.children` | DropdownMenuLabel `children` | label | node | required |  | code only | The group's heading, a short noun phrase such as Models. |
+| `item.variant` | DropdownMenuItem `variant` | item | `initial` `danger` | `"initial"` | `data-variant` | `type` | danger marks an action that destroys or removes something, such as Delete chat. Its words use the error tokens; the label must still say what is destroyed. Figma calls the property type, which means the element type in code, so code calls it variant. |
+| `item.children` | DropdownMenuItem `children` | item | node | required |  | `title` | The label of an action item, rendered in itemLabel. A verb that names the result, such as Rename chat. |
+| `item.description` | DropdownMenuItem `description` | item | node |  |  | `description` | An optional second line under the label, rendered in itemDescription, such as what the action affects. The item is described by it, not named by it. |
+| `item.iconStart` | DropdownMenuItem `iconStart` | item | node |  |  | `prefix` | An optional icon before the label, rendered in iconStart. Figma calls the property prefix and adds a showPrefix switch, which code does not need: pass an icon or leave it out. |
+| `item.iconEnd` | DropdownMenuItem `iconEnd` | item | node |  |  | `suffix` | An optional icon after the label, rendered in iconEnd. Figma calls the property suffix and adds a showSuffix switch, which code does not need. |
+| `item.shortcut` | DropdownMenuItem `shortcut` | item | string |  |  | code only | An optional shortcut hint, rendered in itemShortcut at the end of the item and set as the item's aria-keyshortcuts. It only describes a shortcut that the product handles elsewhere; the menu does not listen for it. |
+| `item.disabled` | DropdownMenuItem `disabled` | item | boolean | `false` | `data-disabled` | code only | The action is not available. Radix sets aria-disabled and data-disabled, skips the item with arrows and type-ahead, and ignores presses. Figma shows it as the state value disabled. |
+| `item.onSelect` | DropdownMenuItem `onSelect` | item | handler |  |  | code only | Called when the item is chosen by pointer, Enter or Space. The menu then closes, unless the handler calls preventDefault on the event. |
+| `item.textValue` | DropdownMenuItem `textValue` | item | string |  |  | code only | The text type-ahead matches. The adapter sets it from the label when the item has a description, so the description is never matched; give it yourself when the label is not plain text. |
+| `checkboxItem.children` | DropdownMenuCheckboxItem `children` | checkboxItem | node | required |  | `title` | The name of the setting, rendered in itemLabel, such as Extended thinking. It names the setting, not the action of turning it on. |
+| `checkboxItem.description` | DropdownMenuCheckboxItem `description` | checkboxItem | node |  |  | `description` | An optional second line under the name, rendered in itemDescription. The item is described by it, not named by it. |
+| `checkboxItem.checked` | DropdownMenuCheckboxItem `checked` | checkboxItem | boolean | unset unless given |  | code only | Whether the setting is on. Unset unless given, which Radix renders as off; Radix keeps no checked state of its own for a menu item. Radix sets aria-checked and data-state from it. Radix also accepts indeterminate; Souvenir does not offer it yet. |
+| `checkboxItem.onCheckedChange` | DropdownMenuCheckboxItem `onCheckedChange` | checkboxItem | handler |  |  | code only | Called with the new value when the item is chosen. The menu then closes, as with any item. |
+| `checkboxItem.disabled` | DropdownMenuCheckboxItem `disabled` | checkboxItem | boolean | `false` | `data-disabled` | code only | The setting cannot be changed here. Same behaviour as item.disabled. |
+| `radioGroup.value` | DropdownMenuRadioGroup `value` | radioGroup | string | unset unless given |  | code only | The value of the chosen radio item. Unset unless given, when no radio item is checked. |
+| `radioGroup.onValueChange` | DropdownMenuRadioGroup `onValueChange` | radioGroup | handler |  |  | code only | Called with the value of the radio item just chosen. The menu then closes. |
+| `radioItem.value` | DropdownMenuRadioItem `value` | radioItem | string | required |  | code only | The value this item stands for. The item is checked when it equals radioGroup.value. |
+| `radioItem.children` | DropdownMenuRadioItem `children` | radioItem | node | required |  | `title` | The name of the choice, rendered in itemLabel, such as Standard. |
+| `radioItem.description` | DropdownMenuRadioItem `description` | radioItem | node |  |  | `description` | An optional second line under the name, rendered in itemDescription, such as what the choice is best for. The item is described by it, not named by it. |
+| `radioItem.disabled` | DropdownMenuRadioItem `disabled` | radioItem | boolean | `false` | `data-disabled` | code only | The choice is not available. Same behaviour as item.disabled. |
 
 ## State map
 
 Strongest first: itemDisabled, checkboxItemDisabled, radioItemDisabled, itemHighlighted, checkboxItemHighlighted, radioItemHighlighted, checkboxItemChecked, radioItemChecked.
 
-| State | Part | Selector | Set by | Figma | Test reaches it by |
-|---|---|---|---|---|---|
-| triggerOpen | trigger | `[data-state="open"]` | primitive |  | click the trigger |
-| triggerClosed | trigger | `[data-state="closed"]` | primitive |  | render with defaults |
-| triggerDisabled | trigger | `[data-disabled]` | primitive |  | prop:trigger.disabled=true |
-| open | content | `[data-state="open"]` | primitive |  | prop:defaultOpen=true |
-| sideTop | content | `[data-side="top"]` | primitive |  | prop:content.side=top |
-| sideBottom | content | `[data-side="bottom"]` | primitive |  | prop:defaultOpen=true |
-| alignStart | content | `[data-align="start"]` | primitive |  | prop:defaultOpen=true |
-| alignEnd | content | `[data-align="end"]` | primitive |  | prop:content.align=end |
-| itemHighlighted | item | `[data-highlighted]` | primitive | `state=hover` | key:ArrowDown from the open content, or move a mouse over the item |
-| itemDisabled | item | `[data-disabled]` | primitive | `state=disabled` | prop:item.disabled=true |
-| checkboxItemHighlighted | checkboxItem | `[data-highlighted]` | primitive | `state=hover` | key:ArrowDown to the checkbox item, or move a mouse over it |
-| checkboxItemDisabled | checkboxItem | `[data-disabled]` | primitive | `state=disabled` | prop:checkboxItem.disabled=true |
-| checkboxItemChecked | checkboxItem | `[data-state="checked"]` | primitive | `state=selected` | prop:checkboxItem.checked=true |
-| checkboxItemUnchecked | checkboxItem | `[data-state="unchecked"]` | primitive |  | render with defaults |
-| radioItemHighlighted | radioItem | `[data-highlighted]` | primitive | `state=hover` | key:ArrowDown to the radio item, or move a mouse over it |
-| radioItemDisabled | radioItem | `[data-disabled]` | primitive | `state=disabled` | prop:radioItem.disabled=true |
-| radioItemChecked | radioItem | `[data-state="checked"]` | primitive | `state=selected` | set radioGroup.value to this item's value |
-| radioItemUnchecked | radioItem | `[data-state="unchecked"]` | primitive |  | set radioGroup.value to another item's value |
+| State | Part | Selector | Set by | Figma | Test reaches it by | Description |
+|---|---|---|---|---|---|---|
+| triggerOpen | trigger | `[data-state="open"]` | primitive |  | click the trigger | The menu is open. Radix sets data-state open on the trigger and aria-expanded true. |
+| triggerClosed | trigger | `[data-state="closed"]` | primitive |  | render with defaults | The menu is closed. Radix sets data-state closed on the trigger and aria-expanded false. |
+| triggerDisabled | trigger | `[data-disabled]` | primitive |  | prop:trigger.disabled=true | The trigger cannot open the menu. The Button's own disabled look applies. |
+| open | content | `[data-state="open"]` | primitive |  | prop:defaultOpen=true | The content is shown. |
+| sideTop | content | `[data-side="top"]` | primitive |  | prop:content.side=top | The content opened above the trigger, because content.side asked for it or because there was no room below and Radix flipped it. |
+| sideBottom | content | `[data-side="bottom"]` | primitive |  | prop:defaultOpen=true | The content opened below the trigger. |
+| alignStart | content | `[data-align="start"]` | primitive |  | prop:defaultOpen=true | The content's start edge lines up with the trigger's start edge. |
+| alignEnd | content | `[data-align="end"]` | primitive |  | prop:content.align=end | The content's end edge lines up with the trigger's end edge. Radix shifts the content sideways to fit before it considers flipping, so a start-aligned menu near the right edge stays data-align start and moves left. |
+| itemHighlighted | item | `[data-highlighted]` | primitive | `state=hover` | key:ArrowDown from the open content, or move a mouse over the item | The item under the mouse or the keyboard. Figma's two state values hover and focus are this one state in code: Radix sets data-highlighted while the item has focus, and a mouse moving over an item focuses it, so pointer and keyboard give one look. Never styled with :hover or :focus. |
+| itemDisabled | item | `[data-disabled]` | primitive | `state=disabled` | prop:item.disabled=true | The action is not available. |
+| checkboxItemHighlighted | checkboxItem | `[data-highlighted]` | primitive | `state=hover` | key:ArrowDown to the checkbox item, or move a mouse over it | The checkbox item under the mouse or the keyboard. Figma's hover and focus values are this one state in code. |
+| checkboxItemDisabled | checkboxItem | `[data-disabled]` | primitive | `state=disabled` | prop:checkboxItem.disabled=true | The setting cannot be changed here. |
+| checkboxItemChecked | checkboxItem | `[data-state="checked"]` | primitive | `state=selected` | prop:checkboxItem.checked=true | The setting is on. Radix sets data-state checked and aria-checked true, and mounts the item indicator. |
+| checkboxItemUnchecked | checkboxItem | `[data-state="unchecked"]` | primitive |  | render with defaults | The setting is off. Radix sets data-state unchecked and aria-checked false. |
+| radioItemHighlighted | radioItem | `[data-highlighted]` | primitive | `state=hover` | key:ArrowDown to the radio item, or move a mouse over it | The radio item under the mouse or the keyboard. Figma's hover and focus values are this one state in code. |
+| radioItemDisabled | radioItem | `[data-disabled]` | primitive | `state=disabled` | prop:radioItem.disabled=true | The choice is not available. |
+| radioItemChecked | radioItem | `[data-state="checked"]` | primitive | `state=selected` | set radioGroup.value to this item's value | This is the chosen value. Radix sets data-state checked and aria-checked true, and mounts the item indicator. |
+| radioItemUnchecked | radioItem | `[data-state="unchecked"]` | primitive |  | set radioGroup.value to another item's value | Another value is chosen. |
 
 ## Tokens from Figma
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Density | `static/40` `--spacing-static-40` 1<br>`static/60` `--spacing-static-60` 1<br>`static/80` `--spacing-static-80` 1 |
-| Radius | `container/medium` `--radius-container-medium` 1<br>`container/small` `--radius-container-small` 1 |
-| Themes | `border/focus` `--color-border-focus` 3<br>`border/primary/default` `--color-border-primary` 1<br>`interactive/error/default` `--color-interactive-error` 1<br>`interactive/neutral/default` `--color-interactive-neutral` 3<br>`surface/primary/default` `--color-surface-primary` 1<br>`text/disabled` `--color-text-disabled` 3<br>`text/error` `--color-text-error` 1<br>`text/inverse` `--color-text-inverse` 3<br>`text/on` `--color-text-on` 1<br>`text/primary` `--color-text-primary` 1<br>`text/secondary` `--color-text-secondary` 1 |
-| Typography | `font-size/body-base` `--font-size-body-base` 1<br>`font-size/body-small` `--font-size-body-small` 1<br>`font-size/label-base` `--font-size-label-base` 1<br>`font-weight/body` `--font-weight-body` 1<br>`font-weight/label` `--font-weight-label` 1<br>`line-height/body-base` `--line-height-body-base` 1<br>`line-height/body-small` `--line-height-body-small` 1<br>`line-height/label-base` `--line-height-label-base` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Density | `static/40` | `--spacing-static-40` | styles[0] |
+| Density | `static/60` | `--spacing-static-60` | styles[0] |
+| Density | `static/80` | `--spacing-static-80` | styles[0] |
+| Radius | `container/medium` | `--radius-container-medium` | styles[0] |
+| Radius | `container/small` | `--radius-container-small` | styles[0] |
+| Themes | `border/focus` | `--color-border-focus` | styles[7], styles[8], styles[9] |
+| Themes | `border/primary/default` | `--color-border-primary` | styles[0] |
+| Themes | `interactive/error/default` | `--color-interactive-error` | styles[5] |
+| Themes | `interactive/neutral/default` | `--color-interactive-neutral` | styles[1], styles[2], styles[3] |
+| Themes | `surface/primary/default` | `--color-surface-primary` | styles[0] |
+| Themes | `text/disabled` | `--color-text-disabled` | styles[10], styles[11], styles[12] |
+| Themes | `text/error` | `--color-text-error` | styles[4] |
+| Themes | `text/inverse` | `--color-text-inverse` | styles[1], styles[2], styles[3] |
+| Themes | `text/on` | `--color-text-on` | styles[5] |
+| Themes | `text/primary` | `--color-text-primary` | styles[0] |
+| Themes | `text/secondary` | `--color-text-secondary` | styles[0] |
+| Typography | `font-size/body-base` | `--font-size-body-base` | styles[0] |
+| Typography | `font-size/body-small` | `--font-size-body-small` | styles[0] |
+| Typography | `font-size/label-base` | `--font-size-label-base` | styles[0] |
+| Typography | `font-weight/body` | `--font-weight-body` | styles[0] |
+| Typography | `font-weight/label` | `--font-weight-label` | styles[0] |
+| Typography | `line-height/body-base` | `--line-height-body-base` | styles[0] |
+| Typography | `line-height/body-small` | `--line-height-body-small` | styles[0] |
+| Typography | `line-height/label-base` | `--line-height-label-base` | styles[0] |
 
 ## Tokens proposed in the repo
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Border | `focus/width` `--border-focus-width` 3<br>`width/sm` `--border-width-sm` 1 |
-| Elevation | `shadow/md` `--shadow-md` 1 |
-| Size | `control/sm` `--size-control-sm` 1<br>`icon/sm` `--size-icon-sm` 1<br>`menu/max` `--size-menu-max` 1<br>`menu/min` `--size-menu-min` 1<br>`target/min` `--size-target-min` 1 |
-| Themes | `border/strong/default` `--color-border-strong` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Border | `focus/width` | `--border-focus-width` | styles[7], styles[8], styles[9] |
+| Border | `width/sm` | `--border-width-sm` | styles[0] |
+| Elevation | `shadow/md` | `--shadow-md` | styles[0] |
+| Size | `control/sm` | `--size-control-sm` | styles[0] |
+| Size | `icon/sm` | `--size-icon-sm` | styles[0] |
+| Size | `menu/max` | `--size-menu-max` | styles[0] |
+| Size | `menu/min` | `--size-menu-min` | styles[0] |
+| Size | `target/min` | `--size-target-min` | styles[6] |
+| Themes | `border/strong/default` | `--color-border-strong` | styles[0] |
 
 ## Keyboard
 
@@ -197,24 +224,44 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 
 ## Examples
 
-| Id | Title | Props | Content |
+| Id | Title | Props | Content | Note |
+|---|---|---|---|---|
+| `closed` | Closed |  | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","children":"Share"}]}` | The default: the trigger alone, data-state closed. |
+| `actions` | Actions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconOnly":true,"ariaLabel":"Chat options","iconStart":"more-horizontal"}},"content":[{"part":"item","props":{"item.iconStart":"pencil"},"children":"Rename chat"},{"part":"item","props":{"item.iconStart":"share"},"children":"Share"},{"part":"item","props":{"item.iconStart":"archive"},"children":"Archive"},{"part":"separator"},{"part":"item","props":{"item.iconStart":"trash","item.variant":"danger"},"children":"Delete chat"}]}` | Plain action items and one danger item after a separator. |
+| `model-selector` | Model selector | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconEnd":"chevron-up"},"children":"Standard"},"content":[{"part":"radioGroup","props":{"radioGroup.value":"standard"},"label":"Models","children":[{"part":"radioItem","props":{"radioItem.value":"pro"},"children":"Pro"},{"part":"radioItem","props":{"radioItem.value":"standard"},"children":"Standard"},{"part":"radioItem","props":{"radioItem.value":"fast"},"children":"Fast"}]},{"part":"separator"},{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Extended thinking"}]}` | Matches the product's model selector: a group label, three radio items, a separator and a checkbox item. No logos beside the model names, as the fixes tracker asks. The trigger's chevron points up while open. |
+| `with-descriptions` | With descriptions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconEnd":"chevron-down"},"children":"Standard"},"content":[{"part":"radioGroup","props":{"radioGroup.value":"standard"},"label":"Models","children":[{"part":"radioItem","props":{"radioItem.value":"pro","radioItem.description":"Best for long documents and hard problems"},"children":"Pro"},{"part":"radioItem","props":{"radioItem.value":"standard","radioItem.description":"Fast and capable for most work"},"children":"Standard"}]},{"part":"separator"},{"part":"item","props":{"item.iconStart":"settings","item.iconEnd":"external-link","item.description":"Opens in a new tab"},"children":"Model settings"}]}` | Figma's description line under the title, on radio items and on an action item with both iconStart and iconEnd. Each item's name is its label alone; the description is its accessible description. Highlight each item: the description turns with the label and stays readable. |
+| `with-shortcuts` | With shortcuts | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Edit"},"content":[{"part":"item","props":{"item.iconStart":"copy","item.shortcut":"⌘C"},"children":"Copy"},{"part":"item","props":{"item.iconStart":"clipboard","item.shortcut":"⌘V"},"children":"Paste"},{"part":"item","props":{"item.shortcut":"⌘A"},"children":"Select all"}]}` | Icon, label and shortcut hint together; the item without an icon keeps its label where the text starts. |
+| `grouped` | Grouped with labels | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Sort"},"content":[{"part":"group","label":"Sort by","children":[{"part":"item","children":"Newest first"},{"part":"item","children":"Oldest first"}]},{"part":"separator"},{"part":"group","label":"Show","children":[{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Archived chats"},{"part":"checkboxItem","children":"Shared chats"}]}]}` | Two labelled groups; each group's aria-labelledby points at its label. |
+| `highlighted-keyboard` | Highlighted by keyboard |  | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","props":{"item.variant":"danger"},"children":"Delete chat"},{"part":"separator"},{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Extended thinking"},{"part":"radioGroup","props":{"radioGroup.value":"standard"},"children":[{"part":"radioItem","props":{"radioItem.value":"standard"},"children":"Standard"}]}]}` | Story script: focus the trigger and press Enter, then ArrowDown once to highlight the danger item, once more for the checkbox item (the separator is skipped) and once more for the radio item; capture each. The test compares each with the same item under the mouse. |
+| `disabled-items` | Disabled items | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","props":{"item.disabled":true,"item.shortcut":"⌘S"},"children":"Share"},{"part":"checkboxItem","props":{"checkboxItem.disabled":true,"checkboxItem.checked":true},"children":"Pinned"},{"part":"item","props":{"item.disabled":true,"item.variant":"danger"},"children":"Delete chat"},{"part":"separator"},{"part":"radioGroup","props":{"radioGroup.value":"standard"},"children":[{"part":"radioItem","props":{"radioItem.value":"pro","radioItem.disabled":true,"radioItem.description":"Not included in your plan"},"children":"Pro"},{"part":"radioItem","props":{"radioItem.value":"standard"},"children":"Standard"}]}]}` | Disabled action, checkbox, danger and radio items share one look, description included, and are skipped by arrow keys. |
+| `trigger-disabled` | Trigger disabled |  | `{"trigger":{"props":{"trigger.asChild":true,"trigger.disabled":true},"button":{"disabled":true,"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"}]}` | The trigger has data-disabled and the native disabled attribute; Enter, Space, ArrowDown and a click do nothing. |
+| `side-top` | Opens above | `{"defaultOpen":true,"content.side":"top"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-up"},"children":"Model"},"content":[{"part":"item","children":"Pro"},{"part":"item","children":"Standard"}]}` | data-side is top. Also the result when the trigger sits at the bottom of the screen, as in the chat composer. |
+| `align-end` | Aligned to the end | `{"defaultOpen":true,"content.align":"end"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconOnly":true,"ariaLabel":"More","iconStart":"more-horizontal"}},"content":[{"part":"item","children":"Settings"},{"part":"item","children":"Help"}]}` | data-align is end; for a trigger at the right edge of a header. |
+| `non-modal` | Non-modal | `{"defaultOpen":true,"modal":false}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Insert"},"content":[{"part":"item","children":"Image"},{"part":"item","children":"File"}]}` | The page behind stays live; a press outside closes the menu without returning focus to the trigger. |
+| `right-to-left` | Right to left | `{"defaultOpen":true,"dir":"rtl"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"خيارات"},"content":[{"part":"item","props":{"item.iconStart":"pencil","item.shortcut":"⌘R"},"children":"إعادة تسمية"},{"part":"item","children":"مشاركة"}]}` | Icon, label and shortcut mirror; start alignment follows the reading direction. |
+| `long-label` | Long label | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Move"},"content":[{"part":"item","props":{"item.iconStart":"folder","item.shortcut":"⌘M"},"children":"Move this chat to the project called Quarterly planning and supplier reviews"},{"part":"item","children":"Move to a new project"}]}` | The first label wraps onto two or three lines inside menu/max; the item grows taller and the shortcut stays on the first line. |
+| `touch` | Touch screen | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","children":"Share"}]}` | Render with a coarse pointer: every item is at least 44 pixels tall. |
+| `worst-case-320` | Worst case at 320 pixels | `{"defaultOpen":true,"content.align":"start"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconOnly":true,"ariaLabel":"Chat options","iconStart":"more-horizontal"}},"content":[{"part":"group","label":"This chat and everything shared from it","children":[{"part":"item","props":{"item.iconStart":"folder","item.shortcut":"⌘⇧M","item.description":"Links shared from this chat keep working after the move"},"children":"Move this conversation and all of its attached files to another project"},{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Keep a copy of every shared link working after the chat is moved"}]},{"part":"separator"},{"part":"item","props":{"item.iconStart":"trash","item.variant":"danger","item.shortcut":"⌘⌫"},"children":"Delete this chat, its files and every link shared from it"}]}` | Viewport 320 by 480 pixels, coarse pointer, trigger at the right edge. Align start does not fit, so Radix shifts the content left and data-align stays start; its width is capped to the space available, it stays 8 pixels from each edge, every label and description wraps, and if it is taller than the space it scrolls inside itself. |
+
+## Style rules
+
+Every rule of the spec, in order. The generated stylesheet keeps this order and gives every rule for a part the same specificity, so a later rule wins where two set the same property.
+
+| Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| `closed` | Closed |  | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","children":"Share"}]}` |
-| `actions` | Actions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconOnly":true,"ariaLabel":"Chat options","iconStart":"more-horizontal"}},"content":[{"part":"item","props":{"item.iconStart":"pencil"},"children":"Rename chat"},{"part":"item","props":{"item.iconStart":"share"},"children":"Share"},{"part":"item","props":{"item.iconStart":"archive"},"children":"Archive"},{"part":"separator"},{"part":"item","props":{"item.iconStart":"trash","item.variant":"danger"},"children":"Delete chat"}]}` |
-| `model-selector` | Model selector | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconEnd":"chevron-up"},"children":"Standard"},"content":[{"part":"radioGroup","props":{"radioGroup.value":"standard"},"label":"Models","children":[{"part":"radioItem","props":{"radioItem.value":"pro"},"children":"Pro"},{"part":"radioItem","props":{"radioItem.value":"standard"},"children":"Standard"},{"part":"radioItem","props":{"radioItem.value":"fast"},"children":"Fast"}]},{"part":"separator"},{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Extended thinking"}]}` |
-| `with-descriptions` | With descriptions | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconEnd":"chevron-down"},"children":"Standard"},"content":[{"part":"radioGroup","props":{"radioGroup.value":"standard"},"label":"Models","children":[{"part":"radioItem","props":{"radioItem.value":"pro","radioItem.description":"Best for long documents and hard problems"},"children":"Pro"},{"part":"radioItem","props":{"radioItem.value":"standard","radioItem.description":"Fast and capable for most work"},"children":"Standard"}]},{"part":"separator"},{"part":"item","props":{"item.iconStart":"settings","item.iconEnd":"external-link","item.description":"Opens in a new tab"},"children":"Model settings"}]}` |
-| `with-shortcuts` | With shortcuts | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Edit"},"content":[{"part":"item","props":{"item.iconStart":"copy","item.shortcut":"⌘C"},"children":"Copy"},{"part":"item","props":{"item.iconStart":"clipboard","item.shortcut":"⌘V"},"children":"Paste"},{"part":"item","props":{"item.shortcut":"⌘A"},"children":"Select all"}]}` |
-| `grouped` | Grouped with labels | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Sort"},"content":[{"part":"group","label":"Sort by","children":[{"part":"item","children":"Newest first"},{"part":"item","children":"Oldest first"}]},{"part":"separator"},{"part":"group","label":"Show","children":[{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Archived chats"},{"part":"checkboxItem","children":"Shared chats"}]}]}` |
-| `highlighted-keyboard` | Highlighted by keyboard |  | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","props":{"item.variant":"danger"},"children":"Delete chat"},{"part":"separator"},{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Extended thinking"},{"part":"radioGroup","props":{"radioGroup.value":"standard"},"children":[{"part":"radioItem","props":{"radioItem.value":"standard"},"children":"Standard"}]}]}` |
-| `disabled-items` | Disabled items | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","props":{"item.disabled":true,"item.shortcut":"⌘S"},"children":"Share"},{"part":"checkboxItem","props":{"checkboxItem.disabled":true,"checkboxItem.checked":true},"children":"Pinned"},{"part":"item","props":{"item.disabled":true,"item.variant":"danger"},"children":"Delete chat"},{"part":"separator"},{"part":"radioGroup","props":{"radioGroup.value":"standard"},"children":[{"part":"radioItem","props":{"radioItem.value":"pro","radioItem.disabled":true,"radioItem.description":"Not included in your plan"},"children":"Pro"},{"part":"radioItem","props":{"radioItem.value":"standard"},"children":"Standard"}]}]}` |
-| `trigger-disabled` | Trigger disabled |  | `{"trigger":{"props":{"trigger.asChild":true,"trigger.disabled":true},"button":{"disabled":true,"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"}]}` |
-| `side-top` | Opens above | `{"defaultOpen":true,"content.side":"top"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-up"},"children":"Model"},"content":[{"part":"item","children":"Pro"},{"part":"item","children":"Standard"}]}` |
-| `align-end` | Aligned to the end | `{"defaultOpen":true,"content.align":"end"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconOnly":true,"ariaLabel":"More","iconStart":"more-horizontal"}},"content":[{"part":"item","children":"Settings"},{"part":"item","children":"Help"}]}` |
-| `non-modal` | Non-modal | `{"defaultOpen":true,"modal":false}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Insert"},"content":[{"part":"item","children":"Image"},{"part":"item","children":"File"}]}` |
-| `right-to-left` | Right to left | `{"defaultOpen":true,"dir":"rtl"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"خيارات"},"content":[{"part":"item","props":{"item.iconStart":"pencil","item.shortcut":"⌘R"},"children":"إعادة تسمية"},{"part":"item","children":"مشاركة"}]}` |
-| `long-label` | Long label | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Move"},"content":[{"part":"item","props":{"item.iconStart":"folder","item.shortcut":"⌘M"},"children":"Move this chat to the project called Quarterly planning and supplier reviews"},{"part":"item","children":"Move to a new project"}]}` |
-| `touch` | Touch screen | `{"defaultOpen":true}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"iconEnd":"chevron-down"},"children":"Options"},"content":[{"part":"item","children":"Rename chat"},{"part":"item","children":"Share"}]}` |
-| `worst-case-320` | Worst case at 320 pixels | `{"defaultOpen":true,"content.align":"start"}` | `{"trigger":{"props":{"trigger.asChild":true},"button":{"variant":"ghost","iconOnly":true,"ariaLabel":"Chat options","iconStart":"more-horizontal"}},"content":[{"part":"group","label":"This chat and everything shared from it","children":[{"part":"item","props":{"item.iconStart":"folder","item.shortcut":"⌘⇧M","item.description":"Links shared from this chat keep working after the move"},"children":"Move this conversation and all of its attached files to another project"},{"part":"checkboxItem","props":{"checkboxItem.checked":true},"children":"Keep a copy of every shared link working after the chat is moved"}]},{"part":"separator"},{"part":"item","props":{"item.iconStart":"trash","item.variant":"danger","item.shortcut":"⌘⌫"},"children":"Delete this chat, its files and every link shared from it"}]}` |
+| styles[0] | always | content: background surface/primary/default, borderColor border/strong/default, borderWidth width/sm, borderStyle solid, radius container/medium, shadow shadow/md, minWidth menu/min, maxWidth menu/max, paddingBlock static/40, paddingInline static/40<br>label: paddingInline static/80, paddingBlock static/60, typography label-base, color text/secondary<br>item: minHeight control/sm, paddingInline static/80, paddingBlock static/60, gap static/80, radius container/small, background transparent, color text/primary, typography body-base, cursor default<br>checkboxItem: minHeight control/sm, paddingInline static/80, paddingBlock static/60, gap static/80, radius container/small, background transparent, color text/primary, typography body-base, cursor default<br>radioItem: minHeight control/sm, paddingInline static/80, paddingBlock static/60, gap static/80, radius container/small, background transparent, color text/primary, typography body-base, cursor default<br>indicatorBox: width icon/sm, height icon/sm<br>itemIndicator: iconSize icon/sm, color current<br>iconStart: iconSize icon/sm, color current<br>iconEnd: iconSize icon/sm, color current<br>itemLabel: color inherit<br>itemDescription: color text/secondary, typography body-small<br>itemShortcut: color text/secondary, typography body-small<br>separator: borderColor border/primary/default, borderWidth width/sm | The content is a floating surface, not a divider, so its edge is border/strong/default: in the dark theme shadow/md barely shows and the edge has to hold the menu apart from the page. border/primary/default is kept for the separator, which is a divider. Items are 32 pixels tall: 6 pixels of padding above and below a 20 pixel line. The separator takes its colour and its width/sm thickness here; the extensions stylesheet draws it on the block-start edge only, with no height, so the line is 1 pixel. |
+| styles[1] | states itemHighlighted | item: background interactive/neutral/default, color text/inverse<br>itemShortcut: color current<br>itemDescription: color current | The highlight is the only sign of keyboard focus in a menu, so it must be seen, and it is a filled block with inverted text rather than a change of hue: interactive/neutral/default is 21 to 1 against the content in light and 17.6 to 1 in dark. The subtle fills fail: surface/primary/hover is 1.06 to 1 and surface/tertiary/default 1.13 to 1 in light. The description and shortcut follow the inverted text, because text/secondary on the dark fill would fail. |
+| styles[2] | states checkboxItemHighlighted | checkboxItem: background interactive/neutral/default, color text/inverse<br>itemDescription: color current |  |
+| styles[3] | states radioItemHighlighted | radioItem: background interactive/neutral/default, color text/inverse<br>itemDescription: color current |  |
+| styles[4] | props {"item.variant":"danger"} | item: color text/error | text/error is 4.83 to 1 on the content in light and 6.36 to 1 in dark. The icons follow it through current. |
+| styles[5] | props {"item.variant":"danger"}; states itemHighlighted | item: background interactive/error/default, color text/on<br>itemShortcut: color current<br>itemDescription: color current | text/on on interactive/error/default is 4.83 to 1 in both themes; the fill is 4.83 to 1 against the content in light and 3.65 to 1 in dark. |
+| styles[6] | media coarse-pointer | item: minHeight target/min<br>checkboxItem: minHeight target/min<br>radioItem: minHeight target/min | On a touch screen every item is at least 44 pixels tall. |
+| styles[7] | states itemHighlighted; media forced-colors | item: outlineColor border/focus, outlineWidth focus/width, outlineOffset none | Forced colours remove background fills, so in that mode the highlight is drawn as an outline with no offset. The 4 pixel padding of the content leaves room for it. |
+| styles[8] | states checkboxItemHighlighted; media forced-colors | checkboxItem: outlineColor border/focus, outlineWidth focus/width, outlineOffset none |  |
+| styles[9] | states radioItemHighlighted; media forced-colors | radioItem: outlineColor border/focus, outlineWidth focus/width, outlineOffset none |  |
+| styles[10] | states itemDisabled | item: background transparent, color text/disabled, cursor not-allowed<br>itemShortcut: color text/disabled<br>itemDescription: color text/disabled | One disabled look for every variant, so a disabled danger item does not still look dangerous. |
+| styles[11] | states checkboxItemDisabled | checkboxItem: background transparent, color text/disabled, cursor not-allowed<br>itemDescription: color text/disabled |  |
+| styles[12] | states radioItemDisabled | radioItem: background transparent, color text/disabled, cursor not-allowed<br>itemDescription: color text/disabled |  |
 
 ## What the spec does not carry
 

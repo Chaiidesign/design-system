@@ -8,24 +8,33 @@
 //                                                          wide in light and dark, each component page, the token page)
 //   node v2/tools/test-components.mjs --gallery-shots      save the gallery index and token page to ds-components/gallery/dist/
 //   node v2/tools/test-components.mjs --headed             show the browser
+//   node v2/tools/test-components.mjs --dist <dir>         test the gallery bundle already in <dir> and build nothing
+//                                                          (build it first: build-gallery.mjs --dist <dir> --component <slug>)
+//   node v2/tools/test-components.mjs --report <file>      write the JSON report there, also on a filtered run
+//                                                          (default ds-components/generated/test-report.json, full runs only)
 //   node v2/tools/test-components.mjs --self-test          run against the fixture component, whose examples plant
 //                                                          known faults, and confirm each is caught by the right check
 //
-// It rebuilds the gallery (v2/tools/build-gallery.mjs), serves the repository with scripts/serve.mjs and opens
-// each example on its own page (?component=<slug>&example=<id>) in headless Chromium. Per component:
+// Without --dist it rebuilds the gallery (v2/tools/build-gallery.mjs) into ds-components/gallery/dist/; with --dist
+// it builds nothing. It serves the bundle folder with scripts/serve.mjs and opens each example on its own page
+// (index.html?component=<slug>&example=<id>) in headless Chromium. Per component:
 //   a. Generic checks on every example in light and dark at 320 and 1280 wide, and once in compact density:
 //      errors (no page or console error), axe (serious or critical violations fail; others are reported),
 //      overflow (no horizontal scroll), contrast (every visible text node, computed in the page),
 //      target-size (every focusable control at least 24 by 24), focus-visible (every control reached by
 //      real Tab presses shows an outline at least 2 px wide).
-//   b. anatomy: every required part appears with its data-slot across the examples; no unlisted data-slot.
+//   b. anatomy: every required part that has an element appears with its data-slot across the examples, found
+//      document-wide (a portalled part sits outside its example's section); no unlisted data-slot. A part whose
+//      element is null renders nothing and is not looked for.
 //   c. state:<name>: each state is driven as its "reach" says and the part must match its selector; colours
 //      named by the spec's rules for that state are compared with tokens.json for the theme.
 //   d. requirement: test:<id> runs <slug>.tests.mjs; axe:<rule> passes when no example breaks that rule;
-//      lint:, type: and manual: are listed as not run.
-// Writes ds-components/generated/test-report.json (not in --self-test, or when filtered by --component or --example)
-// and exits 1 on any failure. The last line counts components, examples, checks, passes, failures and checks
-// not reached or not run.
+//      type:<id> passes when "npx tsc -p ds-components/tsconfig.json" exits 0 (run once per run) and a line of the
+//      component's hand-written source holds both "@ts-expect-error" and <id>, and is "not proven" otherwise;
+//      lint: and manual: are listed as not run.
+// Writes ds-components/generated/test-report.json (not in --self-test, or when filtered by --component or --example,
+// unless --report names a file) and exits 1 on any failure. The last line counts components, examples, checks,
+// passes, failures and checks not reached, not run or not proven.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, mkdtempSync, rmSync } from "node:fs";
 import { join, dirname, resolve, relative, sep } from "node:path";
@@ -35,7 +44,8 @@ import { createRequire } from "node:module";
 import assert from "node:assert/strict";
 import { chromium } from "playwright-core";
 import { createServer } from "../../scripts/serve.mjs";
-import { buildGallery, discoverComponents, REPO } from "./build-gallery.mjs";
+import { spawnSync } from "node:child_process";
+import { buildGallery, discoverComponents, REPO, DEFAULT_DIST } from "./build-gallery.mjs";
 
 const require = createRequire(import.meta.url);
 const SPECS = join(REPO, "ds-components", "specs");
@@ -43,7 +53,7 @@ const SCHEMA_FILE = join(REPO, "ds-components", "schema", "component.schema.json
 const TOKENS_JSON = join(REPO, "ds-tokens", "dist", "tokens.json");
 const PROPOSED_JSON = join(REPO, "ds-tokens", "proposed", "tokens.json");
 const REPORT = join(REPO, "ds-components", "generated", "test-report.json");
-const GALLERY_DIST = join(REPO, "ds-components", "gallery", "dist");
+const SRC = join(REPO, "ds-components", "src");
 const AXE_SOURCE = readFileSync(join(REPO, "node_modules", "axe-core", "axe.min.js"), "utf8");
 const GENERATOR = "v2/tools/test-components.mjs";
 
@@ -294,8 +304,9 @@ function pageLib() {
 // ---------------------------------------------------------------- the run
 
 class Run {
-  constructor({ base, page, headed }) {
+  constructor({ base, page, headed, dist = DEFAULT_DIST }) {
     this.base = base;
+    this.dist = dist;
     this.page = page;
     this.checks = [];
     this.errors = [];
@@ -306,13 +317,16 @@ class Run {
 
   clean(s) { return String(s ?? "").split(this.base).join("http://gallery"); }
 
+  typeCheck() { return (this.tsc ??= runTypeCheck()); }
+
   record(entry) {
     const c = { component: entry.component, check: entry.check, example: entry.example ?? null, config: entry.config ? cfgLabel(entry.config) : null, requirement: entry.requirement ?? null, status: entry.status, detail: this.clean(entry.detail ?? "") };
     this.checks.push(c);
     return c;
   }
 
-  url(query) { return `${this.base}/ds-components/gallery/dist/index.html?${new URLSearchParams(query).toString()}`; }
+  // The server's root is the bundle folder itself, so any --dist works, inside the repository or not.
+  url(query) { return `${this.base}/index.html?${new URLSearchParams(query).toString()}`; }
 
   // Loads a gallery page and waits until it has rendered and its fonts are in.
   async load(page, query, { theme = "light", density = "standard", width = 1280, height = 800 } = {}) {
@@ -441,13 +455,13 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
   // ---- b. anatomy
   if (runnable.length && !onlyExample) {
     const seenSlots = new Set([...slotsByExample.values()].flat());
-    const knownSlots = new Set(Object.values(anatomy).filter(isObj).map((p) => p.slot));
+    const knownSlots = new Set(Object.values(anatomy).filter((p) => isObj(p) && p.element !== null).map((p) => p.slot));
     for (const dep of arr(spec.dependencies)) {
       const d = readSpec(join(SPECS, `${dep}.spec.json`)).spec;
       if (d) for (const p of Object.values(obj(d.anatomy))) if (isObj(p)) knownSlots.add(p.slot);
     }
     for (const [key, part] of Object.entries(anatomy)) {
-      if (!isObj(part) || part.required === false) continue;
+      if (!isObj(part) || part.required === false || part.element === null) continue;
       const found = seenSlots.has(part.slot);
       const where = [...slotsByExample.entries()].filter(([, s]) => s.includes(part.slot)).map(([id]) => id);
       rec({ check: "anatomy", status: found ? "pass" : "fail", detail: found ? `required part ${key} (data-slot="${part.slot}") appears in ${where.length} examples` : `required part ${key} has data-slot="${part.slot}", which no example renders` });
@@ -538,7 +552,7 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
             const active = allStates.filter(([, on, ps, sel]) => (ps === partSel ? safe(el, ps + sel) : [...document.querySelectorAll(ps)].some((e) => safe(e, ps + sel)))).map(([n]) => n);
             const colours = {};
             for (const [partKey, ps] of parts) {
-              const t = ps === partSel ? el : el.querySelector(ps) || el.closest(ps);
+              const t = ps === partSel ? el : el.querySelector(ps) || el.closest(ps) || document.querySelector(ps);
               if (!t) continue;
               const cs = getComputedStyle(t);
               colours[partKey] = { background: cs.backgroundColor, color: cs.color, borderColor: [cs.borderTopColor, cs.borderRightColor, cs.borderBottomColor, cs.borderLeftColor] };
@@ -638,6 +652,9 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
         const broken = [...axeByExample.entries()].filter(([, s]) => s.has(id)).map(([e]) => e);
         rec({ ...base, status: broken.length ? "fail" : "pass", detail: broken.length ? `axe:${id} is violated in ${broken.join(", ")}` : `axe:${id}: no violation in ${axeByExample.size} examples` });
       }
+    } else if (how === "type") {
+      const r = proveType(id, target.fixture ? null : join(SRC, slug), run.typeCheck());
+      rec({ ...base, status: r.status, detail: r.detail });
     } else {
       rec({ ...base, status: "not-run", detail: `${how}:${id} is not checked by this tool${how === "manual" ? "; a person checks it" : ""}` });
     }
@@ -650,6 +667,39 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
     }
   }
   return out;
+}
+
+// ---------------------------------------------------------------- type: requirements
+
+// Runs "npx tsc -p ds-components/tsconfig.json" once. Returns { ok, detail }.
+export function runTypeCheck(root = REPO) {
+  const r = spawnSync("npx", ["--no-install", "tsc", "-p", "ds-components/tsconfig.json"], { cwd: root, encoding: "utf8" });
+  if (r.error) return { ok: false, detail: `npx tsc could not run (${r.error.message})` };
+  const errors = `${r.stdout ?? ""}${r.stderr ?? ""}`.split("\n").filter((l) => /error TS\d+/.test(l));
+  return r.status === 0 ? { ok: true, detail: "npx tsc -p ds-components/tsconfig.json exited 0" } : { ok: false, detail: `npx tsc -p ds-components/tsconfig.json exited ${r.status}${errors.length ? ` with ${errors.length} error${errors.length === 1 ? "" : "s"}, first: ${errors[0].trim()}` : ""}` };
+}
+
+// Lines of a component's hand-written .ts and .tsx (not generated) that hold "@ts-expect-error" and the id.
+export function taggedExpectErrors(dir, id) {
+  if (!dir || !existsSync(dir)) return [];
+  const hits = [];
+  const word = new RegExp(`(^|[^A-Za-z0-9-])${id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}($|[^A-Za-z0-9-])`);
+  for (const f of readdirSync(dir).sort()) {
+    if (!/\.tsx?$/.test(f)) continue;
+    const lines = readFileSync(join(dir, f), "utf8").split("\n");
+    if (/generated/i.test(lines[0]) && /do not edit/i.test(lines[0])) continue;
+    lines.forEach((l, i) => { if (l.includes("@ts-expect-error") && word.test(l)) hits.push(`${rel(join(dir, f))}:${i + 1}`); });
+  }
+  return hits;
+}
+
+// type:<id> is proven when tsc passes and a @ts-expect-error line names the id: the directive fails tsc as soon as
+// the type stops rejecting the bad case. Anything less is "not proven", never a pass.
+export function proveType(id, dir, tsc) {
+  const hits = taggedExpectErrors(dir, id);
+  if (!hits.length) return { status: "not-proven", detail: `type:${id} not proven: no line with "@ts-expect-error" and "${id}" in ${dir ? rel(dir) : "the component"}` };
+  if (!tsc.ok) return { status: "not-proven", detail: `type:${id} not proven: ${tsc.detail}` };
+  return { status: "pass", detail: `type:${id}: ${tsc.detail} with the @ts-expect-error at ${hits.join(", ")} in force` };
 }
 
 // ---------------------------------------------------------------- shots
@@ -681,7 +731,7 @@ async function galleryShots(run) {
   const files = [];
   for (const [name, query, width] of [["gallery-index.png", {}, 1280], ["gallery-index-320.png", {}, 320], ["gallery-tokens.png", { page: "tokens" }, 1280], ["gallery-tokens-320.png", { page: "tokens" }, 320]]) {
     await run.load(page, query, { theme: "light", width });
-    const f = join(GALLERY_DIST, name);
+    const f = join(run.dist, name);
     await page.screenshot({ path: f, fullPage: true });
     const overflow = await page.evaluate(() => window.__ct.overflow());
     files.push({ file: rel(f), overflow: overflow ? `${overflow.scrollWidth} px in ${overflow.clientWidth}` : null });
@@ -702,7 +752,7 @@ function printComponent(comp, checks) {
   const cell = (list) => {
     if (!list.length) return "-";
     const fails = list.filter((c) => c.status === "fail").length;
-    const nr = list.filter((c) => c.status === "not-reached" || c.status === "not-run").length;
+    const nr = list.filter((c) => c.status === "not-reached" || c.status === "not-run" || c.status === "not-proven").length;
     if (fails) return `FAIL ${fails}/${list.length}`;
     if (nr === list.length) return "not run";
     return `ok ${list.length - nr}`;
@@ -716,14 +766,14 @@ function printComponent(comp, checks) {
     const list = mine.filter(f);
     if (!list.length) continue;
     const n = (s) => list.filter((c) => c.status === s).length;
-    console.log(`  ${pad(label + ":", 15)}${n("pass")} passed, ${n("fail")} failed${n("not-reached") ? `, ${n("not-reached")} not reached` : ""}${n("not-run") ? `, ${n("not-run")} not run` : ""}`);
+    console.log(`  ${pad(label + ":", 15)}${n("pass")} passed, ${n("fail")} failed${n("not-reached") ? `, ${n("not-reached")} not reached` : ""}${n("not-run") ? `, ${n("not-run")} not run` : ""}${n("not-proven") ? `, ${n("not-proven")} not proven` : ""}`);
   }
   const notable = mine.filter((c) => c.status !== "pass");
   if (notable.length) {
     console.log("  Findings:");
     for (const c of notable) {
       const where = [c.example, c.config, c.requirement].filter(Boolean).join(", ");
-      console.log(`    ${c.status === "fail" ? "FAIL" : c.status === "not-reached" ? "NOT REACHED" : "NOT RUN"} [${c.check}]${where ? ` ${where}` : ""}: ${c.detail}`);
+      console.log(`    ${{ fail: "FAIL", "not-reached": "NOT REACHED", "not-proven": "NOT PROVEN" }[c.status] ?? "NOT RUN"} [${c.check}]${where ? ` ${where}` : ""}: ${c.detail}`);
     }
   }
 }
@@ -737,22 +787,30 @@ function summarise(checks, components) {
     passed: n((c) => c.status === "pass"),
     failed: n((c) => c.status === "fail"),
     notRun: n((c) => c.status === "not-reached" || c.status === "not-run"),
+    notProven: n((c) => c.status === "not-proven"),
   };
 }
-const summaryLine = (s) => `${s.components} components, ${s.examples} examples, ${s.checks} checks, ${s.passed} passed, ${s.failed} failed, ${s.notRun} not reached or not run`;
+const summaryLine = (s) => `${s.components} components, ${s.examples} examples, ${s.checks} checks, ${s.passed} passed, ${s.failed} failed, ${s.notRun} not reached or not run, ${s.notProven} not proven`;
 
 // ---------------------------------------------------------------- orchestration
 
-export async function runAll(targets, { onlyExample = null, headed = false, shots = null, galleryShotsWanted = false, quiet = false } = {}) {
-  const build = await buildGallery();
-  if (!quiet) for (const n of build.notes) console.log(`gallery note: ${n}`);
-  const server = await createServer({ root: REPO, port: 0 });
+// dist: the bundle folder to serve. build: rebuild the whole gallery into it first (the default run); with
+// --dist nothing is built and a missing bundle is an error.
+export async function runAll(targets, { onlyExample = null, headed = false, shots = null, galleryShotsWanted = false, quiet = false, dist = DEFAULT_DIST, build = true } = {}) {
+  if (build) {
+    const built = await buildGallery({ dist });
+    if (!quiet) for (const n of built.notes) console.log(`gallery note: ${n}`);
+  } else {
+    for (const f of ["index.html", "gallery.js", "gallery.css"]) if (!existsSync(join(dist, f))) throw new Error(`no ${f} in ${dist}; build it first: node v2/tools/build-gallery.mjs --dist ${relative(REPO, dist) || "."}`);
+    if (!quiet) console.log(`gallery: testing the bundle in ${rel(dist)} as it is (nothing built)`);
+  }
+  const server = await createServer({ root: dist, port: 0 });
   let launched = null;
   try {
     launched = await launchChromium({ headed });
     const context = await launched.browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
     const page = await context.newPage();
-    const run = new Run({ base: server.url, page, headed });
+    const run = new Run({ base: server.url, page, headed, dist });
     await run.load(page, { component: "__none__", example: "__none__" });
     const galleryInfo = await page.evaluate(() => window.__souvenirGallery);
     const components = [];
@@ -785,6 +843,10 @@ async function main(argv) {
   const onlyExample = argValue(argv, "--example");
   const shots = argValue(argv, "--shots");
   const headed = argv.includes("--headed");
+  const distArg = argValue(argv, "--dist");
+  const reportArg = argValue(argv, "--report");
+  const dist = distArg ? resolve(distArg) : DEFAULT_DIST;
+  const reportFile = reportArg ? resolve(reportArg) : REPORT;
 
   const discovered = discoverComponents({ includeFixture: only === "fixture" }).filter((c) => !only || c.slug === only);
   const targets = [];
@@ -801,7 +863,7 @@ async function main(argv) {
   }
   if (only && !targets.length && !extra.length) throw new Error(`no component "${only}": no ds-components/src/${only}/${only}.examples.tsx and no spec`);
 
-  const result = await runAll(targets, { onlyExample, headed, shots, galleryShotsWanted: argv.includes("--gallery-shots") });
+  const result = await runAll(targets, { onlyExample, headed, shots, galleryShotsWanted: argv.includes("--gallery-shots"), dist, build: !distArg });
   const checks = [...extra.map((e) => ({ component: e.component, check: e.check, example: null, config: null, requirement: null, status: e.status, detail: e.detail })), ...result.checks];
   for (const comp of result.components) printComponent(comp, checks);
   if (extra.length) {
@@ -811,17 +873,17 @@ async function main(argv) {
   for (const f of result.shotFiles.length ? [`${result.shotFiles.length} screenshots in ${shots}`] : []) console.log(`\n${f}`);
   for (const g of result.galleryShots) console.log(`gallery screenshot: ${g.file}${g.overflow ? ` (WARNING: page scrolls sideways, ${g.overflow})` : ""}`);
   const summary = summarise(checks, result.components);
-  if (!only && !onlyExample) {
-    mkdirSync(dirname(REPORT), { recursive: true });
+  if (reportArg || (!only && !onlyExample)) {
+    mkdirSync(dirname(reportFile), { recursive: true });
     const report = {
-      $comment: `Generated by ${GENERATOR}. Do not edit; rerun the tool. Every check of the last full run: status is pass, fail, not-reached or not-run.`,
+      $comment: `Generated by ${GENERATOR}. Do not edit; rerun the tool. Every check of the last ${only || onlyExample ? "filtered" : "full"} run${only ? ` (component ${only}${onlyExample ? `, example ${onlyExample}` : ""})` : onlyExample ? ` (example ${onlyExample})` : ""}: status is pass, fail, not-reached, not-run or not-proven.`,
       summary,
       configs: GENERIC_CONFIGS.map(cfgLabel),
       components: result.components.map((c) => ({ slug: c.slug, name: c.name, spec: c.spec, specValid: c.specValid, examples: c.examples })),
       checks,
     };
-    writeFileSync(REPORT, JSON.stringify(report, null, 2) + "\n");
-    console.log(`\nreport: ${rel(REPORT)}`);
+    writeFileSync(reportFile, JSON.stringify(report, null, 2) + "\n");
+    console.log(`\nreport: ${rel(reportFile)}`);
   } else {
     console.log("\nreport: not written (filtered run)");
   }
@@ -864,6 +926,22 @@ async function selfTest(argv) {
   let lines = 0, caught = 0;
   const say = (ok, text) => { lines++; if (ok) caught++; console.log(`${ok ? "caught" : "MISSED"}: ${text}`); };
   try {
+    // type:<id>: proven only by tsc passing with a @ts-expect-error line that names the id.
+    const typeDir = join(tmp, "typed");
+    mkdirSync(typeDir, { recursive: true });
+    writeFileSync(join(typeDir, "chip.tsx"), "// Proof for chip-needs-label:\n// @ts-expect-error chip-needs-label: a chip without a label must not type-check\nconst x: { a: string } = {};\n// chip-other is named here but not on a directive line\n// @ts-expect-error\nconst y: number = '1';\n");
+    writeFileSync(join(typeDir, "chip.contract.ts"), "// Generated by v2/tools/build-components.mjs. Do not edit.\n// @ts-expect-error chip-generated\n");
+    const ok = { ok: true, detail: "tsc exited 0" }, bad = { ok: false, detail: "tsc exited 2" };
+    say(proveType("chip-needs-label", typeDir, ok).status === "pass", "type: a tagged @ts-expect-error line with tsc at 0 passes");
+    say(proveType("chip-needs-label", typeDir, bad).status === "not-proven", "type: a tagged line with tsc failing is not proven");
+    say(proveType("chip-other", typeDir, ok).status === "not-proven", "type: an id named off the directive line is not proven");
+    say(proveType("chip-needs", typeDir, ok).status === "not-proven", "type: a prefix of a tagged id is not proven");
+    say(proveType("chip-generated", typeDir, ok).status === "not-proven", "type: a directive in a generated file does not count");
+    // --dist with nothing built is an error, not a silent pass.
+    let distErr = null;
+    try { await runAll([], { dist: join(tmp, "no-bundle"), build: false, quiet: true }); } catch (e) { distErr = e.message; }
+    say(!!distErr && distErr.includes("build it first"), `--dist on a folder with no bundle fails${distErr ? `: ${distErr.slice(0, 80)}` : ""}`);
+
     // An invalid copy of the fixture spec: anatomy is a string and states a number. It must be reported, not crash.
     const broken = JSON.parse(readFileSync(fixture.specFile, "utf8"));
     broken.anatomy = "not an object";

@@ -3,18 +3,31 @@
 // Deterministic: no model, no clock, no network. Two runs on the same inputs give byte-identical files.
 //
 //   node v2/tools/build-components.mjs              build every spec
-//   node v2/tools/build-components.mjs button tabs  build only the named specs (by slug)
+//   node v2/tools/build-components.mjs button tabs  write only the named components' own files; every spec is
+//                                                   still built so the shared files below never lose a component
 //   node v2/tools/build-components.mjs --self-test  plant known faults in copies of the Button spec,
 //                                                   in memory, and confirm each one is caught
 //
 // For each spec it writes:
 //   ds-components/src/<slug>/<slug>.css           the styles, inside @layer ds.components
 //   ds-components/src/<slug>/<slug>.contract.ts   the typed surface: unions, props interfaces, constants
-//   ds-components/docs/<slug>.md                  a reference page (not usage guidance)
+//   ds-components/docs/<slug>.md                  a complete reference page (not usage guidance)
 // Across specs it writes:
 //   ds-components/docs/state-map.md              every state of every component in one table
 //   ds-components/src/styles.css                  layer order, then each component's stylesheet
+//   ds-components/src/index.ts                    the public entry, from the folders that hold <slug>.tsx
 //   ds-components/generated/tokens-used.json      tokens per component, and Figma colours nobody uses
+//
+// The stylesheet has flat specificity: every condition on a part (props, states, precedence exclusions) and
+// every ancestor part sits inside :where(), so each rule weighs what [data-slot="..."] alone weighs and the
+// rules apply in spec order, like a stylesheet. A later rule wins where two set the same property.
+//
+// Contracts. A single-piece spec (no prop keyed part.prop) gives one interface, <Name>Props, with every prop.
+// A compound spec gives <Name>Props for its plain keys and <Name><Part>Props for each part.prop prefix, the
+// prop named after the dot (trigger.value -> value in TabsTriggerProps); an enum union is <Name><Part><Prop>.
+// <NAME>_DEFAULTS and <NAME>_REFLECTS keep the spec's own (dotted) keys, grouped by exported component; a
+// default of null is unset and is listed in a comment only. A part whose element is null renders nothing: it
+// is in <NAME>_SLOTS with a comment, gets no CSS, and a style rule, state or condition naming it is an error.
 //
 // A spec that is not valid is reported with every problem found, by file and rule, and is not built;
 // the others still build. The exit code is 1 when any spec could not be built.
@@ -173,6 +186,19 @@ const tsKey = (k) => (IDENT.test(k) ? k : `'${k.replace(/\\/g, '\\\\').replace(/
 const tsString = (s) => `'${String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
 const cell = (x) => String(x ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
 const code = (x) => (x === '' || x === null || x === undefined ? '' : '`' + String(x).replace(/\|/g, '\\|') + '`');
+const doc = (s) => str(s).replace(/\*\//g, '* /');
+
+// ---------- compound components ----------
+// A part whose element is null (a Radix Root or Portal) renders no element of its own: it has a data-slot name in
+// the contract but nothing carries it, so it takes no style and no state.
+export const rendersNothing = (part) => isObj(part) && part.element === null;
+// A spec is compound when any prop is keyed part.prop. Such a prop belongs to the exported component of that part
+// (<Name><Part>), under the name after the dot; a plain key belongs to the root component <Name>. A spec with no
+// dotted key is single-piece: one component, and every prop is in <Name>Props whatever part it lands on.
+export const isCompound = (spec) => Object.keys(obj(spec.props)).some((k) => k.includes('.'));
+export const splitKey = (key) => { const i = key.indexOf('.'); return i < 0 ? { part: null, name: key } : { part: key.slice(0, i), name: key.slice(i + 1) }; };
+// The exported component that takes a prop: the root component for a plain key.
+const componentOf = (spec, key) => { const { part } = splitKey(key); return part ? `${spec.name}${pascal(part)}` : spec.name; };
 
 // ---------- one spec: validation and the stylesheet ----------
 // Returns { errors, rules: [{ index, part, media, selector, decls: [[prop, value]] }], usage }.
@@ -192,9 +218,12 @@ export function compileStyles(spec, file, ctx) {
     if (!has(KIND_ALLOWS, obj(part).kind)) fail(`anatomy.${pname}`, `the part kind ${q(obj(part).kind)} is not one of ${Object.keys(KIND_ALLOWS).join(', ')}.`);
     if (!/^[a-z][a-z-]*$/.test(str(obj(part).slot))) fail(`anatomy.${pname}.slot`, `the data-slot ${q(obj(part).slot)} is not kebab-case.`);
   }
+  // A part whose element is null renders nothing, so nothing can match it: no state may sit on it.
+  const nothing = (p) => has(parts, p) && rendersNothing(parts[p]);
   for (const [sname, state] of Object.entries(states)) {
     const s = obj(state);
     if (!has(parts, s.on)) fail(`states.${sname}.on`, `the state is on ${q(s.on)}, which is not a part.`);
+    else if (nothing(s.on)) fail(`states.${sname}.on`, `the state is on ${s.on}, whose element is null: that part renders no element, so no selector can match it.`);
     if (!/^[:[]/.test(str(s.selector))) fail(`states.${sname}.selector`, `the selector ${q(s.selector)} must start with a pseudo-class (:) or an attribute ([).`);
   }
   precedence.forEach((s, i) => { if (!has(states, s)) fail(`precedence[${i}]`, `${q(s)} is not a state.`); });
@@ -214,6 +243,7 @@ export function compileStyles(spec, file, ctx) {
       const p = props[pname];
       if (!isObj(p)) { fail(`${at}.when.props.${pname}`, `the rule names the prop ${pname}, which the spec does not have.`); condOk = false; continue; }
       if (!has(parts, p.on)) { fail(`${at}.when.props.${pname}`, `the prop ${pname} is on ${q(p.on)}, which is not a part.`); condOk = false; continue; }
+      if (nothing(p.on)) { fail(`${at}.when.props.${pname}`, `the prop ${pname} is on ${p.on}, whose element is null: that part renders no element, so no attribute on it can be seen.`); condOk = false; continue; }
       if (typeof p.reflects !== 'string' || !/^[a-z][a-z0-9-]*$/.test(p.reflects)) {
         fail(`${at}.when.props.${pname}`, `the rule depends on ${pname}, but the prop does not reflect an attribute (reflects is ${q(p.reflects)}), so styles cannot see it.`); condOk = false; continue;
       }
@@ -258,6 +288,7 @@ export function compileStyles(spec, file, ctx) {
     for (const [styled, declsRaw] of Object.entries(ruleParts)) {
       const where = `${at} (${styled})`;
       if (!has(parts, styled)) { fail(where, `${q(styled)} is not a part.`); continue; }
+      if (nothing(styled)) { fail(where, `${styled} has element null: it renders no element, so it takes no style. Style the part it wraps.`); continue; }
       const kind = obj(parts[styled]).kind;
       const allowed = KIND_ALLOWS[kind];
       const mainDecls = [];
@@ -311,8 +342,13 @@ export function compileStyles(spec, file, ctx) {
         fail(where, `the rule styles the root but depends on ${others.join(', ')}, a part inside it; a descendant selector cannot express that.`);
         continue;
       }
-      const compound = (p) => slotSel(p) + (pieces.get(p) || []).join('');
-      const selector = [...others.map(compound), compound(styled)].join(' ');
+      // Flat specificity: every condition, exclusion and ancestor sits inside :where(), so each rule for a part
+      // weighs exactly what the part selector alone weighs (0,1,0) and the rules are read in spec order, like a
+      // stylesheet. A later rule wins where two set the same property; nothing wins by being more specific.
+      const own = (p) => (pieces.get(p) || []).join('');
+      const compound = (p) => slotSel(p) + (own(p) ? `:where(${own(p)})` : '');
+      const ancestor = (p) => `:where(${slotSel(p)}${own(p)})`;
+      const selector = [...others.map(ancestor), compound(styled)].join(' ');
       if (mainDecls.length) out.push({ index: i, part: styled, media, selector, decls: mainDecls, why: str(obj(rule).why) });
       for (const pseudo of Object.keys(pseudoDecls).sort()) {
         out.push({ index: i, part: styled, media, selector: selector + pseudo, decls: pseudoDecls[pseudo], why: str(obj(rule).why) });
@@ -354,36 +390,63 @@ export function renderContract(spec, file) {
   const needsReact = props.some(([, p]) => p.type === 'node');
   if (needsReact) lines.push("import type * as React from 'react';");
   lines.push('');
+  const compound = isCompound(spec);
+  // A dotted key's union is named after its exported part and prop: list.behavior -> TabsListBehavior.
   const unionName = (pname) => name + pascal(pname);
   for (const [pname, p] of props) {
     if (p.type !== 'enum') continue;
-    lines.push(`/** ${str(p.description).replace(/\*\//g, '* /')} */`);
+    lines.push(`/** ${doc(p.description)} */`);
     lines.push(`export type ${unionName(pname)} = ${arr(p.values).map(tsString).join(' | ')};`);
   }
   const tsType = (pname, p) => ({ enum: unionName(pname), boolean: 'boolean', string: 'string', number: 'number', node: 'React.ReactNode', handler: '(...args: never[]) => void' }[p.type] || 'unknown');
-  for (const part of partNames) {
-    const own = props.filter(([, p]) => p.on === part);
-    if (!own.length) continue;
-    const iface = part === partNames[0] ? `${name}Props` : `${name}${pascal(part)}Props`;
-    lines.push('', `/** Props of the ${part} part (data-slot="${str(obj(parts[part]).slot)}"). */`, `export interface ${iface} {`);
-    for (const [pname, p] of own) {
-      lines.push(`  /** ${str(p.description).replace(/\*\//g, '* /')} */`);
-      lines.push(`  ${tsKey(pname)}${p.required === true ? '' : '?'}: ${tsType(pname, p)};`);
+
+  // The split: one group per exported component. Single-piece: one group, <Name>Props, holding every prop.
+  // Compound: <Name>Props for the plain keys, then <Name><Part>Props per dotted prefix, in anatomy order.
+  const groups = new Map(); // exported part key ('' for the root component) -> [[key, prop]]
+  const groupOf = (key) => (compound ? splitKey(key).part ?? '' : '');
+  for (const [pname, p] of props) { const g = groupOf(pname); if (!groups.has(g)) groups.set(g, []); groups.get(g).push([pname, p]); }
+  const order = ['', ...partNames].filter((g) => groups.has(g));
+  const component = (g) => (g ? `${name}${pascal(g)}` : name);
+  for (const g of order) {
+    const head = !compound
+      ? `/** Props of ${name}: every prop, whichever part it lands on (named in each comment). */`
+      : g ? `/** Props of ${component(g)}, the ${g} part (data-slot="${str(obj(parts[g]).slot)}"). Keyed ${g}.<prop> in the spec. */`
+        : `/** Props of ${name}, the root part${partNames[0] ? ` (${partNames[0]})` : ''}: the plain keys of the spec. */`;
+    lines.push('', head, `export interface ${component(g)}Props {`);
+    for (const [pname, p] of groups.get(g)) {
+      const local = compound ? splitKey(pname).name : pname;
+      const lands = !compound && p.on !== partNames[0] ? ` On the ${p.on} part.` : '';
+      lines.push(`  /** ${doc(p.description)}${lands}${p.default === null ? ' Unset unless given.' : ''} */`);
+      lines.push(`  ${tsKey(local)}${p.required === true ? '' : '?'}: ${tsType(pname, p)};`);
     }
     lines.push('}');
   }
+  // DEFAULTS and REFLECTS follow the same split: grouped by exported component, looked up by the spec's own key
+  // (dotted in a compound spec). A default of null means unset unless given, so it is listed in a comment only.
   const lit = (v) => (typeof v === 'string' ? tsString(v) : JSON.stringify(v));
-  lines.push('', `/** Every prop that has a default, with that default. */`, `export const ${NAME}_DEFAULTS = {`);
-  for (const [pname, p] of props) if (has(p, 'default')) lines.push(`  ${tsKey(pname)}: ${lit(p.default)},`);
+  const grouped = (pick) => {
+    const out = [];
+    for (const g of order) {
+      const rows = groups.get(g).filter(([, p]) => pick(p));
+      if (!rows.length) continue;
+      if (compound) out.push(`  // ${component(g)}`);
+      out.push(...rows.map((r) => r));
+    }
+    return out;
+  };
+  lines.push('', `/** Every prop that has a default, with that default. Keyed as in the spec. */`, `export const ${NAME}_DEFAULTS = {`);
+  for (const r of grouped((p) => has(p, 'default') && p.default !== null)) lines.push(typeof r === 'string' ? r : `  ${tsKey(r[0])}: ${lit(r[1].default)},`);
+  const unset = props.filter(([, p]) => p.default === null).map(([k]) => k);
+  if (unset.length) lines.push(`  // Unset unless given (default null): ${unset.join(', ')}.`);
   lines.push('} as const;');
-  lines.push('', `/** Each part's data-slot value. */`, `export const ${NAME}_SLOTS = {`);
-  for (const part of partNames) lines.push(`  ${tsKey(part)}: ${tsString(str(obj(parts[part]).slot))},`);
+  lines.push('', `/** Each part's data-slot value. A part that renders nothing has a name here but no element carries it. */`, `export const ${NAME}_SLOTS = {`);
+  for (const part of partNames) lines.push(`  ${tsKey(part)}: ${tsString(str(obj(parts[part]).slot))},${rendersNothing(parts[part]) ? ' // renders nothing: element is null, so set no data-slot for it' : ''}`);
   lines.push('} as const;');
   lines.push('', `/** Each state: the part it is on and the selector that matches it there. */`, `export const ${NAME}_STATES = {`);
   for (const [sname, s] of Object.entries(obj(spec.states))) lines.push(`  ${tsKey(sname)}: { on: ${tsString(str(s.on))}, selector: ${tsString(str(s.selector))} },`);
   lines.push('} as const;');
-  lines.push('', `/** Each prop that styles can see, and the attribute it sets on its part. */`, `export const ${NAME}_REFLECTS = {`);
-  for (const [pname, p] of props) if (typeof p.reflects === 'string' && p.reflects) lines.push(`  ${tsKey(pname)}: ${tsString(p.reflects)},`);
+  lines.push('', `/** Each prop that styles can see, and the attribute it sets on its part. Keyed as in the spec. */`, `export const ${NAME}_REFLECTS = {`);
+  for (const r of grouped((p) => typeof p.reflects === 'string' && p.reflects)) lines.push(typeof r === 'string' ? r : `  ${tsKey(r[0])}: ${tsString(r[1].reflects)},`);
   lines.push('} as const;', '');
   return lines.join('\n');
 }
@@ -399,29 +462,33 @@ export function renderDoc(spec, file, compiled) {
   L.push(`${str(spec.summary)}`, '');
   const fig = obj(spec.figma);
   L.push(`Stage: **${spec.stage}**. Figma: ${fig.component ? code(fig.component) : 'none'}${fig.confirmed === false ? ' (mapping not yet confirmed against the Components file)' : ''}. Behaviour: ${obj(spec.primitive).package ? code(obj(spec.primitive).package) : 'plain HTML'}.`, '');
-  L.push('## Anatomy', '', '| Part | data-slot | Element | Role | Wraps |', '|---|---|---|---|---|');
-  for (const [p, d] of Object.entries(parts)) L.push(`| ${p}${d.required === false ? ' (optional)' : ''} | ${code(d.slot)} | ${code(d.element)} | ${d.role ?? ''} | ${d.primitivePart ? code(d.primitivePart) : ''} |`);
-  L.push('', '## Props', '', '| Prop | Part | Type or values | Default | Reflects | In Figma |', '|---|---|---|---|---|---|');
+  const compound = isCompound(spec);
+  L.push(compound
+    ? `A compound component: each part with an element is exported as its own component (${spec.name}${'<Part>'}), and a prop keyed \`part.prop\` is a prop of that part's component. Parts whose element is null render nothing of their own.`
+    : `A single-piece component: one exported component, ${spec.name}, takes every prop.`, '');
+  L.push('## Anatomy', '', '| Part | data-slot | Element | Kind | Role | Wraps | Description |', '|---|---|---|---|---|---|---|');
+  for (const [p, d] of Object.entries(parts)) {
+    const el = rendersNothing(d) ? 'none (renders nothing)' : code(d.element);
+    L.push(`| ${p}${d.required === false ? ' (optional)' : ''} | ${code(d.slot)} | ${el} | ${cell(d.kind)} | ${d.role ?? ''} | ${d.primitivePart ? code(d.primitivePart) : ''} | ${cell(d.description)} |`);
+  }
+  L.push('', '## Props', '', '| Prop | Taken by | Lands on part | Type or values | Default | Reflects | In Figma | Description |', '|---|---|---|---|---|---|---|---|');
   for (const [n, p] of Object.entries(obj(spec.props))) {
     const type = p.type === 'enum' ? arr(p.values).map(code).join(' ') : p.type;
-    const def = has(p, 'default') ? code(JSON.stringify(p.default)) : p.required ? 'required' : '';
-    L.push(`| ${code(n)} | ${p.on} | ${type} | ${def} | ${p.reflects ? code(p.reflects) : ''} | ${p.figmaProperty ? code(p.figmaProperty) : 'code only'} |`);
+    const def = p.default === null ? 'unset unless given' : has(p, 'default') ? code(JSON.stringify(p.default)) : p.required ? 'required' : '';
+    const taker = compound ? `${componentOf(spec, n)} ${code(splitKey(n).name)}` : spec.name;
+    L.push(`| ${code(n)} | ${taker} | ${p.on} | ${type} | ${def} | ${p.reflects ? code(p.reflects) : ''} | ${p.figmaProperty ? code(p.figmaProperty) : 'code only'} | ${cell(p.description)} |`);
   }
-  L.push('', '## State map', '', `Strongest first: ${arr(spec.precedence).join(', ') || 'no precedence given'}.`, '', '| State | Part | Selector | Set by | Figma | Test reaches it by |', '|---|---|---|---|---|---|');
-  for (const [n, s] of Object.entries(states)) L.push(`| ${n} | ${s.on} | ${code(s.selector)} | ${s.source} | ${s.figma ? code(`${s.figma.property}=${s.figma.value}`) : ''} | ${cell(s.reach)} |`);
+  L.push('', '## State map', '', `Strongest first: ${arr(spec.precedence).join(', ') || 'no precedence given'}.`, '', '| State | Part | Selector | Set by | Figma | Test reaches it by | Description |', '|---|---|---|---|---|---|---|');
+  for (const [n, s] of Object.entries(states)) L.push(`| ${n} | ${s.on} | ${code(s.selector)} | ${s.source} | ${s.figma ? code(`${s.figma.property}=${s.figma.value}`) : ''} | ${cell(s.reach)} | ${cell(s.description)} |`);
   const used = [...compiled.usage.values()];
   for (const [origin, title] of [['figma', 'Tokens from Figma'], ['proposed', 'Tokens proposed in the repo']]) {
     const list = used.filter((u) => u.origin === origin);
     L.push('', `## ${title}`, '');
     if (!list.length) { L.push('None.'); continue; }
-    // One row per collection keeps the page short; each token shows its CSS name and how many style entries use it.
-    L.push('| Collection | Token, CSS name, style entries using it |', '|---|---|');
-    const byCollection = new Map();
-    for (const u of list) { if (!byCollection.has(u.collection)) byCollection.set(u.collection, []); byCollection.get(u.collection).push(u); }
-    for (const c of [...byCollection.keys()].sort()) {
-      const items = byCollection.get(c).sort((x, y) => (x.token < y.token ? -1 : x.token > y.token ? 1 : 0));
-      L.push(`| ${c} | ${items.map((u) => `${code(u.token)} ${code(u.cssVar)} ${u.rules.size}`).join('<br>')} |`);
-    }
+    // One row per token: its collection, its CSS name and the style entries that use it.
+    L.push('| Collection | Token | CSS name | Style entries using it |', '|---|---|---|---|');
+    const sorted = list.slice().sort((x, y) => (x.collection < y.collection ? -1 : x.collection > y.collection ? 1 : x.token < y.token ? -1 : x.token > y.token ? 1 : 0));
+    for (const u of sorted) L.push(`| ${u.collection} | ${code(u.token)} | ${code(u.cssVar)} | ${[...u.rules].sort((a, b) => a - b).map((i) => `styles[${i}]`).join(', ')} |`);
   }
   const a11y = obj(spec.accessibility);
   L.push('', '## Keyboard', '', `Pattern: ${a11y.reference ? `[${a11y.pattern}](${a11y.reference})` : str(a11y.pattern)}. Name: ${cell(obj(a11y.name).from)}`, '');
@@ -439,11 +506,18 @@ export function renderDoc(spec, file, compiled) {
   L.push('', '## Content rules', '');
   const content = arr(spec.content);
   if (content.length) for (const c of content) L.push(`- ${c}`); else L.push('None given.');
-  L.push('', '## Examples', '', '| Id | Title | Props | Content |', '|---|---|---|---|');
+  L.push('', '## Examples', '', '| Id | Title | Props | Content | Note |', '|---|---|---|---|---|');
   for (const e of arr(spec.examples)) {
     const content = e.content === undefined || e.content === null ? '' : typeof e.content === 'string' ? cell(e.content) : code(JSON.stringify(e.content));
-    L.push(`| ${code(e.id)} | ${cell(e.title)} | ${Object.keys(obj(e.props)).length ? code(JSON.stringify(e.props)) : ''} | ${content} |`);
+    L.push(`| ${code(e.id)} | ${cell(e.title)} | ${Object.keys(obj(e.props)).length ? code(JSON.stringify(e.props)) : ''} | ${content} | ${cell(e.note)} |`);
   }
+  L.push('', '## Style rules', '', 'Every rule of the spec, in order. The generated stylesheet keeps this order and gives every rule for a part the same specificity, so a later rule wins where two set the same property.', '', '| Rule | When | Parts and declarations | Why |', '|---|---|---|---|');
+  arr(spec.styles).forEach((r, i) => {
+    const w = obj(r.when);
+    const when = [Object.keys(obj(w.props)).length ? `props ${JSON.stringify(w.props)}` : '', arr(w.states).length ? `states ${arr(w.states).join(', ')}` : '', w.media ? `media ${w.media}` : ''].filter(Boolean).join('; ') || 'always';
+    const decls = Object.entries(obj(r.parts)).map(([p, d]) => `${p}: ${Object.entries(obj(d)).map(([k, v]) => `${k} ${v}`).join(', ')}`).join('<br>');
+    L.push(`| styles[${i}] | ${cell(when)} | ${cell(decls)} | ${cell(r.why)} |`);
+  });
   L.push('', '## What the spec does not carry', '');
   for (const n of arr(spec.notCarried)) L.push(`- ${n}`);
   L.push('');
@@ -471,6 +545,12 @@ export function buildAll(entries, ctx) {
       if (`${spec.slug}.spec.json` !== e.file) res.errors.push(`${e.file}: slug: the slug ${q(spec.slug)} does not match the file name.`);
       for (const [n, p] of Object.entries(spec.props)) {
         if (!has(spec.anatomy, p.on)) res.errors.push(`${e.file}: props.${n}.on: ${q(p.on)} is not a part.`);
+        const { part, name: local } = splitKey(n);
+        if (part !== null) {
+          if (!has(spec.anatomy, part)) res.errors.push(`${e.file}: props.${n}: the key names the part ${q(part)} before the dot, which is not a part; a key part.prop belongs to that part's exported component.`);
+          else if (part === Object.keys(spec.anatomy)[0]) res.errors.push(`${e.file}: props.${n}: ${part} is the root part, whose props are plain keys; write ${q(local)}.`);
+          if (!IDENT.test(local)) res.errors.push(`${e.file}: props.${n}: ${q(local)}, the name after the dot, is not a valid prop name.`);
+        }
       }
       const compiled = compileStyles(spec, e.file, ctx);
       res.errors.push(...compiled.errors);
@@ -493,7 +573,68 @@ export function buildAll(entries, ctx) {
   files.set('ds-components/docs/state-map.md', renderStateMap(built));
   files.set('ds-components/src/styles.css', renderStylesIndex(built, ctx.extensionExists || ((slug) => existsSync(join(ROOT, 'ds-components', 'src', slug, `${slug}.extensions.css`)))));
   files.set('ds-components/generated/tokens-used.json', renderTokensUsed(built, ctx));
+  files.set('ds-components/src/index.ts', renderIndex((ctx.componentSources || readComponentSources)(), files));
   return { files, results };
+}
+
+// Every component folder that holds its hand-written <slug>.tsx, sorted by slug, with that file's text and the
+// contract on disk. Injected through ctx.componentSources by the self-test and by the component lint.
+export function readComponentSources(srcDir = join(ROOT, 'ds-components', 'src')) {
+  if (!existsSync(srcDir)) return [];
+  const out = [];
+  for (const slug of readdirSync(srcDir).sort()) {
+    const tsx = join(srcDir, slug, `${slug}.tsx`);
+    if (!existsSync(tsx)) continue;
+    const contract = join(srcDir, slug, `${slug}.contract.ts`);
+    out.push({ slug, tsx: readFileSync(tsx, 'utf8'), contract: existsSync(contract) ? readFileSync(contract, 'utf8') : null });
+  }
+  return out;
+}
+
+// The names a module exports at its top level, each marked as a type or a value. Parsed with the typescript package.
+function exportedNames(text, fileName) {
+  const ts = require('typescript');
+  const sf = ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, false, fileName.endsWith('x') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
+  const names = new Map(); // name -> 'type' | 'value'
+  const exported = (st) => (ts.getModifiers?.(st) ?? st.modifiers ?? []).some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
+  for (const st of sf.statements) {
+    if (ts.isExportDeclaration(st) && st.exportClause && ts.isNamedExports(st.exportClause)) {
+      for (const el of st.exportClause.elements) names.set(el.name.text, st.isTypeOnly || el.isTypeOnly ? 'type' : 'value');
+      continue;
+    }
+    if (!exported(st)) continue;
+    if (ts.isInterfaceDeclaration(st) || ts.isTypeAliasDeclaration(st)) names.set(st.name.text, 'type');
+    else if (ts.isFunctionDeclaration(st) || ts.isClassDeclaration(st) || ts.isEnumDeclaration(st)) { if (st.name) names.set(st.name.text, 'value'); }
+    else if (ts.isVariableStatement(st)) for (const d of st.declarationList.declarations) if (ts.isIdentifier(d.name)) names.set(d.name.text, 'value');
+  }
+  return names;
+}
+
+// ds-components/src/index.ts, generated from the folders: for each component with a <slug>.tsx, everything it
+// exports and every type its contract exports. Where both export a name (Button's own ButtonProps and the
+// contract's), the two star exports would be ambiguous and tsc fails (TS2308), so the component's export is
+// named explicitly and wins. The contract's constants are exported as types only; import them from the contract.
+function renderIndex(sources, files) {
+  const L = [
+    `// Generated by ${GENERATOR} from the folders in ds-components/src/. Do not edit; add ds-components/src/<slug>/<slug>.tsx and rebuild.`,
+    '// The public entry of the Souvenir React components: per component, everything <slug>.tsx exports and every type',
+    '// its generated contract exports. Styles are not imported here; a host loads ds-tokens/dist/tokens.css and',
+    '// ds-components/src/styles.css once.',
+  ];
+  for (const s of sources) {
+    const contract = files.get(`ds-components/src/${s.slug}/${s.slug}.contract.ts`) ?? s.contract;
+    L.push('', `export * from './${s.slug}/${s.slug}';`, `export type * from './${s.slug}/${s.slug}.contract';`);
+    if (!contract) continue;
+    const own = exportedNames(s.tsx, `${s.slug}.tsx`);
+    const theirs = exportedNames(contract, `${s.slug}.contract.ts`);
+    const clash = [...own.keys()].filter((n) => theirs.has(n)).sort();
+    const types = clash.filter((n) => own.get(n) === 'type');
+    const values = clash.filter((n) => own.get(n) === 'value');
+    if (types.length) L.push(`export type { ${types.join(', ')} } from './${s.slug}/${s.slug}'; // the component's own, over the contract's`);
+    if (values.length) L.push(`export { ${values.join(', ')} } from './${s.slug}/${s.slug}'; // the component's own, over the contract's`);
+  }
+  L.push('');
+  return L.join('\n');
 }
 
 function renderStateMap(built) {
@@ -552,12 +693,22 @@ function main(argv) {
   if (argv.includes('--self-test')) return selfTest();
   const ctx = loadContext();
   const slugs = argv.filter((a) => !a.startsWith('--'));
-  const entries = readEntries(slugs);
-  const { files, results } = buildAll(entries, ctx);
+  // Every spec is always built, so the shared files (styles.css, index.ts, state-map.md, tokens-used.json) never
+  // lose another component; naming slugs only limits which component's own files are written and reported.
+  readEntries(slugs); // reports a slug with no spec
+  const { files, results: all } = buildAll(readEntries([]), ctx);
+  const named = (slug) => !slugs.length || slugs.includes(slug);
+  const own = (rel) => { const m = rel.match(/^ds-components\/(?:src\/([^/]+)\/\1\.(?:css|contract\.ts)|docs\/([^/]+)\.md)$/); return m && (m[1] ?? (m[2] === 'state-map' ? null : m[2])); };
+  let written = 0;
   for (const [rel, content] of files) {
+    const slug = own(rel);
+    if (slug && !named(slug)) continue;
     mkdirSync(dirname(join(ROOT, rel)), { recursive: true });
     writeFileSync(join(ROOT, rel), content);
+    written++;
   }
+  const results = all.filter((r) => named(r.file.replace(/\.spec\.json$/, '')));
+  for (const r of all) if (!named(r.file.replace(/\.spec\.json$/, '')) && !r.ok) console.log(`${r.file}: not built (not named here), so the shared files leave it out.`);
   for (const r of results) {
     if (r.ok) console.log(`${r.file}: built. ${r.stats.styles} style entries written as ${r.stats.cssRules} CSS rules; ${r.stats.props} props, ${r.stats.parts} parts and ${r.stats.states} states in the contract and the docs page.`);
     else {
@@ -566,13 +717,13 @@ function main(argv) {
     }
   }
   const failed = results.filter((r) => !r.ok).length;
-  console.log(`${results.length} specs read, ${results.length - failed} built, ${failed} not built; ${files.size} files written.`);
+  console.log(`${results.length} specs read, ${results.length - failed} built, ${failed} not built; ${written} files written.`);
   return failed ? 1 : 0;
 }
 
 // ---------- self-test: plant known faults in copies of the Button spec ----------
 function selfTest() {
-  const ctx = { ...loadContext(), extensionExists: () => false };
+  const ctx = { ...loadContext(), extensionExists: () => false, componentSources: () => [] };
   const base = JSON.parse(readFileSync(join(SPEC_DIR, 'button.spec.json'), 'utf8'));
   const clone = () => JSON.parse(JSON.stringify(base));
   const build = (spec) => buildAll([{ file: 'button.spec.json', spec }], ctx);
@@ -595,15 +746,47 @@ function selfTest() {
   errs = errorsOf(s);
   check('a text part given a background fails', errs.some((e) => e.startsWith('button.spec.json: styles[0] (label.background)') && e.includes('text part')), errs.join('; ') || 'no error');
 
-  // 3. The hover rule excludes the stronger states on the same part, disabled first.
+  // 3. The hover rule excludes the stronger states on the same part, disabled first, inside :where().
   const css = clean.files.get('ds-components/src/button/button.css') || '';
-  const hoverSel = '[data-slot="button"]:hover:not(:is(:disabled, [aria-disabled="true"])):not([data-loading]):not(:active) {';
-  const primaryHover = '[data-slot="button"][data-variant="primary"]:hover:not(:is(:disabled, [aria-disabled="true"])):not([data-loading]):not(:active) {\n    background-color: var(--color-interactive-primary-hover);';
+  const hoverSel = '[data-slot="button"]:where(:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {';
+  const primaryHover = '[data-slot="button"]:where([data-variant="primary"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) {\n    background-color: var(--color-interactive-primary-hover);';
   check('the hover rule excludes the disabled selector', css.includes(hoverSel) && css.includes(primaryHover), 'selector not found');
 
   // 4. A boolean condition of false gives :not().
   s = clone(); s.styles.push({ when: { props: { fullWidth: false } }, parts: { root: { width: 'size/control/md' } } });
-  check('a boolean false condition produces :not()', cssOf(s).includes('[data-slot="button"]:not([data-full-width]) {\n    inline-size: var(--size-control-md);'), 'selector not found');
+  check('a boolean false condition produces :not()', cssOf(s).includes('[data-slot="button"]:where(:not([data-full-width])) {\n    inline-size: var(--size-control-md);'), 'selector not found');
+
+  // Flat specificity: with every :where(...) group removed, each selector is the bare part selector (plus a
+  // pseudo-element), so every rule for a part weighs (0,1,0) and source order alone decides.
+  const selectorsOf = (text) => [...text.matchAll(/^[ \t]*([^\s{}@/][^\n{}]*?) \{$/gm)].map((m) => m[1]);
+  const stripWhere = (sel) => {
+    let out = '', i = 0;
+    while (i < sel.length) {
+      if (sel.startsWith(':where(', i)) { let depth = 0, j = i + 6; for (; j < sel.length; j++) { if (sel[j] === '(') depth++; else if (sel[j] === ')' && --depth === 0) break; } i = j + 1; continue; }
+      out += sel[i++];
+    }
+    return out.trim();
+  };
+  const flat = (text) => selectorsOf(text).filter((sel) => !/^\[data-slot="[a-z-]+"\](::[a-z-]+)?$/.test(stripWhere(sel)));
+  const notFlat = flat(css);
+  check('every Button selector has the specificity of its part selector alone', selectorsOf(css).length > 40 && notFlat.length === 0, `${selectorsOf(css).length} selectors; not flat: ${notFlat.slice(0, 3).join(' | ')}`);
+  // Disabled beats hover (hover excludes it and comes first); ghost-disabled beats disabled (later, same weight).
+  const at = (needle) => css.indexOf(needle);
+  const disabledAt = at('[data-slot="button"]:where(:is(:disabled, [data-disabled])) {');
+  const ghostDisabledAt = at('[data-slot="button"]:where([data-variant="ghost"]:is(:disabled, [data-disabled])) {');
+  check('disabled comes after hover and ghost-disabled after disabled, at equal weight', at(hoverSel) > 0 && disabledAt > at(hoverSel) && ghostDisabledAt > disabledAt, `hover ${at(hoverSel)}, disabled ${disabledAt}, ghost disabled ${ghostDisabledAt}`);
+  // A size rule after a variant rule that sets the same property wins by order alone: both selectors weigh the same.
+  s = clone();
+  s.styles.push({ when: { props: { variant: 'primary' } }, parts: { root: { minHeight: 'control/sm' } } });
+  s.styles.push({ when: { props: { size: 'lg' } }, parts: { root: { minHeight: 'control/lg' } } });
+  const orderCss = cssOf(s);
+  const vAt = orderCss.indexOf(`/* styles[${s.styles.length - 2}] */\n  [data-slot="button"]:where([data-variant="primary"]) {\n    min-block-size: var(--size-control-sm);`);
+  const zAt = orderCss.indexOf(`/* styles[${s.styles.length - 1}] */\n  [data-slot="button"]:where([data-size="lg"]) {\n    min-block-size: var(--size-control-lg);`);
+  check('a size rule written after a variant rule on the same property comes later at the same weight', vAt > 0 && zAt > vAt && flat(orderCss).length === 0, `variant at ${vAt}, size at ${zAt}`);
+  // An ancestor part's conditions are wrapped too: the descendant rule still weighs only its own part selector.
+  s = clone(); s.styles.push({ when: { props: { variant: 'ghost' }, states: ['hover'] }, parts: { label: { color: 'text/primary' } } });
+  const descCss = cssOf(s);
+  check('an ancestor compound is wrapped in :where()', descCss.includes(':where([data-slot="button"][data-variant="ghost"]:hover:not(:is(:disabled, [data-disabled])):not([data-loading]):not(:active)) [data-slot="button-label"] {') && flat(descCss).length === 0, 'descendant selector not found');
 
   // 5. Two runs are identical, every file included.
   const a = build(clone()).files; const b = build(clone()).files;
@@ -614,9 +797,9 @@ function selfTest() {
   s = clone(); s.styles[0].parts.root.background = 'full';
   errs = errorsOf(s);
   check('a keyword where it makes no sense fails', errs.some((e) => e.includes('styles[0] (root.background)') && e.includes('keyword "full"')), errs.join('; ') || 'no error');
-  s = clone(); s.styles.push({ when: { props: { disabled: true } }, parts: { root: { cursor: 'default' } } });
+  s = clone(); s.styles.push({ when: { props: { asChild: true } }, parts: { root: { cursor: 'default' } } });
   errs = errorsOf(s);
-  check('a condition on a prop that reflects nothing fails', errs.some((e) => e.includes(`styles[${s.styles.length - 1}].when.props.disabled`)), errs.join('; ') || 'no error');
+  check('a condition on a prop that reflects nothing fails', errs.some((e) => e.includes(`styles[${s.styles.length - 1}].when.props.asChild`)), errs.join('; ') || 'no error');
   s = clone(); s.styles[0].parts.spinner.opacity = 'disabled/40';
   errs = errorsOf(s);
   check('a token for a property with no collection fails', errs.some((e) => e.includes('styles[0] (spinner.opacity)')), errs.join('; ') || 'no error');
@@ -628,6 +811,54 @@ function selfTest() {
   s = clone(); s.styles[0].parts.root.placeholderColor = 'text/secondary';
   const placeholderCss = cssOf(s);
   check('placeholderColor is written on ::placeholder, not on the part', placeholderCss.includes('[data-slot="button"]::placeholder {\n    color: var(--color-text-secondary);') && !/\[data-slot="button"\] \{[^}]*--color-text-secondary/.test(placeholderCss), 'rule not found');
+
+  // Single-piece (no dotted key): every prop is in ButtonProps, whichever part it lands on.
+  const contractOf = (spec) => build(spec).files.get('ds-components/src/button/button.contract.ts') || '';
+  const single = clean.files.get('ds-components/src/button/button.contract.ts') || '';
+  const buttonProps = (single.match(/export interface ButtonProps \{[\s\S]*?\n\}/) || [''])[0];
+  check('a single-piece spec puts every prop in <Name>Props', /\n {2}iconStart\?: React\.ReactNode;/.test(buttonProps) && /\n {2}children\?: React\.ReactNode;/.test(buttonProps) && !/interface Button[A-Z]\w*Props/.test(single), 'per-part interfaces found or props missing');
+
+  // Dotted keys: label.tone becomes tone in ButtonLabelProps, with the union ButtonLabelTone; plain keys stay in
+  // ButtonProps; DEFAULTS and REFLECTS keep the dotted key.
+  s = clone();
+  s.props['label.tone'] = { on: 'label', type: 'enum', values: ['plain', 'muted'], default: 'plain', reflects: 'data-tone', figmaProperty: null, description: 'Planted.' };
+  s.props['label.hint'] = { on: 'label', type: 'string', required: true, default: null, figmaProperty: null, description: 'Planted, unset unless given.' };
+  let res = build(s).results[0];
+  const dotted = contractOf(s);
+  const labelIface = (dotted.match(/export interface ButtonLabelProps \{[\s\S]*?\n\}/) || [''])[0];
+  const rootIface = (dotted.match(/export interface ButtonProps \{[\s\S]*?\n\}/) || [''])[0];
+  check('a dotted prop goes to its part interface under the name after the dot', res.ok && /\n {2}tone\?: ButtonLabelTone;/.test(labelIface) && /\n {2}hint: string;/.test(labelIface) && /export type ButtonLabelTone = 'plain' \| 'muted';/.test(dotted) && /\n {2}variant\?: ButtonVariant;/.test(rootIface) && !/tone/.test(rootIface), res.errors.join('; ') || 'interfaces not as expected');
+  check('DEFAULTS and REFLECTS keep the dotted key; a null default is left unset', /\n {2}'label\.tone': 'plain',/.test(dotted) && /\n {2}'label\.tone': 'data-tone',/.test(dotted) && !/'label\.hint': null/.test(dotted) && /Unset unless given \(default null\): label\.hint\./.test(dotted), 'keys not found');
+  s = clone(); s.props['labl.tone'] = { on: 'label', type: 'string', figmaProperty: null, description: 'Planted typo.' };
+  errs = errorsOf(s);
+  check('a dotted key whose part is not a part fails', errs.some((e) => e.includes('props.labl.tone') && e.includes('"labl"')), errs.join('; ') || 'no error');
+
+  // element null: no stylesheet entry, a renders-nothing note in SLOTS, and an error if a rule or state names it.
+  s = clone(); s.anatomy.label.element = null;
+  res = build(s).results[0];
+  const nullContract = contractOf(s); const nullCss = cssOf(s);
+  check('a part with element null is listed in SLOTS as rendering nothing and gets no CSS', res.ok && /\n {2}label: 'button-label', \/\/ renders nothing/.test(nullContract) && !nullCss.includes('button-label'), res.errors.join('; ') || 'not as expected');
+  s = clone(); s.anatomy.spinner.element = null;
+  errs = errorsOf(s);
+  check('a style rule naming a part with element null fails', errs.some((e) => e.includes('styles[0] (spinner)') && e.includes('element null')), errs.join('; ') || 'no error');
+  s = clone(); s.anatomy.label.element = null; s.states.labelled = { on: 'label', selector: '[data-x]', source: 'prop', figma: null, reach: 'prop:children=x', description: 'Planted.' };
+  errs = errorsOf(s);
+  check('a state on a part with element null fails', errs.some((e) => e.includes('states.labelled.on') && e.includes('element is null')), errs.join('; ') || 'no error');
+
+  // index.ts from the folders: both export lines per component with a .tsx, and an explicit export for each name
+  // both files export, so tsc does not reject the ambiguous star exports.
+  const idxCtx = { ...ctx, componentSources: () => [{ slug: 'button', tsx: 'export type ButtonProps = { a?: string };\nexport function Button() { return null; }\nexport const BUTTON_SLOTS = 1;\n', contract: null }] };
+  const idx = buildAll([{ file: 'button.spec.json', spec: clone() }], idxCtx).files.get('ds-components/src/index.ts') || '';
+  check('index.ts is generated from the folders and resolves clashing names', /^\/\/ Generated by v2\/tools\/build-components\.mjs.*Do not edit/.test(idx) && idx.includes("export * from './button/button';\nexport type * from './button/button.contract';") && idx.includes("export type { ButtonProps } from './button/button';") && idx.includes("export { BUTTON_SLOTS } from './button/button';"), idx.slice(0, 400));
+  const noneIdx = buildAll([{ file: 'button.spec.json', spec: clone() }], { ...ctx, componentSources: () => [] }).files.get('ds-components/src/index.ts') || '';
+  check('a folder without <slug>.tsx is not exported', noneIdx.startsWith('// Generated') && !/^export /m.test(noneIdx), noneIdx);
+
+  // Reference pages are complete: one row per token, every style rule listed, descriptions kept.
+  const page = clean.files.get('ds-components/docs/button.md') || '';
+  const usageCount = clean.results[0].usage.size;
+  const tokenRows = page.split('\n').filter((l) => /^\| [A-Z][A-Za-z]+ \| `[^`]+` \| `--[^`]+` \| styles\[/.test(l)).length;
+  const ruleRows = page.split('\n').filter((l) => /^\| styles\[\d+\] \|/.test(l)).length;
+  check('the reference page has one row per token and per style rule', tokenRows === usageCount && ruleRows === base.styles.length && page.includes(base.anatomy.root.description), `${tokenRows} token rows for ${usageCount} tokens, ${ruleRows} rule rows for ${base.styles.length} rules`);
 
   const caught = checks.filter(Boolean).length;
   console.log(`Self-test: ${caught} of ${checks.length} planted checks passed${caught === checks.length ? '.' : '; the build tool is not safe to use.'}`);

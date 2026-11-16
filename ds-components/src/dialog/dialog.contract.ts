@@ -7,9 +7,9 @@ export type DialogContentSize = 'sm' | 'md';
 /** Where focus goes on open. control: the first control in the dialog that is not a link. title: the title itself, for a body of long text whose start must not scroll out of view. */
 export type DialogContentInitialFocus = 'control' | 'title';
 
-/** Props of the root part (data-slot="dialog"). */
+/** Props of Dialog, the root part (root): the plain keys of the spec. */
 export interface DialogProps {
-  /** Whether the dialog is open, for a dialog whose state the product holds. Left unset (null), the dialog holds its own state and starts from defaultOpen. */
+  /** Whether the dialog is open, for a dialog whose state the product holds. Left unset (null), the dialog holds its own state and starts from defaultOpen. Unset unless given. */
   open?: boolean;
   /** Whether a dialog that holds its own state starts open. */
   defaultOpen?: boolean;
@@ -17,84 +17,88 @@ export interface DialogProps {
   onOpenChange?: (...args: never[]) => void;
 }
 
-/** Props of the trigger part (data-slot="dialog-trigger"). */
+/** Props of DialogTrigger, the trigger part (data-slot="dialog-trigger"). Keyed trigger.<prop> in the spec. */
 export interface DialogTriggerProps {
   /** Renders the child, a Souvenir Button, as the trigger, so it keeps the button's look and gains the trigger's behaviour and attributes. Set it whenever the child is a Button. */
-  'trigger.asChild'?: boolean;
+  asChild?: boolean;
   /** With trigger.asChild, the Souvenir Button; without it, the trigger's label. */
-  'trigger.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the content part (data-slot="dialog-content"). */
+/** Props of DialogContent, the content part (data-slot="dialog-content"). Keyed content.<prop> in the spec. */
 export interface DialogContentProps {
   /** The widest the dialog grows: 400 pixels for sm, 560 for md. On a narrower screen both fill the width less the overlay's 16 pixel padding each side. */
-  'content.size'?: DialogContentSize;
+  size?: DialogContentSize;
   /** Whether Escape and a press outside close the dialog. Set it to false for a step that must not be lost by accident; a footer action must then offer the way out. */
-  'content.dismissible'?: boolean;
+  dismissible?: boolean;
   /** Where focus goes on open. control: the first control in the dialog that is not a link. title: the title itself, for a body of long text whose start must not scroll out of view. */
-  'content.initialFocus'?: DialogContentInitialFocus;
+  initialFocus?: DialogContentInitialFocus;
   /** Called when the dialog is about to move focus inside on open. Calling preventDefault on the event stops the move so the product can place focus itself. */
-  'content.onOpenAutoFocus'?: (...args: never[]) => void;
+  onOpenAutoFocus?: (...args: never[]) => void;
   /** Called when the dialog is about to return focus on close. Calling preventDefault on the event lets the product place focus on the next step instead. Without it, focus returns to the trigger, or for a dialog without a trigger to the element that had focus when it opened. */
-  'content.onCloseAutoFocus'?: (...args: never[]) => void;
+  onCloseAutoFocus?: (...args: never[]) => void;
   /** The header, the body and, when there are actions, the footer, in that order. */
-  'content.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the header part (data-slot="dialog-header"). */
+/** Props of DialogHeader, the header part (data-slot="dialog-header"). Keyed header.<prop> in the spec. */
 export interface DialogHeaderProps {
   /** The title, then the description when there is one. */
-  'header.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the title part (data-slot="dialog-title"). */
+/** Props of DialogTitle, the title part (data-slot="dialog-title"). Keyed title.<prop> in the spec. */
 export interface DialogTitleProps {
   /** The dialog's name, a short phrase in sentence case. */
-  'title.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the description part (data-slot="dialog-description"). */
+/** Props of DialogDescription, the description part (data-slot="dialog-description"). Keyed description.<prop> in the spec. */
 export interface DialogDescriptionProps {
   /** One short sentence that says what the dialog is for. Leave the whole description part out when the body is structured, such as a list or a cost summary. */
-  'description.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the body part (data-slot="dialog-body"). */
+/** Props of DialogBody, the body part (data-slot="dialog-body"). Keyed body.<prop> in the spec. */
 export interface DialogBodyProps {
   /** What the person reads or fills in. */
-  'body.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the footer part (data-slot="dialog-footer"). */
+/** Props of DialogFooter, the footer part (data-slot="dialog-footer"). Keyed footer.<prop> in the spec. */
 export interface DialogFooterProps {
   /** The actions as Souvenir Buttons, least weighty first and the primary action last. Actions that only close the dialog are close parts. */
-  'footer.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Props of the close part (data-slot="dialog-close"). */
+/** Props of DialogClose, the close part (data-slot="dialog-close"). Keyed close.<prop> in the spec. */
 export interface DialogCloseProps {
   /** Renders the child, a Souvenir Button, as the close part, so it keeps the button's look and closes the dialog when pressed. Set it whenever the child is a Button. */
-  'close.asChild'?: boolean;
+  asChild?: boolean;
   /** With close.asChild, the Souvenir Button; without it, the label. */
-  'close.children': React.ReactNode;
+  children: React.ReactNode;
 }
 
-/** Every prop that has a default, with that default. */
+/** Every prop that has a default, with that default. Keyed as in the spec. */
 export const DIALOG_DEFAULTS = {
-  open: null,
+  // Dialog
   defaultOpen: false,
+  // DialogTrigger
   'trigger.asChild': false,
+  // DialogContent
   'content.size': 'md',
   'content.dismissible': true,
   'content.initialFocus': 'control',
+  // DialogClose
   'close.asChild': false,
+  // Unset unless given (default null): open.
 } as const;
 
-/** Each part's data-slot value. */
+/** Each part's data-slot value. A part that renders nothing has a name here but no element carries it. */
 export const DIALOG_SLOTS = {
-  root: 'dialog',
+  root: 'dialog', // renders nothing: element is null, so set no data-slot for it
   trigger: 'dialog-trigger',
-  portal: 'dialog-portal',
+  portal: 'dialog-portal', // renders nothing: element is null, so set no data-slot for it
   overlay: 'dialog-overlay',
   content: 'dialog-content',
   header: 'dialog-header',
@@ -115,7 +119,8 @@ export const DIALOG_STATES = {
   triggerClosed: { on: 'trigger', selector: '[data-state="closed"]' },
 } as const;
 
-/** Each prop that styles can see, and the attribute it sets on its part. */
+/** Each prop that styles can see, and the attribute it sets on its part. Keyed as in the spec. */
 export const DIALOG_REFLECTS = {
+  // DialogContent
   'content.size': 'data-size',
 } as const;

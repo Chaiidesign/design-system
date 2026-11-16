@@ -1,0 +1,506 @@
+{
+ "prepare": {
+  "what": "Four builders can now work on Tabs, DropdownMenu, Dialog and Input at the same time, each building and testing a private copy of the gallery, and Button passes again under the changed spec. The Button run printed \"1 components, 18 examples, 637 checks, 634 passed, 0 failed, 3 not reached or not run, 0 not proven\". All four tools' --self-test exit 0, and build-components builds all five specs.\n\nGenerator (v2/tools/build-components.mjs):\n- **Contracts:** in a compound spec a key part.prop goes into <Name><Part>Props under the name after the dot (trigger.value becomes value in TabsTriggerProps), and its enum union is named <Name><Part><Prop> (TabsListBehavior). Plain keys go into <Name>Props. A single-piece spec (no dotted key) puts every prop in <Name>Props. <NAME>_DEFAULTS and <NAME>_REFLECTS keep the spec's own keys (dotted ones included), grouped by exported component. A default of null is left out of DEFAULTS and listed in a comment as \"unset unless given\".\n- **Parts whose element is null:** they get no CSS, and <NAME>_SLOTS marks them \"renders nothing\". A style rule, a state, or a prop condition that names one is a build error.\n- **Flat specificity:** every condition, precedence exclusion and ancestor part is wrapped in :where(). I checked this against the files on disk: 0 of 46 / 12 / 37 / 31 / 29 selectors in button / dialog / dropdown-menu / input / tabs .css are anything but the bare part selector.\n- **index.ts:** generated inside buildAll from the folders that hold <slug>.tsx, using the two lines from the brief.\n- **Reference pages:** no length limit; one row per token, every style rule listed, and descriptions and notes kept.\n- **Filtered build:** `build-components.mjs <slug>` now always builds every spec. It writes only that component's own files, plus shared files that keep every component. I checked this with `tabs`: styles.css, index.ts and state-map.md came out byte-identical, and button.css was not touched.\n- **Self-test:** went from 13 to 27 planted checks, with expected strings updated for the new selectors. It catches the faults it should: removing the :where() wrapping made 6 checks fail.\n\nGallery and runner:\n- **build-gallery.mjs:** new options `--dist <dir>` and `--component <slug>[,<slug>]`. A non-default dist gets its own registry inside it, so builders never write the same file.\n- **test-components.mjs:**\n  - `--dist <dir>` serves that folder as its own root and builds nothing; a missing bundle is an error.\n  - `--report <file>` writes the JSON report even on a filtered run.\n  - `type:<id>` passes only when `npx --no-install tsc -p ds-components/tsconfig.json` exits 0 (run once per run) and a line of hand-written source holds both \"@ts-expect-error\" and the id as a whole word. Otherwise it is a new status, \"not proven\", which is counted in the summary line.\n  - The anatomy check skips parts whose element is null, and a state check's colour lookup falls back to searching the whole page, which is what portalled parts need.\n  - The self-test went to 29 expectations, including 5 type: cases and the missing-bundle case.\n\nLint (lint-components.mjs):\n- Parts whose element is null need not appear in the source, and a data-slot that names one is an error. The fixture now has such a part, and the clean baseline stays at 0 errors.\n- The tsconfig it writes now excludes gallery/dist and gallery/dist-*.\n- Its in-memory rebuild reads the component folders of the tree being linted.\n\nIcons: 25 added. These are the names the four specs' examples use (truck, store, share, archive, external-link, clipboard, folder, location, pencil, copy, more-horizontal, chevron-up), plus the rest of the brief's list.\n\nButton:\n- button.tsx: imports only ButtonProps from the contract, sets data-disabled when disabled (never while loading), and the @ts-expect-error line now names button-icon-only-needs-label.\n- button.extensions.css: the spinner uses var(--duration-spin).\n- button.tests.mjs: new test button-loading-keeps-look, plus data-disabled assertions in the disabled and loading tests.\n- button.examples.tsx: unchanged, because nothing in the spec change needed it.\n\nRequirements: 14 of 14 test: requirements passed, type:button-icon-only-needs-label passed and axe:button-name passed. 3 were not run: 1 lint: and 2 manual:.\n\nProof the new checks fail when they should: I made one temporary edit (data-disabled while loading, and the id removed from the directive line), ran it through `--dist`, then restored the file. button-loading-keeps-look and button-loading-stays-focusable failed, and the type requirement reported \"not proven\".\n\nOrdering, checked in a real browser in both themes:\n- A ghost button that is disabled stays transparent.\n- A disabled primary button equals --color-interactive-primary-disabled: rgb(240, 241, 242) in light, rgb(43, 44, 47) in dark.\n- A disabled button that is hovered keeps that fill.\n- The Button spec has no variant rule and size rule that set the same property. That case is proven by a planted self-test rule, and in the browser by a similar pair: the icon-only rule written after the small-size rule wins (inline padding 0 px against 12 px).\n\nCOMPONENT-PATTERN.md now covers:\n- who may write which file, and that only the generator writes index.ts, <slug>.css and <slug>.contract.ts (builders do not edit icons.tsx either);\n- the build and test commands for a builder's own dist folder;\n- how parts are exported and typed from the split contract, with a TabsList snippet that I compiled with tsc (exit 0);\n- that Radix's own props pass through and the spec's props sit on top;\n- never passing a null default to Radix;\n- how tests find portalled parts anywhere on the page by data-slot;\n- how examples expose state to tests through window.__<slug>Events;\n- how flat specificity works, and the shared tsc hazard described under the remaining problems.",
+  "files_created_or_changed": [
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-components.mjs",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-gallery.mjs",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/test-components.mjs",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/lint-components.mjs",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.tsx",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.extensions.css",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/button/button.tests.mjs",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/icons.tsx",
+   "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/COMPONENT-PATTERN.md",
+   "generated: ds-components/src/index.ts, src/styles.css (unchanged content), src/{button,dialog,dropdown-menu,input,tabs}/<slug>.css and <slug>.contract.ts, docs/{button,dialog,dropdown-menu,input,tabs,state-map}.md, generated/tokens-used.json, generated/size-report.json, ds-components/tsconfig.json (written by lint --types, now with exclude), gallery/dist/*, generated/shots/*.png"
+  ],
+  "commands": [
+   {
+    "command": "node v2/tools/check-specs.mjs",
+    "exit_code": 0,
+    "last_line": "5 specs, 70 checks run, 0 findings"
+   },
+   {
+    "command": "node v2/tools/build-components.mjs",
+    "exit_code": 0,
+    "last_line": "5 specs read, 5 built, 0 not built; 19 files written."
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs --types",
+    "exit_code": 0,
+    "last_line": "lint-components: 0 errors, 0 warnings; 4 hand-written and 12 generated files read under ds-components/src; 5 valid specs, 1 with source, 4 with no source yet. (types: 0 errors, tsc exited 0). One earlier run in the sequence exited 1 with only 'Node.js v26.13.0' surviving; six reruns exited 0."
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs",
+    "exit_code": 0,
+    "last_line": "lint-components: 0 errors, 0 warnings; 4 hand-written and 12 generated files read under ds-components/src; 5 valid specs, 1 with source, 4 with no source yet."
+   },
+   {
+    "command": "node v2/tools/build-gallery.mjs",
+    "exit_code": 0,
+    "last_line": "build-gallery: 2 components (1 fixture), wrote ds-components/gallery/dist/gallery.js, ds-components/gallery/dist/gallery.css, ds-components/gallery/dist/index.html, ds-components/gallery/dist/Geist-Variable.woff2"
+   },
+   {
+    "command": "node v2/tools/test-components.mjs --component button --shots ds-components/generated/shots",
+    "exit_code": 0,
+    "last_line": "1 components, 18 examples, 637 checks, 634 passed, 0 failed, 3 not reached or not run, 0 not proven"
+   },
+   {
+    "command": "node v2/tools/build-components.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "Self-test: 27 of 27 planted checks passed."
+   },
+   {
+    "command": "node v2/tools/build-gallery.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "build-gallery self-test: 10 of 10 planted cases handled"
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "lint-components self-test: 10 of 10 checks caught their planted fault."
+   },
+   {
+    "command": "node v2/tools/test-components.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "test-components self-test: 29 of 29 expectations met (13 planted faults, clean examples, required passes, invalid spec)"
+   },
+   {
+    "command": "node v2/tools/lint-components.mjs --size",
+    "exit_code": 0,
+    "last_line": "size: 1 measured, 4 with no source yet; none over a row. Wrote ds-components/generated/size-report.json."
+   },
+   {
+    "command": "node v2/tools/build-components.mjs tabs (filtered build check)",
+    "exit_code": 0,
+    "last_line": "1 specs read, 1 built, 0 not built; 7 files written. (styles.css, index.ts, state-map.md, button.css byte-identical before and after)"
+   },
+   {
+    "command": "mutation: data-disabled while loading + untagged directive, build-gallery --dist dist-mut --component button, test-components --component button --dist dist-mut --example loading --report <tmp> (then restored and dist-mut deleted)",
+    "exit_code": 1,
+    "last_line": "1 components, 1 examples, 51 checks, 41 passed, 2 failed, 7 not reached or not run, 1 not proven"
+   }
+  ],
+  "test_summary": "Button: \"1 components, 18 examples, 637 checks, 634 passed, 0 failed, 3 not reached or not run, 0 not proven\". Requirements: 16 of 19 passed (14 of 14 test:, 1 type:, 1 axe:), 0 failed, 3 not run (1 lint:, 2 manual:). Anatomy 2 of 2 passed; states 100 of 100 passed.",
+  "failing_or_not_run": [
+   "Not run by the runner: button-one-primary (lint:one-primary-per-view, which lint-components checks separately and which reported 0 errors), button-loading-label (manual:), button-error-not-colour-alone (manual:). Cause: these check types are handled outside the runner, by design.",
+   "One run of 'node v2/tools/lint-components.mjs --types' in the first sequential pass exited 1. The output was overwritten, and the only line left was 'Node.js v26.13.0', which looks like an uncaught exception. Six reruns, including the exact check-specs, build-components, lint --types order, all exited 0. Cause unknown and not reproduced; possibly something else touching the files at the same time.",
+   "Generic contrast is not measured on the loading example ('-' in the table), because the runner skips any element with aria-disabled='true'. The loading label's contrast is now covered only indirectly: button-loading-keeps-look requires it to paint exactly like the primary example, which passes contrast. Cause: a gap in the runner's design."
+  ],
+  "what_you_saw_in_the_pictures": [
+   "button--long-label--light-375.png: a crimson primary button about 343 px wide, with the label wrapped onto two centred lines ('Move the event to Thursday and send the' / 'message to Priya'). There is even padding above and below, nothing is clipped and there is no sideways scroll. The button grew taller instead of cutting the text off.",
+   "button--long-label--dark-375.png: the same two-line wrap on the dark page, with a brighter pink fill and white text, and padding intact.",
+   "button--loading--light-375.png: a compact crimson button showing a three-quarter-ring spinner and 'Saving…' in white, on the same line. It has the full primary fill and is not dimmed.",
+   "button--loading--dark-375.png: the same in dark: a pink primary fill, white spinner and white 'Saving…'. The live look is kept.",
+   "button--disabled--light-375.png: 'Save changes' on a pale grey fill (rgb 240, 241, 242) with light grey text, clearly unavailable and visibly different from the loading button.",
+   "button--disabled--dark-375.png: 'Save changes' on a dark grey fill (rgb 43, 44, 47) with mid-grey text. The disabled text has low contrast by design, which WCAG allows for disabled controls."
+  ],
+  "spec_problems": [
+   "The index.ts form in the brief fails tsc on its own. Each <slug>.tsx exports <Name>Props (the pattern requires it) and so does its contract, so `export *` plus `export type *` gives TS2308, which I reproduced in a scratch check. The generator keeps both lines and adds `export type { ButtonProps } from './button/button';` for every name both files export, so the component's type wins. tsc then exits 0.",
+   "Because the brief requires `export type *` for the contract, BUTTON_DEFAULTS, BUTTON_SLOTS, BUTTON_STATES and BUTTON_REFLECTS are now type-only exports from the package entry. The old hand-written index exported them as values. Nothing in the repo imported them from the index (checked with grep). The pattern doc tells builders to import the values from ./<slug>.contract.",
+   "'As today' in item 1a was not accurate for single-piece specs. The old generator emitted per-part interfaces (ButtonIconStartProps, ButtonIconEndProps, ButtonLabelProps). Following the plain reading, every prop now goes into <Name>Props and those interfaces are gone. button.tsx was updated to match.",
+   "Flat specificity can change which rule wins in the four compound specs wherever the old specificity disagreed with spec order. This is intended: it now matches the runner's in-order colour prediction. Builders must treat spec order as the truth.",
+   "The Button spec has no variant rule and size rule that set the same property, so the 'size after variant wins' case cannot be shown from the Button stylesheet itself. It is proven by a planted rule pair in the self-test, and in the browser by the icon-only-after-small pair (inline padding 0 px against 12 px)."
+  ],
+  "tool_changes": [
+   "build-components.mjs: compound-component contracts (props keyed part.prop go to that part's interface, named <Name><Part>Props), single-piece specs with every prop in <Name>Props, DEFAULTS and REFLECTS grouped by exported component with the dotted keys kept and null defaults left out; parts whose element is null get no CSS, a renders-nothing comment in SLOTS, and a build error if a rule, state or condition names them; dotted keys checked (the prefix must be a non-root part and the name a valid identifier); every generated selector wrapped in :where() so specificity is flat; src/index.ts generated in buildAll, with ctx.componentSources injectable and readComponentSources exported, and explicit exports where names clash; complete reference pages (descriptions, one row per token, every style rule, notes); a filtered build that still builds every spec and writes only the named components' own files; self-test grown from 13 to 27 planted checks.",
+   "build-gallery.mjs: new options --dist <dir> and --component <slug>[,<slug>]; a separate registry inside each non-default dist (registryFor); DEFAULT_DIST exported; self-test grown from 8 to 10 cases.",
+   "test-components.mjs: --dist <dir> serves that folder as its own root and builds nothing, and errors if no bundle is there; --report <file> also works on filtered runs; type:<id> is proven by tsc exiting 0 plus a @ts-expect-error line tagged with the id, and is otherwise marked 'not-proven', a new status counted in the summary; anatomy skips parts whose element is null; state colour lookup falls back to searching the whole page; gallery shots are written into the dist; self-test grown to 29 expectations.",
+   "lint-components.mjs: the slots check exempts parts whose element is null and rejects a data-slot naming one; the tsconfig it writes excludes gallery/dist and gallery/dist-*; its in-memory rebuild uses the linted tree's component folders for index.ts; the self-test fixture gains a part whose element is null, and the self-test still catches all 10 planted faults."
+  ],
+  "not_done": [
+   "Nothing committed (git add and commit are banned for this task). All changes are in the working tree on branch v2-direction.",
+   "The test runner's own self-test still builds into the default ds-components/gallery/dist, so two builders running --self-test at the same moment would collide. Their normal --dist runs do not.",
+   "Index.ts and styles.css are rebuilt from whatever is on disk, so a builder's half-written <slug>.tsx enters index.ts and tsc for everyone as soon as anyone runs build-components. COMPONENT-PATTERN.md documents this hazard; no tool prevents it.",
+   "The lint has no planted case that sets a data-slot on a part whose element is null. The exemption for such parts is covered by the clean baseline, which must stay at 0 errors."
+  ]
+ },
+ "components": [
+  {
+   "slug": "input",
+   "what": "I built Input from ds-components/specs/input.spec.json, in ds-components/src/input/. It is one component around the native input, exported as Input.\n- Props are typed from the generated contract. Native input attributes and ref pass through to the <input>, without the native \"size\" and \"prefix\". className goes on the root. The caller's own aria-describedby is added after the component's ids.\n- Two unions enforce the type rules: either label or ariaLabel is required, and invalid: true needs an errorMessage that is not null, undefined or a boolean. Each union is proved by a // @ts-expect-error line naming its requirement id.\n- Ids come from React.useId when no id is given. The description and error ids are <id>-description and <id>-error.\n- The error message, data-invalid and aria-invalid all appear only while invalid is true and an error message is given. aria-describedby lists the error id first, then the description id, and only ids of parts that are on the page.\n- The word Required sits in the label with aria-hidden, next to the native required attribute. The prefix, suffix and error icon also carry aria-hidden. The error icon is an inline SVG drawn in the component, because the gallery icons are not shipped.\n- Pressing the control outside the input moves focus to the input. The handler is onMouseDown with preventDefault.\n- The component warns once in development for a missing name and for invalid without a message.\n- input.extensions.css carries the layout the spec lists under notCarried: the root is a column, the control is a row centred vertically, the input takes the width left over and may shrink, the prefix and suffix keep their size, and the error message is a row with the icon first. It also resets margins on the p elements and sizes an icon given as prefix or suffix to --size-icon-md.\n- input.examples.tsx has all 19 spec examples. input.tests.mjs has all 20 test:<id> requirements, each a real browser test.\n- Results: 25 of 26 requirements the runner checks pass. input-focus-visible fails because of a generator bug: Chromium draws its own focus ring inside the control's ring. Lint and types show no error in the input files, and the bundle is within the size limits.\n- 136 runner checks fail. All but one are tool limits or spec problems, listed under failing checks. The one real fault is the doubled focus ring.",
+   "files_created_or_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/input/input.tsx",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/input/input.extensions.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/input/input.examples.tsx",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/input/input.tests.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/test-report-input.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist-input/ (bundle)",
+    "Rewritten by the tools: ds-components/src/index.ts, ds-components/src/styles.css, ds-components/docs/*.md, ds-components/generated/tokens-used.json, ds-components/generated/size-report.json, ds-components/tsconfig.json, ds-components/generated/shots/input--*.png"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/check-specs.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs, 70 checks run, 0 findings"
+    },
+    {
+     "command": "node v2/tools/build-components.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs read, 5 built, 0 not built; 19 files written."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --types",
+     "exit_code": 1,
+     "last_line": "types: 0 errors in 0 files (tsc -p ds-components/tsconfig.json exited 0). Lint then reported 4 errors, all in other builders' folders (dialog, dropdown-menu, tabs) and none in src/input."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs",
+     "exit_code": 1,
+     "last_line": "lint-components: 4 errors, 0 warnings; 19 hand-written and 12 generated files read under ds-components/src (none in src/input; grep for src/input returned nothing)"
+    },
+    {
+     "command": "node v2/tools/build-gallery.mjs --dist ds-components/gallery/dist-input --component input",
+     "exit_code": 0,
+     "last_line": "build-gallery: 2 components (1 fixture), wrote ds-components/gallery/dist-input/gallery.js, gallery.css, index.html, Geist-Variable.woff2"
+    },
+    {
+     "command": "node v2/tools/test-components.mjs --component input --dist ds-components/gallery/dist-input --report ds-components/generated/test-report-input.json --shots ds-components/generated/shots",
+     "exit_code": 1,
+     "last_line": "1 components, 19 examples, 675 checks, 532 passed, 136 failed, 7 not reached or not run, 0 not proven"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --size",
+     "exit_code": 1,
+     "last_line": "size: 5 measured; input CSS 1159 B (within the 2048 row); JS own 1062 B (within 5120); JS with Radix 1062 B (within 5120). The exit code comes from the same 4 lint errors in other builders' folders."
+    },
+    {
+     "command": "node <scratchpad>/runtests.mjs <mutated bundle> ... (mutation proofs, source restored after each)",
+     "exit_code": 0,
+     "last_line": "5 of 7 mutations caught: describedby reversed, prefix aria-hidden dropped, mousedown handler removed, preventDefault on Enter and a hard-coded id were each caught. Not caught: min-inline-size removed and aria-invalid read from invalid (explained under failing checks)."
+    }
+   ],
+   "test_summary": "The runner's last line: \"1 components, 19 examples, 675 checks, 532 passed, 136 failed, 7 not reached or not run, 0 not proven\". Named requirement tests: 19 of 20 test:<id> pass. input-focus-visible fails because of the generator bug. Counting the axe and type requirements as well, 25 of 26 automated requirements pass, and the 5 manual ones are not run.",
+   "failing_or_not_run": [
+    "Cause, the generated CSS (a real fault): the requirement input-focus-visible fails in all 12 cases (6 examples in light and dark), with 'the input draws its own outline (auto 0 px)'. Generated input.css gives [data-slot=\"input-input\"] outline-width: 0 but no outline-style. Chromium's own :focus-visible style is outline: auto, and an auto ring is painted at any width. The result is a second blue ring inside the control's ring. Pictures: /private/tmp/claude-501/-Users-chaitanyalandge-Library-Application-Support-Claude-scratch-workspaces-ebabe688-c813-4d37-95fc-498a492cc12d-5e00ea11-9ff3-4643-b571-765ec27a06ab-scratch-2026-11-13-02c7be/b28519ae-d5a9-4657-800a-f0c0e2b58dcd/scratchpad/focus-noring-light.png (the control's ring is switched off, and the browser's own ring still shows) and .../scratchpad/focus-invalid-dark.png (both rings at once). Fix: build-components should write outline-style: none when outlineWidth is none. I tried outline-style: none in input.extensions.css: lint rejected it (focus-not-removed, input.extensions.css:50), and COMPONENT-PATTERN.md forbids outline rules in extensions CSS. I reverted it. The test stays failing until the generator is fixed.",
+    "Cause, the tool: 90 generic focus-visible failures, such as 'input[data-slot=\"input-input\"]: outline auto 0 px; needs a visible outline at least 2 px wide', on every example and setting. The runner reads the outline of document.activeElement, which is the input. The spec puts the ring on the control through :focus-within, and the input must draw no outline. These would still fail with outline none after the generator fix. The tool needs to look at the nearest ring that matches :focus-within.",
+    "Cause, the tool: 38 state:focus failures, 'could not drive \"focus-by-keyboard\": Tab never reached the part', on every example in light and dark. The state is on the control, a div. The runner's Tab loop waits until activeElement === control, which never happens for a div that is not focusable. Making the control focusable would add a wrong extra Tab stop, so I did not.",
+    "Cause, the tool: 5 generic target-size failures on the small example, at light 320 and 1280, dark 320 and 1280, and light 320 compact: 'input[data-slot=\"input-input\"] is 266 by 22 px; needs 24 by 24'. The runner measures the inner <input>. The press target is the whole control, which moves focus to the input. My input-target-size test measures the control at 32 px or more and passes.",
+    "Cause, the spec or the tool: 2 state:disabled failures (disabled example, light and dark): 'prefix is not found next to the part, so its color cannot be compared; suffix is not found...'. The spec's disabled rule colours the prefix and suffix, but the disabled example has neither. Either the spec adds them to the example or the runner skips optional parts that are absent.",
+    "Cause, the spec or the tool: state:invalid is not reached: 'no example has invalid=\"true,errorMessage=Enter an email address, such as name@example.com\"'. The runner reads the reach string 'prop:invalid=true,errorMessage=...' as one prop. The message in it also lacks the example's final full stop.",
+    "Cause, the spec: state:filled is not reached: 'no example has defaultValue=\"Ada Lovelace\"'. No spec example has that value.",
+    "Not run (manual): input-placeholder-not-label, input-no-number-for-codes, input-error-says-fix, input-validate-on-leave, input-required-word-understood.",
+    "Not provable with the spec's examples: the runtime case 'invalid without errorMessage', which must give no aria-invalid. No example has invalid without a message, and the type forbids it. A mutation that took aria-invalid from invalid instead of from the shown error therefore went uncaught by input-invalid-only-with-error. The type proof and the development warning cover that case.",
+    "Mutation note: removing min-inline-size: 0 from the input did not break input-control-row or input-reflow. The generated inline-size: 100% already lets the input shrink, so the rule is extra safety, not something a test can catch.",
+    "Lint exits 1 with 4 errors, all in other builders' folders (dialog, dropdown-menu, tabs). None are in src/input."
+   ],
+   "what_you_saw_in_the_pictures": [
+    "input--all.png at 1280 shows all 19 examples. Labels, the Required word, descriptions and errors are spaced evenly. The invalid fields have a 2 px red edge, with an icon before the error words. Disabled is a grey fill with grey text, read-only a light grey fill with full-strength text. The $ prefix, the kg suffix and the search icon sit on the text line. Small, medium and large heights differ visibly. Nothing is clipped.",
+    "worst-case-320 at 375, light and dark: the label wraps and Required drops onto its own line. Location icon, placeholder and UK sit on one row. The description and the two-line error wrap, with the icon on the first line. In dark the red edge and the error text are pink-red and clearly visible.",
+    "worst-case-320 at 320 px and 200% text, dark: everything wraps and the control grows taller. The input narrows to about 75 px between the icon and UK, but the typed text scrolls inside it and never runs under the suffix. Nothing leaves the screen. At 100% with a long typed value the text also stays between the icon and UK.",
+    "long-text at 375: the label wraps to two lines with Required after it. The description and the error wrap cleanly.",
+    "search, dark 375: the icon is at the medium icon size and centred, and the placeholder is readable. read-only, light: the grey fill is visible and the edge keeps full strength. disabled, dark: the fill and the dimmed text are visible and the edge is faint, as the spec intends.",
+    "Focus (my own captures; the runner's shots do not hold focus): the control's 2 px blue ring with its offset is visible in light and dark. Chromium's own blue ring also shows around the inner input, a double ring. That is the generator bug above.",
+    "The runner's focus and hover shots look the same as the default, because the shots are taken without driving those states."
+   ],
+   "spec_problems": [
+    "The input's outlineWidth: none is generated as outline-width: 0 only. Chromium still paints an auto focus ring, which goes against the spec's own reason: the browser's outline must never double the control's ring. This is a generator problem, but the spec value is what triggers it.",
+    "The disabled style rule colours the prefix and suffix, but the disabled example has neither, so the runner cannot compare those colours.",
+    "state:filled has reach prop:defaultValue=Ada Lovelace, and no example has that value.",
+    "state:invalid's reach string packs two props, 'invalid=true,errorMessage=...', which the runner cannot parse. Its message also lacks the example's final full stop.",
+    "The prefix and suffix have no icon size in the spec, though the search and worst-case-320 examples put icons there. I used --size-icon-md in extensions CSS.",
+    "input-placeholder-contrast says the placeholder fails in light today. It passed in light and dark: text/placeholder in light is #6b6e76 on #ffffff, 5.10 to 1 by my calculation from the token values. The test only prints numbers when it fails, so I have no browser-measured ratio.",
+    "requiredMark has the role indicator but is a word, not a glyph. It works as specified."
+   ],
+   "tool_changes": [
+    "No tool was edited.",
+    "Bug in test-components.mjs: the generic focus-visible check reads the outline of activeElement, so a component whose ring sits on a :focus-within container always fails.",
+    "Bug in test-components.mjs: for a state reached by focus-by-keyboard on a part that cannot take focus, the Tab loop (around line 544) waits for activeElement === part, so it never gets there.",
+    "Bug in test-components.mjs: the generic target-size check measures the focusable element, not the larger press target that wraps it.",
+    "Bug in test-components.mjs: a prop reach string cannot carry more than one prop.",
+    "Bug in build-components.mjs: outlineWidth none is written as outline-width: 0 without outline-style: none.",
+    "I wrote two throwaway helpers in the scratchpad: runtests.mjs runs chosen tests from input.tests.mjs against a bundle, for the mutation proofs; focus-shot.mjs and shots2.mjs take the focus and 320 px pictures. I made a temporary bundle at ds-components/gallery/dist-input-mut for the mutations and deleted it afterwards."
+   ],
+   "not_done": [
+    "input-focus-visible stays failing until build-components writes outline-style: none for an outlineWidth of none. I could not work around it in my own files without breaking a lint rule and the pattern rule.",
+    "The runner's checks for generic focus-visible, state:focus, target-size on small, state:disabled, state:invalid and state:filled stay failing or not reached until the tool or spec issues above are fixed.",
+    "The runtime case of invalid without errorMessage is not covered by a browser test, because no spec example has it."
+   ]
+  },
+  {
+   "slug": "tabs",
+   "what": "I built Tabs from ds-components/specs/tabs.spec.json. It wraps @radix-ui/react-tabs and exports Tabs, TabsList, TabsTrigger and TabsContent.\n\n**Results.** All 34 named requirement tests pass. tsc exits 0, and lint shows no errors in the tabs files. The runner still shows 90 failures for tabs. Every one is a runner or spec gap, not a fault in the component; they are listed with their numbers in failing_or_not_run.\n\n**Tabs (root).**\n- Renders a div with data-slot=\"tabs\" and reflects data-variant and data-size.\n- Spreads dir, value and defaultValue only when they are given.\n- Its props type requires value or defaultValue.\n\n**TabsList.**\n- Its props type requires ariaLabel or ariaLabelledby. A `@ts-expect-error tabs-list-needs-name` line proves it: making ariaLabel optional made tsc fail with TS2578.\n- When it first renders, it scrolls the selected tab into view inside the list, and again once fonts have loaded. It uses scrollBy on the list only, never scrollIntoView, so the page does not move.\n\n**TabsTrigger.**\n- Renders, in order: iconStart (aria-hidden), the label, iconEnd (aria-hidden), and an indicator span (aria-hidden) in every tab.\n- On focus it scrolls the tab fully into view inside the list, keeping the list's padding around it so the focus ring is not cut off.\n\n**Two fixes the tests forced:**\n1. **Radix called onValueChange twice per press in controlled mode** (once from the focus the press gives, once from the press). tabs-one-selected caught it: the log read [\"details\",\"details\"]. Tabs now drops a repeat of the same value within the same task.\n2. **In forced colours every tab showed a line.** Chromium repaints the transparent indicator borders as solid 2 px rgb(0,0,0). The extensions stylesheet now hides unselected indicators, and all pill indicators, in forced colours.\n\n**Two things you should know about:**\n- **`data-label` on the label part.** I added this attribute so the stylesheet can reserve the width of the bold selected label: a hidden ::after copy with `content: attr(data-label) / \"\"`. It is not the reflection of a spec prop, which the settled convention ties data attributes to. It reserves width only when the label is plain text. Chromium's accessibility tree confirms each tab's name is exactly its label.\n- **The extensions stylesheet sets the indicator's one-edge border style and width (longhands only),** because the spec hands that to it. state:selected confirms the colour still comes from the border/brand token.\n\n**Tests catch faults.** I broke the component on purpose and each named test failed, then restored the files:\n- No overflow on the list: 5 tests failed.\n- No reserved width: tabs-no-width-shift failed.\n- No scroll on first render: tabs-selected-in-view-on-mount failed.\n- No scroll on focus: tabs-focused-tab-in-view and tabs-focus-visible failed.\n- Indicator border written as a shorthand: state:selected and tabs-selected-not-colour-alone failed.\n- Removing `white-space: nowrap`: no test failed. The labels stayed on one line because each tab is `flex: none`.\n\n**Pictures.** I looked at them and fixed nothing visual. The one thing I noticed but did not change is in the vertical examples (see what_you_saw_in_the_pictures).\n\n**Commands.** I ran the gallery build with `--component tabs` added, as COMPONENT-PATTERN.md asks, so other builders' unfinished examples could not break my bundle.",
+   "files_created_or_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/tabs/tabs.tsx",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/tabs/tabs.extensions.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/tabs/tabs.examples.tsx",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/tabs/tabs.tests.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/test-report-tabs.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist-tabs/ (bundle)",
+    "Rewritten by the tools: ds-components/src/index.ts, ds-components/src/styles.css, ds-components/src/tabs/tabs.css, ds-components/src/tabs/tabs.contract.ts, ds-components/docs/*.md, ds-components/generated/tokens-used.json, ds-components/generated/size-report.json, ds-components/tsconfig.json, ds-components/generated/shots/tabs--*.png"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/check-specs.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs, 70 checks run, 0 findings"
+    },
+    {
+     "command": "node v2/tools/build-components.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs read, 5 built, 0 not built; 19 files written."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --types",
+     "exit_code": 1,
+     "last_line": "types: 0 errors in 0 files (tsc -p ds-components/tsconfig.json exited 0). lint-components: 3 errors (all in dialog and dropdown-menu, none in tabs)"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs",
+     "exit_code": 1,
+     "last_line": "lint-components: 3 errors, 0 warnings; 20 hand-written and 12 generated files read under ds-components/src; 5 valid specs, 5 with source, 0 with no source yet. (dialog.examples.tsx:168 one-primary-per-view; dropdown-menu.extensions.css:11 and :12 primitive-reference; 0 in tabs)"
+    },
+    {
+     "command": "node v2/tools/build-gallery.mjs --dist ds-components/gallery/dist-tabs --component tabs",
+     "exit_code": 0,
+     "last_line": "build-gallery: 2 components (1 fixture), wrote ds-components/gallery/dist-tabs/gallery.js, ds-components/gallery/dist-tabs/gallery.css, ds-components/gallery/dist-tabs/index.html, ds-components/gallery/dist-tabs/Geist-Variable.woff2"
+    },
+    {
+     "command": "node v2/tools/test-components.mjs --component tabs --dist ds-components/gallery/dist-tabs --report ds-components/generated/test-report-tabs.json --shots ds-components/generated/shots",
+     "exit_code": 1,
+     "last_line": "1 components, 14 examples, 543 checks, 448 passed, 90 failed, 5 not reached or not run, 0 not proven"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --size",
+     "exit_code": 1,
+     "last_line": "size: 5 measured, 0 with no source yet; over a row: dialog, dropdown-menu, tabs (reported, not failed). Wrote ds-components/generated/size-report.json. (exit 1 is from the same 3 dialog and dropdown-menu lint errors)"
+    }
+   ],
+   "test_summary": "The runner's last line for tabs: \"1 components, 14 examples, 543 checks, 448 passed, 90 failed, 5 not reached or not run, 0 not proven\".\n\nNamed requirement tests:\n- test: 34 of 34 passed.\n- axe: 2 of 2 passed (aria-required-children, scrollable-region-focusable).\n- type: 1 of 1 passed (tabs-list-needs-name).\n- manual: 3 listed as not run.\n\nAll 90 failures are generic or state-map checks, listed in failing_or_not_run. No requirement check fails.",
+   "failing_or_not_run": [
+    "**Generic target-size, 70 failures (tool and spec).** Every one names the shown panel, never a tab or the list: div[data-slot=\"tabs-content\"] measures 288 by 20 px at 320 and 1248 by 20 px at 1280 (vertical: 160.7 and 1120.7 by 20; vertical-pill: 152.7 and 1112.7 by 20). This covers all 14 examples in all 5 generic configurations.\n- Tool: the runner counts every element with [tabindex] as a pointer target. Radix gives the panel tabindex 0 so the keyboard can reach it, but under WCAG 2.5.8 it is not a pointer target.\n- Spec: the content part has no minimum block size, and the extensions stylesheet may not set one.",
+    "**state:focus, 10 failures, and 0 passes anywhere (tool).** The failures are small-pill, vertical-pill, controlled, long-labels and worst-case-320, each in light and dark at 1280: \"could not drive focus-by-keyboard: Tab never reached the part\".\n- The runner always targets the first trigger. Under roving focus, a tab that is not selected has tabindex -1, so Tab never lands on it.\n- In the other 9 examples the first tab is selected, so the runner skips it as already in a stronger state.\n- The runner therefore never checks the focus look. My tabs-focus-visible test does, and passes: a solid 2 px ring, 2 px away, at least 3 to 1 against the page, in both themes, for the first, last and selected tab and for the panel.",
+    "**state:contentFocus, 10 failures (tool).** Same 5 examples, light and dark at 1280: \"Tab never reached the part\". The runner targets the first panel in the page, which is hidden in those 5 examples because their first tab is not selected. The check passes in the other 9 examples, both themes.",
+    "**state:unselected, not reached (tool).** The runner always picks the selected trigger, then skips it as being in a stronger state. This happened in all 14 examples.",
+    "**state:disabled, not reached (spec or tool).** Its reach is prop:trigger.disabled=true, but disabled sits on one tab inside each example's content, and the runner matches only the example's top-level props. No check verifies the disabled colours. They are visible in the pictures.",
+    "**Manual requirements, not run (by design).** tabs-manual-for-slow-panels, tabs-not-for-steps and tabs-few-tabs are for a person to check.",
+    "**Size, over the row but reported rather than failed.** Tabs JS with Radix bundled is 10652 B against the 5120 B row. Own JS is 1331 B and CSS is 1396 B, both within their rows.",
+    "**Lint and --size exit 1, not because of tabs.** The 3 lint errors are in other builders' files: dialog.examples.tsx:168 (one-primary-per-view) and dropdown-menu.extensions.css:11 and :12 (primitive-reference)."
+   ],
+   "what_you_saw_in_the_pictures": [
+    "**tabs--all.png at 1280:** all 14 examples render. The line underline sits under the selected tab, the pill fill is right, and fill splits the width equally. Vertical lists sit beside their panel. In rtl the first tab is on the right. The long-labels and worst-case-320 lists open scrolled so the selected tab shows, which leaves a cut-off fragment of an earlier tab at the list's start. That is by design: the spec carries no scroll buttons or fade edges.",
+    "**At 375, light and dark:** I looked at worst-case-320, long-labels, fill, with-icons, vertical-pill, small-pill, disabled-tab and rtl.\n- The page never scrolls sideways.\n- In dark, the brand line is pink and the selected pill is white with dark text; no edge vanishes.\n- The disabled \"Size guide\" is dimmed but legible.\n- Icons sit on the label's centre line.\n- No text is clipped or overlapping.",
+    "**Focus shots I took myself** (headless Chromium, keyboard driven):\n- At 320 the ring on the first tab (after Home, light) and on the last tab (after End, dark) is drawn in full inside the list. It is not cut off.\n- The focus ring on the panel shows, in dark.\n- The pill's ring sits 2 px outside the black fill.\n- One early shot showed the previous pill still black. It was caught mid-transition: duration/fast is 100 ms. A retake after 600 ms was correct.",
+    "**Forced colours (emulated):** only the selected line tab keeps its underline, and the selected pill shows a 2 px border on all four sides.",
+    "**Not fixed, for review:** in the vertical examples, the panel's first line sits about 14 px above the first tab's label. The panel's top lines up with the list's top, not with the label. Fixing it needs spacing the spec does not give, so I left it."
+   ],
+   "spec_problems": [
+    "**The forced-colours reasoning is wrong.** The spec's reason for styles[15] says \"The line variant needs no rule: its indicator is a border, which forced colours keep.\" I measured otherwise in Chromium: every unselected indicator renders as solid 2 px rgb(0, 0, 0), so all tabs showed a line and nothing marked the selected one, in both line and pill. I fixed it in tabs.extensions.css with `visibility: hidden` on unselected indicators and on all pill indicators, in @media (forced-colors: active). It belongs in the spec.",
+    "**tabs-no-width-shift has no prop to hang on.** The spec gives no prop or slot attribute to carry the label's text for reserving the bold width. I added data-label, which is not a spec prop, and it works only for string or number labels.",
+    "**Clauses no example exercises.** A broken component would still pass these, so they are unproven:\n- No example sets list.loop to false, so the \"wraps while loop is true\" clause is never tested with wrapping off.\n- No example has a disabled first or last tab, so the \"not disabled\" part of Home, End, PageUp and PageDown is not exercised.\n- No fill example has multi-word labels. On a tab that can shrink, `white-space: nowrap` is what stops wrapping, and nothing tests it there.",
+    "**state:disabled can never be reached** while trigger.disabled lives in example content rather than example props (see failing_or_not_run).",
+    "**The shown panel is about 20 px tall and focusable,** so the runner's generic target-size check fails it in every example. Either the spec gives content a minimum block size, or the runner stops treating a tabpanel as a pointer target."
+   ],
+   "tool_changes": [
+    "None. I edited no tool.",
+    "Tool gaps for compound components, as found in v2/tools/test-components.mjs:\n- The state driver picks the first part that is not already in the state (`els.findIndex(e => !matches(stateSel))`). Under roving tabindex that is the first trigger, which Tab cannot reach unless it is selected.\n- For contentFocus it picks the first panel, which is hidden unless the first tab is selected.\n- For unselected it always lands on the selected trigger and skips it.\n- `__ct.targets()` treats any [tabindex] element as a pointer target, which catches the panel.",
+    "I ran build-gallery with `--component tabs` (the pattern doc's form) in addition to the task's --dist."
+   ],
+   "not_done": [
+    "Nothing from MAY EDIT is left undone.",
+    "The runner still shows 90 failures for tabs, all from the tool and spec gaps above. I could not clear them without editing tools or specs, or adding panel sizing the convention forbids.",
+    "I did not test what PageUp, PageDown, Home and End do when the first or last tab is disabled, or loop set to false, because no example has those set up and the examples must match the spec exactly."
+   ]
+  },
+  {
+   "slug": "dropdown-menu",
+   "what": "I built DropdownMenu end to end from ds-components/specs/dropdown-menu.spec.json, wrapping @radix-ui/react-dropdown-menu 2.2.1 and following COMPONENT-PATTERN.md and the Button pilot.\n\n**Component.** dropdown-menu.tsx exports the 12 parts the spec lists. They are typed from the generated contract and take their names, defaults, slots and reflected attributes from DROPDOWN_MENU_DEFAULTS, DROPDOWN_MENU_REFLECTS and DROPDOWN_MENU_SLOTS.\n- Props whose default is null (open, dir, checked, value) reach Radix only when the caller gives them.\n- Groups and radio groups get aria-labelledby from their label through a context. It is set only once a label exists, so an unlabelled group never points at a missing id.\n- An item with a description is labelled by its label and described by its description, using ids from useId.\n- Type-ahead text is set from the label's plain text, so neither the description nor the shortcut is ever matched.\n- The shortcut also goes into aria-keyshortcuts.\n- Checkbox and radio items always draw a fixed indicator box, with an inline check or dot glyph inside.\n- data-side and data-align are left to Radix, so they name the side and alignment actually used.\n\n**Extensions stylesheet.** It holds only the layout listed under notCarried:\n- each item as a grid row, with the lead column present only when the item has an icon or indicator box;\n- the shortcut that never wraps (I also added a left-to-right direction so it reads ⌘R, not R⌘, in right-to-left menus);\n- the content capped at min(menu/max, the width Radix reports as available) and at the available height, with vertical scrolling;\n- the separator as a block-start border only, zero height, with space above and below.\n\n**Examples and tests.** The examples file has all 16 spec examples and records events in window.__dropdownMenuEvents. The tests file implements all 35 test requirements as real browser tests.\n\n**Results.**\n- The runner's line for dropdown-menu: 461 passed, 164 failed, 16 not reached or not run.\n- All 35 test requirements pass, and all 5 axe requirements pass.\n- All 35 tests also passed 3 times in a row in a separate repeat harness.\n- I broke the component on purpose to prove the tests catch faults. Each of these planted faults made its test fail:\n  - the description and label links removed;\n  - type-ahead falling back to Radix's full text;\n  - aria-keyshortcuts removed;\n  - the group label link removed;\n  - aria-hidden removed from the shortcut;\n  - nowrap removed from the shortcut;\n  - the separator border style removed;\n  - the height cap removed;\n  - the width cap removed.\n\n  After each, I restored the files and compared them byte for byte.\n\n**Why there are still failures.** Every one of the 164 failures and 16 not-reached checks traces to the spec, to Radix, or to a tool. None traces to my code. Each is listed with its count under failing_or_not_run.\n\n**Lint.** The two lint errors in my files are the two --radix-* variables the spec requires. The primitive-reference rule has no allowance for them, so this is a spec-against-lint conflict that the lead needs to settle.",
+   "files_created_or_changed": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dropdown-menu/dropdown-menu.tsx (created)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dropdown-menu/dropdown-menu.extensions.css (created)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dropdown-menu/dropdown-menu.examples.tsx (created)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/src/dropdown-menu/dropdown-menu.tests.mjs (created)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/gallery/dist-dropdown-menu/ (rebuilt bundle)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/test-report-dropdown-menu.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/generated/shots/dropdown-menu--*.png",
+    "Rewritten by the tools: ds-components/src/index.ts, ds-components/src/styles.css, ds-components/generated/size-report.json, ds-components/generated/tokens-used.json, ds-components/docs/*.md, ds-components/tsconfig.json"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/check-specs.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs, 70 checks run, 0 findings"
+    },
+    {
+     "command": "node v2/tools/build-components.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs read, 5 built, 0 not built; 19 files written."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --types",
+     "exit_code": 1,
+     "last_line": "types: 0 errors in 0 files (tsc -p ds-components/tsconfig.json exited 0). / lint-components: 3 errors, 0 warnings (2 are the --radix-* references in dropdown-menu.extensions.css:11 and :12; 1 is in dialog.examples.tsx:168)"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs",
+     "exit_code": 1,
+     "last_line": "lint-components: 3 errors, 0 warnings; 20 hand-written and 12 generated files read under ds-components/src; 5 valid specs, 5 with source, 0 with no source yet."
+    },
+    {
+     "command": "node v2/tools/build-gallery.mjs --dist ds-components/gallery/dist-dropdown-menu",
+     "exit_code": 0,
+     "last_line": "build-gallery: 6 components (1 fixture), wrote ds-components/gallery/dist-dropdown-menu/gallery.js, ... Geist-Variable.woff2"
+    },
+    {
+     "command": "node v2/tools/test-components.mjs --component dropdown-menu --dist ds-components/gallery/dist-dropdown-menu --report ds-components/generated/test-report-dropdown-menu.json --shots ds-components/generated/shots",
+     "exit_code": 1,
+     "last_line": "1 components, 16 examples, 641 checks, 461 passed, 164 failed, 16 not reached or not run, 0 not proven"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --size",
+     "exit_code": 1,
+     "last_line": "size dropdown-menu: CSS 1267 B (within the 2048 row); JS own 1988 B (within 5120); JS with Radix 32591 B (over 5120, reported, not failed). Exit 1 comes from the same 3 lint errors."
+    }
+   ],
+   "test_summary": "Runner line for dropdown-menu: \"1 components, 16 examples, 641 checks, 461 passed, 164 failed, 16 not reached or not run, 0 not proven\". Named requirement tests: 35 passed out of 35. Of the 46 requirements, 40 pass (35 test, 5 axe) and 6 are not run (1 lint, 5 manual).",
+   "failing_or_not_run": [
+    "axe, 60 fails, all defaultOpen modal examples: 'aria-hidden-focus (serious, 1 node, first at #root)'. Radix's modal hideOthers sets aria-hidden on #root, which still holds the focusable trigger. Cause: the primitive (Radix modal behaviour that the spec keeps).",
+    "focus-visible, 65 fails, all 13 open examples × 5 configurations. The items report 'outline auto 1 px; needs a visible outline at least 2 px wide': Chromium's default focus ring shows on the focused item, because the spec draws no item outline outside forced colours and says the highlight is the only indicator. In non-modal the check also reaches Radix's focus-guard span, which reports 'span: outline none 0 px'. Cause: the spec against the generic check, plus the primitive.",
+    "anatomy, 1 fail: 'required part trigger has data-slot=\"dropdown-menu-trigger\", which no example renders'. With asChild, Button writes its own data-slot=\"button\" after the props it receives, so the trigger slot can never appear. Cause: the spec (the Button dependency).",
+    "state:triggerOpen not reached: 'the reach \"click the trigger\" is not one this tool can follow'. Cause: the spec's reach wording, and the missing trigger slot.",
+    "state:triggerClosed not reached: 'the reach \"render with defaults\" is not one this tool can follow'. Cause: the spec's reach wording.",
+    "state:triggerDisabled not reached: 'no example has trigger.disabled=true and renders data-slot=\"dropdown-menu-trigger\"'. Cause: the spec (the trigger slot) and the tool, which matches only example-level props.",
+    "state:sideBottom, 2 fails: 'side-top ... does not match [data-side=\"bottom\"]'. The reach 'prop:defaultOpen=true' also picks the side-top example. Cause: the spec's reach.",
+    "state:alignStart, 2 fails: 'align-end ... does not match [data-align=\"start\"]'. Same over-broad reach. Cause: the spec.",
+    "state:itemHighlighted, 24 fails: 'keyboard.press: Unknown key: \"ArrowDown from the open content, or move a mouse over the item\"', or 'Tab never reached the part' (items are portalled outside the example section). Cause: the spec's reach carries prose, and the tool cannot reach portalled items by Tab.",
+    "state:checkboxItemHighlighted, 6 fails: 'Tab never reached the part'. Cause: the spec's reach and the tool.",
+    "state:radioItemHighlighted, 4 fails: 'Unknown key: \"ArrowDown to the radio item, or move a mouse over it\"'. Cause: the spec's reach.",
+    "Not reached for the same reasons: state:itemDisabled, checkboxItemDisabled, checkboxItemChecked and radioItemDisabled ('no example has <part.prop>=true and renders ...', because the props sit inside content, not in the example's props); checkboxItemUnchecked, radioItemChecked and radioItemUnchecked (reach wording the tool cannot follow). Cause: the spec and the tool.",
+    "requirement dropdown-menu-no-hover-selector: not run. 'lint:no-hover-on-menu-items is not checked by this tool', and lint-components.mjs has no such rule. My dropdown-menu-highlight-one-look test also scans every stylesheet rule for :hover or :focus on menu parts, and finds none. Cause: the tool.",
+    "5 manual requirements not run (danger-not-colour-alone, right-item-kind, trigger-shows-open, short-groups, checkbox-stays-open). A person checks these.",
+    "Lint, 2 errors in my file: 'dropdown-menu.extensions.css:11 --radix-dropdown-menu-content-available-width is not a token defined in ds-tokens/dist/tokens.css' and ':12 --radix-dropdown-menu-content-available-height ...'. The spec's notCarried section, dropdown-menu-fits-viewport and dropdown-menu-scrolls-when-tall all require these variables. Cause: the spec against the lint. I left them in so the behaviour is right. The third lint error (one-primary-per-view in dialog.examples.tsx:168) is not mine.",
+    "Size: dropdown-menu JS bundled with Radix is 32591 B, over the 5120 row (reported, not failed). Cause: the primitive."
+   ],
+   "what_you_saw_in_the_pictures": [
+    "model-selector light at 375: the group label, three radio items with the dot on Standard, the separator, and Extended thinking with its check. Padding is even and the edge is visible.",
+    "with-descriptions dark at 375: each description sits under its label in text/secondary, the external-link icon sits at the end edge, and the content's border/strong edge holds clearly against the dark page.",
+    "Keyboard highlight, light and dark at 375 (my own captures): a black fill with white text in light, a red fill for the danger item in dark, and text inverted on the fill. Chromium's blue default focus ring is also drawn around the highlighted item, which the spec says items should not have (see spec_problems).",
+    "worst-case-320 at 320 by 480 with a coarse pointer (my own capture), light and dark: the content sits 8 px from each edge and is shifted left from the trigger at the right edge. Every label and the description wrap, the shortcuts stay on the first line, and the danger text is legible in dark.",
+    "long-label dark at 375: the label wraps to 3 lines and ⌘M stays on the first line.",
+    "touch at 375 with a coarse pointer: items are 44 px tall with the text centred.",
+    "side-top dark at 375: the content opens above the trigger and covers the two context paragraphs I added. This is expected for an overlay.",
+    "right-to-left at 375: the icon, label and shortcut mirror. Before the bidi fix the shortcut read R⌘; after it, ⌘R.",
+    "dropdown-menu--all at 1280: every defaultOpen example renders open at once, so the menus overlap one another on the component page. Their own layouts are clean. The overlap comes from the spec's defaultOpen examples, not from a layout bug.",
+    "Trigger: the Button keeps its own look and focus ring. No clipped text, missing padding or unstyled part appears anywhere."
+   ],
+   "spec_problems": [
+    "Trigger slot: with trigger.asChild and a Souvenir Button, the element can only carry data-slot=\"button\", because Button writes it after the props it receives. Anatomy reports the trigger as missing, and triggerOpen, triggerClosed and triggerDisabled cannot be found by slot. Either the trigger part needs no slot when asChild is set, or Button needs a way to accept a second slot.",
+    "Item focus ring: the spec says 'No ring on items: the highlight is the focus indicator', but its base item rule sets no outline. Chromium therefore draws its default 'outline auto 1px' ring on the keyboard-highlighted item, as seen in the pictures. The pattern forbids outline in the extensions stylesheet, so the base item rules need outline-style none outside forced colours. The generic focus-visible check (needs 2 px) also conflicts with the spec's choice of highlight as the indicator.",
+    "The reach strings for itemHighlighted, checkboxItemHighlighted and radioItemHighlighted carry prose after 'key:ArrowDown', which the runner presses as a key name. No example opens with a checkbox item first, so a single ArrowDown cannot highlight one.",
+    "The reach 'prop:defaultOpen=true' for sideBottom and alignStart also matches the side-top and align-end examples, so those states fail there by design.",
+    "The reaches 'prop:item.disabled=true' and similar name item-level props, but the examples carry them inside content. The runner matches only example-level props, so those states are never reached.",
+    "The spec's notCarried section, fits-viewport and scrolls-when-tall require --radix-dropdown-menu-content-available-width and --radix-dropdown-menu-content-available-height, but lint's primitive-reference rejects any var() that is not a token. One of the two has to change.",
+    "The requirement dropdown-menu-no-hover-selector names 'lint:no-hover-on-menu-items', which lint-components.mjs does not have.",
+    "aria-keyshortcuts: the spec says the item carries 'the same shortcut' as the hint, such as ⌘C. ARIA 1.2 expects KeyboardEvent key names joined by '+' (such as Meta+C), so '⌘C' is not valid syntax. The component follows the spec as written.",
+    "In modal mode, Radix's hideOthers puts aria-hidden on #root while the trigger inside it stays focusable. axe reports aria-hidden-focus (serious) on every open modal example.",
+    "side-top cannot open upward when the trigger sits at the top of the gallery page, because Radix flips it to the bottom. I added two short paragraphs above the trigger so it has room. state:sideTop passes only because of them.",
+    "align-end and worst-case-320 ask for the trigger at the right edge, but examples may not style anything. I wrapped those examples in <div dir=\"rtl\">. That only moves the icon-only trigger to the right edge; the menu stays left to right.",
+    "The examples hold checkbox and radio state in useState with onCheckedChange and onValueChange handlers the spec does not list. They start from the spec's values, so a test can see a choice take effect. This state has to live above the portal, because the content unmounts when the menu closes."
+   ],
+   "tool_changes": [
+    "None. I edited no tool. My scratch scripts (a repeat harness, a probe and a screenshot script) and my extra screenshots went to the system temp folder /var/folders/ph/x5r6ctxd3kbcgkyp0pm90w1h0000gn/T/ instead of the scratchpad."
+   ],
+   "not_done": [
+    "The two primitive-reference lint errors in dropdown-menu.extensions.css stay until the spec and lint conflict over --radix-* variables is settled.",
+    "I did not set an item outline to stop the Chromium focus ring: the pattern forbids it in the extensions stylesheet, so it needs a spec change.",
+    "I did not work around the trigger slot conflict with Button. Overwriting the attribute would strip the Button's look.",
+    "The runner's generic and state failures listed above remain. They are caused by the spec, Radix or the tool, not by the component code."
+   ]
+  },
+  {
+   "slug": "dialog",
+   "what": "Built Dialog end to end from ds-components/specs/dialog.spec.json on @radix-ui/react-dialog 1.3.1. dialog.tsx exports the 11 parts: Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogBody, DialogFooter and DialogClose. As the spec says, the content sits inside the overlay. The modal prop is fixed to true and not exposed. On top of Radix, the adapter adds:\n- aria-modal=\"true\" on the content.\n- A development console.warn when a DialogContent mounts without a DialogTitle or with an empty one.\n- content.dismissible=false, which blocks Escape and the outside press.\n- content.initialFocus: control focuses the first tabbable control that is not a link and not the body; title focuses the title, which then has tabindex -1. Without a control, focus goes to the content.\n- Focus return for a dialog that has no trigger: the element that had focus on open is recorded inside onOpenAutoFocus and refocused on close. Triggers register through a Souvenir context, so Radix still returns focus to the trigger when there is one.\n- The body joins the Tab order only while it scrolls, so it can be scrolled with the keyboard.\n\nResults:\n- All 26 requirement tests and all generic checks pass.\n- Fault injection: 13 faults planted in my own files, one at a time, each restored afterwards. 12 of them failed at least one named test. The 13th, a body that is never tabbable, is caught by the axe:scrollable-region-focusable check on the long examples; the fault run covered only the default example, so it showed no failure there.\n- One lint error remains in my files: one-primary-per-view in the confirm-step example. It comes from the spec's own content, so I reported it and did not work around it.",
+   "files_created_or_changed": [
+    "ds-components/src/dialog/dialog.tsx (new)",
+    "ds-components/src/dialog/dialog.extensions.css (new)",
+    "ds-components/src/dialog/dialog.examples.tsx (new)",
+    "ds-components/src/dialog/dialog.tests.mjs (new)",
+    "ds-components/gallery/dist-dialog/ (bundle; a temporary dist-dialog/faults folder was created for fault injection and deleted)",
+    "ds-components/generated/test-report-dialog.json",
+    "ds-components/generated/shots/dialog--*.png (46 screenshots)",
+    "Rewritten by the tools: ds-components/src/index.ts, ds-components/src/styles.css, ds-components/generated/tokens-used.json, ds-components/generated/size-report.json, ds-components/docs/*.md, the generated <slug>.css and <slug>.contract.ts files"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/check-specs.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs, 70 checks run, 0 findings"
+    },
+    {
+     "command": "node v2/tools/build-components.mjs",
+     "exit_code": 0,
+     "last_line": "5 specs read, 5 built, 0 not built; 19 files written."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --types",
+     "exit_code": 1,
+     "last_line": "types: 0 errors in 0 files (tsc exited 0); lint-components: 3 errors. The only error in dialog files: one-primary-per-view dialog.examples.tsx:168 (lines 170, 184). The other 2 errors are in other builders' files."
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs",
+     "exit_code": 1,
+     "last_line": "lint-components: 3 errors, 0 warnings; 20 hand-written and 12 generated files read under ds-components/src (dialog: the one-primary-per-view error only)"
+    },
+    {
+     "command": "node v2/tools/build-gallery.mjs --dist ds-components/gallery/dist-dialog --component dialog",
+     "exit_code": 0,
+     "last_line": "build-gallery: 2 components (1 fixture), wrote ds-components/gallery/dist-dialog/gallery.js, ..."
+    },
+    {
+     "command": "node v2/tools/test-components.mjs --component dialog --dist ds-components/gallery/dist-dialog --report ds-components/generated/test-report-dialog.json --shots ds-components/generated/shots",
+     "exit_code": 0,
+     "last_line": "1 components, 11 examples, 374 checks, 364 passed, 0 failed, 10 not reached or not run, 0 not proven"
+    },
+    {
+     "command": "node v2/tools/lint-components.mjs --size",
+     "exit_code": 1,
+     "last_line": "size dialog: CSS 766 B (within 2048); JS own 1563 B (within 5120); JS with Radix 15203 B (over 5120, reported, not failed)"
+    },
+    {
+     "command": "python3 <scratchpad>/faults.py (fault injection: one planted fault at a time in dialog files, tests run with --example default, then restored)",
+     "exit_code": 0,
+     "last_line": "title not focusable: ['dialog-initial-focus-title']"
+    }
+   ],
+   "test_summary": "Runner's last line: \"1 components, 11 examples, 374 checks, 364 passed, 0 failed, 10 not reached or not run, 0 not proven\". Named requirement tests: 26 of 26 test:<id> pass. With the 2 axe: requirements, 28 requirements pass. Not run: 1 lint: requirement and 3 manual: requirements. Not reached: all 6 states.",
+   "failing_or_not_run": [
+    "Cause: the spec. All 6 state checks (open, closed, overlayOpen, overlayClosed, triggerOpen, triggerClosed) are NOT REACHED. Their reach strings are prose the runner cannot follow, for example \"click the trigger, or prop:open=true\" and \"open the dialog, then key:Escape\". The schema asks for forms such as click, key:Escape or prop:open=true.",
+    "Cause: the spec. Lint error one-primary-per-view at dialog.examples.tsx:168: \"this JSX tree has 2 elements with variant=\\\"primary\\\" (lines 170, 184)\". The spec's confirm-step example gives the trigger Button variant primary and also a primary footer action. I left it as the spec says and did not work around the lint.",
+    "Size: dialog JS with Radix is 15203 B against a 5120 row. The tool reports it and does not fail it. Dialog's own JS is 1563 B and its CSS 766 B, both within budget.",
+    "Not run, as designed: dialog-one-primary (lint:, which the runner does not check), and dialog-not-destructive, dialog-no-nesting and dialog-short-task (manual:).",
+    "Untested clause of dialog-escape-closes: \"when a DropdownMenu inside the dialog is open, the first Escape closes only the menu\". No spec example holds a menu, and DropdownMenu is being built in parallel. The rest of the requirement is tested.",
+    "Untested branch of dialog-focus-on-open: \"to the content when there is none\". Every spec example has a footer control. The code path exists (it focuses the content) but no example reaches it."
+   ],
+   "what_you_saw_in_the_pictures": [
+    "default at 375, light and dark: the dialog is centred with a 16 px margin and visible padding. Cancel and Use this address sit on one row aligned to the end. Cancel shows the blue focus ring after the programmatic focus on open. In dark, the content (#1b1c1e-ish) stands clearly off the near-black overlay.",
+    "worst-case-320 at 375, light: the title wraps over 4 lines and the description over 4. The German body breaks long compounds such as Lieferadressänderungsbenachrichtigung without overflow and scrolls. The two footer buttons wrap onto two rows, end-aligned, both fully visible; the long primary label wraps inside its button. No clipping. There is no 320 PNG because the runner shoots at 375 and 1280; the 320 by 568 case is measured by dialog-fits-320 and dialog-body-scrolls instead.",
+    "long-text at 375, dark: the header stays fixed while the body scrolls. Back and Deliver everything together wrap onto two rows: about 290 px of buttons in 295 px of footer space, so they do not fit on one row.",
+    "title-focus at 375, light: focus is on the title and shows the browser's default focus ring tight around the heading. The body starts at its top.",
+    "closed at 375, dark: only the Change address trigger shows, in the Button look.",
+    "dialog--all.png at 1280: every example's dialog is open at once, so only the topmost (worst-case-320) can be seen. The component page cannot show the other examples. This is a gallery limitation, reported.",
+    "Cosmetic: the body has about 40 px above the first paragraph, because the <p> elements in the examples keep their default 1em margin on top of the header's 24 px padding. The body's block padding is 0 by the spec, so the last line runs right up to the footer padding. Neither is clipped."
+   ],
+   "spec_problems": [
+    "Trigger and close cannot carry their data-slots. With asChild, Radix's Slot merges data-slot=\"dialog-trigger\" or \"dialog-close\" into the Button. Button then sets data-slot=\"button\" after spreading native props (button.tsx, the shared object), so dialog-trigger and dialog-close never reach the page. The same will hit Tabs and DropdownMenu wherever a Button is used through asChild. The tests find the trigger by aria-haspopup=\"dialog\" and the close parts by their footer text. Fixing this needs a decision across Button and the compound components.",
+    "All 6 states have reach strings the runner cannot follow, so the state map is never checked for Dialog.",
+    "The confirm-step example breaks one-primary-per-view: a primary trigger plus a primary footer action.",
+    "No focus ring for the body. When the body scrolls it must be focusable (dialog-body-scroll-keyboard), which then needs a visible focus ring (WCAG 2.4.7). The spec carries none. The browser default measured \"outline auto 1 px\" and failed the generic focus-visible check in 12 configurations. I added `[data-slot=\"dialog-body\"]:focus-visible` with --border-focus-width, --color-border-focus and an inset offset in dialog.extensions.css. That departs from the pattern rule \"never set outline in extensions\"; the rule sets nothing the spec sets. The spec should carry this ring, and the lead should decide.",
+    "Example body content is a description, not text: \"Five paragraphs of policy text, taller than the viewport\", \"Twelve paragraphs of delivery terms...\". I rendered real paragraphs (English for long-text, German with long compounds for worst-case-320) so the body really overflows. no-description's three lines are joined with <br />.",
+    "dialog-title-dev-warning cannot be tested from spec examples, because every example must have a title. The test mounts untitled and empty-titled dialogs through a window hook (window.__dialogFixtures.mountUntitled) defined in dialog.examples.tsx.",
+    "dialog-focus-returns-without-trigger needs to reopen the dialog after focus has been placed on a page control. window.__dialogControl[\"controlled-without-trigger\"].setOpen is exposed from the example for that.",
+    "Not dismissible but still open: content.dismissible=false examples (not-dismissible, worst-case-320) also have no trigger and stay open on load. Fine, but note that the gallery's component page opens all 11 dialogs at once (gallery problem, not spec)."
+   ],
+   "tool_changes": [
+    "None. No tool was edited.",
+    "Observation, not a blocker: lint-components reports errors in other builders' files (dropdown-menu primitive-reference for --radix-dropdown-menu-content-available-width and -height, and tabs or dropdown tests missing at the time). Those are theirs, not dialog's.",
+    "Observation: the runner's open() passes a height option through to load(), so tests use { width: 320, height: 568 }. COMPONENT-PATTERN.md lists only theme, width and density."
+   ],
+   "not_done": [
+    "Lint error one-primary-per-view in the confirm-step example is left in place, because it comes from the spec.",
+    "The DropdownMenu-inside-dialog Escape clause is untested: there is no example, and DropdownMenu is not built yet.",
+    "The \"focus goes to the content when there are no controls\" branch is untested: no spec example lacks a control.",
+    "Nothing was committed (git operations are banned)."
+   ]
+  }
+ ],
+ "missing": []
+}

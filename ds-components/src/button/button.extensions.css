@@ -41,9 +41,9 @@
     block-size: 100%;
   }
 
-  /* The spinner turns once every five base durations. No token exists for a looping duration. */
+  /* The spinner turns once per --duration-spin, the token for a looping indicator. */
   [data-slot="button-spinner"] > svg {
-    animation: ds-button-spin calc(var(--duration-base) * 5) linear infinite;
+    animation: ds-button-spin var(--duration-spin) linear infinite;
   }
   @media (prefers-reduced-motion: reduce) {
     [data-slot="button-spinner"] > svg {

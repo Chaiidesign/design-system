@@ -14,8 +14,6 @@ import {
   BUTTON_REFLECTS,
   BUTTON_SLOTS,
   type ButtonProps as ButtonContractProps,
-  type ButtonIconEndProps,
-  type ButtonIconStartProps,
 } from "./button.contract";
 
 // esbuild replaces process.env.NODE_ENV at build time; this declaration only tells TypeScript it exists.
@@ -27,10 +25,10 @@ type NativeButtonAttributes = Omit<
   "type" | "disabled" | "onClick" | "children" | "aria-label" | "aria-busy" | "aria-disabled"
 >;
 
+// The contract's ButtonProps holds every spec'd prop (Button is single-piece). Those the union below decides
+// (iconOnly, ariaLabel, children) and the handler, which the contract cannot type callably, are taken out.
 type ButtonBaseProps = NativeButtonAttributes &
-  Omit<ButtonContractProps, "onClick" | "iconOnly" | "ariaLabel"> &
-  ButtonIconStartProps &
-  ButtonIconEndProps & {
+  Omit<ButtonContractProps, "onClick" | "iconOnly" | "ariaLabel" | "children"> & {
     /** Called on press by pointer, Enter or Space. Not called while disabled or loading. */
     onClick?: React.MouseEventHandler<HTMLElement>;
     /** React 19 passes ref as a prop. With asChild it reaches the child element. */
@@ -56,8 +54,9 @@ export type ButtonIconOnlyProps = ButtonBaseProps & {
 export type ButtonProps = ButtonWithLabelProps | ButtonIconOnlyProps;
 
 // Proof for requirement button-icon-only-needs-label, checked by tsc: if the union ever accepted iconOnly
-// without ariaLabel, this directive would be unused and the type check would fail.
-// @ts-expect-error iconOnly without ariaLabel must not type-check
+// without ariaLabel, this directive would be unused and the type check would fail. The test runner counts the
+// requirement as passed only while tsc exits 0 and the directive line below names the requirement's id.
+// @ts-expect-error button-icon-only-needs-label: iconOnly without ariaLabel must not type-check
 const _iconOnlyNeedsLabel: ButtonProps = { iconOnly: true, iconStart: null };
 void _iconOnlyNeedsLabel;
 
@@ -87,8 +86,8 @@ export function Button(props: ButtonProps) {
     console.warn("Button: iconOnly needs ariaLabel, or the button has no accessible name.");
   }
 
-  // Loading keeps the button focusable (no native disabled) but ignores presses. preventDefault also stops a
-  // submit button from submitting and a link from navigating.
+  // Loading keeps the button focusable (no native disabled) and keeps its variant's look (no data-disabled), but
+  // ignores presses. preventDefault also stops a submit button from submitting and a link from navigating.
   const inert = loading || (asChild && disabled);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (inert) {
@@ -104,6 +103,8 @@ export function Button(props: ButtonProps) {
     [BUTTON_REFLECTS.iconOnly]: iconOnly ? "" : undefined,
     [BUTTON_REFLECTS.fullWidth]: fullWidth ? "" : undefined,
     [BUTTON_REFLECTS.loading]: loading ? "" : undefined,
+    // Unavailable, never merely busy: a loading button keeps its look, so it does not get data-disabled.
+    [BUTTON_REFLECTS.disabled]: disabled ? "" : undefined,
   };
 
   const lead = loading ? (
@@ -134,8 +135,9 @@ export function Button(props: ButtonProps) {
   };
 
   if (asChild) {
-    // The child (a link) becomes the root. It cannot take the native disabled attribute or a button type,
-    // so being unavailable is said with aria-disabled. The child's own content becomes the label.
+    // The child (a link) becomes the root. It cannot take the native disabled attribute or a button type, so
+    // being unavailable is said with aria-disabled and drawn through data-disabled. The child's own content
+    // becomes the label.
     return (
       <Slot {...shared} ref={ref as React.Ref<HTMLElement>} aria-disabled={loading || disabled ? true : undefined}>
         {lead}

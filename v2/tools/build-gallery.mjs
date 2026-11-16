@@ -2,6 +2,12 @@
 // Builds the component gallery: one page where every component example is rendered.
 //
 //   node v2/tools/build-gallery.mjs              build ds-components/gallery/dist/
+//   --dist <dir>                                 write the bundle to <dir> instead (default ds-components/gallery/dist).
+//                                                Each builder uses its own, such as ds-components/gallery/dist-tabs
+//                                                (git ignores dist-*), so parallel builds never overwrite each other.
+//                                                The registry for a non-default dist is written inside that dist.
+//   --component <slug>[,<slug>]                  bundle only these components (and the test fixture), so another
+//                                                builder's half-written examples cannot break this bundle
 //   node v2/tools/build-gallery.mjs --self-test  build into a scratch folder with a planted bad spec and
 //                                                a planted examples file, and confirm both are handled
 //
@@ -30,6 +36,7 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const REPO = resolve(HERE, "..", "..");
+export const DEFAULT_DIST = join(REPO, "ds-components", "gallery", "dist");
 const SRC = join(REPO, "ds-components", "src");
 const SPECS = join(REPO, "ds-components", "specs");
 const GALLERY = join(REPO, "ds-components", "gallery");
@@ -46,10 +53,11 @@ const isObj = (x) => x !== null && typeof x === "object" && !Array.isArray(x);
 
 // Every component the gallery shows, sorted by slug, the fixture last.
 // Each: { slug, fixture, examplesFile, specFile, testsFile }
-export function discoverComponents({ srcDir = SRC, specDir = SPECS, includeFixture = true } = {}) {
+export function discoverComponents({ srcDir = SRC, specDir = SPECS, includeFixture = true, only = null } = {}) {
   const found = [];
   if (existsSync(srcDir)) {
     for (const slug of readdirSync(srcDir).sort()) {
+      if (only && !only.includes(slug)) continue;
       const dir = join(srcDir, slug);
       if (!statSync(dir).isDirectory()) continue;
       const examplesFile = join(dir, `${slug}.examples.tsx`);
@@ -153,10 +161,15 @@ const FONT_FACE = `@font-face {
 
 // Builds the gallery. Returns { components, notes, files, dist }.
 // Options let the self-test build into a scratch folder from scratch sources.
-export async function buildGallery({ srcDir = SRC, specDir = SPECS, dist = join(GALLERY, "dist"), registryFile = join(GALLERY, "src", "registry.generated.ts"), stylesCss = STYLES_CSS, includeFixture = true } = {}) {
+// The registry a dist uses: the shared one in gallery/src for the default dist, and one inside any other dist,
+// so builders bundling into their own dist never write the same file.
+export const registryFor = (dist) => (resolve(dist) === DEFAULT_DIST ? join(GALLERY, "src", "registry.generated.ts") : join(resolve(dist), "registry.generated.ts"));
+
+export async function buildGallery({ srcDir = SRC, specDir = SPECS, dist = DEFAULT_DIST, registryFile = registryFor(dist), stylesCss = STYLES_CSS, includeFixture = true, only = null } = {}) {
   const esbuild = require("esbuild");
   const notes = [];
-  const components = discoverComponents({ srcDir, specDir, includeFixture });
+  const components = discoverComponents({ srcDir, specDir, includeFixture, only });
+  if (only) for (const slug of only) if (!components.some((c) => c.slug === slug)) notes.push(`--component ${slug}: no ds-components/src/${slug}/${slug}.examples.tsx, so it is not in the bundle`);
   const metas = components.map(readSpecMeta);
   for (const m of metas) if (m.specProblem) notes.push(`${m.slug}: ${m.specProblem}`);
   if (components.filter((c) => !c.fixture).length === 0) notes.push(`no component folder in ${rel(srcDir)} has an examples file yet; the gallery shows the test fixture only`);
@@ -267,6 +280,12 @@ async function selfTest() {
       await buildGallery({ srcDir, specDir, dist, registryFile, stylesCss: join(srcDir, "styles.css"), includeFixture: false });
       const bundledCss = readFileSync(join(dist, "gallery.css"), "utf8");
       check("an @import in ds-components/src/styles.css is inlined, not left in the middle of the bundle", /\[data-slot="?alpha"?\]/.test(bundledCss) && !/@import\s+(url\(|["'])/.test(bundledCss));
+      // --dist and --component: a second dist gets its own registry and only the named component.
+      const dist2 = join(tmp, "dist-other");
+      const out3 = await buildGallery({ srcDir, specDir, dist: dist2, stylesCss: join(srcDir, "styles.css"), includeFixture: false, only: ["beta"] });
+      const ownRegistry = join(dist2, "registry.generated.ts");
+      check("a non-default dist gets its own registry and leaves the shared one alone", existsSync(join(dist2, "gallery.js")) && existsSync(ownRegistry) && registryFor(dist2) === ownRegistry && registryFor(DEFAULT_DIST) === join(GALLERY, "src", "registry.generated.ts"));
+      check("--component bundles only the named component", out3.components.length === 1 && out3.components[0].slug === "beta" && !readFileSync(ownRegistry, "utf8").includes("alpha.examples"), out3.components.map((c) => c.slug).join(", "));
       check("every generated text file starts with a do-not-edit line", ["gallery.js", "gallery.css"].every((f) => /^(\/\/|\/\*) Generated by v2\/tools\/build-gallery\.mjs\. Do not edit/.test(readFileSync(join(dist, f), "utf8"))) && readFileSync(join(dist, "index.html"), "utf8").includes("Generated by v2/tools/build-gallery.mjs. Do not edit."));
     } catch (e) { err = e; }
     finally { rmSync(registryFile, { force: true }); }
@@ -281,9 +300,20 @@ async function selfTest() {
 
 // ---------------------------------------------------------------- main
 
+function argValue(argv, name) {
+  const i = argv.indexOf(name);
+  if (i < 0) return null;
+  const v = argv[i + 1];
+  if (!v || v.startsWith("--")) throw new Error(`${name} needs a value`);
+  return v;
+}
+
 async function main(argv) {
   if (argv.includes("--self-test")) return selfTest();
-  const out = await buildGallery();
+  const distArg = argValue(argv, "--dist");
+  const onlyArg = argValue(argv, "--component");
+  const dist = distArg ? resolve(distArg) : DEFAULT_DIST;
+  const out = await buildGallery({ dist, only: onlyArg ? onlyArg.split(",").map((x) => x.trim()).filter(Boolean) : null });
   for (const n of out.notes) console.log(`note: ${n}`);
   for (const c of out.components) console.log(`${c.fixture ? "fixture  " : "component"} ${c.slug}: ${c.examples.length} examples in its spec${c.specProblem ? ` (${c.specProblem})` : ""}`);
   console.log(`build-gallery: ${out.components.length} components (${out.components.filter((c) => c.fixture).length} fixture), wrote ${out.files.join(", ")}`);

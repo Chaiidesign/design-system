@@ -1,0 +1,102 @@
+/* DropdownMenu: hand-written layout the spec cannot carry, exactly the list under notCarried. Loaded by
+   ds-components/src/styles.css after dropdown-menu.css. This layer outranks ds.components whatever the selector, so it
+   sets no colour, padding or outline, and only the sizes the spec's requirements ask this file for. Tokens only,
+   logical properties only. */
+@layer ds.extensions {
+  /* The content: capped at the width and height Radix reports as available, so it fits a 320 pixel screen inside
+     the collision padding and scrolls inside itself when it is taller than the space (dropdown-menu-fits-viewport,
+     dropdown-menu-scrolls-when-tall). menu/max still applies where it is the smaller. */
+  [data-slot="dropdown-menu-content"] {
+    box-sizing: border-box;
+    max-inline-size: min(var(--size-menu-max), var(--radix-dropdown-menu-content-available-width));
+    max-block-size: var(--radix-dropdown-menu-content-available-height);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* Each item is one row, in reading order: the indicator box or iconStart, a column holding the label with the
+     description under it, iconEnd, then the shortcut at the end edge (dropdown-menu-item-layout). The label column
+     takes the remaining width. The lead column exists only when the item has a lead, so an item without an icon
+     keeps its label where the text starts. Extra height on a touch screen is shared above and below the rows. */
+  :is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"]) {
+    display: grid;
+    grid-template-columns: [text] minmax(0, 1fr);
+    grid-auto-columns: auto;
+    align-items: start;
+    align-content: center;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  :is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"]):has(> :is([data-slot="dropdown-menu-icon-start"], [data-slot="dropdown-menu-indicator-box"])) {
+    grid-template-columns: [lead] auto [text] minmax(0, 1fr);
+  }
+
+  /* The label wraps inside the item, which grows taller (dropdown-menu-label-wraps). */
+  [data-slot="dropdown-menu-item-label"] {
+    grid-column: text;
+    grid-row: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+  [data-slot="dropdown-menu-item-description"] {
+    grid-column: text;
+    grid-row: 2;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Icons and the indicator box never shrink and sit on the centre of the label's first line. */
+  [data-slot="dropdown-menu-icon-start"],
+  [data-slot="dropdown-menu-indicator-box"] {
+    grid-column: lead;
+    grid-row: 1;
+  }
+  [data-slot="dropdown-menu-icon-end"] {
+    grid-row: 1;
+  }
+  [data-slot="dropdown-menu-icon-start"],
+  [data-slot="dropdown-menu-icon-end"],
+  [data-slot="dropdown-menu-indicator-box"],
+  [data-slot="dropdown-menu-item-indicator"] {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  [data-slot="dropdown-menu-icon-start"],
+  [data-slot="dropdown-menu-icon-end"],
+  [data-slot="dropdown-menu-indicator-box"] {
+    margin-block-start: calc((var(--line-height-body-base) - var(--size-icon-sm)) / 2);
+  }
+  [data-slot="dropdown-menu-icon-start"] > svg,
+  [data-slot="dropdown-menu-icon-end"] > svg,
+  [data-slot="dropdown-menu-item-indicator"] > svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  /* The shortcut hint sits at the end edge of the first line and never wraps. Its keys read left to right in either
+     direction (⌘R, not R⌘), isolated from the label's direction; its place in the row still follows the item's. */
+  [data-slot="dropdown-menu-item-shortcut"] {
+    grid-row: 1;
+    align-self: baseline;
+    white-space: nowrap;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  [data-slot="dropdown-menu-item-label"] {
+    align-self: baseline;
+  }
+
+  /* The separator: one line on its block-start edge only, no height, with space above and below it
+     (dropdown-menu-separator-line). Its colour and width/sm thickness come from the spec's stylesheet. */
+  [data-slot="dropdown-menu-separator"] {
+    border-block-start-style: solid;
+    border-block-end-style: none;
+    border-inline-style: none;
+    block-size: 0;
+    margin-block: var(--spacing-static-40);
+  }
+}

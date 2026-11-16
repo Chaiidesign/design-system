@@ -7,78 +7,117 @@ A single-line text field with its label, an optional description and an error me
 
 Stage: **alpha**. Figma: `TextField` (mapping not yet confirmed against the Components file). Behaviour: plain HTML.
 
+A single-piece component: one exported component, Input, takes every prop.
+
 ## Anatomy
 
-| Part | data-slot | Element | Role | Wraps |
-|---|---|---|---|---|
-| root | `input` | `div` |  |  |
-| label | `input-label` | `label` | label |  |
-| requiredMark (optional) | `input-required-mark` | `span` | indicator |  |
-| control | `input-control` | `div` |  |  |
-| prefix (optional) | `input-prefix` | `span` | indicator |  |
-| input | `input-input` | `input` | textbox |  |
-| suffix (optional) | `input-suffix` | `span` | indicator |  |
-| description (optional) | `input-description` | `p` | description |  |
-| errorMessage (optional) | `input-error-message` | `p` | errormessage |  |
-| errorIcon (optional) | `input-error-icon` | `span` | indicator |  |
-| errorText (optional) | `input-error-text` | `span` |  |  |
+| Part | data-slot | Element | Kind | Role | Wraps | Description |
+|---|---|---|---|---|---|---|
+| root | `input` | `div` | container |  |  | The field group. It stacks the label, the control, the description and the error message, and carries the data attributes for disabled, read-only and invalid so every part can be styled from them. |
+| label | `input-label` | `label` | text | label |  | The visible name. Its for attribute holds the id of the input. Not rendered when ariaLabel is used instead. |
+| requiredMark (optional) | `input-required-mark` | `span` | text | indicator |  | The word Required after the label text, shown while required is true. It is hidden from assistive technology because the input's own required attribute already says the same thing, so a screen reader does not hear it twice. |
+| control | `input-control` | `div` | container |  |  | The visible box. It holds the prefix, the native input and the suffix, draws the border and draws the focus ring while anything inside it has focus. A press anywhere on it moves focus to the input. |
+| prefix (optional) | `input-prefix` | `span` | text | indicator |  | An optional icon or short text before the input, such as a search icon or a currency symbol. Hidden from assistive technology; the label must carry the same meaning. |
+| input | `input-input` | `input` | control | textbox |  | The native input element. It takes the value, the type, every native attribute, aria-invalid and aria-describedby. It has no border, background or outline of its own; the control draws them. |
+| suffix (optional) | `input-suffix` | `span` | text | indicator |  | An optional icon or short text after the input, such as a unit. Hidden from assistive technology; the label must carry the same meaning. |
+| description (optional) | `input-description` | `p` | text | description |  | Optional help text under the control, such as the format expected. Its id is listed in the input's aria-describedby. |
+| errorMessage (optional) | `input-error-message` | `p` | container | errormessage |  | Rendered only while invalid is true and errorMessage has text. It holds an icon and the words, so the error is never shown by colour alone. Its id is listed first in the input's aria-describedby. |
+| errorIcon (optional) | `input-error-icon` | `span` | glyph | indicator |  | The error icon inside the error message. Hidden from assistive technology; the words say what is wrong. |
+| errorText (optional) | `input-error-text` | `span` | text |  |  | The words of the error message. |
 
 ## Props
 
-| Prop | Part | Type or values | Default | Reflects | In Figma |
-|---|---|---|---|---|---|
-| `label` | label | node | required |  | code only |
-| `description` | description | node |  |  | code only |
-| `errorMessage` | errorText | node |  |  | code only |
-| `invalid` | root | boolean | `false` | `data-invalid` | code only |
-| `required` | root | boolean | `false` | `data-required` | code only |
-| `disabled` | root | boolean | `false` | `data-disabled` | code only |
-| `readOnly` | root | boolean | `false` | `data-readonly` | code only |
-| `size` | root | `sm` `md` `lg` | `"md"` | `data-size` | code only |
-| `type` | input | `text` `email` `password` `search` `tel` `url` `number` | `"text"` |  | `type` |
-| `value` | input | string |  |  | `value` |
-| `defaultValue` | input | string |  |  | code only |
-| `onChange` | input | handler |  |  | code only |
-| `placeholder` | input | string |  |  | code only |
-| `name` | input | string |  |  | code only |
-| `autoComplete` | input | string |  |  | code only |
-| `inputMode` | input | `none` `text` `decimal` `numeric` `tel` `search` `email` `url` | `null` |  | code only |
-| `prefix` | prefix | node |  |  | code only |
-| `suffix` | suffix | node |  |  | code only |
-| `id` | input | string |  |  | code only |
-| `ariaLabel` | input | string |  |  | code only |
+| Prop | Taken by | Lands on part | Type or values | Default | Reflects | In Figma | Description |
+|---|---|---|---|---|---|---|---|
+| `label` | Input | label | node | required |  | code only | The visible name of the field. Required unless ariaLabel is given; the type of the props says so. It stays visible while the field has a value. |
+| `description` | Input | description | node |  |  | code only | Help text under the field. Its id goes into the input's aria-describedby. |
+| `errorMessage` | Input | errorText | node |  |  | code only | What is wrong and how to fix it. Shown only while invalid is true. |
+| `invalid` | Input | root | boolean | `false` | `data-invalid` | code only | The value is wrong. With an errorMessage it sets data-invalid on the root, renders the error message and sets aria-invalid to true on the input. Without an errorMessage it does nothing: the type of the props forbids it and the component warns in development. |
+| `required` | Input | root | boolean | `false` | `data-required` | code only | A value must be given. Sets data-required on the root, the native required attribute on the input, and shows the word Required after the label. |
+| `disabled` | Input | root | boolean | `false` | `data-disabled` | code only | The field cannot be used or focused, and its value is not sent with the form. Sets data-disabled on the root and the native disabled attribute on the input. |
+| `readOnly` | Input | root | boolean | `false` | `data-readonly` | code only | The value can be read, selected and copied but not changed, and it is sent with the form. The field stays in the Tab order. Sets data-readonly on the root and the native readonly attribute on the input. |
+| `size` | Input | root | `sm` `md` `lg` | `"md"` | `data-size` | code only | The least height of the control: 32, 40 or 44 pixels, as on Button. On a touch screen every size grows to at least 44. The control grows taller when the text is enlarged. |
+| `type` | Input | input | `text` `email` `password` `search` `tel` `url` `number` | `"text"` |  | `type` | The native input type. It decides the on-screen keyboard and what the browser checks. Figma's type property has only text, password and number; email, search, tel and url exist in code only. Prefer text with inputMode over number; see the requirement input-no-number-for-codes. |
+| `value` | Input | input | string |  |  | `value` | The value, when the parent owns it. Use with onChange. Figma's text property value on the Input inside TextField shows it. |
+| `defaultValue` | Input | input | string |  |  | code only | The starting value, when the field owns it. |
+| `onChange` | Input | input | handler |  |  | code only | Called with the change event on every edit. Not called while disabled or read-only. |
+| `placeholder` | Input | input | string |  |  | code only | A short example of the expected value, shown while the field is empty. Never the only label or instruction. |
+| `name` | Input | input | string |  |  | code only | The name the value is sent under with the form. |
+| `autoComplete` | Input | input | string |  |  | code only | The autocomplete token, such as email, given-name, postal-code or cc-number, so the browser can fill the field. A field that asks for the person's own details must set it. |
+| `inputMode` | Input | input | `none` `text` `decimal` `numeric` `tel` `search` `email` `url` | unset unless given |  | code only | The on-screen keyboard to show. The default null leaves the attribute off so the browser picks the keyboard from type. Use numeric for a card number or a code, decimal for an amount. |
+| `prefix` | Input | prefix | node |  |  | code only | An icon or short text before the input. |
+| `suffix` | Input | suffix | node |  |  | code only | An icon or short text after the input. |
+| `id` | Input | input | string |  |  | code only | The id of the input. When it is not given the component makes one with useId. The ids of the description and the error message are made from it. |
+| `ariaLabel` | Input | input | string |  |  | code only | The accessible name when there is no visible label, such as a search field whose purpose the page already shows. When it is given the label part is not rendered. |
 
 ## State map
 
 Strongest first: disabled, readOnly, invalid, focus, hover, placeholderShown, filled.
 
-| State | Part | Selector | Set by | Figma | Test reaches it by |
-|---|---|---|---|---|---|
-| hover | control | `:hover` | native | `state=hover` | hover |
-| focus | control | `:focus-within` | native | `state=focus` | focus-by-keyboard |
-| disabled | root | `[data-disabled]` | prop | `state=disabled` | prop:disabled=true |
-| readOnly | root | `[data-readonly]` | prop |  | prop:readOnly=true |
-| invalid | root | `[data-invalid]` | prop | `state=error` | prop:invalid=true,errorMessage=Enter an email address, such as name@example.com |
-| placeholderShown | input | `:placeholder-shown` | native | `state=placeholder` | prop:placeholder=name@example.com |
-| filled | input | `:not(:placeholder-shown)` | native | `state=filled` | prop:defaultValue=Ada Lovelace |
+| State | Part | Selector | Set by | Figma | Test reaches it by | Description |
+|---|---|---|---|---|---|---|
+| hover | control | `:hover` | native | `state=hover` | hover | The pointer is over the control. |
+| focus | control | `:focus-within` | native | `state=focus` | focus-by-keyboard | The input has focus, from the keyboard or a press. A text field shows the ring for both, because the person is about to type either way. |
+| disabled | root | `[data-disabled]` | prop | `state=disabled` | prop:disabled=true | The field cannot be used. |
+| readOnly | root | `[data-readonly]` | prop |  | prop:readOnly=true | The value can be read and copied but not changed. Figma has no state value for it. |
+| invalid | root | `[data-invalid]` | prop | `state=error` | prop:invalid=true,errorMessage=Enter an email address, such as name@example.com | The value is wrong and the error message is shown. The input has aria-invalid set to true at the same time and at no other time. Figma calls this state error. |
+| placeholderShown | input | `:placeholder-shown` | native | `state=placeholder` | prop:placeholder=name@example.com | The field is empty and shows its placeholder. The placeholder text takes the placeholderColor of the input part. |
+| filled | input | `:not(:placeholder-shown)` | native | `state=filled` | prop:defaultValue=Ada Lovelace | The field holds a value. The selector also matches an empty input that has no placeholder attribute, so it means the placeholder is not showing rather than that there is a value. It changes no style. |
 
 ## Tokens from Figma
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Density | `static/0` `--spacing-static-0` 1<br>`static/100` `--spacing-static-100` 1<br>`static/120` `--spacing-static-120` 1<br>`static/160` `--spacing-static-160` 1<br>`static/40` `--spacing-static-40` 1<br>`static/60` `--spacing-static-60` 2<br>`static/80` `--spacing-static-80` 1 |
-| Radius | `height/32` `--radius-height-32` 1<br>`height/40` `--radius-height-40` 1<br>`height/44` `--radius-height-44` 1 |
-| Themes | `border/error` `--color-border-error` 1<br>`border/focus` `--color-border-focus` 1<br>`border/primary/disabled` `--color-border-primary-disabled` 1<br>`icon/error` `--color-icon-error` 1<br>`surface/primary/default` `--color-surface-primary` 1<br>`surface/primary/disabled` `--color-surface-primary-disabled` 1<br>`surface/secondary/default` `--color-surface-secondary` 1<br>`text/disabled` `--color-text-disabled` 1<br>`text/error` `--color-text-error` 1<br>`text/placeholder` `--color-text-placeholder` 1<br>`text/primary` `--color-text-primary` 1<br>`text/secondary` `--color-text-secondary` 1 |
-| Typography | `font-size/body-base` `--font-size-body-base` 1<br>`font-size/body-large` `--font-size-body-large` 2<br>`font-size/body-small` `--font-size-body-small` 1<br>`font-size/label-base` `--font-size-label-base` 1<br>`font-weight/body` `--font-weight-body` 3<br>`font-weight/label` `--font-weight-label` 1<br>`line-height/body-base` `--line-height-body-base` 1<br>`line-height/body-large` `--line-height-body-large` 2<br>`line-height/body-small` `--line-height-body-small` 1<br>`line-height/label-base` `--line-height-label-base` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Density | `static/0` | `--spacing-static-0` | styles[0] |
+| Density | `static/100` | `--spacing-static-100` | styles[3] |
+| Density | `static/120` | `--spacing-static-120` | styles[0] |
+| Density | `static/160` | `--spacing-static-160` | styles[4] |
+| Density | `static/40` | `--spacing-static-40` | styles[0] |
+| Density | `static/60` | `--spacing-static-60` | styles[0], styles[3] |
+| Density | `static/80` | `--spacing-static-80` | styles[0] |
+| Radius | `height/32` | `--radius-height-32` | styles[3] |
+| Radius | `height/40` | `--radius-height-40` | styles[0] |
+| Radius | `height/44` | `--radius-height-44` | styles[4] |
+| Themes | `border/error` | `--color-border-error` | styles[6] |
+| Themes | `border/focus` | `--color-border-focus` | styles[0] |
+| Themes | `border/primary/disabled` | `--color-border-primary-disabled` | styles[8] |
+| Themes | `icon/error` | `--color-icon-error` | styles[0] |
+| Themes | `surface/primary/default` | `--color-surface-primary` | styles[0] |
+| Themes | `surface/primary/disabled` | `--color-surface-primary-disabled` | styles[8] |
+| Themes | `surface/secondary/default` | `--color-surface-secondary` | styles[7] |
+| Themes | `text/disabled` | `--color-text-disabled` | styles[8] |
+| Themes | `text/error` | `--color-text-error` | styles[0] |
+| Themes | `text/placeholder` | `--color-text-placeholder` | styles[0] |
+| Themes | `text/primary` | `--color-text-primary` | styles[0] |
+| Themes | `text/secondary` | `--color-text-secondary` | styles[0] |
+| Typography | `font-size/body-base` | `--font-size-body-base` | styles[0] |
+| Typography | `font-size/body-large` | `--font-size-body-large` | styles[4], styles[5] |
+| Typography | `font-size/body-small` | `--font-size-body-small` | styles[0] |
+| Typography | `font-size/label-base` | `--font-size-label-base` | styles[0] |
+| Typography | `font-weight/body` | `--font-weight-body` | styles[0], styles[4], styles[5] |
+| Typography | `font-weight/label` | `--font-weight-label` | styles[0] |
+| Typography | `line-height/body-base` | `--line-height-body-base` | styles[0] |
+| Typography | `line-height/body-large` | `--line-height-body-large` | styles[4], styles[5] |
+| Typography | `line-height/body-small` | `--line-height-body-small` | styles[0] |
+| Typography | `line-height/label-base` | `--line-height-label-base` | styles[0] |
 
 ## Tokens proposed in the repo
 
-| Collection | Token, CSS name, style entries using it |
-|---|---|
-| Border | `focus/offset` `--border-focus-offset` 1<br>`focus/width` `--border-focus-width` 1<br>`width/md` `--border-width-md` 1<br>`width/sm` `--border-width-sm` 2 |
-| Motion | `duration/fast` `--duration-fast` 1<br>`ease/standard` `--ease-standard` 1 |
-| Size | `control/lg` `--size-control-lg` 1<br>`control/md` `--size-control-md` 1<br>`control/sm` `--size-control-sm` 1<br>`icon/sm` `--size-icon-sm` 1<br>`target/min` `--size-target-min` 1 |
-| Themes | `border/strong/default` `--color-border-strong` 1<br>`border/strong/hover` `--color-border-strong-hover` 1 |
+| Collection | Token | CSS name | Style entries using it |
+|---|---|---|---|
+| Border | `focus/offset` | `--border-focus-offset` | styles[0] |
+| Border | `focus/width` | `--border-focus-width` | styles[2] |
+| Border | `width/md` | `--border-width-md` | styles[6] |
+| Border | `width/sm` | `--border-width-sm` | styles[0], styles[8] |
+| Motion | `duration/fast` | `--duration-fast` | styles[0] |
+| Motion | `ease/standard` | `--ease-standard` | styles[0] |
+| Size | `control/lg` | `--size-control-lg` | styles[4] |
+| Size | `control/md` | `--size-control-md` | styles[0] |
+| Size | `control/sm` | `--size-control-sm` | styles[3] |
+| Size | `icon/sm` | `--size-icon-sm` | styles[0] |
+| Size | `target/min` | `--size-target-min` | styles[5] |
+| Themes | `border/strong/default` | `--color-border-strong` | styles[0] |
+| Themes | `border/strong/hover` | `--color-border-strong-hover` | styles[1] |
 
 ## Keyboard
 
@@ -141,27 +180,44 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 
 ## Examples
 
-| Id | Title | Props | Content |
+| Id | Title | Props | Content | Note |
+|---|---|---|---|---|
+| `default` | Default | `{"label":"Full name","autoComplete":"name"}` |  |  |
+| `with-description` | With a description | `{"label":"Phone number","type":"tel","autoComplete":"tel","description":"Only used to tell you about your delivery."}` |  |  |
+| `placeholder` | With a placeholder | `{"label":"Email address","type":"email","autoComplete":"email","placeholder":"name@example.com"}` |  |  |
+| `required` | Required | `{"label":"Email address","type":"email","autoComplete":"email","required":true}` |  |  |
+| `invalid` | Invalid | `{"label":"Email address","type":"email","autoComplete":"email","defaultValue":"name@example","invalid":true,"errorMessage":"Enter an email address, such as name@example.com."}` |  |  |
+| `disabled` | Disabled | `{"label":"Country","defaultValue":"United Kingdom","disabled":true}` |  |  |
+| `read-only` | Read-only | `{"label":"Order number","defaultValue":"SV-20481","readOnly":true}` |  |  |
+| `small` | Small | `{"label":"Discount code","size":"sm","autoComplete":"off"}` |  |  |
+| `large` | Large | `{"label":"Card number","size":"lg","inputMode":"numeric","autoComplete":"cc-number"}` |  |  |
+| `prefix-text` | Prefix text | `{"label":"Tip amount in dollars","prefix":"$","inputMode":"decimal"}` |  |  |
+| `suffix-text` | Suffix text | `{"label":"Weight in kilograms","suffix":"kg","inputMode":"decimal"}` |  |  |
+| `search` | Search with an icon | `{"ariaLabel":"Search products","type":"search","prefix":"search","placeholder":"Shoes, bags, gifts"}` |  | No visible label: the page heading and the icon already show the purpose, so ariaLabel names it. |
+| `password` | Password | `{"label":"Password","type":"password","autoComplete":"current-password","required":true}` |  |  |
+| `url` | Web address | `{"label":"Website","type":"url","autoComplete":"url","placeholder":"https://example.com"}` |  |  |
+| `number` | Number type | `{"label":"Quantity","type":"number","defaultValue":"1"}` |  | Shown so the type is covered. For amounts and codes use text with inputMode instead. |
+| `hover` | Hover | `{"label":"Full name"}` |  | State example: the test hovers the control. |
+| `focus` | Focus | `{"label":"Full name"}` |  | State example: the test focuses the input by keyboard and checks the ring on the control. |
+| `long-text` | Long label, description and error | `{"label":"Name of the person who will collect the parcel from the pickup point","description":"They will need to show photo identification that matches this name exactly, including any middle names.","required":true,"invalid":true,"errorMessage":"Enter the collector's full name as it appears on their photo identification, including any middle names."}` |  |  |
+| `worst-case-320` | Worst case at 320 pixels | `{"label":"Billing postal code for the card ending in 4242","size":"lg","required":true,"inputMode":"numeric","autoComplete":"postal-code","prefix":"location","suffix":"UK","placeholder":"SW1A 1AA","description":"Must match the address your bank holds for this card, or the payment will be declined.","invalid":true,"errorMessage":"Enter the postal code your bank holds for this card. It has between 5 and 8 characters."}` |  | Rendered at 320 pixels wide and at 200 percent text size. Everything wraps or grows; nothing is clipped. |
+
+## Style rules
+
+Every rule of the spec, in order. The generated stylesheet keeps this order and gives every rule for a part the same specificity, so a later rule wins where two set the same property.
+
+| Rule | When | Parts and declarations | Why |
 |---|---|---|---|
-| `default` | Default | `{"label":"Full name","autoComplete":"name"}` |  |
-| `with-description` | With a description | `{"label":"Phone number","type":"tel","autoComplete":"tel","description":"Only used to tell you about your delivery."}` |  |
-| `placeholder` | With a placeholder | `{"label":"Email address","type":"email","autoComplete":"email","placeholder":"name@example.com"}` |  |
-| `required` | Required | `{"label":"Email address","type":"email","autoComplete":"email","required":true}` |  |
-| `invalid` | Invalid | `{"label":"Email address","type":"email","autoComplete":"email","defaultValue":"name@example","invalid":true,"errorMessage":"Enter an email address, such as name@example.com."}` |  |
-| `disabled` | Disabled | `{"label":"Country","defaultValue":"United Kingdom","disabled":true}` |  |
-| `read-only` | Read-only | `{"label":"Order number","defaultValue":"SV-20481","readOnly":true}` |  |
-| `small` | Small | `{"label":"Discount code","size":"sm","autoComplete":"off"}` |  |
-| `large` | Large | `{"label":"Card number","size":"lg","inputMode":"numeric","autoComplete":"cc-number"}` |  |
-| `prefix-text` | Prefix text | `{"label":"Tip amount in dollars","prefix":"$","inputMode":"decimal"}` |  |
-| `suffix-text` | Suffix text | `{"label":"Weight in kilograms","suffix":"kg","inputMode":"decimal"}` |  |
-| `search` | Search with an icon | `{"ariaLabel":"Search products","type":"search","prefix":"search","placeholder":"Shoes, bags, gifts"}` |  |
-| `password` | Password | `{"label":"Password","type":"password","autoComplete":"current-password","required":true}` |  |
-| `url` | Web address | `{"label":"Website","type":"url","autoComplete":"url","placeholder":"https://example.com"}` |  |
-| `number` | Number type | `{"label":"Quantity","type":"number","defaultValue":"1"}` |  |
-| `hover` | Hover | `{"label":"Full name"}` |  |
-| `focus` | Focus | `{"label":"Full name"}` |  |
-| `long-text` | Long label, description and error | `{"label":"Name of the person who will collect the parcel from the pickup point","description":"They will need to show photo identification that matches this name exactly, including any middle names.","required":true,"invalid":true,"errorMessage":"Enter the collector's full name as it appears on their photo identification, including any middle names."}` |  |
-| `worst-case-320` | Worst case at 320 pixels | `{"label":"Billing postal code for the card ending in 4242","size":"lg","required":true,"inputMode":"numeric","autoComplete":"postal-code","prefix":"location","suffix":"UK","placeholder":"SW1A 1AA","description":"Must match the address your bank holds for this card, or the payment will be declined.","invalid":true,"errorMessage":"Enter the postal code your bank holds for this card. It has between 5 and 8 characters."}` |  |
+| styles[0] | always | root: gap static/60<br>label: color text/primary, typography label-base<br>requiredMark: color text/secondary, typography body-small<br>control: minHeight control/md, paddingInline static/120, paddingBlock static/40, gap static/80, radius height/40, borderWidth width/sm, borderStyle solid, borderColor border/strong/default, background surface/primary/default, cursor text, duration duration/fast, easing ease/standard, outlineColor border/focus, outlineWidth none, outlineOffset focus/offset<br>prefix: color text/secondary, typography body-base<br>input: width full, paddingInline static/0, paddingBlock static/0, background transparent, borderStyle none, outlineWidth none, color text/primary, typography body-base, placeholderColor text/placeholder<br>suffix: color text/secondary, typography body-base<br>description: color text/secondary, typography body-small<br>errorMessage: gap static/40<br>errorIcon: iconSize icon/sm, color icon/error<br>errorText: color text/error, typography body-small | The edge uses border/strong/default because border/primary/default is only 1.35 to 1 against the page and an input's edge is the only thing that shows where it is. The native input has no border, background or outline so the browser's own focus outline never doubles the control's ring. The placeholder takes text/placeholder through placeholderColor; that token is being fixed by an override for light contrast, so keep using it. |
+| styles[1] | states hover | control: borderColor border/strong/hover |  |
+| styles[2] | states focus | control: outlineWidth focus/width |  |
+| styles[3] | props {"size":"sm"} | control: minHeight control/sm, paddingInline static/100, gap static/60, radius height/32 |  |
+| styles[4] | props {"size":"lg"} | control: minHeight control/lg, paddingInline static/160, radius height/44<br>prefix: typography body-large<br>input: typography body-large<br>suffix: typography body-large |  |
+| styles[5] | media coarse-pointer | control: minHeight target/min<br>prefix: typography body-large<br>input: typography body-large<br>suffix: typography body-large | iOS zooms the page when a focused field's text is under 16 pixels, and a finger needs a 44 pixel target. Where the pointer is coarse the text is body-large at every size. |
+| styles[6] | states invalid | control: borderColor border/error, borderWidth width/md | A thicker edge as well as a colour change, and the error message carries an icon and words, so the error never rests on colour alone. |
+| styles[7] | states readOnly | control: background surface/secondary/default, cursor default | The edge stays at full strength and the text at text/primary: a read-only value must stay as readable as an editable one. Only the fill says it cannot be changed. |
+| styles[8] | states disabled | control: background surface/primary/disabled, borderColor border/primary/disabled, borderWidth width/sm, cursor not-allowed<br>input: color text/disabled, placeholderColor text/disabled<br>prefix: color text/disabled<br>suffix: color text/disabled | The label keeps text/primary so a disabled field still says what it is. The border width goes back to width/sm in case the field was also invalid. |
+| styles[9] | media reduced-motion | control: duration none |  |
 
 ## What the spec does not carry
 

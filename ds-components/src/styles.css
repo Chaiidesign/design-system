@@ -4,6 +4,10 @@
 @import "./button/button.css";
 @import "./button/button.extensions.css";
 @import "./dialog/dialog.css";
+@import "./dialog/dialog.extensions.css";
 @import "./dropdown-menu/dropdown-menu.css";
+@import "./dropdown-menu/dropdown-menu.extensions.css";
 @import "./input/input.css";
+@import "./input/input.extensions.css";
 @import "./tabs/tabs.css";
+@import "./tabs/tabs.extensions.css";

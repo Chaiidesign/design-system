@@ -9,8 +9,14 @@ export type InputType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url'
 /** The on-screen keyboard to show. The default null leaves the attribute off so the browser picks the keyboard from type. Use numeric for a card number or a code, decimal for an amount. */
 export type InputInputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
 
-/** Props of the root part (data-slot="input"). */
+/** Props of Input: every prop, whichever part it lands on (named in each comment). */
 export interface InputProps {
+  /** The visible name of the field. Required unless ariaLabel is given; the type of the props says so. It stays visible while the field has a value. On the label part. */
+  label: React.ReactNode;
+  /** Help text under the field. Its id goes into the input's aria-describedby. On the description part. */
+  description?: React.ReactNode;
+  /** What is wrong and how to fix it. Shown only while invalid is true. On the errorText part. */
+  errorMessage?: React.ReactNode;
   /** The value is wrong. With an errorMessage it sets data-invalid on the root, renders the error message and sets aria-invalid to true on the input. Without an errorMessage it does nothing: the type of the props forbids it and the component warns in development. */
   invalid?: boolean;
   /** A value must be given. Sets data-required on the root, the native required attribute on the input, and shows the word Required after the label. */
@@ -21,63 +27,33 @@ export interface InputProps {
   readOnly?: boolean;
   /** The least height of the control: 32, 40 or 44 pixels, as on Button. On a touch screen every size grows to at least 44. The control grows taller when the text is enlarged. */
   size?: InputSize;
-}
-
-/** Props of the label part (data-slot="input-label"). */
-export interface InputLabelProps {
-  /** The visible name of the field. Required unless ariaLabel is given; the type of the props says so. It stays visible while the field has a value. */
-  label: React.ReactNode;
-}
-
-/** Props of the prefix part (data-slot="input-prefix"). */
-export interface InputPrefixProps {
-  /** An icon or short text before the input. */
-  prefix?: React.ReactNode;
-}
-
-/** Props of the input part (data-slot="input-input"). */
-export interface InputInputProps {
-  /** The native input type. It decides the on-screen keyboard and what the browser checks. Figma's type property has only text, password and number; email, search, tel and url exist in code only. Prefer text with inputMode over number; see the requirement input-no-number-for-codes. */
+  /** The native input type. It decides the on-screen keyboard and what the browser checks. Figma's type property has only text, password and number; email, search, tel and url exist in code only. Prefer text with inputMode over number; see the requirement input-no-number-for-codes. On the input part. */
   type?: InputType;
-  /** The value, when the parent owns it. Use with onChange. Figma's text property value on the Input inside TextField shows it. */
+  /** The value, when the parent owns it. Use with onChange. Figma's text property value on the Input inside TextField shows it. On the input part. */
   value?: string;
-  /** The starting value, when the field owns it. */
+  /** The starting value, when the field owns it. On the input part. */
   defaultValue?: string;
-  /** Called with the change event on every edit. Not called while disabled or read-only. */
+  /** Called with the change event on every edit. Not called while disabled or read-only. On the input part. */
   onChange?: (...args: never[]) => void;
-  /** A short example of the expected value, shown while the field is empty. Never the only label or instruction. */
+  /** A short example of the expected value, shown while the field is empty. Never the only label or instruction. On the input part. */
   placeholder?: string;
-  /** The name the value is sent under with the form. */
+  /** The name the value is sent under with the form. On the input part. */
   name?: string;
-  /** The autocomplete token, such as email, given-name, postal-code or cc-number, so the browser can fill the field. A field that asks for the person's own details must set it. */
+  /** The autocomplete token, such as email, given-name, postal-code or cc-number, so the browser can fill the field. A field that asks for the person's own details must set it. On the input part. */
   autoComplete?: string;
-  /** The on-screen keyboard to show. The default null leaves the attribute off so the browser picks the keyboard from type. Use numeric for a card number or a code, decimal for an amount. */
+  /** The on-screen keyboard to show. The default null leaves the attribute off so the browser picks the keyboard from type. Use numeric for a card number or a code, decimal for an amount. On the input part. Unset unless given. */
   inputMode?: InputInputMode;
-  /** The id of the input. When it is not given the component makes one with useId. The ids of the description and the error message are made from it. */
+  /** An icon or short text before the input. On the prefix part. */
+  prefix?: React.ReactNode;
+  /** An icon or short text after the input. On the suffix part. */
+  suffix?: React.ReactNode;
+  /** The id of the input. When it is not given the component makes one with useId. The ids of the description and the error message are made from it. On the input part. */
   id?: string;
-  /** The accessible name when there is no visible label, such as a search field whose purpose the page already shows. When it is given the label part is not rendered. */
+  /** The accessible name when there is no visible label, such as a search field whose purpose the page already shows. When it is given the label part is not rendered. On the input part. */
   ariaLabel?: string;
 }
 
-/** Props of the suffix part (data-slot="input-suffix"). */
-export interface InputSuffixProps {
-  /** An icon or short text after the input. */
-  suffix?: React.ReactNode;
-}
-
-/** Props of the description part (data-slot="input-description"). */
-export interface InputDescriptionProps {
-  /** Help text under the field. Its id goes into the input's aria-describedby. */
-  description?: React.ReactNode;
-}
-
-/** Props of the errorText part (data-slot="input-error-text"). */
-export interface InputErrorTextProps {
-  /** What is wrong and how to fix it. Shown only while invalid is true. */
-  errorMessage?: React.ReactNode;
-}
-
-/** Every prop that has a default, with that default. */
+/** Every prop that has a default, with that default. Keyed as in the spec. */
 export const INPUT_DEFAULTS = {
   invalid: false,
   required: false,
@@ -85,10 +61,10 @@ export const INPUT_DEFAULTS = {
   readOnly: false,
   size: 'md',
   type: 'text',
-  inputMode: null,
+  // Unset unless given (default null): inputMode.
 } as const;
 
-/** Each part's data-slot value. */
+/** Each part's data-slot value. A part that renders nothing has a name here but no element carries it. */
 export const INPUT_SLOTS = {
   root: 'input',
   label: 'input-label',
@@ -114,7 +90,7 @@ export const INPUT_STATES = {
   filled: { on: 'input', selector: ':not(:placeholder-shown)' },
 } as const;
 
-/** Each prop that styles can see, and the attribute it sets on its part. */
+/** Each prop that styles can see, and the attribute it sets on its part. Keyed as in the spec. */
 export const INPUT_REFLECTS = {
   invalid: 'data-invalid',
   required: 'data-required',

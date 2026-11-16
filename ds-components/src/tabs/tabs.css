@@ -57,33 +57,33 @@
   }
 
   /* styles[1] */
-  [data-slot="tabs-trigger"]:hover:not([data-disabled]):not([data-state="active"]) {
+  [data-slot="tabs-trigger"]:where(:hover:not([data-disabled]):not([data-state="active"])) {
     color: var(--color-text-primary);
   }
 
   /* styles[2]: The selected tab is shown three ways, not by colour alone: the label turns from body-base (weight 500) to label-base (weight 600) at the same 14 on 20 size, the label darkens to text/primary, and the brand line appears. The label is never set in text/brand, which is 3.83 to 1 in dark and fails for small text. border/brand is a non-text mark 2 pixels thick, 7.88 to 1 in light and 3.83 to 1 in dark against the page, which passes the 3 to 1 for non-text contrast in both themes. */
-  [data-slot="tabs-trigger"][data-state="active"]:not([data-disabled]) {
+  [data-slot="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
     color: var(--color-text-primary);
     font-size: var(--font-size-label-base);
     line-height: var(--line-height-label-base);
     font-weight: var(--font-weight-label);
   }
-  [data-slot="tabs-trigger"][data-state="active"]:not([data-disabled]) [data-slot="tabs-indicator"] {
+  :where([data-slot="tabs-trigger"][data-state="active"]:not([data-disabled])) [data-slot="tabs-indicator"] {
     border-color: var(--color-border-brand);
   }
 
   /* styles[3] */
-  [data-slot="tabs"][data-size="sm"] [data-slot="tabs-trigger"] {
+  :where([data-slot="tabs"][data-size="sm"]) [data-slot="tabs-trigger"] {
     block-size: var(--size-control-sm);
     padding-inline: var(--spacing-static-80);
     gap: var(--spacing-static-60);
     border-radius: var(--radius-height-32);
   }
-  [data-slot="tabs"][data-size="sm"] [data-slot="tabs-trigger-icon-start"] {
+  :where([data-slot="tabs"][data-size="sm"]) [data-slot="tabs-trigger-icon-start"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
   }
-  [data-slot="tabs"][data-size="sm"] [data-slot="tabs-trigger-icon-end"] {
+  :where([data-slot="tabs"][data-size="sm"]) [data-slot="tabs-trigger-icon-end"] {
     inline-size: var(--size-icon-sm);
     block-size: var(--size-icon-sm);
   }
@@ -96,70 +96,70 @@
   }
 
   /* styles[5]: A vertical list sits beside its panel and needs more space between them than a list above its panel. The column layout itself is written in the extensions stylesheet from data-orientation; see the requirement tabs-orientation-layout. */
-  [data-slot="tabs"][data-orientation="vertical"] {
+  [data-slot="tabs"]:where([data-orientation="vertical"]) {
     gap: var(--spacing-static-240);
   }
 
   /* styles[6]: With fill the list takes its container's width. The equal share between the tabs is written in the extensions stylesheet; see the requirement tabs-behavior-fill. */
-  [data-slot="tabs-list"][data-behavior="fill"] {
+  [data-slot="tabs-list"]:where([data-behavior="fill"]) {
     inline-size: 100%;
   }
 
   /* styles[7]: The pill variant marks the selected tab with a fill, so its indicator stays transparent even when selected. */
-  [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-list"] {
+  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-list"] {
     gap: var(--spacing-static-80);
   }
-  [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-trigger"] {
+  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"] {
     border-radius: var(--radius-round-full);
     padding-inline: var(--spacing-static-160);
   }
-  [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-indicator"] {
+  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-indicator"] {
     border-color: transparent;
   }
 
   /* styles[8] */
-  [data-slot="tabs"][data-variant="pill"][data-size="sm"] [data-slot="tabs-trigger"] {
+  :where([data-slot="tabs"][data-variant="pill"][data-size="sm"]) [data-slot="tabs-trigger"] {
     padding-inline: var(--spacing-static-120);
   }
 
   /* styles[9]: text/secondary on surface/primary/hover is 4.80 to 1 in light and 6.66 to 1 in dark. */
-  [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-trigger"]:hover:not([data-disabled]):not([data-state="active"]) {
+  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where(:hover:not([data-disabled]):not([data-state="active"])) {
     background-color: var(--color-surface-primary-hover);
   }
 
   /* styles[10]: The pill's fill must stand out from the page by 3 to 1 and carry a readable label. interactive/neutral/default is 21 to 1 in light and 17.61 to 1 in dark against the page, and text/inverse on it is 21 to 1 and 17.61 to 1. text/primary cannot be used on this fill, so the rule that a selected label is text/primary holds for the line variant only. A pink fill is not used: a filled brand shape reads as the page's primary action. */
-  [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-trigger"][data-state="active"]:not([data-disabled]) {
+  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
     background-color: var(--color-interactive-neutral);
     color: var(--color-text-inverse);
   }
-  [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-trigger"][data-state="active"]:not([data-disabled]) [data-slot="tabs-indicator"] {
+  :where([data-slot="tabs"][data-variant="pill"]) :where([data-slot="tabs-trigger"][data-state="active"]:not([data-disabled])) [data-slot="tabs-indicator"] {
     border-color: transparent;
   }
 
   /* styles[11] */
-  [data-slot="tabs-trigger"]:focus-visible {
+  [data-slot="tabs-trigger"]:where(:focus-visible) {
     outline-width: var(--border-focus-width);
   }
 
   /* styles[12] */
-  [data-slot="tabs-content"]:focus-visible {
+  [data-slot="tabs-content"]:where(:focus-visible) {
     outline-width: var(--border-focus-width);
   }
 
   /* styles[13]: One disabled look for both variants. The icons follow the label's colour. */
-  [data-slot="tabs-trigger"][data-disabled] {
+  [data-slot="tabs-trigger"]:where([data-disabled]) {
     color: var(--color-text-disabled);
     cursor: not-allowed;
   }
 
   /* styles[14] */
-  [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-trigger"][data-disabled] {
+  :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where([data-disabled]) {
     background-color: transparent;
   }
 
   /* styles[15]: In forced colours the fill is removed, so the selected pill gets a 2 pixel border in the text colour on all four sides. The line variant needs no rule: its indicator is a border, which forced colours keep. */
   @media (forced-colors: active) {
-    [data-slot="tabs"][data-variant="pill"] [data-slot="tabs-trigger"][data-state="active"]:not([data-disabled]) {
+    :where([data-slot="tabs"][data-variant="pill"]) [data-slot="tabs-trigger"]:where([data-state="active"]:not([data-disabled])) {
       border-style: solid;
       border-width: var(--border-width-md);
       border-color: currentColor;

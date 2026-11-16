@@ -57,18 +57,18 @@
   }
 
   /* styles[1] */
-  [data-slot="dialog-content"][data-size="sm"] {
+  [data-slot="dialog-content"]:where([data-size="sm"]) {
     max-inline-size: var(--size-dialog-sm);
   }
 
   /* styles[2]: Leaving is quicker than arriving, so the page is back sooner. */
-  [data-slot="dialog-content"][data-state="closed"] {
+  [data-slot="dialog-content"]:where([data-state="closed"]) {
     transition-property: background-color, border-color, color, box-shadow, opacity;
     transition-duration: var(--duration-fast);
   }
 
   /* styles[3] */
-  [data-slot="dialog-overlay"][data-state="closed"] {
+  [data-slot="dialog-overlay"]:where([data-state="closed"]) {
     transition-property: background-color, border-color, color, box-shadow, opacity;
     transition-duration: var(--duration-fast);
   }
