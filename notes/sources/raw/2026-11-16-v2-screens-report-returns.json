@@ -1,0 +1,164 @@
+{
+ "results": [
+  {
+   "key": "screens",
+   "what": "I built the three-way comparison of version 0.2's checkout and assistant screens. A is version 0.2 as it was built. B is the V2 tokens exactly as Figma holds them, applied through a bridge stylesheet. C is the V2 tokens on this branch, through the same bridge. I measured all 12 pages in light and dark, took the 26 pictures, and looked at the checkout and assistant pictures for all three variants in both themes.\n\nThe main finding: on these screens B and C look almost the same. Of the V2 values the bridge uses, only one differs between them: --color-text-secondary in light (#6b6e76 in B, #505258 in C). The B and C dark pictures are byte-identical. The comparison page says this in a generated sentence.\n\nNothing failed. Every page met the 4.5 to 1 text minimum, every control edge reached 3 to 1, nothing scrolled sideways, and the smallest text was 16 px.\n\nChanges to build-tokens.mjs: it gained --no-overrides and --out <dir>. With --out it writes only the three dist files, each CSS file headed by a comment saying how it was built. The self-test still exits 0. The default build still exits 0 and does not change ds-tokens/dist (same hashes before and after, empty git diff).\n\nbuild-compare.mjs does the rest in one run:\n- It writes bridge.css from the hand-written bridge-map.json: 42 settings mapped, 10 kept at version 0.2's value with a reason, and 22 component tokens that take the bridged value through their semantic token.\n- It fails if the map misses a property, if a V2 name it uses is missing from either token file, if a link in a generated page points at nothing, if the bridge did not take effect on a page, or if Geist did not load.\n- It generates the 8 pages and the comparison page, measures everything and takes the pictures.\n- Two runs give byte-identical output across all 46 files, pictures included.\n\nnpm run check exits 0. I then restored the two gate files it rewrites (gates/raw/2026-11-15-screens.json and gates/raw/2026-11-15-size.json). Nothing under digests/2026-11-15 showed as modified.",
+   "files_created": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-compare.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-tokens.mjs (edited: --no-overrides and --out only)",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/bridge-map.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/bridge.css",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/index.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/measurements.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/tokens-as-given/{tokens.css,tailwind-theme.css,tokens.json}",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/fonts/Geist-Variable.woff2",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/as-given/{checkout,checkout-errors,assistant,assistant-done}.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/screens/merged/{checkout,checkout-errors,assistant,assistant-done}.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/digests/2026-11-16-v2/screens/ (24 pictures named <variant>-<screen>-375-<theme>.png with variants v02, as-given and merged, plus compare-1280-light.png and compare-1280-dark.png)"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/build-tokens.mjs --self-test",
+     "exit_code": 0,
+     "last_line": "Self-test: 10 of 10 planted cases behaved as expected; nothing was written."
+    },
+    {
+     "command": "node v2/tools/build-tokens.mjs  (then git diff --stat on ds-tokens/dist, primitives, semantic, resolver: empty; dist md5 unchanged c22bd0b6.../19cc66f5.../4ba60b2e...)",
+     "exit_code": 0,
+     "last_line": "Token build passed: 308 semantic and 225 primitive tokens from Figma plus 22 proposed tokens merged, 21 files written to ds-tokens/, ..."
+    },
+    {
+     "command": "node v2/tools/build-tokens.mjs --no-overrides --out v2/screens/tokens-as-given",
+     "exit_code": 0,
+     "last_line": "Token build passed: 3 dist files written to v2/screens/tokens-as-given (no overrides applied, 22 proposed tokens merged); ds-tokens/ was not touched."
+    },
+    {
+     "command": "node v2/tools/build-compare.mjs (run twice, md5 of all 46 outputs identical)",
+     "exit_code": 0,
+     "last_line": "Wrote v2/screens/bridge.css, 8 pages, index.html, measurements.json and 26 pictures in digests/2026-11-16-v2/screens."
+    },
+    {
+     "command": "npm run check",
+     "exit_code": 0,
+     "last_line": "check-noscript: 0 failures"
+    },
+    {
+     "command": "git checkout -- gates/raw/2026-11-15-screens.json gates/raw/2026-11-15-size.json",
+     "exit_code": 0,
+     "last_line": "(no output; both showed modified after npm run check, now restored; nothing under digests/2026-11-15 was modified)"
+    }
+   ],
+   "headline_numbers": [
+    "Measurement table (all 24 rows: 4 screens, 3 variants, 2 themes): every row has 0 text below the contrast minimum, 0 control edges below 3 to 1, no sideways scroll, and smallest text 16 px. Text items counted per screen: checkout 37, checkout-errors 42, assistant 28, assistant-done 21.",
+    "Lowest text contrast for A (v02): 5.01 on the primary button ('Pay £60.75' and 'Move event and send message') in both themes; on assistant-done the lowest is 6.79 light and 7.32 dark, on 'Event'.",
+    "Lowest text contrast for B (as-given): light 5.1, on 'Quantity 2' or 'Event' in secondary text; dark 4.6, on the pink primary button (assistant-done dark: 7.66).",
+    "Lowest text contrast for C (merged): light 7.81, on the same secondary text; dark 4.6, on the pink primary button (assistant-done dark: 7.66).",
+    "Lowest control edge: A from 3.46 (email field with error, dark) to 4.8; B and C 3.24 in light (#8c8f97 on white) and 3.65 to 4.51 in dark.",
+    "B against C: of the V2 values the bridge uses, only --color-text-secondary in light differs (#6b6e76 in B, #505258 in C). The dark pictures of B and C are byte-identical on all 4 screens; the light pictures differ only there.",
+    "Bridge: 42 version 0.2 settings mapped to V2 tokens, 10 kept at version 0.2's value with a reason, 22 component tokens follow their semantic token. On every B and C page the measurement confirmed the bridge took effect: accent equal to --color-interactive-primary, background equal to --color-surface-secondary, body font Geist, and Geist loaded.",
+    "Comparison page: no sideways scroll at 375 or 1280 in either theme, 12 frames. The two 1280 pictures were taken at scale 0.91 (1165 by 7955 pixels), because Chromium cannot capture taller than 8192 pixels in one go.",
+    "Japanese check: Geist has no glyphs for 抹茶セット. The character map of node_modules/geist/dist/fonts/geist-sans/Geist-Variable.ttf (subtables in format 4) maps 0 of the 5 characters to a glyph, against 8 of 8 for the control word 'Checkout'. In Chromium, at 32 px, the string is 160.58 wide in 'Geist, monospace' and 160.58 in monospace alone, but 'Checkout' differs (140.9 against 154.13). Against serif the string is 160.58 against 160: all five characters are about 32 px, full-width fallback CJK glyphs, and the small gap only means the system picked a different fallback. So the 抹茶セット in B and C is drawn by a system fallback font, not Geist."
+   ],
+   "what_you_saw_in_the_pictures": [
+    "A checkout, light and dark: version 0.2 as expected. System font, blue Pay button, grey panels in light and dark panels on near-black in dark, a dark cost summary in light and a light one in dark, and the 抹茶セット line renders.",
+    "B and C checkout, light: the bridge broke nothing visible. Every field and the select keep a visible grey edge. Geist loaded: the letterforms clearly differ from A. Headings and labels are bolder (700) and body text is 500. The page is white and off-white. The cost summary is pure black (interactive-neutral) with white text. The Pay button is dark pink (#9d174d). 'Discount: Welcome discount' wraps onto two lines where A keeps it on one. The primary button is 44 px tall rather than 56. The status marks are smaller (20 px). Corners are tighter.",
+    "B and C checkout, dark: as predicted, panels (#18191a) sit darker than the page (#242528), the reverse of A. The cost summary turns white with dark text. The Pay button is a brighter pink (#db2777) with white text, measured 4.6 to 1. The info message's mark band is a dark grey (#3b3d42) that only just stands out from the panels; its white icon is still visible. Field edges are visible.",
+    "A assistant, light and dark: as built. Grey, red, amber and blue status bands, a blue primary button, and a dashed draft box.",
+    "B and C assistant, light and dark: nothing vanished. The error band is a brighter red (#dc2626), the warning band orange-brown (#b45309), and the info bands dark grey. The primary button is pink. The dashed draft edge, the 'You' bubble edge, the text box edge and the chip buttons all keep visible edges. The status glyphs are smaller than in A. A colour that looks odd: the info band's dark grey reads as heavy in light mode beside the white message body, but it is legible.",
+    "B against C, to the eye: I could not tell them apart in light (the only change is secondary text going from #6b6e76 to #505258, slightly darker in C), and in dark they are byte-identical.",
+    "Comparison page, 1280 light and dark (final version): three columns side by side under each screen title, a theme control, the line under each frame, and all four rows complete. My first captures had two faults, both fixed in the tool, not in the screens. Only two columns fitted, because the content width was 1168 px, so I widened the main column to 78rem. The page also jumped to the error screen's frame and the capture repeated the page header past 8192 pixels; I fixed that by blurring the focused frame, scrolling back to the top, and capturing at scale 0.91."
+   ],
+   "decisions_you_made": [
+    "bridge-map.json is the hand-written source, and build-compare generates bridge.css from it, so the two cannot drift. The build fails on a semantic --sv-* property that is not covered, on a V2 name missing from either token file, or on a component token whose source changed.",
+    "One unlayered :root block in the bridge. Version 0.2 puts all its tokens in @layer sv.tokens, so unlayered declarations win in both themes. The pages already set data-theme on <html> from ?theme=, and V2 switches on that same attribute. With no attribute, both versions follow prefers-color-scheme.",
+    "I kept the lead's mapping of ground to surface-secondary and panel to surface-primary even though this flips the panel depth in dark mode, and wrote that down in the map's reason.",
+    "Inverse surface: V2 has no surface-inverse token, so I mapped --sv-color-inverse to --color-interactive-neutral (black in light, white in dark) with --color-text-inverse on it, and flagged it as a gap V2 should fill.",
+    "Body text size maps to --font-size-body-large (16 px), not body-base (14 px, below version 0.2's 16 px minimum). Body weight maps to --font-weight-body (500). The strong weight maps to --font-weight-emphasis (700). Title and display sizes sat halfway between two V2 sizes, and I broke the tie upward (28 and 40 px) so the cost total stays the largest text.",
+    "Control heights (48 and 56 px) both map to --size-control-lg (44 px), the largest V2 control. The control radius maps to --radius-height-44 (8 px). The mark size maps to --size-icon-md (20 px). Spacing maps to the static spacing tokens, which do not change with density.",
+    "Ten settings stay at version 0.2's value, each with its reason in bridge-map.json:\n- both line heights: they are unitless ratios, and one is used inside calc();\n- textarea minimum height;\n- tab width;\n- press depth;\n- the two column widths;\n- the visually-hidden size;\n- the 4 px error edge;\n- the busy loop duration.",
+    "Variant A is not copied: its frames and measurements use screens/*.html in place. In the generated pages, links to the four compared screens stay inside the variant folder; every other relative link points back to the original under screens/, and the build checks each one exists.",
+    "I added a generated sentence on the comparison page and in measurements.json saying which bridged values differ between B and C, because otherwise the reader would look for differences between B and C that are not there.",
+    "In --out mode, build-tokens prefixes each CSS file with a comment giving the exact command and saying no overrides were applied. The default run writes the same output as before."
+   ],
+   "not_done": [
+    "I did not measure input values and placeholders: they are not text nodes. I did not read background images or gradients either. measurements.json says both.",
+    "The comparison page's iframes are 375 px wide only from 1280 down; at 375 px wide the frames shrink to 343 px. The lines under them come from the 375 px measurements, not the narrower frames.",
+    "I took no pictures of the comparison page at 375 width. Only its sideways scroll was measured there (none, in either theme).",
+    "Version 0.2's teal accent option is not represented: the bridge always uses V2's pink primary.",
+    "Files I did not touch that git status shows as modified, changed by another process during this run: ds-tokens/audit/contrast.html, ds-tokens/audit/contrast.json and ds-components/generated/spec-index.json. ds-tokens/audit/contrast.json carries a 'generated' timestamp of 14:20 that same day; build-tokens does not write audit files.",
+    "Nothing was committed (git add and commit are banned for this task)."
+   ]
+  },
+  {
+   "key": "report",
+   "what": "I wrote v2/tools/build-report.mjs. It runs the contrast audit twice: first on Figma as it stands with --report-only, then with --built --report-only. It copies each result into v2/report/data/ and leaves the built result in ds-tokens/audit/. It then reads every input it was given and writes one self-contained page, v2/report/index.html, with the 8 sections in the order given. The CSS, the ds-tokens/dist/tokens.css tokens and the Geist variable font are inlined, so the file opens by itself from disk. Last, it checks the page in headless Chromium at 375 and 1280 wide, in light and dark. Every number on the page is read from a tool-written file. A missing input shows \"Not run yet\" and an unreadable or wrongly shaped one shows \"Could not be read\"; neither stops the build. The final run passed every check.",
+   "files_created": [
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/tools/build-report.mjs",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/report/index.html",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/report/data/contrast-as-given.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/v2/report/data/contrast-merged.json",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/digests/2026-11-16-v2/report-375-light.png",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/digests/2026-11-16-v2/report-375-dark.png",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/digests/2026-11-16-v2/report-1280-light.png",
+    "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/digests/2026-11-16-v2/report-1280-dark.png"
+   ],
+   "commands": [
+    {
+     "command": "node v2/tools/build-report.mjs",
+     "exit_code": 0,
+     "last_line": "build-report: 8 figures, 0 inputs missing or unreadable, page checked at 375 and 1280 in light and dark."
+    },
+    {
+     "command": "node v2/tools/build-report.mjs --self-test",
+     "exit_code": 0,
+     "last_line": "Self-test passed: with the growth map missing and the lint result malformed, the page was written, said \"not run yet\" and \"could not be read\" in sections 4, 7 and 8 and in the figures, and two builds were byte-identical."
+    },
+    {
+     "command": "node v2/tools/build-report.mjs --no-check twice, then cmp of the two index.html copies",
+     "exit_code": 0,
+     "last_line": "IDENTICAL"
+    }
+   ],
+   "headline_numbers": [
+    "533 variables in the Figma snapshot: 308 semantic in 6 collections, 225 primitive in 4",
+    "As Figma stands: 215 colour pairs fail out of 674 scored, plus 4 declared names Figma lacks (audit line: 726 pairs measured, 459 pass, 215 fail, 52 exempt)",
+    "With the fixes: 0 fail out of 682 scored (audit line: 734 pairs measured, 682 pass, 0 fail, 52 exempt)",
+    "77 fixes held in the repo; 22 proposed tokens",
+    "65 naming findings: 24 break the standard, 29 need a decision",
+    "261 of 308 tokens agree between Figma and code",
+    "Component tests: not run. test-report.json lists 5 checks, all not reached or not run",
+    "Page check, all four combinations: 3066 text runs at 4.5 to 1 or better, 38 text runs inside marked samples skipped, 0 serious or critical axe violations, no sideways scroll, theme switch works",
+    "index.html is 326,597 bytes, including the base64 Geist font"
+   ],
+   "what_you_saw_in_the_pictures": [
+    "My first full-page captures repeated the page header several times down the image. Chromium cannot capture a page that tall in one image; my clipped slices showed the page itself was fine. Fixed: the script now captures 4000-pixel tiles and joins them into one PNG in Node, using zlib and no new dependency. After the fix, report-1280-dark.png (1280x25790) shows every section once, in order, with no repeated header.",
+    "1280 light, sliced: the figure cards, comparison table, rule table and fix cards all look right. The fix cards show old and new primitive with hex values and before and after swatches. The growth map grid of lanes by now, next and later reads well.",
+    "Wrong, then fixed: in the proposed-token and naming tables, token names broke mid-word. They now wrap normally, and the tables scroll inside themselves instead.",
+    "Wrong, then fixed: the component test figure read '0 of 5' when all 5 checks were simply not run. It now says 'not run'.",
+    "Wrong, then fixed: 'Nothing yet.' in the growth grid was larger than the text around it.",
+    "Wrong, then fixed: the missing-names sentence listed each token twice, once per mode.",
+    "Wrong, then fixed: severity descriptions were lowercase with no full stop.",
+    "Wrong, then fixed: one 'five components' was typed by hand; it is now computed.",
+    "375 dark, sliced: the header, theme switch and contents look right. Figures stack one per row, comparison rows become cards, and wide tables (rules, must-look-different pairs) scroll inside themselves. Growth lanes stack one after another and nothing pushes the page sideways.",
+    "report-375-light.png is 375x57348. At full-page scale it is too small to read, so I judged the narrow layout from the 375 dark slices."
+   ],
+   "decisions_you_made": [
+    "The task names six override families, but 3 fixes (icon/success, icon/warning, border/warning) fit none of them. I added a seventh group, 'Status icons and borders', and the script fails if the groups do not add up to the number of entries in overrides.json.",
+    "Each fix is shown on the pair it is judged by: the lowest-ratio pair in the merged audit where the token is the foreground, or the background if it never is. The 'before' swatch is the same pair from the Figma-as-given audit.",
+    "Only swatches with text below 4.5 to 1 carry data-sample=\"fails-on-purpose\". Both my contrast walk and axe skip them, and the run prints how many text runs were skipped (38). Icon and border fixes show a dot rather than text, so they are not text nodes.",
+    "The page check and the pictures run by default; --no-check skips them. A failed page check makes the script exit 1.",
+    "If an audit run fails, its copy in v2/report/data is deleted so an older result is never shown as this run's, and the page marks that audit as not run.",
+    "The two data copies are exact copies of contrast.json, so they keep the audit's own 'generated' timestamp and differ from run to run. The HTML has no dates and is byte-identical across runs.",
+    "v2/screens/measurements.json appeared during my work. Section 1 summarises it as a table per direction: pages, text runs, text fails, controls, control edges failing, and pages that scroll sideways. All of it is read from the file.",
+    "To fix the repeated-header pictures I wrote a small PNG decoder and encoder (Node zlib) to join the tiles, rather than add a dependency.",
+    "To take review slices, I briefly copied a scratch script to v2/tools/.shots-tmp.mjs and deleted it straight after each use, so it could import playwright-core. No such file is left."
+   ],
+   "not_done": [
+    "Component test results and sizes: the page shows them exactly as the files say. test-report.json has 5 checks, all not run; size-report.json says 'no source yet' for all five components. The page claims nothing beyond that.",
+    "The page was checked in Chromium only. It was not checked with a screen reader, on a real phone or by a person; the page says so in section 8.",
+    "The 375-wide full-page pictures are too tall to read at once. I reviewed that layout through clipped slices of the dark theme; I did not slice the 375 light picture.",
+    "ds-tokens/audit/contrast.json and contrast.html show as modified in git. They were rewritten by the audit tool, and the built result is the one left on disk, as asked. Nothing was committed."
+   ]
+  }
+ ]
+}

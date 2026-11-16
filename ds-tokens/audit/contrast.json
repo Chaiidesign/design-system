@@ -1,7 +1,7 @@
 {
   "$description": "WCAG 2 contrast of every colour pair declared in v2/tools/contrast-pairs.json, written by v2/tools/audit-contrast.mjs. pass is decided on the unrounded ratio.",
   "source": "built file ds-tokens/dist/tokens.json",
-  "generated": "2026-11-16T14:15:22.044Z",
+  "generated": "2026-11-16T14:33:33.603Z",
   "counts": {
     "measured": 734,
     "pass": 682,

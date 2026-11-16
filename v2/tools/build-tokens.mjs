@@ -2,6 +2,9 @@
 //
 //   node v2/tools/build-tokens.mjs              build, check, write; exit 0 only if every check passes
 //   node v2/tools/build-tokens.mjs --self-test  plant known faults in memory and confirm the checks catch them (writes nothing)
+//   node v2/tools/build-tokens.mjs --no-overrides --out v2/screens/tokens-as-given
+//                                               the same build without ds-tokens/overrides.json, only the dist files, into
+//                                               another folder (either option may be used alone; see "main" below)
 //
 // What it writes (all generated; do not edit by hand):
 //   ds-tokens/primitives/{color,typography,space,radius}.tokens.json   DTCG 2025.10, one file per primitive collection
@@ -22,7 +25,7 @@
 // Figma is read only through v2/tools/lib/snapshot.mjs. Colour conversion reuses scripts/lib/color.mjs.
 // No network, no dependencies. The output contains no timestamps, so two runs give the same bytes.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadSnapshots, makeResolver, hexToRgba, expectedSyntax } from './lib/snapshot.mjs';
 import { hexToSrgb, parseCssColor } from '../../scripts/lib/color.mjs';
@@ -651,10 +654,18 @@ let proposed = [];
 if (existsSync(PROPOSED)) {
   try { proposed = JSON.parse(readFileSync(PROPOSED, 'utf8')); } catch (e) { console.log(`proposed/tokens.json is not valid JSON: ${e.message}`); process.exit(1); }
 }
+// Two options for side-by-side comparison work; neither changes the default run:
+//   --no-overrides  apply no override (Figma as it is). Proposed tokens are still merged.
+//   --out <dir>     write only the dist files (tokens.css, tailwind-theme.css, tokens.json) into <dir>, relative to
+//                   the repo root; the DTCG files, the resolver and ds-tokens/overrides.json are not written.
+const NO_OVERRIDES = process.argv.includes('--no-overrides');
+const outAt = process.argv.indexOf('--out');
+const OUT_DIR = outAt >= 0 ? process.argv[outAt + 1] : null;
+if (outAt >= 0 && (!OUT_DIR || OUT_DIR.startsWith('--'))) { console.log('--out needs a folder'); process.exit(1); }
 if (process.argv.includes('--self-test')) selfTest(snap, proposed);
 else {
   let overrides = [];
-  if (existsSync(OVERRIDES)) {
+  if (!NO_OVERRIDES && existsSync(OVERRIDES)) {
     try { overrides = JSON.parse(readFileSync(OVERRIDES, 'utf8')); } catch (e) { console.log(`overrides.json is not valid JSON: ${e.message}`); process.exit(1); }
   }
   const a = build(snap, overrides, proposed);
@@ -672,6 +683,18 @@ else {
     for (const e of a.errors) console.log(`FAIL [${e.code}] ${e.text}`);
     console.log(`Token build failed: ${a.errors.length} problem(s); nothing was written.`);
     process.exit(1);
+  }
+  if (OUT_DIR) {
+    const dir = resolve(ROOT, OUT_DIR);
+    // CSS files say how this copy was built, since its notice line speaks of overrides.json.
+    const how = `/* This copy was built with: node ${TOOL} ${process.argv.slice(2).join(' ')}. ${NO_OVERRIDES ? 'No override from ds-tokens/overrides.json was applied: colours are as Figma holds them.' : 'Overrides were applied.'} */\n`;
+    const dist = Object.entries(a.files).filter(([rel]) => rel.startsWith('dist/')).map(([rel, text]) => [rel, rel.endsWith('.css') ? how + text : text]);
+    mkdirSync(dir, { recursive: true });
+    for (const [rel, text] of dist) writeFileSync(join(dir, rel.slice('dist/'.length)), text);
+    const ok = dist.every(([rel, text]) => readFileSync(join(dir, rel.slice('dist/'.length)), 'utf8') === text);
+    if (!ok) { console.log('Token build failed: a written file does not read back the same.'); process.exit(1); }
+    console.log(`Token build passed: ${dist.length} dist files written to ${OUT_DIR} (${NO_OVERRIDES ? 'no overrides applied' : `${overrides.length} overrides applied`}, ${a.proposedCount} proposed tokens merged); ds-tokens/ was not touched.`);
+    process.exit(0);
   }
   if (!existsSync(OVERRIDES)) { mkdirSync(OUT, { recursive: true }); writeFileSync(OVERRIDES, '[]\n'); }
   for (const [rel, text] of Object.entries(a.files)) {
