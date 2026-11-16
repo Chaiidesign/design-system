@@ -106,7 +106,9 @@ void _invalidNeedsMessage;
 let warnedMissingName = false;
 let warnedInvalidWithoutMessage = false;
 
-const hasContent = (node: React.ReactNode) => node != null && node !== false && node !== true && node !== "";
+// Content to show: not null, undefined or a boolean, and not a string of only spaces.
+const hasContent = (node: React.ReactNode) =>
+  node != null && node !== false && node !== true && !(typeof node === "string" && node.trim() === "");
 
 export function Input(props: InputProps) {
   const {
@@ -137,7 +139,11 @@ export function Input(props: InputProps) {
 
   const showLabel = ariaLabel == null && hasContent(label);
   const showDescription = hasContent(description);
-  const showError = Boolean(invalid) && hasContent(errorMessage);
+  // Fail safe: invalid alone marks the field invalid, to every user (aria-invalid, data-invalid and the error edge).
+  // The error message part is rendered only when it has words to say. The type requires errorMessage with invalid,
+  // but an empty string passes the type, as a form library may pass it.
+  const isInvalid = Boolean(invalid);
+  const showError = isInvalid && hasContent(errorMessage);
 
   if (process.env.NODE_ENV !== "production") {
     if (!ariaLabel && !hasContent(label) && !warnedMissingName) {
@@ -146,7 +152,7 @@ export function Input(props: InputProps) {
     }
     if (invalid && !hasContent(errorMessage) && !warnedInvalidWithoutMessage) {
       warnedInvalidWithoutMessage = true;
-      console.warn("Input: invalid needs errorMessage. Without it the field is not marked invalid.");
+      console.warn("Input: invalid needs errorMessage. Without it the field is marked invalid but does not say what is wrong.");
     }
   }
 
@@ -158,8 +164,8 @@ export function Input(props: InputProps) {
 
   const reflected = {
     [INPUT_REFLECTS.size]: size,
-    // Invalid is reflected only while the error message is shown, so the look and aria-invalid always agree.
-    [INPUT_REFLECTS.invalid]: showError ? "" : undefined,
+    // Invalid is reflected whenever invalid is true, with or without a message, so the look and aria-invalid agree.
+    [INPUT_REFLECTS.invalid]: isInvalid ? "" : undefined,
     [INPUT_REFLECTS.required]: required ? "" : undefined,
     [INPUT_REFLECTS.disabled]: disabled ? "" : undefined,
     [INPUT_REFLECTS.readOnly]: readOnly ? "" : undefined,
@@ -206,7 +212,7 @@ export function Input(props: InputProps) {
           readOnly={readOnly}
           required={required}
           aria-label={ariaLabel}
-          aria-invalid={showError ? true : undefined}
+          aria-invalid={isInvalid ? true : undefined}
           aria-describedby={describedBy}
         />
         {hasContent(suffix) ? (

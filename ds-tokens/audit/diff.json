@@ -3169,6 +3169,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "STROKE_FLOAT"
+        ],
         "why": "The Border collection is empty. Every control needs an edge width."
       },
       {
@@ -3182,6 +3185,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "STROKE_FLOAT"
+        ],
         "why": "A state shown only by a colour change of a 1 pixel line is easy to miss."
       },
       {
@@ -3195,6 +3201,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "STROKE_FLOAT"
+        ],
         "why": "WCAG 2.4.13 measures a focus indicator against a 2 pixel perimeter."
       },
       {
@@ -3208,6 +3217,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "GAP"
+        ],
         "why": "The gap keeps the blue ring readable beside a pink or black fill."
       },
       {
@@ -3221,6 +3233,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "Radius has height/32, so a 32 pixel control exists in the design; nothing names its height."
       },
       {
@@ -3234,6 +3249,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "Radius has height/40."
       },
       {
@@ -3247,6 +3265,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "Radius has height/44."
       },
       {
@@ -3260,6 +3281,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "32 and 40 pixel controls are small for a thumb. WCAG 2.2 AA asks 24; Apple and WCAG AAA ask 44."
       },
       {
@@ -3273,6 +3297,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "No icon size token exists."
       },
       {
@@ -3286,6 +3313,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "No icon size token exists."
       },
       {
@@ -3299,6 +3329,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "A dialog needs a maximum width."
       },
       {
@@ -3312,6 +3345,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "A dialog needs a maximum width."
       },
       {
@@ -3325,6 +3361,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "A menu narrower than its trigger looks broken."
       },
       {
@@ -3338,6 +3377,9 @@
         "alias": {
           "default": null
         },
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
         "why": "Long item text must wrap, not run off the screen."
       },
       {
@@ -3351,6 +3393,7 @@
         "alias": {
           "default": null
         },
+        "scopes": [],
         "why": "Motion is not started in Figma."
       },
       {
@@ -3364,6 +3407,7 @@
         "alias": {
           "default": null
         },
+        "scopes": [],
         "why": "Motion is not started in Figma. Named for its job, because the standard keeps size words such as base out of names."
       },
       {
@@ -3377,6 +3421,7 @@
         "alias": {
           "default": null
         },
+        "scopes": [],
         "why": "The Button pilot had to multiply another duration by five to turn its spinner. A loop needs its own token."
       },
       {
@@ -3390,6 +3435,7 @@
         "alias": {
           "default": null
         },
+        "scopes": [],
         "why": "Motion is not started in Figma."
       },
       {
@@ -3405,6 +3451,9 @@
           "light": null,
           "dark": null
         },
+        "scopes": [
+          "EFFECT_FLOAT"
+        ],
         "why": "Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it."
       },
       {
@@ -3420,6 +3469,9 @@
           "light": null,
           "dark": null
         },
+        "scopes": [
+          "EFFECT_FLOAT"
+        ],
         "why": "Elevation is not started in Figma."
       },
       {
@@ -3435,6 +3487,10 @@
           "light": null,
           "dark": null
         },
+        "scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
         "why": "No token dims the page behind a dialog."
       },
       {
@@ -3450,6 +3506,9 @@
           "light": "neutral/light/600",
           "dark": "neutral/dark/500"
         },
+        "scopes": [
+          "STROKE_COLOR"
+        ],
         "why": "border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. This step reaches 3 to 1 on all three surface tiers, not only the first two. The naming standard's own example is 'add border/strong at 3:1'."
       },
       {
@@ -3465,6 +3524,9 @@
           "light": "neutral/light/700",
           "dark": "neutral/dark/700"
         },
+        "scopes": [
+          "STROKE_COLOR"
+        ],
         "why": "Goes with border/strong/default."
       },
       {
@@ -3478,6 +3540,7 @@
         "alias": {
           "default": null
         },
+        "scopes": [],
         "why": "A page element with any z-index painted over an open dialog: nothing set the dialog's level."
       },
       {
@@ -3491,6 +3554,7 @@
         "alias": {
           "default": null
         },
+        "scopes": [],
         "why": "A page element with any z-index painted over an open menu."
       }
     ]

@@ -1,14 +1,40 @@
 // lint-tokens.mjs: checks the Figma variable snapshot against the owner's naming standard.
 //
-// What it checks: the ten naming rules and "one job per token" from the V2 naming standard, plus a few
+// What it checks: all ten naming rules and "one job per token" from the V2 naming standard, plus a few
 // things the standard does not cover yet (type scale, density, categories that do not exist yet).
 // It reads Figma only through v2/tools/lib/snapshot.mjs and never changes the snapshot.
 //
+// Coverage of the standard's ten rules: each has at least one check. The word checks (state-words, size-words,
+// purpose-not-value) know the words on their lists only: a state, size or hue word on no list passes unreported. Rule wording as recorded in
+// notes/sources/2026-11-16-v2-one-pager-and-naming-standard.md (the standard's own text is in Claude Docs, not in the repo):
+//   1  "Lowercase kebab-case, slash between levels, no spaces."      name-case
+//   2  "Fixed order: role, then variant, then state."                segment-order
+//   3  "State is always its own last segment, from one list."        state-segment, state-words, state-set
+//   4  "One size scale everywhere." (xs, sm, md, lg, xl, 2xl)        size-scale (old words, pixel names), size-words (any other)
+//   5  "Primitives are named by value, semantics by purpose."        primitive-hygiene, purpose-not-value
+//   6  every semantic token aliases a primitive               alias
+//   7  mode names                                             mode-names
+//   8  collections named for their category                   collection-names
+//   9  every semantic token has a description                 description
+//   10 scopes and code syntax                                 scopes, code-syntax, tailwind-namespace
+// Not in the numbered rules: default-dropped (the separator sentence), one-job, and four checks the standard is silent on.
+//
+// Hue words in semantic names (decided 2026-11-16, see rule purpose-not-value): an accent hue is the owner's purpose name
+// for a decorative colour family (the standard's own rule 2 example is surface/accent/teal/subtle/hover), so a hue is
+// allowed in exactly two places: directly after an "accent" segment in the colour collection (text/accent/pink/default)
+// and as the first segment of the gradient collection (Surface Gradients red/glow). A hue anywhere else (text/pink,
+// border/red), a hue joined to a step (text/pink-600) or a step number after a hue (surface/accent/pink/600) breaks rule 5.
+//
 // How to run (from the repository root):
-//   node v2/tools/lint-tokens.mjs                 report, write ds-tokens/audit/lint.json, exit 1 if anything breaks the standard
-//   node v2/tools/lint-tokens.mjs --report-only   the same, but exit 0 whatever it finds
+//   node v2/tools/lint-tokens.mjs                 report, write lint.json, exit 1 if anything breaks the standard
+//   node v2/tools/lint-tokens.mjs --no-fail       the same, but exit 0 whatever it finds (still writes lint.json)
+//   node v2/tools/lint-tokens.mjs --report-only   print the report only: writes nothing, exit 0
 //   node v2/tools/lint-tokens.mjs --self-test     plant one fault per rule in a copy held in memory, confirm that rule
-//                                                 (and only that rule) catches it; writes nothing; exit 0 only if every rule fired
+//                                                 (and only that rule) catches it, and prove the output isolation below;
+//                                                 writes nothing in the repository; exit 0 only if every case passed
+// Where lint.json goes: ds-tokens/audit/lint.json for the owner's snapshot (v2/figma, the default). With
+// SOUVENIR_SNAPSHOT_DIR set to any other folder (for example v2/figma/sandbox) it goes to <that folder>/audit/lint.json
+// and ds-tokens/audit/ is never touched.
 //
 // Every finding has a severity:
 //   "breaks the standard"  the file contradicts a written rule of the standard
@@ -17,22 +43,36 @@
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadSnapshots, makeResolver, expectedSyntax, SNAPSHOT_DIR } from './lib/snapshot.mjs';
+import { loadSnapshots, makeResolver, expectedSyntax, SNAPSHOT_DIR, auditDir, isolationSelfTest } from './lib/snapshot.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const OUT = join(ROOT, 'ds-tokens', 'audit', 'lint.json');
+// ds-tokens/audit/lint.json for the owner's snapshot; <snapshot folder>/audit/lint.json for any other (see auditDir).
+const OUT = join(auditDir(), 'lint.json');
 
 const BREAKS = 'breaks the standard';
 const DECIDE = 'decide';
 const NOTE = 'note';
 
 const STATES = ['default', 'hover', 'active', 'focus', 'selected', 'disabled'];
+// State words outside the six, with the allowed word each one most likely means (rule 3).
+const OTHER_STATE_WORDS = { pressed: 'active', press: 'active', down: 'active', focused: 'focus', 'focus-visible': 'focus', 'focus-within': 'focus', hovered: 'hover', rest: 'default', resting: 'default', idle: 'default', normal: 'default', enabled: 'default', inactive: 'disabled', checked: 'selected', current: 'selected', visited: '(none: decide)', dragged: '(none: decide)' };
+// Words that are also ordinary name parts (arrow-down, line-height/normal, ...): a state only as the whole last segment of a
+// colour token, where states live.
+const AMBIGUOUS_STATE_WORDS = ['down', 'press', 'normal', 'current', 'rest', 'idle', 'enabled', 'checked'];
+// Size words outside the scale xs, sm, md, lg, xl, 2xl that the old-word list (OLD_SIZE_WORDS) does not already know (rule 4).
+// min, max and full are bounds, not sizes, and are not listed.
+const SIZE_SCALE = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'];
+const OTHER_SIZE_WORDS = ['huge', 'tiny', 'mini', 'big', 'little', 'jumbo', 'giant', 'xxs', '2xs', '3xs', 'xxl', 'xxxl', '3xl', '4xl', '5xl', 'xxsmall', 'xxxlarge'];
+// The roles a colour token starts with (rule 2: role, then variant, then state).
+const ROLES = ['text', 'icon', 'surface', 'interactive', 'border'];
+const COLOUR_COLLECTIONS = ['Themes', 'Color'];
+const GRADIENT_COLLECTIONS = ['Surface Gradients', 'Gradient'];
 const RANKS = ['primary', 'secondary', 'tertiary', 'quaternary'];
 const OLD_SIZE_WORDS = { xsmall: 'xs', small: 'sm', base: 'md', medium: 'md', large: 'lg', xlarge: 'xl', xxlarge: '2xl' };
 const CATEGORY_COLLECTIONS = ['Color', 'Typography', 'Radius', 'Space', 'Gradient'];
 const COLLECTION_SHOULD_BE = { Themes: 'Color', Colors: 'Color', Density: 'Space', 'Surface Gradients': 'Gradient' };
 // Collections the standard's category list has no place for. Reported once, together, for a person to decide.
-const UNLISTED_CATEGORIES = ['Border', 'Size', 'Motion', 'Elevation'];
+const UNLISTED_CATEGORIES = ['Border', 'Size', 'Motion', 'Elevation', 'Layer'];
 const HUES = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'neutral', 'slate', 'gray', 'zinc', 'stone'];
 const PRIMITIVE_WORDS = [...HUES, 'light', 'dark', 'typography', 'font-size', 'line-height', 'font-family', 'font-weight'];
 
@@ -51,7 +91,7 @@ const CATEGORIES = [
   { id: 'easing', re: /easing|(^|[/-])ease([/-]|$)/, collection: 'Motion' },
   { id: 'elevation or shadow', re: /elevation|shadow/, collection: 'Elevation', styles: true },
   { id: 'opacity', re: /opacity|(^|[/-])alpha([/-]|$)/ },
-  { id: 'z-index', re: /z-index|zindex|(^|\/)z(\/|$)/ },
+  { id: 'z-index', re: /z-index|zindex|(^|\/)z(\/|$)/, collection: 'Layer' },
   { id: 'breakpoint', re: /breakpoint|(^|\/)screen(s)?(\/|$)/ },
   { id: 'icon size', re: /icon-size|icon\/size|size\/icon/, collection: 'Size' },
   { id: 'control height', re: /control-height|control\/height|height\/control/, collection: 'Size' },
@@ -101,6 +141,48 @@ const RULES = [
       const ok = /^[a-z0-9]+(-[a-z0-9]+)*$/;
       const bad = [...ctx.prims, ...ctx.sem].filter((v) => segs(v.name).some((s) => !ok.test(s)));
       return bad.length ? [finding(rule, BREAKS, 'These names have a part that is not lowercase kebab-case (capital letters, spaces, a leading or trailing hyphen, or other characters).', bad.map(label))] : [];
+    },
+  },
+  {
+    id: 'segment-order', standardRule: '2', title: 'Fixed order: role, then variant, then state',
+    check(ctx, rule) {
+      // Colour collection only: a gradient name such as red/text has a hue, not a role, first, and is ordered by its own scheme.
+      const later = [];
+      const noRole = [];
+      for (const v of ctx.sem.filter((x) => COLOUR_COLLECTIONS.includes(x.collection))) {
+        const s = segs(v.name);
+        const at = s.findIndex((seg, i) => i > 0 && ROLES.includes(seg));
+        if (at > 0) later.push(`${label(v)} (role "${s[at]}" is segment ${at + 1}; it must come first)`);
+        else if (!ROLES.includes(s[0])) noRole.push(`${label(v)} (starts with "${s[0]}")`);
+      }
+      const out = [];
+      if (later.length) out.push(finding(rule, BREAKS, `A role word (${ROLES.join(', ')}) comes after another segment: a variant or state sits before the role. Fix: move the role to the front, for example text/primary/x for primary/text/x.`, later));
+      if (noRole.length) out.push(finding(rule, DECIDE, `These colour names start with a word that is not one of the roles the file uses (${ROLES.join(', ')}). Either the name lacks its role, or the role list grows.`, noRole));
+      return out;
+    },
+  },
+  {
+    id: 'purpose-not-value', standardRule: '5', title: 'Semantic tokens are named by purpose, never by a colour value',
+    check(ctx, rule) {
+      const bad = [];
+      for (const v of ctx.sem) {
+        const s = segs(v.name);
+        const why = [];
+        s.forEach((seg, i) => {
+          const ws = seg.split('-');
+          const hue = ws.find((w) => HUES.includes(w));
+          if (!hue) return;
+          const joinedStep = ws.some((w, j) => j > 0 && HUES.includes(ws[j - 1]) && /^\d+$/.test(w));
+          const stepAfter = /^\d+$/.test(s[i + 1] || '');
+          // neutral is a tone as well as a ramp: interactive/neutral is a purpose (the plain button), so only a step after it counts.
+          const allowed = seg === hue && (hue === 'neutral' || (COLOUR_COLLECTIONS.includes(v.collection) && s[i - 1] === 'accent') || (GRADIENT_COLLECTIONS.includes(v.collection) && i === 0));
+          if (joinedStep) why.push(`"${seg}" is a hue and a step`);
+          else if (stepAfter) why.push(`"${seg}/${s[i + 1]}" is a hue and a step`);
+          else if (!allowed) why.push(`"${hue}" is a hue outside accent/<hue> and the gradient collection`);
+        });
+        if (why.length) bad.push(`${label(v)} (${why.join('; ')})`);
+      }
+      return bad.length ? [finding(rule, BREAKS, 'These semantic names carry a colour value (a hue, or a hue and a step) instead of a purpose. Hues are allowed only as accent/<hue> in the colour collection and as the first segment of a gradient.', bad)] : [];
     },
   },
   {
@@ -169,6 +251,19 @@ const RULES = [
     },
   },
   {
+    id: 'state-words', standardRule: '3', title: `States come from one list: ${STATES.join(', ')}`,
+    check(ctx, rule) {
+      const bad = [];
+      for (const v of ctx.sem) {
+        const s = segs(v.name);
+        const hits = s.flatMap((seg, i) => (seg in OTHER_STATE_WORDS ? [seg] : seg.split('-').filter((w) => w in OTHER_STATE_WORDS)))
+          .filter((w) => !AMBIGUOUS_STATE_WORDS.includes(w) || (s.at(-1) === w && COLOUR_COLLECTIONS.includes(v.collection)));
+        if (hits.length) bad.push(`${label(v)} (${[...new Set(hits)].map((w) => `${w} -> ${OTHER_STATE_WORDS[w]}`).join(', ')})`);
+      }
+      return bad.length ? [finding(rule, BREAKS, `These names use a state word outside the six the standard lists (${STATES.join(', ')}).`, bad)] : [];
+    },
+  },
+  {
     id: 'size-scale', standardRule: '4', title: 'One size scale xs, sm, md, lg, xl, 2xl; no names taken from a pixel value',
     check(ctx, rule) {
       // A size word counts only as the last hyphen word of a segment (body-base, container/medium),
@@ -182,6 +277,15 @@ const RULES = [
       if (pixel.length) out.push(finding(rule, BREAKS, 'These radius names are taken from a pixel value (the height of the thing they round), which the standard forbids.', pixel.map(label)));
       if (numbered.length) out.push(finding(rule, DECIDE, 'These semantic names are numbers (the pixel value times ten), not the xs to 2xl scale. The standard names radius/height/20 as the example; it does not say whether a spacing step counts.', numbered.map(label)));
       return out;
+    },
+  },
+  {
+    id: 'size-words', standardRule: '4', title: `Size words come from the one scale: ${SIZE_SCALE.join(', ')}`,
+    check(ctx, rule) {
+      // Counted as for size-scale: a whole segment, or the last hyphen word of one (label-huge, container/tiny).
+      const words = (name) => segs(name).flatMap((s) => [s, s.split('-').at(-1)]).filter((w, i, a) => OTHER_SIZE_WORDS.includes(w) && a.indexOf(w) === i);
+      const bad = ctx.sem.filter((v) => words(v.name).length);
+      return bad.length ? [finding(rule, BREAKS, `These names use a size word that is not on the scale ${SIZE_SCALE.join(', ')} (and is not one of the old words size-scale reports).`, bad.map((v) => `${label(v)} (${words(v.name).join(', ')})`))] : [];
     },
   },
   {
@@ -280,7 +384,7 @@ const RULES = [
       const out = [];
       if (wrong.length) out.push(finding(rule, BREAKS, `These collection names are not in the category list (${CATEGORY_COLLECTIONS.join(', ')}). The collection name becomes the JSON path and CSS prefix, so this decides every exported name.`, wrong));
       if (empty.length) out.push(finding(rule, DECIDE, 'These collections are empty and not in the category list: fill them or remove them.', empty));
-      if (unlisted.length) out.push(finding(rule, DECIDE, `The standard's category list (${CATEGORY_COLLECTIONS.join(', ')}) has no place for these four (${UNLISTED_CATEGORIES.join(', ')}); extend the list or fold them into an existing category.`, unlisted));
+      if (unlisted.length) out.push(finding(rule, DECIDE, `The standard's category list (${CATEGORY_COLLECTIONS.join(', ')}) has no place for these collections (it knows ${UNLISTED_CATEGORIES.join(', ')} as collections the repo proposes); extend the list or fold them into an existing category.`, unlisted));
       return out;
     },
   },
@@ -301,9 +405,11 @@ const RULES = [
       const all = ctx.sem.filter((v) => v.scopes.includes('ALL_SCOPES'));
       // A primitive with no scopes is hidden from every picker, which is what rule 5 asks: not a finding.
       const primAll = ctx.prims.filter((v) => v.scopes.includes('ALL_SCOPES'));
-      // No Figma scope fits a duration or an easing, so an unscoped Motion token is only a note.
-      const none = ctx.sem.filter((v) => v.scopes.length === 0 && v.collection !== 'Motion');
-      const motionNone = ctx.sem.filter((v) => v.scopes.length === 0 && v.collection === 'Motion');
+      // No Figma scope fits a duration, an easing or a stacking level, so an unscoped Motion or Layer token is only a note.
+      // Layer added 2026-11-16 (it was a breach before): Figma has no scope for a stacking level. To reverse, remove it here.
+      const UNSCOPABLE = ['Motion', 'Layer'];
+      const none = ctx.sem.filter((v) => v.scopes.length === 0 && !UNSCOPABLE.includes(v.collection));
+      const motionNone = ctx.sem.filter((v) => v.scopes.length === 0 && UNSCOPABLE.includes(v.collection));
       const contra = [];
       const only = (v, s) => v.scopes.length === 1 && v.scopes[0] === s;
       for (const v of ctx.sem) {
@@ -321,7 +427,7 @@ const RULES = [
       if (all.length) out.push(finding(rule, BREAKS, 'These semantic tokens are scoped to ALL_SCOPES, which the standard forbids.', all.map(label)));
       if (none.length) out.push(finding(rule, BREAKS, 'These semantic tokens have no scopes at all.', none.map(label)));
       if (primAll.length) out.push(finding(rule, DECIDE, 'These primitives are scoped to ALL_SCOPES: primitives are visible in every picker; rule 5 says components reach only semantic tokens. Empty scopes would hide them.', primAll.map(label)));
-      if (motionNone.length) out.push(finding(rule, NOTE, 'These Motion tokens have no scopes: no Figma scope fits a duration or an easing, so none can be set. Listed, not failed.', motionNone.map(label)));
+      if (motionNone.length) out.push(finding(rule, NOTE, 'These Motion or Layer tokens have no scopes: no Figma scope fits a duration, an easing or a stacking level, so none can be set. Listed, not failed.', motionNone.map(label)));
       if (contra.length) out.push(finding(rule, BREAKS, 'These scopes contradict the name (ALL_SCOPES counts here too, because it is not the one scope the name promises).', contra));
       return out;
     },
@@ -516,6 +622,10 @@ function plant(snap, file, collection, fields, modes) {
 
 const PLANTS = {
   'name-case': (s) => label(plant(s, 'semantic', 'Themes', { name: 'text/Planted Case', values: ['{neutral/light/1100}', '{neutral/dark/1100}'], syntax: 'rule', scopes: ['TEXT_FILL'] })),
+  'segment-order': (s) => label(plant(s, 'semantic', 'Themes', { name: 'primary/text/planted', values: ['{pink/500}', '{pink/200}'], syntax: 'rule', scopes: ['TEXT_FILL'] })),
+  'purpose-not-value': (s) => label(plant(s, 'semantic', 'Themes', { name: 'text/pink-600', values: ['{pink/600}', '{pink/400}'], syntax: 'rule', scopes: ['TEXT_FILL'] })),
+  'state-words': (s) => label(plant(s, 'semantic', 'Themes', { name: 'text/focused', values: ['{neutral/light/1100}', '{neutral/dark/1100}'], syntax: 'rule', scopes: ['TEXT_FILL'] })),
+  'size-words': (s) => label(plant(s, 'semantic', 'Radius', { name: 'container/huge', type: 'number', values: ['{2}'], syntax: 'rule', scopes: ['CORNER_RADIUS'] })),
   'state-segment': (s) => label(plant(s, 'semantic', 'Themes', { name: 'text/hover/planted', values: ['{neutral/light/1100}', '{neutral/dark/1100}'], syntax: 'rule', scopes: ['TEXT_FILL'] })),
   'state-set': (s) => { plant(s, 'semantic', 'Themes', { name: 'interactive/planted/hover', values: ['{not-used/zinc/500}', '{not-used/zinc/400}'], syntax: 'rule', scopes: ['ALL_FILLS'] }); return 'Themes: interactive/planted/*'; },
   'size-scale': (s) => label(plant(s, 'semantic', 'Radius', { name: 'container/xsmall', type: 'number', values: ['{2}'], syntax: 'rule', scopes: ['CORNER_RADIUS'] })),
@@ -617,12 +727,20 @@ function selfTestRefinements(base) {
   add(purpose.every((c) => !f2.includes(c)) && f2.includes('elevation or shadow (cannot tell)') && !f2s.some((c) => c.startsWith('elevation')) && !f3.some((c) => c.startsWith('elevation')) && f0.includes('elevation or shadow'),
     `missing-categories: Border width/*, Size and Motion collections cover ${purpose.length} categories; elevation with no styles.txt -> cannot tell, with an effect style -> covered, with an Elevation collection -> covered, with an empty styles.txt -> not started (empty Elevation collection does not count)`);
 
-  // collection-names (c): the four are one "decide" finding, and not repeated as empty or as off the list.
+  // collection-names (c): the five proposed collections are one "decide" finding, and not repeated as empty or as off the list.
+  plant(s3, 'semantic', 'Layer', { name: 'overlay', type: 'number', values: ['1000'], syntax: 'rule', scopes: [] });
   const f4 = ruleOnly('collection-names', s3);
-  const together = f4.filter((f) => f.message.includes('has no place for these four'));
-  const elsewhere = f4.filter((f) => !together.includes(f)).flatMap((f) => f.tokens).filter((t) => /collection (Border|Size|Motion|Elevation)\b/.test(t));
+  const together = f4.filter((f) => f.message.includes('has no place for these collections'));
+  const elsewhere = f4.filter((f) => !together.includes(f)).flatMap((f) => f.tokens).filter((t) => /collection (Border|Size|Motion|Elevation|Layer)\b/.test(t));
   add(together.length === 1 && together[0].severity === DECIDE && UNLISTED_CATEGORIES.every((c) => together[0].tokens.some((t) => t.startsWith(`collection ${c} `))) && elsewhere.length === 0,
-    `collection-names: Border, Size, Motion and Elevation -> ${together.length} decide finding naming ${together[0]?.tokens.length ?? 0}; elsewhere ${elsewhere.length}`);
+    `collection-names: ${UNLISTED_CATEGORIES.join(', ')} -> ${together.length} decide finding naming ${together[0]?.tokens.length ?? 0}; elsewhere ${elsewhere.length}`);
+
+  // Layer: a Layer collection covers the z-index category, and an unscoped Layer token is a note, as Motion is.
+  const fz = cats(ruleOnly('missing-categories', s3));
+  const fls = ruleOnly('scopes', s3);
+  const layerTok = 'Layer: overlay';
+  add(!fz.includes('z-index') && cats(ruleOnly('missing-categories', s2)).includes('z-index') && holds(fls, NOTE, layerTok) && !holds(fls, BREAKS, layerTok),
+    `Layer: z-index reported without a Layer collection -> ${cats(ruleOnly('missing-categories', s2)).includes('z-index')}, with Layer overlay -> ${fz.includes('z-index') ? 'still reported' : 'covered'}; unscoped Layer token -> ${holds(fls, NOTE, layerTok) ? 'note' : 'not a note'}${holds(fls, BREAKS, layerTok) ? ', and breaks' : ''}`);
 
   // state-segment (d): focus/width is caught, and the message names the fix.
   const s5 = structuredClone(base);
@@ -638,6 +756,40 @@ function selfTestRefinements(base) {
   const s5Ring = ruleOnly('missing-categories', s5).some((f) => f.category === ringCat);
   const s6Ring = ruleOnly('missing-categories', s6).some((f) => f.category === ringCat);
   add(baseRing && !s5Ring && !s6Ring, `missing-categories: focus ring reported on the base snapshot -> ${baseRing}; covered by Border focus/width -> ${!s5Ring}; covered by Border ring/offset -> ${!s6Ring}`);
+
+  // The four breaches the 2026-11-16 review found passing with no finding, each planted as the review named it, plus the
+  // hue decision: accent and gradient hues are the owner's purpose names and are not reported.
+  const s7 = structuredClone(base);
+  const p7 = (coll, name, values, extra = {}) => label(plant(s7, 'semantic', coll, { name, values, syntax: 'rule', scopes: ['TEXT_FILL'], ...extra }));
+  const byValue = p7('Themes', 'text/pink-600', ['{pink/600}', '{pink/400}']);
+  const hueStep = p7('Themes', 'surface/accent/pink/600', ['{pink/600}', '{pink/400}'], { scopes: ['FRAME_FILL'] });
+  const bareHue = p7('Themes', 'border/red', ['{red/600}', '{red/400}'], { scopes: ['STROKE_COLOR'] });
+  const focused = p7('Themes', 'text/focused', ['{neutral/light/1100}', '{neutral/dark/1100}']);
+  const pressed = p7('Themes', 'surface/primary/pressed', ['{pink/50}', '{pink/950}'], { scopes: ['FRAME_FILL'] });
+  const order = p7('Themes', 'primary/text/x', ['{pink/500}', '{pink/200}']);
+  const huge = p7('Themes', 'text/huge', ['{neutral/light/1100}', '{neutral/dark/1100}']);
+  const xxl = label(plant(s7, 'semantic', 'Radius', { name: 'container/3xl', type: 'number', values: ['{16}'], syntax: 'rule', scopes: ['CORNER_RADIUS'] }));
+  const bound = label(plant(s7, 'semantic', 'Radius', { name: 'menu/max', type: 'number', values: ['{16}'], syntax: 'rule', scopes: ['CORNER_RADIUS'] }));
+  const pv = ruleOnly('purpose-not-value', s7);
+  const sw = ruleOnly('state-words', s7);
+  const so = ruleOnly('segment-order', s7);
+  const sz = ruleOnly('size-words', s7);
+  add(holds(pv, BREAKS, byValue) && holds(pv, BREAKS, hueStep) && holds(pv, BREAKS, bareHue), `purpose-not-value: ${byValue}, ${hueStep} and ${bareHue} -> ${[byValue, hueStep, bareHue].filter((m) => holds(pv, BREAKS, m)).length} of 3 caught`);
+  const arrow = p7('Themes', 'icon/arrow-down', ['{pink/700}', '{pink/300}'], { scopes: ['FRAME_FILL'] });
+  const normalLead = label(plant(s7, 'semantic', 'Typography', { name: 'line-height/normal', type: 'number', values: ['{typography/line-height/16}'], syntax: 'rule', scopes: ['LINE_HEIGHT'] }));
+  const swAll = ruleOnly('state-words', s7).flatMap((f) => f.tokens);
+  const swNeg = [arrow, normalLead].filter((m) => swAll.some((t) => t.startsWith(m)));
+  add(holds(sw, BREAKS, focused, '') && holds(sw, BREAKS, pressed) && sw.some((f) => f.tokens.includes(`${pressed} (pressed -> active)`)) && swNeg.length === 0,
+    `state-words: ${focused} and ${pressed} -> caught, pressed mapped to active; ${arrow} and ${normalLead} (ordinary words, not states) -> ${swNeg.length ? `reported: ${swNeg.join(', ')}` : 'not reported'}`);
+  add(holds(so, BREAKS, order, 'move the role to the front'), `segment-order: ${order} -> ${holds(so, BREAKS, order) ? 'caught' : 'not caught'}`);
+  add(holds(sz, BREAKS, huge) && holds(sz, BREAKS, xxl) && !sz.some((f) => f.tokens.some((t) => t.startsWith(bound))), `size-words: ${huge} and ${xxl} -> caught; ${bound} (a bound, not a size) -> not reported`);
+  // On the owner's snapshot: no accent hue (text/accent/pink/default), no gradient hue (red/glow), no interactive/neutral
+  // and no gradient red/text (a hue, then a role) is reported by the new rules.
+  const basePv = ruleOnly('purpose-not-value', base).flatMap((f) => f.tokens);
+  const baseSo = ruleOnly('segment-order', base).filter((f) => f.severity === BREAKS).flatMap((f) => f.tokens);
+  const accentSeen = basePv.filter((t) => /: (text|icon|surface)\/accent\/|^Surface Gradients: |^Gradient: |interactive\/neutral\//.test(t));
+  add(accentSeen.length === 0 && !baseSo.some((t) => /^(Surface Gradients|Gradient): /.test(t)) && base.semantic.some((c) => c.variables.some((v) => /^text\/accent\/pink\//.test(v.name))),
+    `hue decision: accent hues, gradient hues and interactive/neutral in the owner's snapshot -> ${accentSeen.length} reported; gradient red/text -> not an order breach`);
   return out;
 }
 
@@ -673,7 +825,7 @@ function main() {
   const snap = loadSnapshots();
   if (args.includes('--self-test')) {
     const lines = selfTest(snap);
-    const extra = selfTestRefinements(snap);
+    const extra = [...selfTestRefinements(snap), ...isolationSelfTest(fileURLToPath(import.meta.url), ['lint.json'], ['--no-fail'])];
     for (const l of [...lines, ...extra]) console.log(l.text);
     const passed = lines.filter((l) => l.ok).length;
     const extraPassed = extra.filter((l) => l.ok).length;
@@ -685,6 +837,12 @@ function main() {
   const findings = runRules(snap, styles);
   report(findings, snap);
   const c = counts(findings);
+  const summary = `${c.rules} rules, ${c.findings} findings: ${c.breaksTheStandard} break the standard, ${c.decide} to decide, ${c.notes} notes`;
+  if (args.includes('--report-only')) {
+    console.log('Report only: nothing written.');
+    console.log(summary);
+    process.exit(0);
+  }
   mkdirSync(dirname(OUT), { recursive: true });
   writeFileSync(OUT, `${JSON.stringify({
     tool: 'v2/tools/lint-tokens.mjs',
@@ -694,9 +852,9 @@ function main() {
     counts: c,
     findings,
   }, null, 2)}\n`);
-  console.log(`Wrote ${OUT.slice(ROOT.length + 1)}.`);
-  console.log(`${c.rules} rules, ${c.findings} findings: ${c.breaksTheStandard} break the standard, ${c.decide} to decide, ${c.notes} notes`);
-  process.exit(c.breaksTheStandard > 0 && !args.includes('--report-only') ? 1 : 0);
+  console.log(`Wrote ${OUT.startsWith(ROOT) ? OUT.slice(ROOT.length + 1) : OUT}.`);
+  console.log(summary);
+  process.exit(c.breaksTheStandard > 0 && !args.includes('--no-fail') ? 1 : 0);
 }
 
 main();

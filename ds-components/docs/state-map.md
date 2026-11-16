@@ -3,48 +3,50 @@
 
 Every state of every built component: the part it is on, the selector that matches it in code, who sets it and the Figma value that draws it. Generated from the specs; a reference, not usage guidance.
 
-| Component | State | Part | Selector | Set by | Figma value |
-|---|---|---|---|---|---|
-| Button | hover | root | `:hover` | native | `state=hover` |
-| Button | active | root | `:active` | native |  |
-| Button | focus | root | `:focus-visible` | native | `state=focus` |
-| Button | disabled | root | `:is(:disabled, [data-disabled])` | native | `state=disabled` |
-| Button | loading | root | `[data-loading]` | prop |  |
-| Dialog | open | content | `[data-state="open"]` | primitive |  |
-| Dialog | closed | content | `[data-state="closed"]` | primitive |  |
-| Dialog | overlayOpen | overlay | `[data-state="open"]` | primitive |  |
-| Dialog | overlayClosed | overlay | `[data-state="closed"]` | primitive |  |
-| Dialog | triggerOpen | trigger | `[data-state="open"]` | primitive |  |
-| Dialog | triggerClosed | trigger | `[data-state="closed"]` | primitive |  |
-| Dialog | bodyFocus | body | `:focus-visible` | native |  |
-| DropdownMenu | triggerOpen | trigger | `[data-state="open"]` | primitive |  |
-| DropdownMenu | triggerClosed | trigger | `[data-state="closed"]` | primitive |  |
-| DropdownMenu | triggerDisabled | trigger | `[data-disabled]` | primitive |  |
-| DropdownMenu | open | content | `[data-state="open"]` | primitive |  |
-| DropdownMenu | sideTop | content | `[data-side="top"]` | primitive |  |
-| DropdownMenu | sideBottom | content | `[data-side="bottom"]` | primitive |  |
-| DropdownMenu | alignStart | content | `[data-align="start"]` | primitive |  |
-| DropdownMenu | alignEnd | content | `[data-align="end"]` | primitive |  |
-| DropdownMenu | itemHighlighted | item | `[data-highlighted]` | primitive | `state=hover` |
-| DropdownMenu | itemDisabled | item | `[data-disabled]` | primitive | `state=disabled` |
-| DropdownMenu | checkboxItemHighlighted | checkboxItem | `[data-highlighted]` | primitive | `state=hover` |
-| DropdownMenu | checkboxItemDisabled | checkboxItem | `[data-disabled]` | primitive | `state=disabled` |
-| DropdownMenu | checkboxItemChecked | checkboxItem | `[data-state="checked"]` | primitive | `state=selected` |
-| DropdownMenu | checkboxItemUnchecked | checkboxItem | `[data-state="unchecked"]` | primitive |  |
-| DropdownMenu | radioItemHighlighted | radioItem | `[data-highlighted]` | primitive | `state=hover` |
-| DropdownMenu | radioItemDisabled | radioItem | `[data-disabled]` | primitive | `state=disabled` |
-| DropdownMenu | radioItemChecked | radioItem | `[data-state="checked"]` | primitive | `state=selected` |
-| DropdownMenu | radioItemUnchecked | radioItem | `[data-state="unchecked"]` | primitive |  |
-| Input | hover | control | `:hover` | native | `state=hover` |
-| Input | focus | control | `:focus-within` | native | `state=focus` |
-| Input | disabled | root | `[data-disabled]` | prop | `state=disabled` |
-| Input | readOnly | root | `[data-readonly]` | prop |  |
-| Input | invalid | root | `[data-invalid]` | prop | `state=error` |
-| Input | placeholderShown | input | `:placeholder-shown` | native | `state=placeholder` |
-| Input | filled | input | `:not(:placeholder-shown)` | native | `state=filled` |
-| Tabs | unselected | trigger | `[data-state="inactive"]` | primitive | `state=default` |
-| Tabs | hover | trigger | `:hover` | native | `state=hover` |
-| Tabs | focus | trigger | `:focus-visible` | native |  |
-| Tabs | selected | trigger | `[data-state="active"]` | primitive | `state=selected` |
-| Tabs | disabled | trigger | `[data-disabled]` | primitive | `state=disabled` |
-| Tabs | contentFocus | content | `:focus-visible` | native |  |
+**21 of 21 Figma values here are not confirmed.** Their specs say confirmed: false: the values were read from a stale cached copy inside the Semantic Tokens file, older than the published library, and have not been checked against the live Components file. Treat them as a guess at the mapping until a row says yes.
+
+| Component | State | Part | Selector | Set by | Figma value | Confirmed in Figma |
+|---|---|---|---|---|---|---|
+| Button | hover | root | `:hover` | native | `state=hover` | no, not confirmed |
+| Button | active | root | `:active` | native |  |  |
+| Button | focus | root | `:focus-visible` | native | `state=focus` | no, not confirmed |
+| Button | disabled | root | `:is(:disabled, [data-disabled])` | native | `state=disabled` | no, not confirmed |
+| Button | loading | root | `[data-loading]` | prop |  |  |
+| Dialog | open | content | `[data-state="open"]` | primitive |  |  |
+| Dialog | closed | content | `[data-state="closed"]` | primitive |  |  |
+| Dialog | overlayOpen | overlay | `[data-state="open"]` | primitive |  |  |
+| Dialog | overlayClosed | overlay | `[data-state="closed"]` | primitive |  |  |
+| Dialog | triggerOpen | trigger | `[data-state="open"]` | primitive |  |  |
+| Dialog | triggerClosed | trigger | `[data-state="closed"]` | primitive |  |  |
+| Dialog | bodyFocus | body | `:focus-visible` | native |  |  |
+| DropdownMenu | triggerOpen | trigger | `[data-state="open"]` | primitive |  |  |
+| DropdownMenu | triggerClosed | trigger | `[data-state="closed"]` | primitive |  |  |
+| DropdownMenu | triggerDisabled | trigger | `[data-disabled]` | primitive |  |  |
+| DropdownMenu | open | content | `[data-state="open"]` | primitive |  |  |
+| DropdownMenu | sideTop | content | `[data-side="top"]` | primitive |  |  |
+| DropdownMenu | sideBottom | content | `[data-side="bottom"]` | primitive |  |  |
+| DropdownMenu | alignStart | content | `[data-align="start"]` | primitive |  |  |
+| DropdownMenu | alignEnd | content | `[data-align="end"]` | primitive |  |  |
+| DropdownMenu | itemHighlighted | item | `[data-highlighted]` | primitive | `state=hover` | no, not confirmed |
+| DropdownMenu | itemDisabled | item | `[data-disabled]` | primitive | `state=disabled` | no, not confirmed |
+| DropdownMenu | checkboxItemHighlighted | checkboxItem | `[data-highlighted]` | primitive | `state=hover` | no, not confirmed |
+| DropdownMenu | checkboxItemDisabled | checkboxItem | `[data-disabled]` | primitive | `state=disabled` | no, not confirmed |
+| DropdownMenu | checkboxItemChecked | checkboxItem | `[data-state="checked"]` | primitive | `state=selected` | no, not confirmed |
+| DropdownMenu | checkboxItemUnchecked | checkboxItem | `[data-state="unchecked"]` | primitive |  |  |
+| DropdownMenu | radioItemHighlighted | radioItem | `[data-highlighted]` | primitive | `state=hover` | no, not confirmed |
+| DropdownMenu | radioItemDisabled | radioItem | `[data-disabled]` | primitive | `state=disabled` | no, not confirmed |
+| DropdownMenu | radioItemChecked | radioItem | `[data-state="checked"]` | primitive | `state=selected` | no, not confirmed |
+| DropdownMenu | radioItemUnchecked | radioItem | `[data-state="unchecked"]` | primitive |  |  |
+| Input | hover | control | `:hover` | native | `state=hover` | no, not confirmed |
+| Input | focus | control | `:focus-within` | native | `state=focus` | no, not confirmed |
+| Input | disabled | root | `[data-disabled]` | prop | `state=disabled` | no, not confirmed |
+| Input | readOnly | root | `[data-readonly]` | prop |  |  |
+| Input | invalid | root | `[data-invalid]` | prop | `state=error` | no, not confirmed |
+| Input | placeholderShown | input | `:placeholder-shown` | native | `state=placeholder` | no, not confirmed |
+| Input | filled | input | `:not(:placeholder-shown)` | native | `state=filled` | no, not confirmed |
+| Tabs | unselected | trigger | `[data-state="inactive"]` | primitive | `state=default` | no, not confirmed |
+| Tabs | hover | trigger | `:hover` | native | `state=hover` | no, not confirmed |
+| Tabs | focus | trigger | `:focus-visible` | native |  |  |
+| Tabs | selected | trigger | `[data-state="active"]` | primitive | `state=selected` | no, not confirmed |
+| Tabs | disabled | trigger | `[data-disabled]` | primitive | `state=disabled` | no, not confirmed |
+| Tabs | contentFocus | content | `:focus-visible` | native |  |  |

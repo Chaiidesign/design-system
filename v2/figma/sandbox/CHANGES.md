@@ -169,3 +169,88 @@ the screen scripts after any component script.
 ---
 
 - 16 November 2026 (third step): in "Border (DS V2)" (VariableCollectionId:4030:112) two variables were renamed, ids unchanged: VariableID:4030:115 "focus/width" to "ring/width" (WEB code syntax var(--border-ring-width)) and VariableID:4030:116 "focus/offset" to "ring/offset" (var(--border-ring-offset)); values, scopes and descriptions unchanged. Reason: a state word may only be the last segment of a token name. Nothing was added: "Motion (DS V2)" already held duration/spin (VariableID:4030:131, 800, var(--duration-spin)). Counts before and after: 20 collections, 961 variables. `scripts/`, `component-scripts/` and `expected.json` were regenerated; `semantic.txt` was rewritten by `predict-snapshot.mjs` and proved by `figma-verify.mjs` against fresh `semantic.hashes.txt` from hash.figma.js (exit 0; only lines 301 to 325 and the total changed); `primitives.txt` and its hashes are unchanged and still pass. Read-back after the rename (saved in `readback-parts/01-all.json`): "174 variants, 3623 bindings checked, 0 mismatches, 0 raw values".
+
+---
+
+# Token sync, 16 November 2026 (fourth step, about 11:40 to 11:45 PST)
+
+Goal: make the "(DS V2)" collections equal to `ds-tokens/dist/tokens.json` (SHA-1 prefix 456fd582f889a). Only Souvenir-test was written to.
+
+How the difference was found: hash.figma.js (both suffixes) on the live file proved the committed `semantic.txt` (337 lines) and
+`primitives.txt` (196 lines) exact before any write (figma-verify exit 0). The generator was then updated (below), `predict-snapshot.mjs`
+wrote the target snapshot, and the line diff between the two was the full difference: 17 existing variables changed (15 Themes aliases
+covering 28 mode values, 1 description, 1 rename with its WEB syntax) plus one new collection with 2 variables. Scopes: none differed;
+the 21 existing proposed variables already matched `ds-tokens/proposed/tokens.json`, and the 2 Layer variables were created with its `[]`
+(Elevation is two effect styles and has no scopes). Primitives: no difference. Nothing outside the brief was found.
+
+## Variables changed (all ids unchanged)
+
+Themes (DS V2), VariableCollectionId:4029:2, aliases to Colors (DS V2 primitives):
+
+| Variable | Id | Mode | Old → new |
+| --- | --- | --- | --- |
+| surface/accent/teal/bold/default | VariableID:4029:110 | light, dark | teal/700 → teal/800 |
+| surface/accent/teal/bold/hover | VariableID:4029:111 | light, dark | teal/800 → teal/700 |
+| surface/accent/blue/bold/default | VariableID:4029:116 | light, dark | blue/700 → blue/800 |
+| surface/accent/blue/bold/hover | VariableID:4029:117 | light, dark | blue/800 → blue/700 |
+| icon/accent/teal/bold | VariableID:4029:73 | light, dark | teal/100 → teal/300 |
+| icon/accent/blue/bold | VariableID:4029:77 | light, dark | blue/100 → blue/300 |
+| icon/accent/violet/bold | VariableID:4029:81 | light, dark | violet/100 → violet/300 |
+| icon/accent/amber/bold | VariableID:4029:85 | light, dark | amber/100 → amber/300 |
+| icon/accent/pink/bold | VariableID:4029:89 | light, dark | pink/100 → pink/300 |
+| icon/accent/green/bold | VariableID:4029:93 | light, dark | green/100 → green/300 |
+| icon/accent/orange/bold | VariableID:4029:97 | light, dark | orange/100 → orange/300 |
+| icon/accent/red/bold | VariableID:4029:101 | light, dark | red/100 → red/300 |
+| icon/accent/rose/bold | VariableID:4029:105 | light, dark | rose/100 → rose/300 |
+| border/strong/default | VariableID:4029:175 | light | neutral/light/500 → neutral/light/600 |
+| border/success | VariableID:4029:68 | light | green/600 → green/700 |
+
+(The light values of the nine icon/accent/<hue>/bold variables are the owner's Figma value again, <hue>/300.)
+
+Border (DS V2): width/md, VariableID:4030:114, description "…the active tab&#39;s underline." → "…the active tab’s underline."
+(U+2019). Cause: Figma's variable `description` setter HTML-escapes a straight apostrophe. Proof from the live file: the stored
+string's char codes were 38 35 51 57 59 ("&#39;") inside the plugin, and writing a plain `'` read back as `&#39;` at once; U+2019 is
+stored as written. Fix: `figmaDescription()` in `v2/tools/figma/make-sandbox-scripts.mjs` replaces `'` with U+2019 for every description
+it writes, and `predict-snapshot.mjs` no longer adds `&#39;`. No other "(DS V2)" description held `&#`, `&amp;` or another entity.
+`ds-tokens/descriptions.json` keeps the straight apostrophe, so diff-figma lists this one item under "Description differs" (it does not fail).
+
+## Renamed
+
+Motion (DS V2), VariableID:4030:130: "duration/base" → "duration/enter", WEB code syntax var(--duration-base) → var(--duration-enter).
+Value 160, scopes [] and description ("A menu or dialog appearing or leaving.", the same text in tokens.json) unchanged. The brief
+expected a new description; tokens.json holds the old one, so none was changed.
+
+## New collection
+
+Layer (DS V2), VariableCollectionId:4062:2, one mode "default" (4062:0): overlay VariableID:4062:3 = 1000, var(--layer-overlay);
+popover VariableID:4062:4 = 1100, var(--layer-popover); scopes [] (hidden from pickers); descriptions from
+`ds-tokens/proposed/tokens.json`. Counts after: 21 collections, 963 variables, 5 effect styles, 8 text styles, 21 pages.
+
+## Generator and files
+
+`make-sandbox-scripts.mjs`: Layer added to the semantic collections; a proposed token's scopes are taken from
+`ds-tokens/proposed/tokens.json`; descriptions pass through `figmaDescription()`. Self-test passes. Regenerating renamed the
+third script to `03-typography+radius+density+surface-gradients+border+size+motion+layer.figma.js` (git mv of the old file; it was
+not run; the live change was one targeted, idempotent use_figma call that looked every variable up by name inside the "(DS V2)"
+collections). `semantic.txt` (340 lines) and `semantic.hashes.txt` were renewed; figma-verify exit 0 for both snapshots; primitives
+and their hashes are unchanged. `SOUVENIR_SNAPSHOT_DIR=v2/figma/sandbox node v2/tools/diff-figma.mjs --report-only`: "Figma and code
+agree on 331 of 331 tokens; 0 drift, 0 intended overrides, 73 overrides to remove; 2 proposed in the repo, not in Figma" (the run
+rewrote `ds-tokens/audit/`, which was restored with git checkout).
+
+## Read-back
+
+Specs read at 11:43:35 PST; `expected.json` and every component script regenerated byte-identical to the committed ones. The read-back
+walk (readback.figma.js, ONLY = null, 19:44:43 UTC) returned FNV fingerprints of dict, nodes and variants instead of its 47 KB body;
+all four equal those of `readback-parts/01-all.json`, whose check gives "174 variants, 3623 bindings checked, 0 mismatches, 0 raw values"
+(the fresh body itself was not saved or re-checked; equal fingerprints stand for it).
+Screens page: neither screen uses a teal or blue bold surface or a bold accent icon. border/strong/default is bound by Input (default,
+focus, filled, readOnly), Button outline and DropdownMenuContent, so in light mode those edges are one step darker: the two Input
+instances of the light mobile screen (4050:701, 4050:707) now resolve to #7d818a (neutral/light/600).
+
+## Nothing outside the "(DS V2)" set was edited
+
+Every write of this step names a "(DS V2)" variable by id (width/md, after checking its collection name) or by name inside a collection
+looked up through a guard that throws unless the name ends "(DS V2)" or "(DS V2 primitives)"; each call checks `figma.fileKey`.
+After the writes, all 8 pre-existing collections hash exactly to the `after-inventory.json` baseline (rows in getLocalVariablesAsync()
+order, the order that baseline used: Colors 722ce51c, Typography ea3dead9, Border 5f2df4f5, the five "(Product variables)"/Global ones as
+recorded). Effect styles: the 3 old ones plus the 2 "(DS V2)" ones; pages 21, top-level node counts per page unchanged.

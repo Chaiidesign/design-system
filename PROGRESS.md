@@ -112,3 +112,22 @@ Pass criteria: to be written before the phase starts.
 | 5.1 Switch on the loops: CI on every change, nightly drift scan and benchmark, weekly delta review | Fable | next | |
 | 5.2 Pilot plan for E1 (cost summary with real people), human test plan, rollout plan | Opus drafts, Fable approves | next | |
 | 5.3 Final report | Fable | next | |
+
+## The V2 direction (branch v2-direction, 16 November 2026)
+
+Done on the CEO's instruction of 16 November, outside the phase order above. Record: `digests/2026-11-16-v2.md`. Decisions: DECISIONS.md D-016, A-20 to A-22.
+
+| Item | Owner | Status | Evidence |
+|---|---|---|---|
+| V.1 Exact snapshot of the owner's two Figma files | Sonnet copies; a script proves | done | `npm run v2:selftest` (figma-verify) |
+| V.2 Token gate: contrast audit, naming lint, Figma-to-code diff, token build | Opus builds; Fable reviews | done | `npm run v2:tokens`: built set 760 pairs, 0 fail |
+| V.3 Specs for Button, Input, Tabs, DropdownMenu, Dialog; generator; React components on Radix | Fable writes the first spec and the conventions; Opus builds | done | `npm run v2:specs`, `npm run v2:lint` |
+| V.4 Browser runner on every example | Opus builds; Fable reviews | done, with one open finding | `npm run v2:test`: 3,230 checks, 60 fail (one axe rule on modal menus) |
+| V.5 The system rebuilt in the sandbox Figma file, with read-back | Opus | done | `v2/figma/sandbox/CHANGES.md` |
+| V.6 Same screens in three directions; report page; growth map | Opus builds; Fable writes the comparison | done | `v2/screens/index.html`, `v2/report/index.html` |
+| V.7 One fresh review and its fixes | 3 Fable reviewers; Opus fixers | done | `gates/raw/2026-11-16-v2-final-review.json` |
+| V.8 Apply the fixes in the owner's Figma files | CEO decides (A-20) | blocked on the CEO | `ds-tokens/audit/figma-patch-list.md` |
+| V.9 Read the owner's live Components file; confirm the state map | Needs access | blocked: no access | 21 of 21 Figma values marked not confirmed |
+| V.10 Screen reader, real phone, people | Steward | next | none yet |
+| V.11 Next components: Spinner, Sheet, Avatar, Chip | Opus | next | `v2/report/growth-map.json` |
+

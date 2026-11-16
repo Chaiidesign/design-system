@@ -5,7 +5,12 @@
 // event: select (the label of each action item chosen), openChange (true or false), checkedChange (the label and
 // the new value) and valueChange (the radio value chosen). Radio groups and checkbox items start from the values the
 // spec gives and hold them in useState, so a test reads both what the person did and what the menu shows.
+//
+// Test hook, not an example: window.__dropdownMenuFixtures.mountShortcuts(hints) mounts an open menu with one item
+// per hint, for the edge cases of dropdown-menu-shortcut-exposed (a plus key, a two-step sequence) that no spec
+// example should carry.
 import { useState } from "react";
+import { createRoot } from "react-dom/client";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -56,6 +61,27 @@ function useRadio(id: string, initial: string) {
     },
   };
 }
+
+function mountShortcuts(hints: string[]) {
+  const host = document.createElement("div");
+  host.setAttribute("data-dropdown-menu-fixture", "shortcuts");
+  document.body.appendChild(host);
+  createRoot(host).render(
+    <DropdownMenu defaultOpen>
+      <DropdownMenuTrigger asChild>
+        <Button>Shortcuts</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuPortal>
+        <DropdownMenuContent>
+          {hints.map((hint, i) => (
+            <DropdownMenuItem key={hint} shortcut={hint}>{`Item ${i + 1}`}</DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenuPortal>
+    </DropdownMenu>,
+  );
+}
+if (typeof window !== "undefined") (window as unknown as { __dropdownMenuFixtures?: object }).__dropdownMenuFixtures = { mountShortcuts };
 
 function Closed() {
   const id = "closed";

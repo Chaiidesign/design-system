@@ -1,13 +1,25 @@
 // Reads the Figma snapshots in v2/figma/ and resolves every variable to a value.
 // The snapshots are text copies made by v2/tools/figma/export.figma.js and proved exact by v2/tools/figma-verify.mjs.
 // Every other tool in v2/tools/ reads Figma through this file, so there is one parser.
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, statSync, mkdtempSync, copyFileSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
 // SOUVENIR_SNAPSHOT_DIR points every tool at another snapshot, for example the sandbox copy in v2/figma/sandbox/.
 export const SNAPSHOT_DIR = process.env.SOUVENIR_SNAPSHOT_DIR || join(here, '..', '..', 'figma');
+export const DEFAULT_SNAPSHOT_DIR = resolve(here, '..', '..', 'figma');
+
+// Where a tool writes its generated audit files. The owner's snapshot (v2/figma, the default) writes to ds-tokens/audit/;
+// any other snapshot writes to <that snapshot folder>/audit/, so a run on a sandbox copy never replaces the owner's results.
+// The comparison is on resolved paths, so SOUVENIR_SNAPSHOT_DIR=v2/figma still counts as the default.
+export function auditDir(dir = SNAPSHOT_DIR) {
+  const d = resolve(dir);
+  return d === DEFAULT_SNAPSHOT_DIR ? resolve(here, '..', '..', '..', 'ds-tokens', 'audit') : join(d, 'audit');
+}
 
 // One snapshot line:  name [T] value | value ~ web code syntax ~ scopes ~ "description"
 const LINE = /^(.*?) \[([CFSB])\] (.*) ~ (.*?) ~ (.*?) ~ (".*")$/;
@@ -117,4 +129,47 @@ export function expectedSyntax(v) {
   const prefix = CSS_PREFIX[v.collection];
   const path = v.name.replace(/\/default$/, '').split('/').join('-');
   return `var(--${prefix ? prefix + '-' : ''}${path})`;
+}
+
+// ---------- output isolation, shared by the self-tests of lint-tokens, diff-figma and audit-contrast ----------
+
+// Runs `tool` as a child process against a temporary copy of the owner's snapshot and proves three things:
+// (1) a non-default snapshot folder writes `files` to <copy>/audit/ and nothing in ds-tokens/audit/ changes;
+// (2) the same run with --report-only writes nothing, in either place;
+// (3) (checked by the caller's own planted cases) the default folder still writes to ds-tokens/audit/ through auditDir().
+// `writeArgs` are the arguments of a writing run (for example ['--no-fail']). Returns [{ ok, text }].
+export function isolationSelfTest(tool, files, writeArgs = []) {
+  const repoAudit = auditDir(DEFAULT_SNAPSHOT_DIR);
+  const fingerprint = (d) => {
+    if (!existsSync(d)) return '(absent)';
+    return readdirSync(d).sort().map((f) => {
+      const p = join(d, f);
+      return statSync(p).isFile() ? `${f}:${createHash('sha256').update(readFileSync(p)).digest('hex')}` : `${f}/`;
+    }).join('\n');
+  };
+  const tmp = mkdtempSync(join(tmpdir(), 'souvenir-isolation-'));
+  const out = [];
+  const add = (ok, text) => out.push({ ok, text: `${ok ? 'PASS' : 'FAIL'} ${text}` });
+  try {
+    for (const f of ['semantic.txt', 'primitives.txt']) copyFileSync(join(DEFAULT_SNAPSHOT_DIR, f), join(tmp, f));
+    const env = { ...process.env, SOUVENIR_SNAPSHOT_DIR: tmp };
+    const run = (args) => spawnSync(process.execPath, [tool, ...args], { env, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    const before = fingerprint(repoAudit);
+    const w = run(writeArgs);
+    const landed = files.filter((f) => existsSync(join(tmp, 'audit', f)));
+    const repoSame = fingerprint(repoAudit) === before;
+    add(w.status === 0 && landed.length === files.length && repoSame && auditDir(tmp) === join(tmp, 'audit'),
+      `isolation: SOUVENIR_SNAPSHOT_DIR=<temporary copy> ${writeArgs.join(' ')} -> exit ${w.status}, ${landed.length} of ${files.length} files in <copy>/audit/ (${files.join(', ')}), ds-tokens/audit ${repoSame ? 'unchanged' : 'CHANGED'}`);
+    rmSync(join(tmp, 'audit'), { recursive: true, force: true });
+    const r = run(['--report-only']);
+    const wroteCopy = existsSync(join(tmp, 'audit'));
+    const repoSame2 = fingerprint(repoAudit) === before;
+    add(r.status === 0 && !wroteCopy && repoSame2,
+      `isolation: --report-only on the copy -> exit ${r.status}, <copy>/audit ${wroteCopy ? 'WRITTEN' : 'not created'}, ds-tokens/audit ${repoSame2 ? 'unchanged' : 'CHANGED'}`);
+    add(auditDir(DEFAULT_SNAPSHOT_DIR) === resolve(here, '..', '..', '..', 'ds-tokens', 'audit') && auditDir(join(DEFAULT_SNAPSHOT_DIR, '.')) === repoAudit && auditDir(join(DEFAULT_SNAPSHOT_DIR, 'sandbox')) === join(DEFAULT_SNAPSHOT_DIR, 'sandbox', 'audit'),
+      'isolation: auditDir(v2/figma) is ds-tokens/audit, auditDir(v2/figma/.) the same, auditDir(v2/figma/sandbox) is v2/figma/sandbox/audit');
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+  return out;
 }

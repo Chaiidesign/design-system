@@ -2,9 +2,9 @@
 //
 //   node v2/tools/build-tokens.mjs              build, check, write; exit 0 only if every check passes
 //   node v2/tools/build-tokens.mjs --self-test  plant known faults in memory and confirm the checks catch them (writes nothing)
-//   node v2/tools/build-tokens.mjs --no-overrides --out v2/screens/tokens-as-given
-//                                               the same build without ds-tokens/overrides.json, only the dist files, into
-//                                               another folder (either option may be used alone; see "main" below)
+//   node v2/tools/build-tokens.mjs --no-overrides --no-proposed --out v2/screens/tokens-as-given
+//                                               the same build without ds-tokens/overrides.json and without the proposed
+//                                               tokens, only the dist files, into another folder (see "main" below)
 //
 // What it writes (all generated; do not edit by hand):
 //   ds-tokens/primitives/{color,typography,space,radius}.tokens.json   DTCG 2025.10, one file per primitive collection
@@ -268,7 +268,7 @@ function readProposed(snap, figma, proposed, r, fail) {
       try { dtcg[mode] = dtcgValue(kind, values[mode]); } catch (e) { return fail('proposed', `${where} (${mode}): ${e.message}`); }
     }
     const coll = figColl || (virtual[p.collection] ??= { name: p.collection, modes, variables: [], proposedOnly: true });
-    const v = { collection: p.collection, name: p.name, type: p.type, syntax, scopes: [], description: p.description || '' };
+    const v = { collection: p.collection, name: p.name, type: p.type, syntax, scopes: Array.isArray(p.scopes) ? [...p.scopes] : [], description: p.description || '' }; // scopes carried so the Figma patch list can name them
     out.push({ v, coll, kind, modes, values, aliasName, aliasPath, dtcg, proposed: { why: p.why || '' } });
   });
   return out;
@@ -700,6 +700,14 @@ function selfTest(snap, proposed, descriptions) {
   // The bad entry is refused, so its token is also reported as undescribed: two errors, both under "description".
   results.push(['an entry with an unknown source caught', b7.errors.length === 2 && b7.errors.every((e) => e.code === 'description') && b7.errors.some((e) => e.text.includes('"guessed"')), b7.errors.map((e) => `[${e.code}] ${e.text}`).join('; ')]);
 
+  // --no-proposed: the build with an empty proposed list holds Figma's tokens only. Planted check: the real proposed
+  // names (border/strong among them) must all be absent from tokens.css and tokens.json, with no error.
+  const bare = B(snap, [], []);
+  const bareCss = bare.errors.length ? '' : bare.files['dist/tokens.css'];
+  const leaked = control.errors.length ? ['(control failed)'] : JSON.parse(control.files['dist/tokens.json']).filter((t) => t.proposed && t.css && bareCss.includes(`${t.css}:`)).map((t) => t.css);
+  results.push(['--no-proposed build holds no proposed token', bare.errors.length === 0 && bare.proposedCount === 0 && leaked.length === 0 && bareCss.length > 0
+    && !bareCss.includes('--color-border-strong') && JSON.parse(bare.files['dist/tokens.json']).every((t) => !t.proposed), `errors ${bare.errors.length}, leaked ${leaked.join(' ')}`]);
+
   for (const [name, ok, note] of results) console.log(`${ok ? 'ok    ' : 'MISSED'}  ${name}${!ok && note ? ` (${note})` : ''}`);
   const passed = results.filter((x) => x[1]).length;
   console.log(`Self-test: ${passed} of ${results.length} planted cases behaved as expected; nothing was written.`);
@@ -723,10 +731,14 @@ if (existsSync(PROPOSED)) {
 //   --no-overrides  apply no override (Figma as it is). Proposed tokens are still merged.
 //   --out <dir>     write only the dist files (tokens.css, tailwind-theme.css, tokens.json) into <dir>, relative to
 //                   the repo root; the DTCG files, the resolver and ds-tokens/overrides.json are not written.
+//   --no-proposed   merge no token from ds-tokens/proposed/tokens.json (with --no-overrides: only what Figma holds).
+//                   Only allowed with --out, so ds-tokens/ is never written without the proposed tokens.
 const NO_OVERRIDES = process.argv.includes('--no-overrides');
+const NO_PROPOSED = process.argv.includes('--no-proposed');
 const outAt = process.argv.indexOf('--out');
 const OUT_DIR = outAt >= 0 ? process.argv[outAt + 1] : null;
 if (outAt >= 0 && (!OUT_DIR || OUT_DIR.startsWith('--'))) { console.log('--out needs a folder'); process.exit(1); }
+if (NO_PROPOSED && !OUT_DIR) { console.log('--no-proposed needs --out: ds-tokens/ is always built with the proposed tokens'); process.exit(1); }
 let descriptions = [];
 if (!existsSync(DESCRIPTIONS)) { console.log('ds-tokens/descriptions.json is missing: every token needs a description from Figma or that file.'); process.exit(1); }
 try { descriptions = JSON.parse(readFileSync(DESCRIPTIONS, 'utf8')); } catch (e) { console.log(`descriptions.json is not valid JSON: ${e.message}`); process.exit(1); }
@@ -736,8 +748,9 @@ else {
   if (!NO_OVERRIDES && existsSync(OVERRIDES)) {
     try { overrides = JSON.parse(readFileSync(OVERRIDES, 'utf8')); } catch (e) { console.log(`overrides.json is not valid JSON: ${e.message}`); process.exit(1); }
   }
-  const a = build(snap, overrides, proposed, descriptions);
-  const b = build(loadSnapshots(), overrides, clone(proposed), clone(descriptions));
+  const merging = NO_PROPOSED ? [] : proposed;
+  const a = build(snap, overrides, merging, descriptions);
+  const b = build(loadSnapshots(), overrides, clone(merging), clone(descriptions));
   const same = Object.keys(a.files).length === Object.keys(b.files).length && Object.entries(a.files).every(([k, v]) => b.files[k] === v);
   if (!same) a.errors.push({ code: 'determinism', text: 'two builds in one run gave different output' });
 
@@ -745,7 +758,7 @@ else {
   for (const [name, n] of Object.entries(a.counts.primitives)) console.log(`primitive ${name.padEnd(18)} -> ${PRIMITIVE_CATEGORY[name].padEnd(18)} ${n}`);
   const semTotal = Object.values(a.counts.semantic).reduce((x, y) => x + y, 0);
   const primTotal = Object.values(a.counts.primitives).reduce((x, y) => x + y, 0);
-  console.log(`fade tokens derived per mode: ${Object.entries(a.fadeCount).map(([m, n]) => `${m} ${n}`).join(', ')}; overrides applied: ${overrides.length}; proposed tokens merged: ${a.proposedCount} of ${Array.isArray(proposed) ? proposed.length : 0}`);
+  console.log(`fade tokens derived per mode: ${Object.entries(a.fadeCount).map(([m, n]) => `${m} ${n}`).join(', ')}; overrides applied: ${overrides.length}; proposed tokens merged: ${a.proposedCount} of ${Array.isArray(proposed) ? proposed.length : 0}${NO_PROPOSED ? ' (--no-proposed)' : ''}`);
   if (!a.errors.length) {
     const src = {};
     for (const t of JSON.parse(a.files['dist/tokens.json'])) src[t.descriptionSource] = (src[t.descriptionSource] || 0) + 1;
@@ -760,7 +773,7 @@ else {
   if (OUT_DIR) {
     const dir = resolve(ROOT, OUT_DIR);
     // CSS files say how this copy was built, since its notice line speaks of overrides.json.
-    const how = `/* This copy was built with: node ${TOOL} ${process.argv.slice(2).join(' ')}. ${NO_OVERRIDES ? 'No override from ds-tokens/overrides.json was applied: colours are as Figma holds them.' : 'Overrides were applied.'} */\n`;
+    const how = `/* This copy was built with: node ${TOOL} ${process.argv.slice(2).join(' ')}. ${NO_OVERRIDES ? 'No override from ds-tokens/overrides.json was applied: colours are as Figma holds them.' : 'Overrides were applied.'}${NO_PROPOSED ? ' No token from ds-tokens/proposed/tokens.json was merged.' : ''} */\n`;
     const dist = Object.entries(a.files).filter(([rel]) => rel.startsWith('dist/')).map(([rel, text]) => [rel, rel.endsWith('.css') ? how + text : text]);
     mkdirSync(dir, { recursive: true });
     for (const [rel, text] of dist) writeWhole(join(dir, rel.slice('dist/'.length)), text);

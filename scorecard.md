@@ -42,6 +42,10 @@ The tools report model tokens per run, not per model tier, so a split by tier is
 | Final review of version 0.2: 3 Fable reviewers | 3 | 938,026 |
 | Fixes from the final review: 4 Opus builders | 4 | 894,166 |
 
+| V2 direction, 16 November: builders, snapshot copiers and integrators (Opus and Sonnet) | many | about 9,500,000 |
+| V2 direction: final review, 3 Fable reviewers | 3 | about 1,700,000 |
+| V2 direction: fixes from the final review, 5 Opus builders and 1 Sonnet note-writer | 6 | 1,546,151 |
+
 The lead's own tokens are not reported to it and are not included. These figures are copied from the tool's run reports; the reviewers' returned verdicts are saved in `gates/`.
 
 ## History
@@ -50,3 +54,4 @@ The lead's own tokens are not reported to it and are not included. These figures
 |---|---|---|---|---|---|
 | 2026-11-13 | Phase 1 | Brief template: clean-slate paragraph; quotes required for gathered facts. Lead's own checklist before review | no data yet | no data yet | Kept; the benchmark cannot run until docs exist |
 | 2026-11-14 | Phase 2, item S.4 | Brief template written to a file (briefs/template.md) with five lines from the CEO's skills. Lead opens the charter's hard rows before writing a decision (lesson of 14 November). Readers' quotes checked by script: 232 of 233 found | no data yet | no data yet | Kept; the benchmark cannot run until docs exist |
+| 2026-11-16 | V2 direction | New package on a branch: token gate, five components, runner. Share of V2 components passing all tests: 4 of 5 (DropdownMenu fails one axe rule on modal menus). Raw values in components: 0 (lint). First-pass review: the final review returned "pass with fixes" three times, 1 blocker and 26 majors. After it: a check that compares numbers written in summaries with tool output (`npm run v2:claims`); tools no longer overwrite each other's reports | not run on the V2 package | not run on the V2 package | Kept; the benchmark's three tasks were written for version 0.2's docs and have not been run against the V2 package |

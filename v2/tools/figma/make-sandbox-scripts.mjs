@@ -14,6 +14,7 @@
 //   v2/figma/primitives.txt         the owner's primitives (always this file, whatever SOUVENIR_SNAPSHOT_DIR says)
 //   ds-tokens/descriptions.json     one description per token
 //   v2/tools/contrast-pairs.json    which surface each text role is meant to sit on (for the "Aa" samples on the page)
+//   ds-tokens/proposed/tokens.json  the scopes of every proposed token (they win over the rules in scopesFor)
 // Run the files in order with use_figma on the sandbox only. Each is idempotent: it finds a collection, variable, style or page by
 // name before creating it and updates it otherwise, and it refuses to run in any other file.
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
@@ -30,8 +31,8 @@ const PAGE_NAME = 'DS V2 · Tokens (added by Claude)';
 const PAGE_DATE = '16 November 2026';
 
 const PRIM = { Colors: 'Colors (DS V2 primitives)', Typography: 'Typography (DS V2 primitives)', Space: 'Space (DS V2 primitives)', Radius: 'Radius (DS V2 primitives)' };
-const SEM_ORDER = ['Themes', 'Typography', 'Radius', 'Density', 'Surface Gradients', 'Border', 'Size', 'Motion'];
-const SEM_MODES = { Themes: ['light', 'dark'], Typography: ['default'], Radius: ['default'], Density: ['standard', 'compact'], 'Surface Gradients': ['light', 'dark'], Border: ['default'], Size: ['default'], Motion: ['default'] };
+const SEM_ORDER = ['Themes', 'Typography', 'Radius', 'Density', 'Surface Gradients', 'Border', 'Size', 'Motion', 'Layer'];
+const SEM_MODES = { Themes: ['light', 'dark'], Typography: ['default'], Radius: ['default'], Density: ['standard', 'compact'], 'Surface Gradients': ['light', 'dark'], Border: ['default'], Size: ['default'], Motion: ['default'], Layer: ['default'] };
 const semName = (c) => `${c} (DS V2)`;
 const SAFE_COLLECTIONS = new Set([...Object.values(PRIM), ...SEM_ORDER.map(semName)]);
 
@@ -41,7 +42,8 @@ function load() {
   const prims = parseSnapshot(readFileSync(join(ROOT, 'v2/figma/primitives.txt'), 'utf8'), 'primitives');
   const descriptions = JSON.parse(readFileSync(join(ROOT, 'ds-tokens/descriptions.json'), 'utf8'));
   const pairs = JSON.parse(readFileSync(join(ROOT, 'v2/tools/contrast-pairs.json'), 'utf8'));
-  return { tokens, prims, descriptions, pairs };
+  const proposed = JSON.parse(readFileSync(join(ROOT, 'ds-tokens/proposed/tokens.json'), 'utf8'));
+  return { tokens, prims, descriptions, pairs, proposed };
 }
 
 // ---------- conversions ----------
@@ -61,7 +63,9 @@ function literal(t, v) {
   throw new Error(`${t.name}: no literal rule for type ${t.type}`);
 }
 
-function scopesFor(t) {
+function scopesFor(t, proposedScopes) {
+  // A proposed token carries its own scopes in ds-tokens/proposed/tokens.json; they are used as written ([] hides it from pickers).
+  if (proposedScopes) { if (proposedScopes.includes('ALL_SCOPES')) throw new Error(`${t.collection} ${t.name}: ALL_SCOPES is never allowed`); return proposedScopes; }
   const s = t.name.split('/');
   const c = t.collection;
   const owner = (t.scopes || []).filter((x) => x !== 'ALL_SCOPES');
@@ -98,7 +102,13 @@ function primitiveRows(prims) {
   return rows;
 }
 
-function semanticRows({ tokens, prims, descriptions }) {
+// Figma HTML-escapes a straight apostrophe in a variable description when it is written (it stores &#39;, seen on
+// 16 November 2026: setting "tab's" reads back "tab&#39;s"). The typographic apostrophe U+2019 is stored as written,
+// so every description goes to Figma with ' replaced by \u2019.
+export const figmaDescription = (d) => (d || '').replace(/'/g, '\u2019');
+
+function semanticRows({ tokens, prims, descriptions, proposed }) {
+  const proposedScopes = new Map((proposed || []).filter((p) => Array.isArray(p.scopes)).map((p) => [`${p.collection}|${p.name}`, p.scopes]));
   const primIndex = new Map(); // name -> [{collection, type}]
   for (const c of prims) for (const v of c.variables) {
     if (v.name.startsWith('not-used/')) continue;
@@ -126,7 +136,7 @@ function semanticRows({ tokens, prims, descriptions }) {
         if (hit.type !== type) throw new Error(`${coll} ${t.name}: alias ${a} is ${hit.type}, the token is ${type}`);
         return { a: [PRIM[hit.collection], a] };
       });
-      rows.push({ c: semName(coll), n: t.name, t: type, m: modes, vals: values, s: scopesFor(t), x: `var(${t.cssVar})`, d });
+      rows.push({ c: semName(coll), n: t.name, t: type, m: modes, vals: values, s: scopesFor(t, proposedScopes.get(`${t.collection}|${t.name}`)), x: `var(${t.cssVar})`, d: figmaDescription(d) });
     }
   }
   return { rows, elevation };

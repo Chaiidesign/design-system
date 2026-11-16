@@ -2,7 +2,7 @@
 
 @layer ds.components {
 
-  /* styles[0]: The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. */
+  /* styles[0]: The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. Both the overlay and the content take the Layer token overlay, so a page element with its own z-index never paints over an open dialog; a menu opened inside takes popover, one level higher. */
   [data-slot~="dialog-overlay"] {
     background-color: var(--color-surface-overlay);
     padding-inline: var(--spacing-static-160);
@@ -10,6 +10,7 @@
     transition-property: background-color, border-color, color, box-shadow, opacity;
     transition-duration: var(--duration-enter);
     transition-timing-function: var(--ease-standard);
+    z-index: var(--layer-overlay);
   }
   [data-slot~="dialog-content"] {
     background-color: var(--color-surface-primary);
@@ -24,6 +25,7 @@
     transition-property: background-color, border-color, color, box-shadow, opacity;
     transition-duration: var(--duration-enter);
     transition-timing-function: var(--ease-standard);
+    z-index: var(--layer-overlay);
   }
   [data-slot~="dialog-header"] {
     padding-inline: var(--spacing-scaled-240);

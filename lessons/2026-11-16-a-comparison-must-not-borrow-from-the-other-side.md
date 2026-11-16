@@ -1,0 +1,7 @@
+# A comparison must not borrow from the other side
+
+- **What happened:** The morning summary for the V2 direction showed the same screens "as Figma holds them" and "merged", and said the two looked the same and both passed. The final review found the "as given" screens used the repo's own proposed edge and size tokens. The owner's direction was shown passing a control-edge check it fails at 1.35 to 1. In the same summary, several numbers typed by hand (22, 23, 77) had gone stale after the tools' output moved.
+- **Cause:** The build flag that removed the repo's colour fixes did not remove its proposed tokens, and nothing checked that the "as given" column named only what Figma holds. Numbers were copied into prose once and never compared again.
+- **Change made:** (1) `build-tokens.mjs --no-proposed`, and `build-compare.mjs` fails if the as-given column names a proposed token or anything its own token file lacks; every value that column has to invent is listed on the page. (2) `v2/tools/check-claims.mjs` (`npm run v2:claims`) compares numbers written in the summary, the READMEs and the report data with the tools' output and fails on a mismatch. (3) Tools run on another snapshot write to that snapshot's folder, and `--report-only` writes nothing.
+- **Scope and reason:** Every side-by-side of two directions, and every summary that quotes a tool. A baseline that includes any of the fix is not a baseline.
+- **Delete when:** Summaries are generated from tool output with no hand-typed numbers.

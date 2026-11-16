@@ -80,33 +80,44 @@
 
 Tokens the repo proposes that Figma does not hold as variables. The snapshot reads variables only: a token Figma already keeps as a style (for example a shadow kept as an effect style) is listed here too; for those, check the style and add a variable only if one is wanted.
 
-| Collection | Name | Value per mode | Why |
-| --- | --- | --- | --- |
-| Border | width/sm | default: 1 | The Border collection is empty. Every control needs an edge width. |
-| Border | width/md | default: 2 | A state shown only by a colour change of a 1 pixel line is easy to miss. |
-| Border | ring/width | default: 2 | WCAG 2.4.13 measures a focus indicator against a 2 pixel perimeter. |
-| Border | ring/offset | default: 2 | The gap keeps the blue ring readable beside a pink or black fill. |
-| Size | control/sm | default: 32 | Radius has height/32, so a 32 pixel control exists in the design; nothing names its height. |
-| Size | control/md | default: 40 | Radius has height/40. |
-| Size | control/lg | default: 44 | Radius has height/44. |
-| Size | target/min | default: 44 | 32 and 40 pixel controls are small for a thumb. WCAG 2.2 AA asks 24; Apple and WCAG AAA ask 44. |
-| Size | icon/sm | default: 16 | No icon size token exists. |
-| Size | icon/md | default: 20 | No icon size token exists. |
-| Size | dialog/sm | default: 400 | A dialog needs a maximum width. |
-| Size | dialog/md | default: 560 | A dialog needs a maximum width. |
-| Size | menu/min | default: 192 | A menu narrower than its trigger looks broken. |
-| Size | menu/max | default: 320 | Long item text must wrap, not run off the screen. |
-| Motion | duration/fast | default: 100ms | Motion is not started in Figma. |
-| Motion | duration/enter | default: 160ms | Motion is not started in Figma. Named for its job, because the standard keeps size words such as base out of names. |
-| Motion | duration/spin | default: 800ms | The Button pilot had to multiply another duration by five to turn its spinner. A loop needs its own token. |
-| Motion | ease/standard | default: cubic-bezier(0.2, 0, 0, 1) | Motion is not started in Figma. |
-| Elevation | shadow/md | light: 0 4px 16px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.08); dark: 0 4px 16px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.4) | Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it. |
-| Elevation | shadow/lg | light: 0 16px 48px rgb(0 0 0 / 0.18), 0 2px 8px rgb(0 0 0 / 0.08); dark: 0 16px 48px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.4) | Elevation is not started in Figma. |
-| Themes | surface/overlay | light: #00000080; dark: #000000b3 | No token dims the page behind a dialog. |
-| Themes | border/strong/default | light: neutral/light/600 (#7d818a); dark: neutral/dark/500 (#7e8188) | border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. This step reaches 3 to 1 on all three surface tiers, not only the first two. The naming standard's own example is 'add border/strong at 3:1'. |
-| Themes | border/strong/hover | light: neutral/light/700 (#6b6e76); dark: neutral/dark/700 (#a9abaf) | Goes with border/strong/default. |
-| Layer | overlay | default: 1000 | A page element with any z-index painted over an open dialog: nothing set the dialog's level. |
-| Layer | popover | default: 1100 | A page element with any z-index painted over an open menu. |
+Collections these variables go in. Create the missing ones first, each with one mode called default unless the rows below give light and dark.
+
+| Collection | In Figma | Variables to add |
+| --- | --- | --- |
+| Border | exists, empty | 4 |
+| Size | create it | 10 |
+| Motion | create it | 4 |
+| Elevation | create it | 2 |
+| Themes | exists (171 variables) | 3 |
+| Layer | create it | 2 |
+
+| Collection | Name | Value per mode | Scopes | Why |
+| --- | --- | --- | --- | --- |
+| Border | width/sm | default: 1 | STROKE_FLOAT | The Border collection is empty. Every control needs an edge width. |
+| Border | width/md | default: 2 | STROKE_FLOAT | A state shown only by a colour change of a 1 pixel line is easy to miss. |
+| Border | ring/width | default: 2 | STROKE_FLOAT | WCAG 2.4.13 measures a focus indicator against a 2 pixel perimeter. |
+| Border | ring/offset | default: 2 | GAP | The gap keeps the blue ring readable beside a pink or black fill. |
+| Size | control/sm | default: 32 | WIDTH_HEIGHT | Radius has height/32, so a 32 pixel control exists in the design; nothing names its height. |
+| Size | control/md | default: 40 | WIDTH_HEIGHT | Radius has height/40. |
+| Size | control/lg | default: 44 | WIDTH_HEIGHT | Radius has height/44. |
+| Size | target/min | default: 44 | WIDTH_HEIGHT | 32 and 40 pixel controls are small for a thumb. WCAG 2.2 AA asks 24; Apple and WCAG AAA ask 44. |
+| Size | icon/sm | default: 16 | WIDTH_HEIGHT | No icon size token exists. |
+| Size | icon/md | default: 20 | WIDTH_HEIGHT | No icon size token exists. |
+| Size | dialog/sm | default: 400 | WIDTH_HEIGHT | A dialog needs a maximum width. |
+| Size | dialog/md | default: 560 | WIDTH_HEIGHT | A dialog needs a maximum width. |
+| Size | menu/min | default: 192 | WIDTH_HEIGHT | A menu narrower than its trigger looks broken. |
+| Size | menu/max | default: 320 | WIDTH_HEIGHT | Long item text must wrap, not run off the screen. |
+| Motion | duration/fast | default: 100ms | none (no Figma scope fits) | Motion is not started in Figma. |
+| Motion | duration/enter | default: 160ms | none (no Figma scope fits) | Motion is not started in Figma. Named for its job, because the standard keeps size words such as base out of names. |
+| Motion | duration/spin | default: 800ms | none (no Figma scope fits) | The Button pilot had to multiply another duration by five to turn its spinner. A loop needs its own token. |
+| Motion | ease/standard | default: cubic-bezier(0.2, 0, 0, 1) | none (no Figma scope fits) | Motion is not started in Figma. |
+| Elevation | shadow/md | light: 0 4px 16px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.08); dark: 0 4px 16px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.4) | EFFECT_FLOAT | Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it. |
+| Elevation | shadow/lg | light: 0 16px 48px rgb(0 0 0 / 0.18), 0 2px 8px rgb(0 0 0 / 0.08); dark: 0 16px 48px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.4) | EFFECT_FLOAT | Elevation is not started in Figma. |
+| Themes | surface/overlay | light: #00000080; dark: #000000b3 | FRAME_FILL, SHAPE_FILL | No token dims the page behind a dialog. |
+| Themes | border/strong/default | light: neutral/light/600 (#7d818a); dark: neutral/dark/500 (#7e8188) | STROKE_COLOR | border/primary is 1.35 to 1 against the page in light. WCAG 1.4.11 asks 3 to 1 for the edge of a control. This step reaches 3 to 1 on all three surface tiers, not only the first two. The naming standard's own example is 'add border/strong at 3:1'. |
+| Themes | border/strong/hover | light: neutral/light/700 (#6b6e76); dark: neutral/dark/700 (#a9abaf) | STROKE_COLOR | Goes with border/strong/default. |
+| Layer | overlay | default: 1000 | none (no Figma scope fits) | A page element with any z-index painted over an open dialog: nothing set the dialog's level. |
+| Layer | popover | default: 1100 | none (no Figma scope fits) | A page element with any z-index painted over an open menu. |
 
 ## Descriptions to set
 

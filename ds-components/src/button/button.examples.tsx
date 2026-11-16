@@ -2,7 +2,9 @@
 // content the spec gives. The gallery renders each one, and v2/tools/test-components.mjs tests each one.
 //
 // How tests see a press: every example passes onClick={record("<example id>")}, which adds one to
-// window.__buttonClicks["<example id>"]. button.tests.mjs reads that counter. Nothing else is recorded.
+// window.__buttonClicks["<example id>"]. The asChild examples also give the child link its own handler,
+// record("<example id>:child"), as a router link would, so a test can prove the child's handler does not run while
+// the button is disabled or loading. button.tests.mjs reads these counters. Nothing else is recorded.
 import { Button } from "./button";
 import { Icon } from "../../gallery/icons";
 
@@ -95,7 +97,23 @@ export const examples = {
   ),
   "as-link": () => (
     <Button asChild variant="secondary" onClick={record("as-link")}>
-      <a href="#settings">Open settings</a>
+      <a href="#settings" onClick={record("as-link:child")}>
+        Open settings
+      </a>
+    </Button>
+  ),
+  "as-link-disabled": () => (
+    <Button asChild variant="secondary" disabled onClick={record("as-link-disabled")}>
+      <a href="#settings" onClick={record("as-link-disabled:child")}>
+        Open settings
+      </a>
+    </Button>
+  ),
+  "as-link-loading": () => (
+    <Button asChild variant="secondary" loading onClick={record("as-link-loading")}>
+      <a href="#settings" onClick={record("as-link-loading:child")}>
+        Opening settings…
+      </a>
     </Button>
   ),
 };

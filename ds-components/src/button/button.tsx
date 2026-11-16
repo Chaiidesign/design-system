@@ -22,7 +22,7 @@ declare const process: { env: { NODE_ENV?: string } };
 // Native button attributes pass through, except those the contract owns, so each has one way to be set.
 type NativeButtonAttributes = Omit<
   React.ComponentPropsWithoutRef<"button">,
-  "type" | "disabled" | "onClick" | "children" | "aria-label" | "aria-busy" | "aria-disabled"
+  "type" | "disabled" | "onClick" | "onClickCapture" | "children" | "aria-label" | "aria-busy" | "aria-disabled"
 >;
 
 // The contract's ButtonProps holds every spec'd prop (Button is single-piece). Those the union below decides
@@ -31,6 +31,8 @@ type ButtonBaseProps = NativeButtonAttributes &
   Omit<ButtonContractProps, "onClick" | "iconOnly" | "ariaLabel" | "children"> & {
     /** Called on press by pointer, Enter or Space. Not called while disabled or loading. */
     onClick?: React.MouseEventHandler<HTMLElement>;
+    /** Called in the capture phase of a press. Not called while disabled or loading, like onClick. */
+    onClickCapture?: React.MouseEventHandler<HTMLElement>;
     /** React 19 passes ref as a prop. With asChild it reaches the child element. */
     ref?: React.Ref<HTMLButtonElement>;
     /**
@@ -83,6 +85,7 @@ export function Button(props: ButtonProps) {
     iconEnd,
     children,
     onClick,
+    onClickCapture,
     ref,
     "data-slot": incomingSlots,
     ...native
@@ -94,8 +97,20 @@ export function Button(props: ButtonProps) {
   }
 
   // Loading keeps the button focusable (no native disabled) and keeps its variant's look (no data-disabled), but
-  // ignores presses. preventDefault also stops a submit button from submitting and a link from navigating.
+  // ignores presses. A link rendered with asChild cannot take the native disabled attribute, so it is inert too.
+  // The press is stopped in the capture phase, before any click handler on the element runs: with asChild the
+  // child's own onClick (a router link's navigation) would otherwise run first, because Slot calls the child's
+  // handler before Button's. Enter on a link or a button arrives as a click, so this covers the keyboard as well.
+  // preventDefault also stops a submit button from submitting and a link from navigating.
   const inert = loading || (asChild && disabled);
+  const handleClickCapture = (event: React.MouseEvent<HTMLElement>) => {
+    if (inert) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    onClickCapture?.(event);
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (inert) {
       event.preventDefault();
@@ -138,6 +153,7 @@ export function Button(props: ButtonProps) {
     "data-slot": slotList(BUTTON_SLOTS.root, incomingSlots),
     "aria-label": ariaLabel,
     "aria-busy": loading ? true : undefined,
+    onClickCapture: handleClickCapture,
     onClick: handleClick,
   };
 

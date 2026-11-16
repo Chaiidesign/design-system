@@ -57,7 +57,9 @@
 //   was removed", never a pass.
 // Writes ds-components/generated/test-report.json (not in --self-test, or when filtered by --component or --example,
 // unless --report names a file) and exits 1 on any failure. The last line counts components, examples, checks,
-// passes, failures and checks not reached, not run or not proven.
+// passes, failures and checks not reached, not run or not proven, then splits the passing state checks into those
+// that compared a colour with its token and those that matched the selector only (no colour rule names the state);
+// the report's summary carries both counts, and each state check carries evidence "colour" or "selector".
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, mkdtempSync, rmSync } from "node:fs";
 import { join, dirname, resolve, relative, sep } from "node:path";
@@ -641,6 +643,7 @@ class Run {
 
   record(entry) {
     const c = { component: entry.component, check: entry.check, example: entry.example ?? null, config: entry.config ? cfgLabel(entry.config) : null, requirement: entry.requirement ?? null, status: entry.status, detail: this.clean(entry.detail ?? "") };
+    if (entry.evidence) c.evidence = entry.evidence; // state checks: "colour" or "selector", what a pass rests on
     this.checks.push(c);
     return c;
   }
@@ -859,6 +862,10 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
             if (step.kind === "open") {
               const os = await page.evaluate((o) => window.__ct.openState(o), { triggerSel: onSel, partSels: componentSels });
               if (os.open) continue;
+              // The rule for an optional part a step needs (below) holds for "open" too: an example that renders no
+              // trigger and opens by other means (a dialog opened from a menu item) is passed over, not failed. A
+              // required trigger that is missing still fails.
+              if (!os.trigger && onPart.required === false) { skip = `${ex.id} (renders no ${onKey}, an optional part, and nothing is open)`; break; }
               if (!os.trigger) throw new Error(`open: no ${onKey} part on the page and nothing open`);
             }
             const own = step === lastOwn;
@@ -931,7 +938,9 @@ async function testComponent(run, target, { onlyExample = null, galleryInfo }) {
           });
           const { problems, compared, notPresent } = compareStateColours({ anatomy, applies, name, colours: seen.colours, theme, colourTokens });
           const absent = (notPresent.length ? `; not present (optional, not rendered by this example): ${notPresent.join(", ")}` : "") + (seen.removedAfterMatch ? "; seen in the state while attached, then removed from the page" : "");
-          rec({ check, example: ex.id, config, status: problems.length ? "fail" : "pass", detail: problems.length ? problems.join("; ") + absent : compared.length ? `matches ${state.selector}; ${compared.join(", ")} equal their tokens${absent}` : `matches ${state.selector}; no colour rule names this state${absent}` });
+          // evidence: "colour" when at least one colour was compared with its token, "selector" when the pass rests on
+          // the selector matching alone (no colour rule names the state). Both pass; the summary counts them apart.
+          rec({ check, example: ex.id, config, status: problems.length ? "fail" : "pass", evidence: compared.length ? "colour" : "selector", detail: problems.length ? problems.join("; ") + absent : compared.length ? `matches ${state.selector}; ${compared.join(", ")} equal their tokens${absent}` : `matches ${state.selector}; no colour rule names this state${absent}` });
         } catch (e) {
           if (pressed) await page.mouse.up().catch(() => {});
           rec({ check, example: ex.id, config, status: "fail", detail: `could not drive "${reach}": ${e.message.split("\n")[0]}` });
@@ -1168,9 +1177,12 @@ function summarise(checks, components) {
     failed: n((c) => c.status === "fail"),
     notRun: n((c) => c.status === "not-reached" || c.status === "not-run"),
     notProven: n((c) => c.status === "not-proven"),
+    // Passing state checks, split by what the pass rests on: a colour compared with its token, or the selector alone.
+    statePassedColour: n((c) => c.check.startsWith("state:") && c.status === "pass" && c.evidence === "colour"),
+    statePassedSelectorOnly: n((c) => c.check.startsWith("state:") && c.status === "pass" && c.evidence !== "colour"),
   };
 }
-const summaryLine = (s) => `${s.components} components, ${s.examples} examples, ${s.checks} checks, ${s.passed} passed, ${s.failed} failed, ${s.notRun} not reached or not run, ${s.notProven} not proven`;
+const summaryLine = (s) => `${s.components} components, ${s.examples} examples, ${s.checks} checks, ${s.passed} passed, ${s.failed} failed, ${s.notRun} not reached or not run, ${s.notProven} not proven; state checks passed: ${s.statePassedColour} compared a colour, ${s.statePassedSelectorOnly} matched the selector only`;
 
 // ---------------------------------------------------------------- orchestration
 
@@ -1506,6 +1518,13 @@ async function selfTest(argv) {
       const n = checks.filter(test).length;
       say(n >= count, `passes ${name} (${n} of ${count} needed)`);
     }
+    // Passing state checks are counted apart by what they rest on: each pass is in exactly one of the two counts, and
+    // the summary's counts equal the records'. That both kinds occur is proved on the planted copy below.
+    const statePasses = checks.filter((c) => c.check.startsWith("state:") && c.status === "pass");
+    const byColour = statePasses.filter((c) => c.evidence === "colour"), bySelector = statePasses.filter((c) => c.evidence === "selector");
+    say(byColour.length + bySelector.length === statePasses.length && summary.statePassedColour === byColour.length && summary.statePassedSelectorOnly === bySelector.length, `state passes are split by evidence: ${byColour.length} compared a colour, ${bySelector.length} matched the selector only, of ${statePasses.length}`);
+    say(bySelector.every((c) => c.detail.includes("no colour rule names this state")) && byColour.every((c) => c.detail.includes("equal their tokens")), "a selector-only pass says so in its detail, and a colour pass names the colours it compared");
+    say(summaryLine(summary).endsWith(`state checks passed: ${byColour.length} compared a colour, ${bySelector.length} matched the selector only`), `the summary line counts them apart: ${summaryLine(summary).split("; ").pop()}`);
 
     // The reach grammar end to end on a copy of the fixture spec: example:<id> and @<part> choose exactly that example
     // and part, so the planted hover colour is still caught there and the clean example is not tried; "open" with no
@@ -1517,6 +1536,9 @@ async function selfTest(argv) {
     reached.anatomy.badge = { kind: "text", role: null, slot: "fixture-badge", element: "span", required: false, description: "Planted: optional, and no example renders it." };
     reached.states.badgeHover = { on: "badge", selector: ":hover", source: "native", figma: null, reach: "example:clean > click@control > hover", description: "Planted: an optional part the example does not render." };
     reached.states.hintHover = { on: "hint", selector: ":hover", source: "native", figma: null, reach: "example:clean > click@control > hover", description: "Planted: a required part the example does not render." };
+    reached.states.plainFocus = { on: "control", selector: ":focus-visible", source: "native", figma: null, reach: "example:clean > focus-by-keyboard", description: "Planted: no style rule names this state, so a pass rests on the selector alone." };
+    reached.states.openOptional = { on: "control", selector: '[data-state="open"]', source: "primitive", figma: null, reach: "example:clean > open@badge", description: "Planted: opened through an optional part the example does not render, and nothing open." };
+    reached.states.openRequired = { on: "control", selector: '[data-state="open"]', source: "primitive", figma: null, reach: "example:clean > open@hint", description: "Planted: opened through a required part the example does not render." };
     const reachedFile = join(tmp, "reach", "fixture.spec.json");
     mkdirSync(dirname(reachedFile), { recursive: true });
     writeFileSync(reachedFile, JSON.stringify(reached));
@@ -1532,6 +1554,16 @@ async function selfTest(argv) {
     say(bh.length === 1 && bh[0].status === "not-reached" && bh[0].detail.includes("renders no badge"), `optional parts in the browser: hovering an optional part the example does not render passes the example over (${bh.map((c) => `${c.status}: ${c.detail.slice(0, 120)}`).join("; ")})`);
     const hh = third.checks.filter((c) => c.check === "state:hintHover");
     say(hh.length === 2 && hh.every((c) => c.status === "fail" && c.detail.includes("no hint part")), `optional parts in the browser: hovering a required part the example does not render still fails (${hh.map((c) => `${c.status}: ${c.detail.slice(0, 80)}`).join("; ")})`);
+
+    const pf = third.checks.filter((c) => c.check === "state:plainFocus");
+    const thirdSummary = summarise(third.checks, third.components);
+    say(pf.length === 2 && pf.every((c) => c.status === "pass" && c.evidence === "selector") && thirdSummary.statePassedSelectorOnly >= 2, `a state no colour rule names passes on its selector and is counted as selector only (${pf.map((c) => `${c.status} ${c.evidence}`).join("; ")}; summary ${thirdSummary.statePassedSelectorOnly} selector only, ${thirdSummary.statePassedColour} colour)`);
+    const fp = checks.filter((c) => c.check === "state:hover" && c.example === "clean" && c.status === "pass");
+    say(fp.length === 2 && fp.every((c) => c.evidence === "colour"), `a state a colour rule names is counted as compared a colour (state:hover on clean: ${fp.map((c) => c.evidence).join(", ")})`);
+    const oo = third.checks.filter((c) => c.check === "state:openOptional");
+    say(oo.length === 1 && oo[0].status === "not-reached" && oo[0].detail.includes("renders no badge") && oo[0].detail.includes("nothing is open"), `optional parts in the browser: "open" through an optional trigger the example does not render passes the example over (${oo.map((c) => `${c.status}: ${c.detail.slice(0, 120)}`).join("; ")})`);
+    const orq = third.checks.filter((c) => c.check === "state:openRequired");
+    say(orq.length === 2 && orq.every((c) => c.status === "fail" && c.detail.includes("no hint part on the page and nothing open")), `optional parts in the browser: "open" through a required trigger the example does not render still fails (${orq.map((c) => `${c.status}: ${c.detail.slice(0, 80)}`).join("; ")})`);
 
     // The invalid spec, end to end on one example.
     const second = await runAll([{ ...fixture, specFile: brokenFile }], { onlyExample: "clean", quiet: true });

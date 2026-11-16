@@ -594,7 +594,8 @@
           ]
         },
         "layer": {
-          "type": "string"
+          "type": "string",
+          "description": "The stacking level, written as z-index: a token of the Layer collection (overlay for a dialog and its scrim, popover for a menu), never a keyword. Without it a page element with any z-index paints over a portalled surface."
         },
         "placeholderColor": {
           "type": "string",

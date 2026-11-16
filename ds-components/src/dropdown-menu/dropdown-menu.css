@@ -14,6 +14,7 @@
     max-inline-size: var(--size-menu-max);
     padding-block: var(--spacing-static-40);
     padding-inline: var(--spacing-static-40);
+    z-index: var(--layer-popover);
   }
   [data-slot~="dropdown-menu-label"] {
     padding-inline: var(--spacing-static-80);

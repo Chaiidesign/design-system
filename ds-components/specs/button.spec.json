@@ -844,7 +844,7 @@
       {
         "key": "Space",
         "on": "root",
-        "does": "Runs the action.",
+        "does": "Runs the action. With asChild on a link, Space does nothing, as on any link; Enter runs it.",
         "test": "button-space-activates"
       },
       {
@@ -914,13 +914,13 @@
     {
       "id": "button-disabled-inert",
       "level": "MUST",
-      "text": "While disabled, a press does not call onClick.",
+      "text": "While disabled, a press by pointer or keyboard does not call onClick. With asChild the child element's own onClick does not run either, and a link does not navigate.",
       "check": "test:button-disabled-inert"
     },
     {
       "id": "button-loading-inert",
       "level": "MUST",
-      "text": "While loading, a press does not call onClick.",
+      "text": "While loading, a press by pointer or keyboard does not call onClick. With asChild the child element's own onClick does not run either, and a link does not navigate.",
       "check": "test:button-loading-inert"
     },
     {
@@ -933,7 +933,7 @@
     {
       "id": "button-focus-visible",
       "level": "MUST",
-      "text": "With keyboard focus the root shows a ring at least 2 pixels thick with at least 3 to 1 contrast against what is beside it.",
+      "text": "With keyboard focus the root shows a ring at least 2 pixels thick, drawn outside the root (an outline offset of 0 or more), with at least 3 to 1 contrast against what is beside it.",
       "wcag": "2.4.7",
       "check": "test:button-focus-visible"
     },
@@ -1153,6 +1153,28 @@
       },
       "content": "Open settings",
       "note": "The child is a link element; the button gives it its look."
+    },
+    {
+      "id": "as-link-disabled",
+      "title": "As a link, disabled",
+      "props": {
+        "asChild": true,
+        "variant": "secondary",
+        "disabled": true
+      },
+      "content": "Open settings",
+      "note": "The link has its own onClick. While disabled neither it nor the button's onClick runs and the link does not navigate, by pointer or by Enter."
+    },
+    {
+      "id": "as-link-loading",
+      "title": "As a link, loading",
+      "props": {
+        "asChild": true,
+        "variant": "secondary",
+        "loading": true
+      },
+      "content": "Opening settings…",
+      "note": "The link has its own onClick. While loading neither it nor the button's onClick runs and the link does not navigate, by pointer or by Enter."
     }
   ],
   "dependencies": [],

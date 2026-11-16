@@ -17,6 +17,18 @@
       "findings": 1
     },
     {
+      "id": "segment-order",
+      "standardRule": "2",
+      "title": "Fixed order: role, then variant, then state",
+      "findings": 0
+    },
+    {
+      "id": "purpose-not-value",
+      "standardRule": "5",
+      "title": "Semantic tokens are named by purpose, never by a colour value",
+      "findings": 0
+    },
+    {
       "id": "state-segment",
       "standardRule": "3",
       "title": "A state is always its own last segment",
@@ -29,10 +41,22 @@
       "findings": 2
     },
     {
+      "id": "state-words",
+      "standardRule": "3",
+      "title": "States come from one list: default, hover, active, focus, selected, disabled",
+      "findings": 0
+    },
+    {
       "id": "size-scale",
       "standardRule": "4",
       "title": "One size scale xs, sm, md, lg, xl, 2xl; no names taken from a pixel value",
       "findings": 3
+    },
+    {
+      "id": "size-words",
+      "standardRule": "4",
+      "title": "Size words come from the one scale: xs, sm, md, lg, xl, 2xl",
+      "findings": 0
     },
     {
       "id": "primitive-hygiene",
@@ -120,16 +144,20 @@
     }
   ],
   "counts": {
-    "rules": 18,
+    "rules": 22,
     "findings": 66,
     "breaksTheStandard": 24,
     "decide": 30,
     "notes": 12,
     "byRule": {
       "name-case": 1,
+      "segment-order": 0,
+      "purpose-not-value": 0,
       "state-segment": 0,
       "state-set": 2,
+      "state-words": 0,
       "size-scale": 3,
+      "size-words": 0,
       "primitive-hygiene": 2,
       "alias": 3,
       "mode-names": 0,
@@ -655,7 +683,7 @@
       "rule": "collection-names",
       "standardRule": "8",
       "severity": "decide",
-      "message": "The standard's category list (Color, Typography, Radius, Space, Gradient) has no place for these four (Border, Size, Motion, Elevation); extend the list or fold them into an existing category.",
+      "message": "The standard's category list (Color, Typography, Radius, Space, Gradient) has no place for these collections (it knows Border, Size, Motion, Elevation, Layer as collections the repo proposes); extend the list or fold them into an existing category.",
       "count": 1,
       "tokens": [
         "collection Border (empty)"

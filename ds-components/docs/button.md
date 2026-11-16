@@ -120,7 +120,7 @@ Pattern: [WAI-ARIA Authoring Practices: Button](https://www.w3.org/WAI/ARIA/apg/
 | Key | Part | Does | Test |
 |---|---|---|---|
 | Enter | root | Runs the action. | `button-enter-activates` |
-| Space | root | Runs the action. | `button-space-activates` |
+| Space | root | Runs the action. With asChild on a link, Space does nothing, as on any link; Enter runs it. | `button-space-activates` |
 | Tab | root | Moves focus to and from the button, including while loading. | `button-loading-stays-focusable` |
 
 ## Requirements
@@ -136,10 +136,10 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 | MUST | `button-icons-hidden` | iconStart, iconEnd and the spinner carry aria-hidden. | `test:button-icons-hidden` | 1.1.1 |
 | MUST | `button-enter-activates` | Enter calls onClick once. | `test:button-enter-activates` | 2.1.1 |
 | MUST | `button-space-activates` | Space calls onClick once. | `test:button-space-activates` | 2.1.1 |
-| MUST | `button-disabled-inert` | While disabled, a press does not call onClick. | `test:button-disabled-inert` |  |
-| MUST | `button-loading-inert` | While loading, a press does not call onClick. | `test:button-loading-inert` |  |
+| MUST | `button-disabled-inert` | While disabled, a press by pointer or keyboard does not call onClick. With asChild the child element's own onClick does not run either, and a link does not navigate. | `test:button-disabled-inert` |  |
+| MUST | `button-loading-inert` | While loading, a press by pointer or keyboard does not call onClick. With asChild the child element's own onClick does not run either, and a link does not navigate. | `test:button-loading-inert` |  |
 | MUST | `button-loading-stays-focusable` | While loading, the button keeps keyboard focus and stays in the Tab order, with aria-busy and aria-disabled set to true and neither the native disabled attribute nor data-disabled. | `test:button-loading-stays-focusable` | 2.4.3 |
-| MUST | `button-focus-visible` | With keyboard focus the root shows a ring at least 2 pixels thick with at least 3 to 1 contrast against what is beside it. | `test:button-focus-visible` | 2.4.7 |
+| MUST | `button-focus-visible` | With keyboard focus the root shows a ring at least 2 pixels thick, drawn outside the root (an outline offset of 0 or more), with at least 3 to 1 contrast against what is beside it. | `test:button-focus-visible` | 2.4.7 |
 | MUST | `button-label-contrast` | In every variant and state except disabled, the label has at least 4.5 to 1 contrast against the fill, in light and dark. | `test:button-label-contrast` | 1.4.3 |
 | MUST | `button-target-size` | The root is at least 24 by 24 pixels at every size. | `test:button-target-size` | 2.5.8 |
 | MUST | `button-label-wraps` | A label too long for one line wraps inside the button and keeps its padding; it is never cut off. | `test:button-label-wraps` | 1.4.10 |
@@ -177,6 +177,8 @@ Grouped MUST, then SHOULD, then COULD. A check starting manual: is not proven by
 | `full-width` | Full width | `{"variant":"primary","fullWidth":true}` | Continue |  |
 | `long-label` | Long label | `{"variant":"primary"}` | Move the event to Thursday and send the message to Priya | Worst case for wrapping at 320 pixels. |
 | `as-link` | As a link | `{"asChild":true,"variant":"secondary"}` | Open settings | The child is a link element; the button gives it its look. |
+| `as-link-disabled` | As a link, disabled | `{"asChild":true,"variant":"secondary","disabled":true}` | Open settings | The link has its own onClick. While disabled neither it nor the button's onClick runs and the link does not navigate, by pointer or by Enter. |
+| `as-link-loading` | As a link, loading | `{"asChild":true,"variant":"secondary","loading":true}` | Opening settings… | The link has its own onClick. While loading neither it nor the button's onClick runs and the link does not navigate, by pointer or by Enter. |
 
 ## Style rules
 

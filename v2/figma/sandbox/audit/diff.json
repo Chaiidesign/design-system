@@ -1,0 +1,1105 @@
+{
+  "tool": "v2/tools/diff-figma.mjs",
+  "inputs": {
+    "figma": "v2/figma/sandbox/semantic.txt + primitives.txt",
+    "tokens": "ds-tokens/dist/tokens.json",
+    "css": "ds-tokens/dist/tokens.css",
+    "overrides": "ds-tokens/overrides.json"
+  },
+  "agreement": "Agree means: in both Figma and code, the same value in every mode, the CSS name matches the Figma WEB code syntax, and tokens.css matches tokens.json. Descriptions are not part of agreement. A token whose override is no longer needed still agrees. The total is every token in Figma or in code.",
+  "agree": 331,
+  "total": 331,
+  "failed": false,
+  "counts": {
+    "missingInCode": 0,
+    "notInFigma": 0,
+    "drift": 0,
+    "intendedOverrides": 0,
+    "overridesToRemove": 73,
+    "cssNameDiffers": 0,
+    "cssFileMismatch": 0,
+    "descriptionDiffers": 1,
+    "proposedNotInFigma": 2
+  },
+  "lists": {
+    "missingInCode": [],
+    "notInFigma": [],
+    "drift": [],
+    "intendedOverrides": [],
+    "overridesToRemove": [
+      {
+        "collection": "Themes",
+        "token": "text/secondary",
+        "mode": "light",
+        "figmaValue": "#505258",
+        "repoValue": "#505258",
+        "figmaAlias": "neutral/light/800",
+        "overrideTo": "neutral/light/800",
+        "reason": "Contrast: worst pair was 3.79 to 1 (text/secondary on surface/tertiary/active (text-on-base)); with this step the worst is 5.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/placeholder",
+        "mode": "light",
+        "figmaValue": "#6b6e76",
+        "repoValue": "#6b6e76",
+        "figmaAlias": "neutral/light/700",
+        "overrideTo": "neutral/light/700",
+        "reason": "Contrast: worst pair was 3.05 to 1 (text/placeholder on surface/secondary/default (placeholder-on-base)); with this step the worst is 4.8 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/placeholder",
+        "mode": "dark",
+        "figmaValue": "#96999e",
+        "repoValue": "#96999e",
+        "figmaAlias": "neutral/dark/600",
+        "overrideTo": "neutral/dark/600",
+        "reason": "Contrast: worst pair was 3.93 to 1 (text/placeholder on surface/secondary/default (placeholder-on-base)); with this step the worst is 5.36 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/default",
+        "mode": "light",
+        "figmaValue": "#9d174d",
+        "repoValue": "#9d174d",
+        "figmaAlias": "pink/800",
+        "overrideTo": "pink/800",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/default",
+        "mode": "dark",
+        "figmaValue": "#f9a8d4",
+        "repoValue": "#f9a8d4",
+        "figmaAlias": "pink/300",
+        "overrideTo": "pink/300",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/hover",
+        "mode": "light",
+        "figmaValue": "#831843",
+        "repoValue": "#831843",
+        "figmaAlias": "pink/900",
+        "overrideTo": "pink/900",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/hover",
+        "mode": "dark",
+        "figmaValue": "#fbcfe8",
+        "repoValue": "#fbcfe8",
+        "figmaAlias": "pink/200",
+        "overrideTo": "pink/200",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/active",
+        "mode": "light",
+        "figmaValue": "#500724",
+        "repoValue": "#500724",
+        "figmaAlias": "pink/950",
+        "overrideTo": "pink/950",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/active",
+        "mode": "dark",
+        "figmaValue": "#fce7f3",
+        "repoValue": "#fce7f3",
+        "figmaAlias": "pink/100",
+        "overrideTo": "pink/100",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/error",
+        "mode": "light",
+        "figmaValue": "#b91c1c",
+        "repoValue": "#b91c1c",
+        "figmaAlias": "red/700",
+        "overrideTo": "red/700",
+        "reason": "Contrast: worst pair was 3.59 to 1 (text/error on surface/tertiary/active (text-on-base)); with this step the worst is 4.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/error",
+        "mode": "dark",
+        "figmaValue": "#fca5a5",
+        "repoValue": "#fca5a5",
+        "figmaAlias": "red/300",
+        "overrideTo": "red/300",
+        "reason": "Contrast: worst pair was 3.81 to 1 (text/error on surface/tertiary/active (text-on-base)); with this step the worst is 5.56 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/success",
+        "mode": "light",
+        "figmaValue": "#166534",
+        "repoValue": "#166534",
+        "figmaAlias": "green/800",
+        "overrideTo": "green/800",
+        "reason": "Contrast: worst pair was 2.45 to 1 (text/success on surface/tertiary/active (text-on-base)); with this step the worst is 5.3 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/warning",
+        "mode": "light",
+        "figmaValue": "#92400e",
+        "repoValue": "#92400e",
+        "figmaAlias": "amber/800",
+        "overrideTo": "amber/800",
+        "reason": "Contrast: worst pair was 2.37 to 1 (text/warning on surface/tertiary/active (text-on-base)); with this step the worst is 5.27 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/info",
+        "mode": "light",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1d4ed8",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/700",
+        "reason": "Contrast: worst pair was 3.84 to 1 (text/info on surface/tertiary/active (text-on-base)); with this step the worst is 4.98 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/info",
+        "mode": "dark",
+        "figmaValue": "#93c5fd",
+        "repoValue": "#93c5fd",
+        "figmaAlias": "blue/300",
+        "overrideTo": "blue/300",
+        "reason": "Contrast: worst pair was 4.15 to 1 (text/info on surface/tertiary/active (text-on-base)); with this step the worst is 5.85 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/success",
+        "mode": "light",
+        "figmaValue": "#15803d",
+        "repoValue": "#15803d",
+        "figmaAlias": "green/700",
+        "overrideTo": "green/700",
+        "reason": "Contrast: worst pair was 2.91 to 1 (icon/success on surface/tertiary/default (icon-on-base)); with this step the worst is 4.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/warning",
+        "mode": "light",
+        "figmaValue": "#b45309",
+        "repoValue": "#b45309",
+        "figmaAlias": "amber/700",
+        "overrideTo": "amber/700",
+        "reason": "Contrast: worst pair was 2.82 to 1 (icon/warning on surface/tertiary/default (icon-on-base)); with this step the worst is 4.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/active",
+        "mode": "light",
+        "figmaValue": "#500724",
+        "repoValue": "#500724",
+        "figmaAlias": "pink/950",
+        "overrideTo": "pink/950",
+        "reason": "One job per token: pressed was the same colour as hover, so a press gave no feedback.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/active",
+        "mode": "dark",
+        "figmaValue": "#9d174d",
+        "repoValue": "#9d174d",
+        "figmaAlias": "pink/800",
+        "overrideTo": "pink/800",
+        "reason": "One job per token: pressed was the same colour as hover, so a press gave no feedback.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "border/success",
+        "mode": "light",
+        "figmaValue": "#15803d",
+        "repoValue": "#15803d",
+        "figmaAlias": "green/700",
+        "overrideTo": "green/700",
+        "reason": "The edge of a success message or field must reach 3 to 1 on all three surface tiers. green/600 is 2.91 to 1 on the third tier; green/700 is the nearest step that passes.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "border/warning",
+        "mode": "light",
+        "figmaValue": "#b45309",
+        "repoValue": "#b45309",
+        "figmaAlias": "amber/700",
+        "overrideTo": "amber/700",
+        "reason": "Contrast: worst pair was 3 to 1 (border/warning on surface/secondary/default (status-and-brand-borders)); with this step the worst is 4.73 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/default",
+        "mode": "light",
+        "figmaValue": "#115e59",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/800",
+        "overrideTo": "teal/800",
+        "reason": "Contrast: worst pair was 2.97 to 1 (text/accent/teal/default on surface/accent/teal/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.02 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/default",
+        "mode": "dark",
+        "figmaValue": "#5eead4",
+        "repoValue": "#5eead4",
+        "figmaAlias": "teal/300",
+        "overrideTo": "teal/300",
+        "reason": "Contrast: worst pair was 1.39 to 1 (text/accent/teal/default on surface/accent/teal/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.13 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/default",
+        "mode": "dark",
+        "figmaValue": "#14b8a6",
+        "repoValue": "#14b8a6",
+        "figmaAlias": "teal/500",
+        "overrideTo": "teal/500",
+        "reason": "Contrast: worst pair was 1.73 to 1 (icon/accent/teal/default on surface/accent/teal/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/bold",
+        "mode": "dark",
+        "figmaValue": "#5eead4",
+        "repoValue": "#5eead4",
+        "figmaAlias": "teal/300",
+        "overrideTo": "teal/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/default",
+        "mode": "light",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1d4ed8",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/700",
+        "reason": "Contrast: worst pair was 3.64 to 1 (text/accent/blue/default on surface/accent/blue/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.72 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/default",
+        "mode": "dark",
+        "figmaValue": "#93c5fd",
+        "repoValue": "#93c5fd",
+        "figmaAlias": "blue/300",
+        "overrideTo": "blue/300",
+        "reason": "Contrast: worst pair was 1.3 to 1 (text/accent/blue/default on surface/accent/blue/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.84 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/default",
+        "mode": "dark",
+        "figmaValue": "#60a5fa",
+        "repoValue": "#60a5fa",
+        "figmaAlias": "blue/400",
+        "overrideTo": "blue/400",
+        "reason": "Contrast: worst pair was 1.55 to 1 (icon/accent/blue/default on surface/accent/blue/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.07 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/bold",
+        "mode": "dark",
+        "figmaValue": "#93c5fd",
+        "repoValue": "#93c5fd",
+        "figmaAlias": "blue/300",
+        "overrideTo": "blue/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/default",
+        "mode": "light",
+        "figmaValue": "#6d28d9",
+        "repoValue": "#6d28d9",
+        "figmaAlias": "violet/700",
+        "overrideTo": "violet/700",
+        "reason": "Contrast: worst pair was 4.1 to 1 (text/accent/violet/default on surface/accent/violet/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.12 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/default",
+        "mode": "dark",
+        "figmaValue": "#c4b5fd",
+        "repoValue": "#c4b5fd",
+        "figmaAlias": "violet/300",
+        "overrideTo": "violet/300",
+        "reason": "Contrast: worst pair was 1.26 to 1 (text/accent/violet/default on surface/accent/violet/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.87 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/default",
+        "mode": "dark",
+        "figmaValue": "#a78bfa",
+        "repoValue": "#a78bfa",
+        "figmaAlias": "violet/400",
+        "overrideTo": "violet/400",
+        "reason": "Contrast: worst pair was 1.54 to 1 (icon/accent/violet/default on surface/accent/violet/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.03 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/bold",
+        "mode": "dark",
+        "figmaValue": "#c4b5fd",
+        "repoValue": "#c4b5fd",
+        "figmaAlias": "violet/300",
+        "overrideTo": "violet/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/default",
+        "mode": "light",
+        "figmaValue": "#92400e",
+        "repoValue": "#92400e",
+        "figmaAlias": "amber/800",
+        "overrideTo": "amber/800",
+        "reason": "Contrast: worst pair was 2.56 to 1 (text/accent/amber/default on surface/accent/amber/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.69 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/default",
+        "mode": "dark",
+        "figmaValue": "#fcd34d",
+        "repoValue": "#fcd34d",
+        "figmaAlias": "amber/300",
+        "overrideTo": "amber/300",
+        "reason": "Contrast: worst pair was 1.41 to 1 (text/accent/amber/default on surface/accent/amber/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.92 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/default",
+        "mode": "light",
+        "figmaValue": "#b45309",
+        "repoValue": "#b45309",
+        "figmaAlias": "amber/700",
+        "overrideTo": "amber/700",
+        "reason": "Contrast: worst pair was 2.86 to 1 (icon/accent/amber/default on surface/accent/amber/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.51 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/default",
+        "mode": "dark",
+        "figmaValue": "#f59e0b",
+        "repoValue": "#f59e0b",
+        "figmaAlias": "amber/500",
+        "overrideTo": "amber/500",
+        "reason": "Contrast: worst pair was 1.81 to 1 (icon/accent/amber/default on surface/accent/amber/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.22 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/bold",
+        "mode": "dark",
+        "figmaValue": "#fcd34d",
+        "repoValue": "#fcd34d",
+        "figmaAlias": "amber/300",
+        "overrideTo": "amber/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/default",
+        "mode": "light",
+        "figmaValue": "#9d174d",
+        "repoValue": "#9d174d",
+        "figmaAlias": "pink/800",
+        "overrideTo": "pink/800",
+        "reason": "Contrast: worst pair was 3.33 to 1 (text/accent/pink/default on surface/accent/pink/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.7 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/default",
+        "mode": "dark",
+        "figmaValue": "#fbcfe8",
+        "repoValue": "#fbcfe8",
+        "figmaAlias": "pink/200",
+        "overrideTo": "pink/200",
+        "reason": "Contrast: worst pair was 1.31 to 1 (text/accent/pink/default on surface/accent/pink/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.7 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/default",
+        "mode": "dark",
+        "figmaValue": "#f472b6",
+        "repoValue": "#f472b6",
+        "figmaAlias": "pink/400",
+        "overrideTo": "pink/400",
+        "reason": "Contrast: worst pair was 1.6 to 1 (icon/accent/pink/default on surface/accent/pink/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.64 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/bold",
+        "mode": "dark",
+        "figmaValue": "#f9a8d4",
+        "repoValue": "#f9a8d4",
+        "figmaAlias": "pink/300",
+        "overrideTo": "pink/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/default",
+        "mode": "light",
+        "figmaValue": "#166534",
+        "repoValue": "#166534",
+        "figmaAlias": "green/800",
+        "overrideTo": "green/800",
+        "reason": "Contrast: worst pair was 2.72 to 1 (text/accent/green/default on surface/accent/green/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.88 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/default",
+        "mode": "dark",
+        "figmaValue": "#86efac",
+        "repoValue": "#86efac",
+        "figmaAlias": "green/300",
+        "overrideTo": "green/300",
+        "reason": "Contrast: worst pair was 1.42 to 1 (text/accent/green/default on surface/accent/green/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.08 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/default",
+        "mode": "dark",
+        "figmaValue": "#22c55e",
+        "repoValue": "#22c55e",
+        "figmaAlias": "green/500",
+        "overrideTo": "green/500",
+        "reason": "Contrast: worst pair was 1.82 to 1 (icon/accent/green/default on surface/accent/green/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/bold",
+        "mode": "dark",
+        "figmaValue": "#86efac",
+        "repoValue": "#86efac",
+        "figmaAlias": "green/300",
+        "overrideTo": "green/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/default",
+        "mode": "light",
+        "figmaValue": "#9a3412",
+        "repoValue": "#9a3412",
+        "figmaAlias": "orange/800",
+        "overrideTo": "orange/800",
+        "reason": "Contrast: worst pair was 2.63 to 1 (text/accent/orange/default on surface/accent/orange/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.4 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/default",
+        "mode": "dark",
+        "figmaValue": "#fed7aa",
+        "repoValue": "#fed7aa",
+        "figmaAlias": "orange/200",
+        "overrideTo": "orange/200",
+        "reason": "Contrast: worst pair was 1.41 to 1 (text/accent/orange/default on surface/accent/orange/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.4 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/default",
+        "mode": "dark",
+        "figmaValue": "#f97316",
+        "repoValue": "#f97316",
+        "figmaAlias": "orange/500",
+        "overrideTo": "orange/500",
+        "reason": "Contrast: worst pair was 1.81 to 1 (icon/accent/orange/default on surface/accent/orange/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.34 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/bold",
+        "mode": "dark",
+        "figmaValue": "#fdba74",
+        "repoValue": "#fdba74",
+        "figmaAlias": "orange/300",
+        "overrideTo": "orange/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/default",
+        "mode": "light",
+        "figmaValue": "#991b1b",
+        "repoValue": "#991b1b",
+        "figmaAlias": "red/800",
+        "overrideTo": "red/800",
+        "reason": "Contrast: worst pair was 3.34 to 1 (text/accent/red/default on surface/accent/red/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.74 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/default",
+        "mode": "dark",
+        "figmaValue": "#fecaca",
+        "repoValue": "#fecaca",
+        "figmaAlias": "red/200",
+        "overrideTo": "red/200",
+        "reason": "Contrast: worst pair was 1.28 to 1 (text/accent/red/default on surface/accent/red/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.74 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/default",
+        "mode": "dark",
+        "figmaValue": "#f87171",
+        "repoValue": "#f87171",
+        "figmaAlias": "red/400",
+        "overrideTo": "red/400",
+        "reason": "Contrast: worst pair was 1.55 to 1 (icon/accent/red/default on surface/accent/red/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.62 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/bold",
+        "mode": "dark",
+        "figmaValue": "#fca5a5",
+        "repoValue": "#fca5a5",
+        "figmaAlias": "red/300",
+        "overrideTo": "red/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/default",
+        "mode": "light",
+        "figmaValue": "#890b31",
+        "repoValue": "#890b31",
+        "figmaAlias": "rose/800",
+        "overrideTo": "rose/800",
+        "reason": "Contrast: worst pair was 2.94 to 1 (text/accent/rose/default on surface/accent/rose/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.06 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/default",
+        "mode": "dark",
+        "figmaValue": "#feb9cf",
+        "repoValue": "#feb9cf",
+        "figmaAlias": "rose/200",
+        "overrideTo": "rose/200",
+        "reason": "Contrast: worst pair was 1.46 to 1 (text/accent/rose/default on surface/accent/rose/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.06 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/default",
+        "mode": "dark",
+        "figmaValue": "#f82065",
+        "repoValue": "#f82065",
+        "figmaAlias": "rose/500",
+        "overrideTo": "rose/500",
+        "reason": "Contrast: worst pair was 2.02 to 1 (icon/accent/rose/default on surface/accent/rose/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/bold",
+        "mode": "dark",
+        "figmaValue": "#fd8cb0",
+        "repoValue": "#fd8cb0",
+        "figmaAlias": "rose/300",
+        "overrideTo": "rose/300",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 or 900 surface, as low as 1 to 1. It now takes the value light already has.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/default",
+        "mode": "light",
+        "figmaValue": "#115e59",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/800",
+        "overrideTo": "teal/800",
+        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/default",
+        "mode": "dark",
+        "figmaValue": "#115e59",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/800",
+        "overrideTo": "teal/800",
+        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/hover",
+        "mode": "light",
+        "figmaValue": "#0f766e",
+        "repoValue": "#0f766e",
+        "figmaAlias": "teal/700",
+        "overrideTo": "teal/700",
+        "reason": "Hover of the bold teal surface: one step lighter than rest, as in the other accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/hover",
+        "mode": "dark",
+        "figmaValue": "#0f766e",
+        "repoValue": "#0f766e",
+        "figmaAlias": "teal/700",
+        "overrideTo": "teal/700",
+        "reason": "Hover of the bold teal surface: one step lighter than rest, as in the other accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/default",
+        "mode": "light",
+        "figmaValue": "#1e40af",
+        "repoValue": "#1e40af",
+        "figmaAlias": "blue/800",
+        "overrideTo": "blue/800",
+        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/default",
+        "mode": "dark",
+        "figmaValue": "#1e40af",
+        "repoValue": "#1e40af",
+        "figmaAlias": "blue/800",
+        "overrideTo": "blue/800",
+        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1. The surface moves one step darker at rest (800) and hover takes the old resting step (700), so hover still goes lighter, as in the other eight accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/hover",
+        "mode": "light",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1d4ed8",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/700",
+        "reason": "Hover of the bold blue surface: one step lighter than rest, as in the other accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/hover",
+        "mode": "dark",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1d4ed8",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/700",
+        "reason": "Hover of the bold blue surface: one step lighter than rest, as in the other accent families.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/default",
+        "mode": "dark",
+        "figmaValue": "#3d3f43",
+        "repoValue": "#3d3f43",
+        "figmaAlias": "neutral/dark/300",
+        "overrideTo": "neutral/dark/300",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/hover",
+        "mode": "dark",
+        "figmaValue": "#4b4d51",
+        "repoValue": "#4b4d51",
+        "figmaAlias": "neutral/dark/350",
+        "overrideTo": "neutral/dark/350",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/default",
+        "mode": "light",
+        "figmaValue": "#3b3d42",
+        "repoValue": "#3b3d42",
+        "figmaAlias": "neutral/light/900",
+        "overrideTo": "neutral/light/900",
+        "reason": "Contrast on the subtle neutral surfaces.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/default",
+        "mode": "dark",
+        "figmaValue": "#cecfd2",
+        "repoValue": "#cecfd2",
+        "figmaAlias": "neutral/dark/900",
+        "overrideTo": "neutral/dark/900",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/default",
+        "mode": "light",
+        "figmaValue": "#6b6e76",
+        "repoValue": "#6b6e76",
+        "figmaAlias": "neutral/light/700",
+        "overrideTo": "neutral/light/700",
+        "reason": "Contrast on the subtle neutral surfaces.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/default",
+        "mode": "dark",
+        "figmaValue": "#bfc1c4",
+        "repoValue": "#bfc1c4",
+        "figmaAlias": "neutral/dark/800",
+        "overrideTo": "neutral/dark/800",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/brand",
+        "mode": "dark",
+        "figmaValue": "#f9a8d4",
+        "repoValue": "#f9a8d4",
+        "figmaAlias": "pink/300",
+        "overrideTo": "pink/300",
+        "reason": "Contrast: worst pair was 2.3 to 1 (text/brand on surface/tertiary/active (text-on-base)); with this step the worst is 5.82 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      }
+    ],
+    "cssNameDiffers": [],
+    "cssFileMismatch": [],
+    "descriptionDiffers": [
+      {
+        "collection": "Border",
+        "token": "width/md",
+        "figma": "The edge of a selected or invalid control, and the active tab’s underline.",
+        "repo": "The edge of a selected or invalid control, and the active tab's underline.",
+        "repoSource": "proposed"
+      }
+    ],
+    "proposedNotInFigma": [
+      {
+        "collection": "Elevation",
+        "token": "shadow/md",
+        "cssVar": "--shadow-md",
+        "type": "shadow",
+        "values": {
+          "light": "0 4px 16px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.08)",
+          "dark": "0 4px 16px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.4)"
+        },
+        "alias": {
+          "light": null,
+          "dark": null
+        },
+        "scopes": [
+          "EFFECT_FLOAT"
+        ],
+        "why": "Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it."
+      },
+      {
+        "collection": "Elevation",
+        "token": "shadow/lg",
+        "cssVar": "--shadow-lg",
+        "type": "shadow",
+        "values": {
+          "light": "0 16px 48px rgb(0 0 0 / 0.18), 0 2px 8px rgb(0 0 0 / 0.08)",
+          "dark": "0 16px 48px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.4)"
+        },
+        "alias": {
+          "light": null,
+          "dark": null
+        },
+        "scopes": [
+          "EFFECT_FLOAT"
+        ],
+        "why": "Elevation is not started in Figma."
+      }
+    ]
+  },
+  "warnings": [],
+  "summary": "Figma and code agree on 331 of 331 tokens; 0 drift, 0 intended overrides, 73 overrides to remove; 2 proposed in the repo, not in Figma"
+}

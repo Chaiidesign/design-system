@@ -28,6 +28,9 @@ input[type=radio] { inline-size: 1.25rem; block-size: 1.25rem; margin: 0; accent
 figcaption { font-weight: var(--font-weight-label); }
 iframe { display: block; inline-size: min(23.4375rem, 100%); border: var(--border-width-sm) solid var(--color-border-primary); border-radius: var(--radius-container-small); background: var(--color-surface-primary); }
 .measure { color: var(--color-text-secondary); max-inline-size: 23.4375rem; }
+.invented { display: grid; gap: var(--spacing-static-80); }
+.invented ul { margin: 0; padding-inline-start: var(--spacing-static-240); display: grid; gap: var(--spacing-static-40); color: var(--color-text-secondary); }
+code { font-size: 0.9375em; overflow-wrap: anywhere; }
 [hidden] { display: none !important; }
 </style>
 </head>
@@ -35,9 +38,24 @@ iframe { display: block; inline-size: min(23.4375rem, 100%); border: var(--borde
 <main>
   <header>
     <h1>Three directions, one set of screens</h1>
-    <p class="lede">Each row is one screen of version 0.2, shown three ways at phone width. A is version 0.2 as it was built: the Instrument look with its blue accent and the system font. B is the same page with the V2 tokens exactly as Figma holds them today, and C is the same page with the V2 tokens on this branch, which add 77 contrast fixes and 22 proposed tokens to what Figma holds; both B and C use Geist.</p>
-    <p class="lede">B and C keep version 0.2's layout and parts. A bridge stylesheet points 0.2's colour, type, spacing, radius and size settings at the nearest V2 tokens (v2/screens/bridge-map.json says why for each), so they show V2's values on 0.2's parts, not V2's own components. The line under each frame was measured at 375 pixels wide in the theme shown.</p>
-    <p class="lede">Of the V2 values the bridge uses, only one differs between B and C: --color-text-secondary in light (#6b6e76 in B, #505258 in C). Everything else on these screens is the same in B and C, and in dark they are identical; the other contrast fixes change tokens the bridge does not use.</p>
+    <p class="lede">Each row is one screen of version 0.2, shown three ways at phone width. A is version 0.2 as it was built: the Instrument look with its blue accent and the system font. B is the same page with only the V2 tokens Figma holds today, with no contrast fix and no proposed token; where Figma holds no token for a job, B uses the values listed below. C is the same page with the V2 tokens on this branch, which change 73 of Figma's colour values to pass contrast or for another stated reason, and add 25 proposed tokens that Figma does not hold. Both B and C use Geist.</p>
+    <p class="lede">B and C keep version 0.2's layout and parts. A bridge stylesheet points 0.2's colour, type, spacing, radius and size settings at the nearest V2 tokens (v2/screens/bridge-map.json says why for each), so they show V2's values on 0.2's parts, not V2's own components. C's bridge points a control's edge at the proposed strong border; Figma holds no strong border, so B's points it at border/primary, the border Figma gives a control at rest. The line under each frame was measured at 375 pixels wide in the theme shown.</p>
+    <p class="lede">Of the values the two bridges use, 3 differ between B and C: --sv-color-text-soft in light: #6b6e76 in B (--color-text-secondary), #505258 in C (--color-text-secondary); --sv-color-edge in light: #dddee1 in B (--color-border-primary), #7d818a in C (--color-border-strong); --sv-color-edge in dark: #3d3f43 in B (--color-border-primary), #7e8188 in C (--color-border-strong). Everything else the bridges use is the same in B and C, including the 9 values B had to invent, which are set to C's.</p>
+    <section class="invented" aria-labelledby="h-invented">
+      <h2 id="h-invented">What Figma does not hold, so column B had to invent</h2>
+      <p class="lede">Figma holds no size, border width, focus ring or motion tokens. For each job below B uses a fixed value. Each is the value C gets from a proposed token, so that B and C differ only where Figma's own values differ.</p>
+      <ul>
+        <li><code>--sv-size-control: 2.75rem</code>. Height of a field, select or button. Figma has no size tokens; 44px is what C gets from the proposed size/control/lg.</li>
+        <li><code>--sv-size-control-primary: 2.75rem</code>. Height of the primary button. Figma has no size tokens; 44px is what C gets from the proposed size/control/lg.</li>
+        <li><code>--sv-size-mark: 1.25rem</code>. Size of a mark (select arrow, checkbox box, error glyph). Figma has no size tokens; 20px is what C gets from the proposed size/icon/md.</li>
+        <li><code>--sv-size-mark-inset: 1.25rem</code>. Size of the status mark. Figma has no size tokens; 20px is what C gets from the proposed size/icon/md.</li>
+        <li><code>--sv-border-thin: 1px</code>. Thin border width. Figma's Border collection is empty; 1px is what C gets from the proposed width/sm.</li>
+        <li><code>--sv-border-thick: 2px</code>. Control border width. Figma's Border collection is empty; 2px is what C gets from the proposed width/md.</li>
+        <li><code>--sv-focus-width: 2px</code>. Focus outline width. Figma has no focus ring width; 2px is what C gets from the proposed ring/width.</li>
+        <li><code>--sv-focus-offset: 2px</code>. Gap between a control and its focus outline. Figma has no ring offset; 2px is what C gets from the proposed ring/offset.</li>
+        <li><code>--sv-duration-quick: 100ms</code>. Short state change. Figma has no motion tokens; 100ms is what C gets from the proposed duration/fast.</li>
+      </ul>
+    </section>
     <fieldset>
       <legend>Theme</legend>
       <label><input type="radio" name="theme" value="light" checked> Light</label>
@@ -50,20 +68,20 @@ iframe { display: block; inline-size: min(23.4375rem, 100%); border: var(--borde
       <figure class="frame">
         <figcaption>A. Version 0.2 as built</figcaption>
         <iframe title="Checkout, A. Version 0.2 as built" src="../../screens/checkout.html?theme=light" data-light="2099" data-dark="2099" style="block-size: 2099px"></iframe>
-        <p class="measure" data-for="light">All 37 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.8). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 37 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.66). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 37 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.8). All 11 targets are at least 24 by 24 pixels (smallest 24 by 24). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 37 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.66). All 11 targets are at least 24 by 24 pixels (smallest 24 by 24). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>B. V2 tokens as Figma holds them</figcaption>
         <iframe title="Checkout, B. V2 tokens as Figma holds them" src="as-given/checkout.html?theme=light" data-light="2083" data-dark="2083" style="block-size: 2083px"></iframe>
-        <p class="measure" data-for="light">All 37 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Quantity 2”. All 9 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 37 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.51). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 37 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Quantity 2”. 8 of 9 control edges are below 3 to 1 (lowest 1.35). 1 of 11 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 37 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. 8 of 9 control edges are below 3 to 1 (lowest 1.67). 1 of 11 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>C. V2 tokens on this branch</figcaption>
         <iframe title="Checkout, C. V2 tokens on this branch" src="merged/checkout.html?theme=light" data-light="2083" data-dark="2083" style="block-size: 2083px"></iframe>
-        <p class="measure" data-for="light">All 37 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Quantity 2”. All 9 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 37 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.51). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 37 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Quantity 2”. All 9 control edges reach 3 to 1 (lowest 3.9). 1 of 11 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 37 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.51). 1 of 11 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
     </div>
   </section>
@@ -73,20 +91,20 @@ iframe { display: block; inline-size: min(23.4375rem, 100%); border: var(--borde
       <figure class="frame">
         <figcaption>A. Version 0.2 as built</figcaption>
         <iframe title="Checkout with errors, A. Version 0.2 as built" src="../../screens/checkout-errors.html?theme=light" data-light="2379" data-dark="2379" style="block-size: 2379px"></iframe>
-        <p class="measure" data-for="light">All 42 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.48). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 42 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 3.46). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 42 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 4.48). All 13 targets are at least 24 by 24 pixels (smallest 24 by 24). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 42 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 3.46). All 13 targets are at least 24 by 24 pixels (smallest 24 by 24). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>B. V2 tokens as Figma holds them</figcaption>
         <iframe title="Checkout with errors, B. V2 tokens as Figma holds them" src="as-given/checkout-errors.html?theme=light" data-light="2363" data-dark="2363" style="block-size: 2363px"></iframe>
-        <p class="measure" data-for="light">All 42 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Quantity 2”. All 9 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 42 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 3.65). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 42 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Quantity 2”. 6 of 9 control edges are below 3 to 1 (lowest 1.35). 1 of 13 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 42 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. 6 of 9 control edges are below 3 to 1 (lowest 1.67). 1 of 13 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>C. V2 tokens on this branch</figcaption>
         <iframe title="Checkout with errors, C. V2 tokens on this branch" src="merged/checkout-errors.html?theme=light" data-light="2363" data-dark="2363" style="block-size: 2363px"></iframe>
-        <p class="measure" data-for="light">All 42 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Quantity 2”. All 9 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 42 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 3.65). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 42 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Quantity 2”. All 9 control edges reach 3 to 1 (lowest 3.9). 1 of 13 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 42 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Pay £60.75”. All 9 control edges reach 3 to 1 (lowest 3.65). 1 of 13 targets are smaller than 24 by 24 pixels (smallest 20 by 20). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
     </div>
   </section>
@@ -96,20 +114,20 @@ iframe { display: block; inline-size: min(23.4375rem, 100%); border: var(--borde
       <figure class="frame">
         <figcaption>A. Version 0.2 as built</figcaption>
         <iframe title="Assistant, A. Version 0.2 as built" src="../../screens/assistant.html?theme=light" data-light="1662" data-dark="1662" style="block-size: 1662px"></iframe>
-        <p class="measure" data-for="light">All 28 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Move event and send message”. All 1 control edges reach 3 to 1 (lowest 4.8). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 28 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Move event and send message”. All 1 control edges reach 3 to 1 (lowest 4.66). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 28 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Move event and send message”. All 1 control edges reach 3 to 1 (lowest 4.8). All 9 targets are at least 24 by 24 pixels (smallest 73.73 by 48). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 28 text items reach the contrast minimum; the lowest is 5.01 to 1, on “Move event and send message”. All 1 control edges reach 3 to 1 (lowest 4.66). All 9 targets are at least 24 by 24 pixels (smallest 73.73 by 48). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>B. V2 tokens as Figma holds them</figcaption>
         <iframe title="Assistant, B. V2 tokens as Figma holds them" src="as-given/assistant.html?theme=light" data-light="1635" data-dark="1635" style="block-size: 1635px"></iframe>
-        <p class="measure" data-for="light">All 28 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 28 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Move event and send message”. All 1 control edges reach 3 to 1 (lowest 4.51). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 28 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Event”. 1 of 1 control edges are below 3 to 1 (lowest 1.35). All 9 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 28 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Move event and send message”. 1 of 1 control edges are below 3 to 1 (lowest 1.67). All 9 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>C. V2 tokens on this branch</figcaption>
         <iframe title="Assistant, C. V2 tokens on this branch" src="merged/assistant.html?theme=light" data-light="1635" data-dark="1635" style="block-size: 1635px"></iframe>
-        <p class="measure" data-for="light">All 28 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 28 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Move event and send message”. All 1 control edges reach 3 to 1 (lowest 4.51). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 28 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 3.9). All 9 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 28 text items reach the contrast minimum; the lowest is 4.6 to 1, on “Move event and send message”. All 1 control edges reach 3 to 1 (lowest 4.51). All 9 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
     </div>
   </section>
@@ -119,20 +137,20 @@ iframe { display: block; inline-size: min(23.4375rem, 100%); border: var(--borde
       <figure class="frame">
         <figcaption>A. Version 0.2 as built</figcaption>
         <iframe title="Assistant, task done, A. Version 0.2 as built" src="../../screens/assistant-done.html?theme=light" data-light="1182" data-dark="1182" style="block-size: 1182px"></iframe>
-        <p class="measure" data-for="light">All 21 text items reach the contrast minimum; the lowest is 6.79 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 4.8). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 21 text items reach the contrast minimum; the lowest is 7.32 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 4.66). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 21 text items reach the contrast minimum; the lowest is 6.79 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 4.8). All 6 targets are at least 24 by 24 pixels (smallest 73.73 by 48). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 21 text items reach the contrast minimum; the lowest is 7.32 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 4.66). All 6 targets are at least 24 by 24 pixels (smallest 73.73 by 48). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>B. V2 tokens as Figma holds them</figcaption>
         <iframe title="Assistant, task done, B. V2 tokens as Figma holds them" src="as-given/assistant-done.html?theme=light" data-light="1171" data-dark="1171" style="block-size: 1171px"></iframe>
-        <p class="measure" data-for="light">All 21 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 21 text items reach the contrast minimum; the lowest is 7.66 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 4.51). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 21 text items reach the contrast minimum; the lowest is 5.1 to 1, on “Event”. 1 of 1 control edges are below 3 to 1 (lowest 1.35). All 6 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 21 text items reach the contrast minimum; the lowest is 7.66 to 1, on “Event”. 1 of 1 control edges are below 3 to 1 (lowest 1.67). All 6 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
       <figure class="frame">
         <figcaption>C. V2 tokens on this branch</figcaption>
         <iframe title="Assistant, task done, C. V2 tokens on this branch" src="merged/assistant-done.html?theme=light" data-light="1171" data-dark="1171" style="block-size: 1171px"></iframe>
-        <p class="measure" data-for="light">All 21 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 3.24). No sideways scroll. Smallest text 16 pixels.</p>
-        <p class="measure" data-for="dark" hidden>All 21 text items reach the contrast minimum; the lowest is 7.66 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 4.51). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="light">All 21 text items reach the contrast minimum; the lowest is 7.81 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 3.9). All 6 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
+        <p class="measure" data-for="dark" hidden>All 21 text items reach the contrast minimum; the lowest is 7.66 to 1, on “Event”. All 1 control edges reach 3 to 1 (lowest 4.51). All 6 targets are at least 24 by 24 pixels (smallest 75.61 by 44). No sideways scroll. Smallest text 16 pixels.</p>
       </figure>
     </div>
   </section>

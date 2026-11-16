@@ -411,6 +411,13 @@
         "rules": 1
       },
       {
+        "token": "overlay",
+        "collection": "Layer",
+        "cssVar": "--layer-overlay",
+        "origin": "proposed",
+        "rules": 1
+      },
+      {
         "token": "surface/primary/default",
         "collection": "Themes",
         "cssVar": "--color-surface-primary",
@@ -613,6 +620,13 @@
         "collection": "Density",
         "cssVar": "--spacing-static-40",
         "origin": "figma",
+        "rules": 1
+      },
+      {
+        "token": "popover",
+        "collection": "Layer",
+        "cssVar": "--layer-popover",
+        "origin": "proposed",
         "rules": 1
       },
       {

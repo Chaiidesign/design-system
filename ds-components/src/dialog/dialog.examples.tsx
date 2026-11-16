@@ -17,6 +17,14 @@
 //                                             it: a dismissible dialog must show a close part (dialog-visible-close)
 //                                             and a non-dismissible one must offer a footer action
 //                                             (dialog-not-dismissible-has-way-out), and both are controls
+//   __dialogFixtures.mountWithLink()          mounts an open dialog whose body holds a link before the footer's
+//                                             buttons, for the "not a link" clause of dialog-focus-on-open
+//   __dialogFixtures.mountRefProbe()          mounts open dialogs whose DialogContent and DialogBody get callback
+//                                             refs (each part once with a cleanup, once without) and object refs; every call is
+//                                             logged in __dialogRefLog, and closeRefProbe() closes it
+//                                             (dialog-ref-cleanup)
+//   __dialogFixtures.mountLateBody()          mounts an open dialog whose body starts short; fillLateBody(n) adds n
+//                                             rows later (dialog-body-scroll-keyboard-late)
 //
 // On a page that shows several examples (the component page, the index) every open dialog would cover the page at
 // once, so each example there starts hidden behind an "Open" button that mounts it (OnDemand). The page for one
@@ -47,10 +55,21 @@ import {
 } from "./dialog";
 
 type Log = Record<string, { openChange?: boolean[]; action?: string[]; menuOpenChange?: boolean[] }>;
+type DialogFixtures = {
+  mountUntitled: (kind: "missing" | "empty") => void;
+  mountNoControl: () => void;
+  mountWithLink: () => void;
+  mountRefProbe: () => void;
+  closeRefProbe?: () => void;
+  mountLateBody: () => void;
+  fillLateBody?: (rows: number) => void;
+};
 type DialogWindow = {
   __dialogEvents?: Log;
   __dialogControl?: Record<string, { setOpen: (open: boolean) => void }>;
-  __dialogFixtures?: { mountUntitled: (kind: "missing" | "empty") => void; mountNoControl: () => void };
+  __dialogFixtures?: DialogFixtures;
+  __dialogRefLog?: string[];
+  __dialogRefObjects?: { content: { current: HTMLDivElement | null }; body: { current: HTMLDivElement | null } };
 };
 const win = () => window as unknown as DialogWindow;
 
@@ -172,7 +191,167 @@ function mountNoControl() {
     </Dialog>,
   );
 }
-if (typeof window !== "undefined") win().__dialogFixtures = { mountUntitled, mountNoControl };
+// Test hook for dialog-focus-on-open, the "not a link" clause: a link in the body comes before the footer's buttons in
+// the Tab order, so focus must skip it and land on Cancel.
+function mountWithLink() {
+  const host = document.createElement("div");
+  host.setAttribute("data-dialog-fixture", "with-link");
+  document.body.appendChild(host);
+  createRoot(host).render(
+    <Dialog defaultOpen>
+      <DialogPortal>
+        <DialogOverlay>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Accept the delivery terms</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <a href="#terms">Read the delivery terms</a>
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button>Cancel</Button>
+              </DialogClose>
+              <Button variant="primary">Accept</Button>
+            </DialogFooter>
+          </DialogContent>
+        </DialogOverlay>
+      </DialogPortal>
+    </Dialog>,
+  );
+}
+
+// Test hook for dialog-ref-cleanup. The callback refs are module-level, so they are the same function on every render.
+const refLog = (entry: string) => {
+  (win().__dialogRefLog ??= []).push(entry);
+};
+const contentRef = (el: HTMLDivElement | null) => {
+  if (!el) {
+    refLog("content:null");
+    return;
+  }
+  refLog("content:attach");
+  return () => refLog("content:cleanup");
+};
+const bodyRef = (el: HTMLDivElement | null) => {
+  refLog(el ? "body:attach" : "body:null");
+};
+// The same two kinds swapped, so each part is proved with both: here the body's ref returns a cleanup.
+const plainContentRef = (el: HTMLDivElement | null) => {
+  refLog(el ? "content2:attach" : "content2:null");
+};
+const cleanupBodyRef = (el: HTMLDivElement | null) => {
+  if (!el) {
+    refLog("body2:null");
+    return;
+  }
+  refLog("body2:attach");
+  return () => refLog("body2:cleanup");
+};
+function RefProbe() {
+  const [open, setOpen] = useState(true);
+  win().__dialogFixtures!.closeRefProbe = () => setOpen(false);
+  const objects = (win().__dialogRefObjects ??= { content: { current: null }, body: { current: null } });
+  return (
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent ref={contentRef}>
+              <DialogHeader>
+                <DialogTitle>Refs</DialogTitle>
+              </DialogHeader>
+              <DialogBody ref={bodyRef}>Callback refs.</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+      <Dialog open={open}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent ref={plainContentRef}>
+              <DialogHeader>
+                <DialogTitle>Swapped refs</DialogTitle>
+              </DialogHeader>
+              <DialogBody ref={cleanupBodyRef}>Callback refs, swapped.</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+      <Dialog open={open}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent ref={objects.content}>
+              <DialogHeader>
+                <DialogTitle>Object refs</DialogTitle>
+              </DialogHeader>
+              <DialogBody ref={objects.body}>Object refs.</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </>
+  );
+}
+function mountRefProbe() {
+  const host = document.createElement("div");
+  host.setAttribute("data-dialog-fixture", "ref-probe");
+  document.body.appendChild(host);
+  createRoot(host).render(<RefProbe />);
+}
+
+// Test hook for dialog-body-scroll-keyboard-late: the body's rows arrive after the dialog opened.
+function LateBody() {
+  const [rows, setRows] = useState(0);
+  win().__dialogFixtures!.fillLateBody = setRows;
+  return (
+    <Dialog defaultOpen>
+      <DialogPortal>
+        <DialogOverlay>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Your orders</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <p>Your orders from the last year.</p>
+              {Array.from({ length: rows }, (_, i) => (
+                <p key={i}>Order {i + 1}: delivered</p>
+              ))}
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button>Close</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </DialogOverlay>
+      </DialogPortal>
+    </Dialog>
+  );
+}
+function mountLateBody() {
+  const host = document.createElement("div");
+  host.setAttribute("data-dialog-fixture", "late-body");
+  document.body.appendChild(host);
+  createRoot(host).render(<LateBody />);
+}
+
+if (typeof window !== "undefined") win().__dialogFixtures = { mountUntitled, mountNoControl, mountWithLink, mountRefProbe, mountLateBody };
 
 // Several examples on one page: each waits behind an "Open" button, and mounts afresh on every press so it opens
 // again after it closes. The single-example page renders the example as it is.
@@ -225,6 +404,59 @@ function WithMenu() {
         </DialogOverlay>
       </DialogPortal>
     </Dialog>
+  );
+}
+
+// A dialog opened from a menu item, the usual way a dialog without a trigger opens. The item has gone by the time
+// the dialog closes, so focus must go back to the menu's trigger.
+function FromMenu() {
+  const id = "from-menu";
+  const [open, setOpen] = useState(false);
+  const change = (next: boolean) => {
+    recordOpen(id)(next);
+    setOpen(next);
+  };
+  return (
+    <>
+      <DropdownMenu onOpenChange={(next: boolean) => (entry(id).menuOpenChange ??= []).push(next)}>
+        <DropdownMenuTrigger asChild>
+          <Button iconEnd={<Icon name="chevron-down" />}>Chat options</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => change(true)}>Rename chat</DropdownMenuItem>
+            <DropdownMenuItem onSelect={recordAction(id, "Share")}>Share</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenuPortal>
+      </DropdownMenu>
+      <Dialog open={open} onOpenChange={change}>
+        <DialogPortal>
+          <DialogOverlay>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Rename chat</DialogTitle>
+                <DialogDescription>The new name shows in your chat list.</DialogDescription>
+              </DialogHeader>
+              <DialogBody>Weekend plans</DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Cancel</Button>
+                </DialogClose>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    recordAction(id, "Save name")();
+                    change(false);
+                  }}
+                >
+                  Save name
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogOverlay>
+        </DialogPortal>
+      </Dialog>
+    </>
   );
 }
 
@@ -501,4 +733,5 @@ export const examples = {
       <WithMenu />
     </OnDemand>
   ),
+  "from-menu": () => <FromMenu />,
 };

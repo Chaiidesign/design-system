@@ -4,9 +4,71 @@
 // How tests see a selection: every example passes onValueChange={record("<example id>")}, which appends the new
 // value to window.__tabsEvents["<example id>"].valueChange. The controlled example holds its value in useState and
 // records every change too. tabs.tests.mjs reads that log.
+//
+// Test hook (not an example): window.__tabsFixtures.refCleanup() mounts a Tabs with a ref on every part, in its own
+// React root without StrictMode (so each ref attaches once), unmounts it, and returns what the refs saw: the React 19
+// callback refs (which return a cleanup) as a log, and an object ref on the list before and after unmount. A spec
+// example cannot show a ref; requirement tabs-ref-cleanup needs one.
 import { useState, type ReactNode } from "react";
+import { flushSync } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Tabs, TabsList, TabsTrigger, TabsContent, type TabsProps } from "./tabs";
 import { Icon, type IconName } from "../../gallery/icons";
+
+type RefReport = { log: string[]; objectAttached: string | null; objectAfter: string | null };
+type FixtureWindow = { __tabsFixtures?: { refCleanup: () => RefReport } };
+
+function refCleanup(): RefReport {
+  const log: string[] = [];
+  const callback = (name: string) => (node: HTMLElement | null) => {
+    if (node === null) {
+      log.push(`${name}:null`);
+      return;
+    }
+    log.push(`${name}:attach:${node.getAttribute("data-slot")}`);
+    return () => {
+      log.push(`${name}:cleanup`);
+    };
+  };
+  const host = document.createElement("div");
+  (document.querySelector("section[data-example]") ?? document.body).appendChild(host);
+  const root = createRoot(host);
+  flushSync(() =>
+    root.render(
+      <Tabs ref={callback("root")} defaultValue="a">
+        <TabsList ref={callback("list")} ariaLabel="Ref fixture">
+          <TabsTrigger ref={callback("trigger")} value="a">
+            A
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent ref={callback("content")} value="a">
+          Panel A
+        </TabsContent>
+      </Tabs>,
+    ),
+  );
+  log.push("unmount");
+  root.unmount();
+  // An object ref on the list: set to the element on mount, back to null on unmount.
+  const object: { current: HTMLDivElement | null } = { current: null };
+  const second = createRoot(host);
+  flushSync(() =>
+    second.render(
+      <Tabs defaultValue="a">
+        <TabsList ref={object} ariaLabel="Ref fixture">
+          <TabsTrigger value="a">A</TabsTrigger>
+        </TabsList>
+        <TabsContent value="a">Panel A</TabsContent>
+      </Tabs>,
+    ),
+  );
+  const objectAttached = object.current ? object.current.getAttribute("data-slot") : null;
+  second.unmount();
+  host.remove();
+  return { log, objectAttached, objectAfter: object.current ? object.current.getAttribute("data-slot") : null };
+}
+
+if (typeof window !== "undefined") (window as unknown as FixtureWindow).__tabsFixtures = { refCleanup };
 
 type EventLog = { __tabsEvents?: Record<string, { valueChange: string[] }> };
 

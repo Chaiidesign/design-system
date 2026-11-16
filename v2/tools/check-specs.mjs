@@ -20,8 +20,12 @@
 // [data-slot="x"] matches the whole attribute and misses an element that carries a second name, so state-target
 // reports it.
 //
-// opacity and layer have no token collection yet. A value for either that is not a keyword is
-// reported as a warning, never passed silently and never an error.
+// opacity has no token collection yet. A value for it that is not a keyword is reported as a warning, never passed
+// silently and never an error.
+//
+// layer (the stacking level, written as z-index) takes a token of the Layer collection and nothing else: no keyword,
+// because "none", "inherit" and the rest would leave the part's level to chance, which is the fault the property
+// exists to fix.
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -59,11 +63,14 @@ const PROPERTY_COLLECTION = {
   borderWidth: { collection: 'Border' }, outlineWidth: { collection: 'Border' }, outlineOffset: { collection: 'Border' },
   duration: { collection: 'Motion' }, easing: { collection: 'Motion' },
   shadow: { collection: 'Elevation' },
+  layer: { collection: 'Layer' },
 };
+// Properties that take a token and never a keyword.
+const TOKEN_ONLY_PROPERTIES = new Set(['layer']);
 // Restricted to fixed words by the schema itself, so they name no token.
 const SCHEMA_ENUM_PROPERTIES = new Set(['borderStyle', 'cursor', 'textDecoration']);
 // No collection exists for these yet.
-const UNCOLLECTED_PROPERTIES = new Set(['opacity', 'layer']);
+const UNCOLLECTED_PROPERTIES = new Set(['opacity']);
 
 const KIND_ALLOWS = {
   text: new Set(['color', 'typography', 'fontWeight', 'textDecoration']),
@@ -301,7 +308,10 @@ export function checkSpecs(entries, ctx, { specFilesOnDisk = null } = {}) {
           // token
           if (SCHEMA_ENUM_PROPERTIES.has(property)) continue;
           if (typeof value !== 'string') continue; // the schema check reports the type
-          if (KEYWORDS.has(value)) continue;
+          if (KEYWORDS.has(value)) {
+            if (TOKEN_ONLY_PROPERTIES.has(property)) out('token', path, `${property} takes a token of the ${PROPERTY_COLLECTION[property].collection} collection only, never the keyword ${q(value)}.`);
+            continue;
+          }
           if (UNCOLLECTED_PROPERTIES.has(property)) {
             out('token', path, `${property} has no token collection yet, so ${q(value)} cannot be checked; use a keyword or add the collection.`, 'warn');
             continue;
@@ -451,6 +461,12 @@ const FAULTS = {
 // More planted faults for checks whose rule changed: each must fire its check, and only that check.
 const MORE_FAULTS = [
   ['state-target', 'a state selector that finds a part by the whole data-slot attribute', (s) => { s.states.hover.selector = ':where([data-slot="button-label"]) :hover'; }],
+  ['token', 'a stacking level that names no Layer token', (s) => { s.styles[0].parts.root.layer = 'modal'; }],
+  ['token', 'a stacking level given as a keyword', (s) => { s.styles[0].parts.root.layer = 'inherit'; }],
+];
+// Planted values that must raise nothing new: each proves a check does not fire on a legal value.
+const CLEAN_PLANTS = [
+  ['a stacking level that names a Layer token', (s) => { s.styles[0].parts.root.layer = 'overlay'; }],
 ];
 
 function selfTest(ctx) {
@@ -478,6 +494,13 @@ function selfTest(ctx) {
       failed += 1;
       console.log(`FAIL ${check}: expected only ${check}, got ${by.length ? by.join(', ') : 'nothing'}`);
     }
+  }
+  for (const [what, plant] of CLEAN_PLANTS) {
+    const copy = structuredClone(base.spec);
+    plant(copy);
+    const fresh = run(copy).filter((f) => !baseline.has(keyOf(f)));
+    if (fresh.length === 0) console.log(`ok   clean: ${what}: no finding`);
+    else { failed += 1; console.log(`FAIL clean: ${what}: ${fresh.map((f) => `[${f.check}] ${f.message}`).join('; ')}`); }
   }
   return failed === 0 ? 0 : 1;
 }

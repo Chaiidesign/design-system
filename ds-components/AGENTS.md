@@ -25,6 +25,9 @@ One name, written once in Figma. Figma `text/primary` is CSS `--color-text-prima
 - **A destructive button says what it destroys** ("Delete project"). In the dark theme its red is close to the brand pink; never rely on the colour.
 - **A Dialog always has a DialogTitle.** An Input always has a label, or `ariaLabel`.
 - **Theme and density** are attributes on the root element: `data-theme="light|dark"`, `data-density="standard|compact"`.
+- **Load the CSS in one order.** In the app's entry stylesheet, first `@layer theme, base, ds, components, utilities;`, then Tailwind, then `tokens.css`, then `styles.css`. Any other order lets a reset strip Button and Input. `ds-tokens/README.md`, "Loading the CSS", has the snippet and what was checked.
+- **A link keeps its underline.** A link and brand text are the same colour in both themes.
+- **A disabled Button is told apart by its label only.** Its fill equals a hovered secondary Button's. Do not put the two side by side as the only cue for anything.
 
 ## Check your work
 
@@ -38,7 +41,8 @@ A check that fails is telling you something true. Fix the screen, not the check.
 
 ## Known and open
 
-- DropdownMenu in Radix's default modal mode fails one axe rule (`aria-hidden-focus`). It is reported, not hidden.
-- 23 tokens (border widths, focus ring, control and icon sizes, motion, shadows, a scrim, a strong control edge) exist in the repo and not yet in Figma: `ds-tokens/proposed/`.
-- 77 colour values differ from Figma on purpose, to pass contrast: `ds-tokens/overrides.json`, each with its reason.
-- Nothing here has been tested with people, a screen reader or a real phone.
+- DropdownMenu in Radix's default modal mode fails one axe rule (`aria-hidden-focus`): the trigger stays focusable in markup while the page behind an open menu is hidden. Measured: focus cannot reach it by key, pointer or script. It is reported, not hidden.
+- 25 tokens (border widths, focus ring, control and icon sizes, motion, shadows, a scrim, a strong control edge, two stacking levels) exist in the repo and not yet in Figma: `ds-tokens/proposed/`. They hold raw numbers, because Figma has no primitives for them yet.
+- 73 colour values differ from Figma on purpose, to pass contrast: `ds-tokens/overrides.json`, each with its reason.
+- Not built: a direction provider for right-to-left per instance (set `dir` on the root element), and a forced-colours look for a disabled menu item.
+- Nothing here has been tested with people, a screen reader or a real phone. Only Chromium was used.

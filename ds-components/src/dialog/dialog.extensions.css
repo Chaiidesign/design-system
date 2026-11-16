@@ -3,7 +3,8 @@
    never sets a colour, border, padding, outline, block size or minimum size: those belong to the spec.
    Tokens only, logical properties only. No animation: the fade and scale are not carried yet. */
 @layer ds.extensions {
-  /* dialog-overlay-covers-viewport: fixed to the viewport, covering it, centring its one child. */
+  /* dialog-overlay-covers-viewport: fixed to the viewport, covering it, centring its one child. It is a size
+     container (its size is fixed by inset: 0, never by its child), so the content can ask how tall the box is. */
   [data-slot~="dialog-overlay"] {
     position: fixed;
     inset: 0;
@@ -11,6 +12,7 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    container: dialog-overlay / size;
   }
 
   /* dialog-body-scrolls: a column whose height is capped at the overlay's inner box. */
@@ -22,7 +24,8 @@
     margin: 0;
   }
 
-  /* The header is a column; neither it nor the footer shrinks, so the title and the actions stay in view. */
+  /* The header is a column; neither it nor the footer shrinks, so the title and the actions stay in view while the
+     box is tall enough (see the short-box rule below for when it is not). */
   [data-slot~="dialog-header"] {
     display: flex;
     flex-direction: column;
@@ -47,6 +50,22 @@
     justify-content: flex-end;
     flex-shrink: 0;
     box-sizing: border-box;
+  }
+
+  /* dialog-body-scrolls, short box: under 30rem of height (text at 200 percent on a phone, or a window zoomed to 400
+     percent) the header and the footer would leave the body no room, and the footer would fall below the screen. The
+     whole content scrolls instead and the body keeps its full height, so every action can be reached and the body is
+     never squeezed to nothing. The threshold is a raw length because a container query cannot read a token; rem
+     follows the root font size here, so it is crossed by larger text as well as by a shorter window. */
+  @container dialog-overlay (block-size < 30rem) {
+    [data-slot~="dialog-content"] {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    [data-slot~="dialog-body"] {
+      flex: none;
+      overflow-y: visible;
+    }
   }
 
   /* dialog-text-wraps: a long title or description wraps and breaks long words; nothing is cut off. */

@@ -164,6 +164,41 @@ export const tests = {
       }
     }
     expect.equal(shown, 3, `the invalid, long-text and worst-case-320 examples show an error; ${shown} did`);
+    // invalid with no words to show (errorMessage "", blank, or absent through a cast): the field must still say it is
+    // invalid, to every user. aria-invalid and data-invalid follow invalid alone, the control draws the 2 px error edge
+    // in the error colour, no empty error part is rendered and aria-describedby names no missing id. Compared with the
+    // invalid example, measured first.
+    await open("invalid");
+    const edgeOf = () => page.locator(CONTROL).first().evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { width: parseFloat(cs.borderTopWidth), colour: cs.borderTopColor };
+    });
+    const want = await edgeOf();
+    await open("default");
+    const plain = await edgeOf();
+    if (want.colour === plain.colour) problems.push(`the invalid edge ${want.colour} is the default edge, so this test could not tell them apart`);
+    for (const kind of ["empty", "blank", "missing"]) {
+      await open("default");
+      await page.evaluate((k) => window.__inputFixtures.mountInvalidWithoutMessage(k), kind);
+      const host = page.locator(`[data-input-fixture="${kind}"]`);
+      await host.locator(FIELD).waitFor();
+      const r = await host.evaluate((h, { root, control, field }) => {
+        const input = h.querySelector(field);
+        const ids = (input.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        const cs = getComputedStyle(h.querySelector(control));
+        return {
+          ariaInvalid: input.getAttribute("aria-invalid"), dataInvalid: h.querySelector(root).hasAttribute("data-invalid"),
+          errorPart: !!h.querySelector('[data-slot~="input-error-message"]'), describedBy: input.getAttribute("aria-describedby"),
+          dangling: ids.filter((id) => !document.getElementById(id)), edge: { width: parseFloat(cs.borderTopWidth), colour: cs.borderTopColor },
+        };
+      }, { root: ROOT, control: CONTROL, field: FIELD });
+      const at = `invalid with errorMessage ${kind}`;
+      if (r.ariaInvalid !== "true") problems.push(`${at}: aria-invalid is ${r.ariaInvalid}, needs "true"`);
+      if (!r.dataInvalid) problems.push(`${at}: the root has no data-invalid`);
+      if (r.edge.width < 2 - 0.01 || r.edge.colour !== want.colour) problems.push(`${at}: the edge is ${r.edge.width} px ${r.edge.colour}; the invalid example's is ${want.width} px ${want.colour}`);
+      if (r.errorPart) problems.push(`${at}: an error message part with no words is rendered`);
+      if (r.dangling.length) problems.push(`${at}: aria-describedby "${r.describedBy}" names ids not in the page`);
+    }
     expect.deepEqual(problems, [], problems.join("; "));
   },
 

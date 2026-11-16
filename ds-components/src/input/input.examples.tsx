@@ -2,8 +2,31 @@
 // spec gives. The gallery renders each one, and v2/tools/test-components.mjs tests each one.
 // No example records events: the tests read the DOM (ids, aria attributes, focus) and wrap the field in a form
 // where they need a submit.
-import { Input } from "./input";
+//
+// Test hook (not an example): window.__inputFixtures.mountInvalidWithoutMessage(kind) mounts, inside the example's
+// section, a field marked invalid whose errorMessage is "" (kind "empty", which the type accepts, as a form library
+// may pass), "   " ("blank") or absent ("missing", which the type forbids and only a cast or plain JavaScript can
+// reach). No spec example may show it: the requirement input-invalid-needs-message makes it a misuse. The host
+// carries data-input-fixture="<kind>".
+import { createRoot } from "react-dom/client";
+import { Input, type InputProps } from "./input";
 import { Icon } from "../../gallery/icons";
+
+type InvalidKind = "empty" | "blank" | "missing";
+type InputWindow = { __inputFixtures?: { mountInvalidWithoutMessage: (kind: InvalidKind) => void } };
+
+function mountInvalidWithoutMessage(kind: InvalidKind) {
+  const host = document.createElement("div");
+  host.setAttribute("data-input-fixture", kind);
+  (document.querySelector("section[data-example]") ?? document.body).appendChild(host);
+  const props =
+    kind === "missing"
+      ? ({ label: "Email address", invalid: true } as unknown as InputProps)
+      : ({ label: "Email address", invalid: true, errorMessage: kind === "empty" ? "" : "   " } as InputProps);
+  createRoot(host).render(<Input {...props} />);
+}
+
+if (typeof window !== "undefined") (window as unknown as InputWindow).__inputFixtures = { mountInvalidWithoutMessage };
 
 export const examples = {
   default: () => <Input label="Full name" autoComplete="name" />,

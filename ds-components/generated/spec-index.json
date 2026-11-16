@@ -832,8 +832,8 @@
           ]
         },
         "proposed": {
-          "count": 10,
-          "uses": 13,
+          "count": 11,
+          "uses": 15,
           "tokens": [
             {
               "collection": "Border",
@@ -854,6 +854,11 @@
               "collection": "Elevation",
               "name": "shadow/lg",
               "uses": 1
+            },
+            {
+              "collection": "Layer",
+              "name": "overlay",
+              "uses": 2
             },
             {
               "collection": "Motion",
@@ -897,6 +902,7 @@
           "dialog-trigger-attributes",
           "dialog-trigger-opens-by-keyboard",
           "dialog-focus-on-open",
+          "dialog-focus-on-open-in-view",
           "dialog-initial-focus-title",
           "dialog-tab-wraps",
           "dialog-shift-tab-wraps",
@@ -908,11 +914,14 @@
           "dialog-visible-close",
           "dialog-focus-returns",
           "dialog-focus-returns-without-trigger",
+          "dialog-ref-cleanup",
           "dialog-background-inert",
           "dialog-overlay-covers-viewport",
+          "dialog-above-page",
           "dialog-fits-320",
           "dialog-body-scrolls",
           "dialog-footer-wraps",
+          "dialog-body-scroll-keyboard-late",
           "dialog-text-wraps",
           "dialog-text-contrast",
           "dialog-reduced-motion"
@@ -1562,8 +1571,8 @@
           ]
         },
         "proposed": {
-          "count": 9,
-          "uses": 20,
+          "count": 10,
+          "uses": 21,
           "tokens": [
             {
               "collection": "Border",
@@ -1578,6 +1587,11 @@
             {
               "collection": "Elevation",
               "name": "shadow/md",
+              "uses": 1
+            },
+            {
+              "collection": "Layer",
+              "name": "popover",
               "uses": 1
             },
             {
@@ -1649,6 +1663,7 @@
           "dropdown-menu-separator-line",
           "dropdown-menu-fits-viewport",
           "dropdown-menu-scrolls-when-tall",
+          "dropdown-menu-above-page",
           "dropdown-menu-modal-blocks-page"
         ],
         "axe": [
@@ -2688,7 +2703,8 @@
           "tabs-indicator-edge",
           "tabs-no-width-shift",
           "tabs-target-size",
-          "tabs-touch-target"
+          "tabs-touch-target",
+          "tabs-ref-cleanup"
         ],
         "axe": [
           "aria-required-children",

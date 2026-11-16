@@ -161,6 +161,24 @@ Scorecard definitions are the CEO's. These are proposed, not added:
 - **Decision:** No part of version 0.2 uses UI SDK. The JavaScript budget row is the CEO's to change, and the lead did not change it. This also answers A-16, point 2, with real bundled figures.
 - **To reverse:** Name a new row for UI SDK-backed parts. The trial under `explore/ui-sdk-trial/` shows each part working with scripts off and on.
 
+### A-20. The V2 direction: put the repo's fixes into the real Figma files
+
+- **Situation:** On 16 November the CEO gave the V2 direction (pink accent, 308 semantic tokens in Figma, React on Radix, five first components) and asked for it to be challenged and improved on a branch. The audit found 220 of 740 declared colour pairs failing contrast in the Figma file. The repo carries 73 alias changes, 25 tokens Figma lacks and 290 drafted descriptions.
+- **Decision:** The owner's Figma files are not changed. The fixes live in `ds-tokens/overrides.json` and `ds-tokens/proposed/` and are listed for Figma in `ds-tokens/audit/figma-patch-list.md`. They are applied in the sandbox file Souvenir-test only.
+- **To reverse:** Delete an override and rebuild; the token returns to Figma's value. When Figma holds a fix, the diff tool lists its override under "delete the override".
+
+### A-21. Pink beside red, and two cues that rest on colour alone
+
+- **Situation:** In dark the primary fill (pink/600) and the destructive fill (red/600) are about 27 degrees of hue apart at nearly the same lightness and chroma. Once both pass contrast, a link and brand text have the same colour in both themes. The soft destructive Button differs from the others only in colour.
+- **Decision:** Pink stays: it is the CEO's choice. A destructive button names what it destroys, errors carry an icon and words, and the agent guide says a link keeps its underline.
+- **To reverse:** Move `text/link/*` or `text/brand` one step in `ds-tokens/overrides.json`; the audit reports the pair under "distinct".
+
+### A-22. The renames the naming standard asks for
+
+- **Situation:** The lint finds 24 kinds of breach of the owner's naming standard in the Figma file; 8 kinds are renames covering 101 names.
+- **Decision:** Nothing is renamed. Code uses the names Figma has today. Renaming is a breaking change and the owner's to time.
+- **To reverse:** Not applicable; nothing was changed.
+
 ### A-10. What the lead needs from the CEO
 
 In order of how much they unblock: a named steward; a first read of the charter, especially the seven principles and the LOCK rows; a channel for digests; a choice among the three visual directions when they exist; and, for the first pilot, a researcher and participants.
@@ -269,3 +287,16 @@ The lead's answer: the charter now separates what is anchored outside the system
 ### D-009. Digests and reports live in the repository
 
 See A-02.
+
+### D-016. The V2 direction, built on the branch v2-direction on the CEO's instruction of 16 November
+
+The CEO gave a new direction settled in Figma and asked for it to be tested against version 0.2, improved, and left on a branch with a summary. Their rules: no edits to any Figma file except the sandbox Souvenir-test, never merge or push to main. The record is `digests/2026-11-16-v2.md`.
+
+- **Figma owns names and values.** The repo holds an exact snapshot, proved by checksum, and never edits it. This reverses version 0.2, where the token file in the repo was the source. Version 0.2 stays on main, untouched.
+- **A gate sits between Figma and code:** contrast audit, naming lint, Figma-to-code diff. A fix Figma does not hold yet is an override with a reason.
+- **One spec per component, in JSON against a schema.** The stylesheet, typed props, docs, state map and test list are generated from it. Parts keep Radix's names and shape.
+- **Tokens the components need and Figma lacks are proposed in the repo** (25), under the standard's naming rules, with raw values until primitives exist.
+- **An unscoped Layer token is a note in the lint, not a breach,** as for Motion: Figma has no scope for a stacking level. To reverse: remove `Layer` from `UNSCOPABLE` in `v2/tools/lint-tokens.mjs`.
+- **Review:** on the CEO's standing preference, automated checks at each step and one fresh-context review at the end (three Fable reviewers). It returned 1 blocker and 26 major findings; they were fixed by Opus builders and the checks rerun. Saved in `gates/raw/2026-11-16-v2-final-review.json`.
+- **Not done, and said so:** Gate 2 is still not run; no steward is named; nothing was tested with people.
+

@@ -12,13 +12,14 @@
     "check": "npm run tokens && npm run build && npm run lint && npm run size && node scripts/size.mjs --self-test && npm run screens && node scripts/check-screens.mjs --self-test && npm run noscript",
     "serve": "node scripts/serve.mjs",
     "noscript": "node scripts/check-noscript.mjs",
-    "v2:tokens": "node v2/tools/build-tokens.mjs && node v2/tools/lint-tokens.mjs --report-only && node v2/tools/audit-contrast.mjs --built && node v2/tools/diff-figma.mjs",
+    "v2:tokens": "node v2/tools/build-tokens.mjs && node v2/tools/lint-tokens.mjs --no-fail && node v2/tools/audit-contrast.mjs --built && node v2/tools/diff-figma.mjs",
     "v2:specs": "node v2/tools/check-specs.mjs && node v2/tools/build-components.mjs",
     "v2:lint": "node v2/tools/lint-components.mjs && node v2/tools/lint-components.mjs --types",
     "v2:gallery": "node v2/tools/build-gallery.mjs",
     "v2:test": "node v2/tools/build-gallery.mjs && node v2/tools/test-components.mjs",
-    "v2:selftest": "node v2/tools/figma-verify.mjs v2/figma/semantic.txt v2/figma/semantic.hashes.txt && node v2/tools/figma-verify.mjs v2/figma/primitives.txt v2/figma/primitives.hashes.txt && node v2/tools/build-tokens.mjs --self-test && node v2/tools/audit-contrast.mjs --self-test && node v2/tools/lint-tokens.mjs --self-test && node v2/tools/diff-figma.mjs --self-test && node v2/tools/check-specs.mjs --self-test && node v2/tools/build-components.mjs --self-test && node v2/tools/lint-components.mjs --self-test && node v2/tools/build-gallery.mjs --self-test && node v2/tools/test-components.mjs --self-test",
+    "v2:selftest": "node v2/tools/figma-verify.mjs v2/figma/semantic.txt v2/figma/semantic.hashes.txt && node v2/tools/figma-verify.mjs v2/figma/primitives.txt v2/figma/primitives.hashes.txt && node v2/tools/build-tokens.mjs --self-test && node v2/tools/audit-contrast.mjs --self-test && node v2/tools/lint-tokens.mjs --self-test && node v2/tools/diff-figma.mjs --self-test && node v2/tools/check-specs.mjs --self-test && node v2/tools/build-components.mjs --self-test && node v2/tools/lint-components.mjs --self-test && node v2/tools/build-gallery.mjs --self-test && node v2/tools/test-components.mjs --self-test && node v2/tools/check-claims.mjs --self-test",
     "v2:report": "node v2/tools/build-report.mjs",
+    "v2:claims": "node v2/tools/check-claims.mjs",
     "v2:check": "npm run v2:tokens && npm run v2:specs && npm run v2:lint && npm run v2:test"
   },
   "devDependencies": {

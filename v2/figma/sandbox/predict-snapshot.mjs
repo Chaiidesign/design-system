@@ -3,8 +3,8 @@
 // Usage: node v2/figma/sandbox/predict-snapshot.mjs
 //   writes v2/figma/sandbox/semantic.txt   (export with SUFFIX ' (DS V2)')
 //   and    v2/figma/sandbox/primitives.txt (export with SUFFIX ' (DS V2 primitives)')
-// Figma returns a variable description with an apostrophe HTML-escaped as &#39; (seen on 16 November 2026 in the live
-// export of Border width/md), so the prediction writes it the same way.
+// Figma stores a straight apostrophe in a variable description as &#39;, so the generator now writes U+2019 instead
+// (figmaDescription in make-sandbox-scripts.mjs) and the rows already hold what Figma keeps; they are written unchanged.
 // Caution: rerunning this after tokens.json or descriptions.json change overwrites the proven snapshot with a new prediction;
 // rerun figma-verify against fresh hashes before trusting it again.
 // A prediction proves nothing by itself. It becomes the snapshot only because node v2/tools/figma-verify.mjs checks it
@@ -44,7 +44,7 @@ for (const [, code] of files.filter(([n]) => /^0[2-9]-/.test(n))) {
     if (!sem.has(b.name)) sem.set(b.name, { modes: b.modes, rows: [] });
     for (const [n, t, vals, s, x, d] of b.rows) {
       const shown = vals.map((v) => (Array.isArray(v) ? `{${v[1]}}` : t === 'C' ? hex(v) : JSON.stringify(v)));
-      sem.get(b.name).rows.push(`${n} [${t}] ${shown.join(' | ')} ~ ${x || '-'} ~ ${s.join(',') || '-'} ~ ${JSON.stringify((d || '').replace(/'/g, '&#39;'))}`);
+      sem.get(b.name).rows.push(`${n} [${t}] ${shown.join(' | ')} ~ ${x || '-'} ~ ${s.join(',') || '-'} ~ ${JSON.stringify(d || '')}`);
       void P;
     }
   }

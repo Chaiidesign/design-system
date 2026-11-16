@@ -237,15 +237,27 @@ const present = (node: React.ReactNode) => node != null && node !== false;
 // aria-keyshortcuts takes key names joined by "+" (KeyboardEvent.key values, such as Meta+C), never the glyphs a
 // hint shows to the eye. A hint written with "+" (Ctrl+C) is split on it; a hint of glyphs (⌘⇧M) is read glyph by
 // glyph, and the characters after the glyphs are the key. Letters are upper case, as ARIA's examples write them.
+// ARIA 1.2 names the plus key "Plus" (⌘+ is Meta+Plus, Ctrl++ is Control+Plus). A space in the attribute separates
+// alternative shortcuts, so a hint that is a sequence of two (⌘K ⌘S) has no form there and gets no attribute.
 const KEY_GLYPHS: Record<string, string> = {
   "⌘": "Meta", "⇧": "Shift", "⌥": "Alt", "⌃": "Control", "⌫": "Backspace", "⌦": "Delete", "⏎": "Enter", "↩": "Enter",
   "⎋": "Escape", "⇥": "Tab", "←": "ArrowLeft", "→": "ArrowRight", "↑": "ArrowUp", "↓": "ArrowDown",
 };
-const KEY_WORDS: Record<string, string> = { ctrl: "Control", control: "Control", cmd: "Meta", command: "Meta", meta: "Meta", alt: "Alt", option: "Alt", opt: "Alt", shift: "Shift", esc: "Escape", del: "Delete" };
+const KEY_WORDS: Record<string, string> = { ctrl: "Control", control: "Control", cmd: "Meta", command: "Meta", meta: "Meta", alt: "Alt", option: "Alt", opt: "Alt", shift: "Shift", esc: "Escape", del: "Delete", space: "Space" };
 const keyName = (k: string) => KEY_WORDS[k.toLowerCase()] ?? KEY_GLYPHS[k] ?? (k.length === 1 ? k.toUpperCase() : k);
 function keyShortcutsOf(hint: string): string {
-  const text = hint.trim();
-  if (text.includes("+") && text.length > 1) return text.split("+").map((k) => keyName(k.trim())).join("+");
+  let text = hint.trim().replace(/\s*\+\s*/g, "+");
+  if (!text) return "";
+  if (/\s/.test(text)) return ""; // a sequence such as ⌘K ⌘S: no form in aria-keyshortcuts
+  if (text === "+") return "Plus";
+  // A trailing "+" is the plus key itself; one more before it ("Ctrl++") is the separator.
+  const plus = text.endsWith("+");
+  if (plus) text = text.slice(0, -1).replace(/\+$/, "");
+  const keys = text.includes("+") ? text.split("+").map((k) => keyName(k)) : glyphKeys(text);
+  if (plus) keys.push("Plus");
+  return keys.join("+");
+}
+function glyphKeys(text: string): string[] {
   const keys: string[] = [];
   let rest = "";
   for (const ch of text) {
@@ -255,7 +267,7 @@ function keyShortcutsOf(hint: string): string {
     } else if (ch.trim()) rest += ch;
   }
   if (rest) keys.push(keyName(rest));
-  return keys.join("+");
+  return keys;
 }
 
 /** Props of DropdownMenuItem: one action. Choosing it runs onSelect and closes the menu. */

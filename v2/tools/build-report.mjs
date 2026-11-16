@@ -732,18 +732,25 @@ function runAudits() {
   const tool = join(REPO, 'v2', 'tools', 'audit-contrast.mjs');
   const src = join(REPO, 'ds-tokens', 'audit', 'contrast.json');
   mkdirSync(join(REPO, 'v2', 'report', 'data'), { recursive: true });
-  const one = (args, dest) => {
-    const r = spawnSync(process.execPath, [tool, ...args], { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
-    const last = `${r.stdout || ''}\n${r.stderr || ''}`.trim().split('\n').filter(Boolean).pop() || '(no output)';
-    if (r.status !== 0 || !existsSync(src)) {
-      if (existsSync(dest)) rmSync(dest); // never show an old result as if it were this run's
-      return { ok: false, detail: `node v2/tools/audit-contrast.mjs ${args.join(' ')} exited ${r.status}: ${last}` };
-    }
-    copyFileSync(src, dest);
-    return { ok: true, detail: last };
-  };
-  const asGiven = one(['--report-only'], join(REPO, INPUT.asGiven));
-  const merged = one(['--built', '--report-only'], join(REPO, INPUT.merged));
+  // One run writes both sets: the built set at the top level and Figma as it stands under "figma".
+  // (--report-only writes nothing since 16 November 2026, so it cannot be used here.)
+  const args = ['--built', '--no-fail'];
+  const destGiven = join(REPO, INPUT.asGiven), destMerged = join(REPO, INPUT.merged);
+  const drop = () => { for (const d of [destGiven, destMerged]) if (existsSync(d)) rmSync(d); }; // never show an old result as if it were this run's
+  const r = spawnSync(process.execPath, [tool, ...args], { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const out = `${r.stdout || ''}\n${r.stderr || ''}`.trim().split('\n').filter(Boolean);
+  const last = out.pop() || '(no output)';
+  const failed = (why) => { drop(); const res = { ok: false, detail: `node v2/tools/audit-contrast.mjs ${args.join(' ')}: ${why}` }; return { asGiven: res, merged: res }; };
+  if (r.status !== 0 || !existsSync(src)) return failed(`exited ${r.status}: ${last}`);
+  let both;
+  try { both = JSON.parse(readFileSync(src, 'utf8')); } catch (e) { return failed(`wrote a file that is not JSON: ${e.message}`); }
+  if (!both.figma || !both.figma.counts || !both.counts) return failed('its result does not hold both sets (no "figma" part)');
+  const { figma, changes, change_counts, ...built } = both;
+  writeFileSync(destGiven, `${JSON.stringify(figma)}\n`);
+  writeFileSync(destMerged, `${JSON.stringify(built)}\n`);
+  const line = (c) => `${c.measured} pairs measured, ${c.pass} pass, ${c.fail} fail, ${c.exempt} exempt`;
+  const asGiven = { ok: true, detail: line(figma.counts) };
+  const merged = { ok: true, detail: line(built.counts) };
   return { asGiven, merged };
 }
 

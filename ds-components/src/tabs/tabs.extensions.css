@@ -13,8 +13,12 @@
     min-inline-size: 0;
     max-inline-size: 100%;
   }
+  /* Vertical: the list beside its panel. The root wraps, and the panel's flex basis is half the root, so when the list
+     would leave the panel less than half the width (a narrow screen, text at 200 percent) the panel moves below the
+     list and takes the full width instead of collapsing (tabs-orientation-layout, tabs-list-scrolls-inside). */
   [data-slot~="tabs"][data-orientation="vertical"] {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;
   }
 
@@ -124,6 +128,6 @@
     min-inline-size: 0;
   }
   [data-slot~="tabs"][data-orientation="vertical"] > [data-slot~="tabs-content"] {
-    flex: 1 1 0;
+    flex: 1 1 50%;
   }
 }

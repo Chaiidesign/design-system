@@ -28,9 +28,12 @@
 //   - content.dismissible: false blocks Escape and the outside press (dialog-not-dismissible).
 //   - content.initialFocus: the first control that is not a link, or the title (dialog-focus-on-open,
 //     dialog-initial-focus-title).
-//   - Focus return for a dialog without a trigger to the element that had focus when it opened
-//     (dialog-focus-returns-without-trigger); Radix alone leaves it on the body.
-//   - A body that scrolls joins the Tab order, so it can be scrolled with the keyboard (dialog-body-scroll-keyboard).
+//   - Focus return for a dialog without a trigger to the element that had focus when it opened, or, when that was a
+//     menu item that has since left the page, to that menu's trigger (dialog-focus-returns-without-trigger); Radix
+//     alone leaves it on the body.
+//   - A body that scrolls joins the Tab order, so it can be scrolled with the keyboard, also when its content arrives
+//     after it opened (dialog-body-scroll-keyboard, dialog-body-scroll-keyboard-late).
+//   - The caller's ref is passed through as React 19 does, cleanup functions included (dialog-ref-cleanup).
 // The dialog is always modal: Radix's modal prop is not exposed (see the spec's notCarried).
 import * as React from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
@@ -48,6 +51,7 @@ import {
   type DialogFooterProps as DialogFooterContractProps,
   type DialogCloseProps as DialogCloseContractProps,
 } from "./dialog.contract";
+import { attachRefs } from "../lib/compose-refs";
 
 // esbuild replaces process.env.NODE_ENV at build time; this declaration only tells TypeScript it exists.
 declare const process: { env: { NODE_ENV?: string } };
@@ -60,9 +64,13 @@ type DialogShared = { triggers: React.RefObject<number> };
 const DialogSharedContext = React.createContext<DialogShared | null>(null);
 const TitleFocusContext = React.createContext(false);
 
-function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
-  if (typeof ref === "function") ref(value);
-  else if (ref) (ref as React.RefObject<T | null>).current = value;
+// Where focus goes back to when the element that opened the dialog has left the page by then. A menu item that opens
+// a dialog is the usual case: the menu closes and its items unmount. The menu's trigger, which the menu names in
+// aria-labelledby, is still there, and is where the person was.
+function fallbackFor(active: HTMLElement): HTMLElement | null {
+  const menu = active.closest<HTMLElement>('[role="menu"]');
+  const id = menu?.getAttribute("aria-labelledby");
+  return id ? document.getElementById(id) : null;
 }
 
 // The first control inside the content that takes focus on open: tabbable, visible, not a link, and not the body
@@ -76,6 +84,16 @@ function firstControl(container: HTMLElement): HTMLElement | null {
     return el;
   }
   return null;
+}
+
+// Whether an element lies wholly inside what the content shows: the content's own visible box (it scrolls in a short
+// box) clipped to the viewport.
+function wholyInView(target: HTMLElement, content: HTMLElement): boolean {
+  const c = content.getBoundingClientRect();
+  const t = target.getBoundingClientRect();
+  const top = Math.max(c.top + content.clientTop, 0);
+  const bottom = Math.min(c.top + content.clientTop + content.clientHeight, window.innerHeight);
+  return t.top >= top - 0.5 && t.bottom <= bottom + 0.5 && t.left >= -0.5 && t.right <= window.innerWidth + 0.5;
 }
 
 // Warn once per kind of fault, in development only.
@@ -173,6 +191,7 @@ export function DialogContent({
   initialFocus = DIALOG_DEFAULTS["content.initialFocus"],
   onOpenAutoFocus,
   onCloseAutoFocus,
+  onFocus,
   children,
   ref,
   ...radix
@@ -181,11 +200,19 @@ export function DialogContent({
   const node = React.useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = React.useState<HTMLDivElement | null>(null);
   const returnTo = React.useRef<HTMLElement | null>(null);
+  const returnFallback = React.useRef<HTMLElement | null>(null);
+  const openTarget = React.useRef<HTMLElement | null>(null);
+  // Always returns a cleanup, so React never calls this with null: the cleanup resets the component's own state too.
   const setNode = React.useCallback(
-    (el: HTMLDivElement | null) => {
+    (el: HTMLDivElement) => {
       node.current = el;
       setMounted(el);
-      setRef(ref, el);
+      const detach = attachRefs(el, ref);
+      return () => {
+        node.current = null;
+        setMounted(null);
+        detach();
+      };
     },
     [ref],
   );
@@ -210,15 +237,38 @@ export function DialogContent({
     // Remember where focus was, for a dialog without a trigger. Never an element inside the dialog itself (a
     // development remount opens it again from inside).
     const active = document.activeElement;
-    if (active instanceof HTMLElement && active !== document.body && !node.current?.contains(active)) returnTo.current = active;
+    if (active instanceof HTMLElement && active !== document.body && !node.current?.contains(active)) {
+      returnTo.current = active;
+      returnFallback.current = fallbackFor(active);
+    }
     onOpenAutoFocus?.(event);
     if (event.defaultPrevented) return;
     event.preventDefault();
     const el = node.current;
     if (!el) return;
-    const target =
+    let target =
       initialFocus === "title" ? el.querySelector<HTMLElement>(`[data-slot~="${DIALOG_SLOTS.title}"]`) : firstControl(el);
-    (target ?? el).focus({ preventScroll: true });
+    // Focus never lands out of view (dialog-focus-on-open). When the first control lies below what the dialog shows
+    // (text at 200 percent on a phone), focus goes to the content itself, which Radix gives tabindex -1 and the title
+    // names, so a screen reader announces the title; the top of the dialog stays in view, and the first Tab moves to
+    // the first control and scrolls it into view (handleFocus).
+    if (target && initialFocus !== "title" && !wholyInView(target, el)) target = null;
+    openTarget.current = target ?? el;
+    openTarget.current.focus({ preventScroll: true });
+  };
+
+  // When the whole content scrolls (a short box: text at 200 percent on a phone), Radix's focus trap moves focus with
+  // preventScroll as Tab wraps, which can leave the focused action off the screen. Every focus move inside the content
+  // therefore brings the focused element into view, except the element focused on open, which keeps the top of the
+  // dialog (its title) in view instead, also when focus leaves and is pulled straight back to it (a menu that opened
+  // the dialog tries to return focus to its trigger as it closes, and the trap refuses). Once focus has moved to any
+  // other element, every later focus scrolls.
+  const handleFocus = (event: React.FocusEvent<HTMLDivElement>) => {
+    onFocus?.(event);
+    const target = event.target;
+    if (target === event.currentTarget || target === openTarget.current) return;
+    openTarget.current = null;
+    target.scrollIntoView({ block: "nearest", inline: "nearest" });
   };
 
   const handleCloseAutoFocus = (event: Event) => {
@@ -227,8 +277,8 @@ export function DialogContent({
     // With a trigger, Radix returns focus to it. Without one, Radix would leave focus on the body.
     if (shared && shared.triggers.current > 0) return;
     event.preventDefault();
-    const back = returnTo.current;
-    if (back && back.isConnected) back.focus();
+    const back = [returnTo.current, returnFallback.current].find((el) => el && el.isConnected);
+    if (back) back.focus();
   };
 
   const reflected = { [DIALOG_REFLECTS["content.size"]]: size };
@@ -244,6 +294,7 @@ export function DialogContent({
         aria-modal="true"
         onOpenAutoFocus={handleOpenAutoFocus}
         onCloseAutoFocus={handleCloseAutoFocus}
+        onFocus={handleFocus}
         data-slot={DIALOG_SLOTS.content}
       >
         {children}
@@ -290,21 +341,39 @@ export function DialogBody({ ref, tabIndex, ...native }: DialogBodyProps) {
   const node = React.useRef<HTMLDivElement | null>(null);
   const [scrolls, setScrolls] = React.useState(false);
   const setNode = React.useCallback(
-    (el: HTMLDivElement | null) => {
+    (el: HTMLDivElement) => {
       node.current = el;
-      setRef(ref, el);
+      const detach = attachRefs(el, ref);
+      return () => {
+        node.current = null;
+        detach();
+      };
     },
     [ref],
   );
+  // Whether the body scrolls changes when its box or its children change size, and when children come and go after
+  // it opened (content that arrives later), so it is measured on all three.
   React.useLayoutEffect(() => {
     const el = node.current;
     if (!el) return;
     const measure = () => setScrolls(el.scrollHeight > el.clientHeight + 1);
+    const sizes = new ResizeObserver(measure);
+    const watchChildren = () => {
+      sizes.disconnect();
+      sizes.observe(el);
+      for (const child of el.children) sizes.observe(child);
+    };
+    watchChildren();
     measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    for (const child of el.children) observer.observe(child);
-    return () => observer.disconnect();
+    const changes = new MutationObserver(() => {
+      watchChildren();
+      measure();
+    });
+    changes.observe(el, { childList: true, subtree: true, characterData: true });
+    return () => {
+      sizes.disconnect();
+      changes.disconnect();
+    };
   }, []);
   return <div {...native} ref={setNode} tabIndex={tabIndex ?? (scrolls ? 0 : undefined)} data-slot={DIALOG_SLOTS.body} />;
 }

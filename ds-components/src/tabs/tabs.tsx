@@ -14,6 +14,7 @@
 //   </Tabs>
 import * as React from "react";
 import * as RadixTabs from "@radix-ui/react-tabs";
+import { attachRefs } from "../lib/compose-refs";
 import {
   TABS_DEFAULTS,
   TABS_REFLECTS,
@@ -136,11 +137,6 @@ function revealInList(list: HTMLElement, tab: HTMLElement) {
   if (delta !== 0) list.scrollBy({ left: delta, behavior: "instant" });
 }
 
-function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
-  if (typeof ref === "function") ref(value);
-  else if (ref) (ref as React.RefObject<T | null>).current = value;
-}
-
 export function TabsList(props: TabsListProps) {
   const {
     behavior = TABS_DEFAULTS["list.behavior"],
@@ -151,10 +147,17 @@ export function TabsList(props: TabsListProps) {
     ...radix
   } = props;
   const own = React.useRef<HTMLDivElement | null>(null);
+  // The list keeps its own ref for the reveal below and forwards the caller's. It always returns a cleanup, so React
+  // 19 calls that on detach instead of calling this with null; the cleanup runs the caller's own cleanup when their
+  // callback ref returned one, and otherwise clears their ref, as React would (tabs-ref-cleanup).
   const merged = React.useCallback(
     (node: HTMLDivElement | null) => {
       own.current = node;
-      setRef(ref, node);
+      const detach = attachRefs(node, ref);
+      return () => {
+        own.current = null;
+        detach();
+      };
     },
     [ref],
   );

@@ -24,7 +24,7 @@ const TRIGGER = '[data-slot~="dialog-trigger"]';
 const CLOSE = '[data-slot~="dialog-close"]';
 const MENU_TRIGGER = '[data-slot~="dropdown-menu-trigger"]';
 const MENU_CONTENT = '[data-slot~="dropdown-menu-content"]';
-const ALL_EXAMPLES = ["default", "confirm-step", "small", "medium", "no-description", "not-dismissible", "title-focus", "closed", "controlled-without-trigger", "long-text", "worst-case-320", "with-menu"];
+const ALL_EXAMPLES = ["default", "confirm-step", "small", "medium", "no-description", "not-dismissible", "title-focus", "closed", "controlled-without-trigger", "long-text", "worst-case-320", "with-menu", "from-menu"];
 const NOT_DISMISSIBLE = ["not-dismissible", "worst-case-320"];
 
 const events = (page, id) => page.evaluate((k) => {
@@ -49,12 +49,46 @@ const clickAt = (page, b) => page.mouse.click(b.x + b.width / 2, b.y + b.height 
 const footerButton = (page, text) => page.locator(`${FOOTER} button`, { hasText: text }).first();
 const closePart = (page, text) => page.locator(`${FOOTER} ${CLOSE}`, { hasText: text }).first();
 
-// Opens an example and, for the closed one, presses its trigger, so the dialog is open either way.
+// Opens an example and, for the closed one, presses its trigger, so the dialog is open either way. from-menu opens
+// as a person would: its menu's trigger, then the item "Rename chat".
 async function openDialog(page, open, id, opts = {}) {
   await open(id, opts);
   if (id === "closed") await clickAt(page, await box(page, TRIGGER));
+  if (id === "from-menu") {
+    await clickAt(page, await box(page, MENU_TRIGGER));
+    await page.locator(MENU_CONTENT).first().waitFor({ timeout: 5000 });
+    await clickAt(page, await page.locator('[data-slot~="dropdown-menu-item"]', { hasText: "Rename chat" }).first().boundingBox());
+  }
   await waitOpen(page);
 }
+
+// Text at 200 percent: every token is in rem, so doubling the root font size doubles every length and type size
+// (the method input.tests.mjs uses). Set after the page loads; the dialog lays itself out again.
+async function textAt200(page, expect) {
+  await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+  const root = await page.evaluate(() => getComputedStyle(document.documentElement).fontSize);
+  expect.equal(root, "32px", "the root font size is 200 percent, so the measurement means something");
+  await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => done()))));
+}
+
+// A page element with its own stacking level, as a sticky header would have: position relative, z-index 10, as tall
+// as the viewport and first in the body, so it lies under every point of the dialog. pointer-events auto, because a
+// modal sets none on the body and hit-testing skips such elements, which would make the test pass by measuring nothing.
+const plantRaisedElement = (page) => page.evaluate(() => {
+  const el = document.createElement("div");
+  el.setAttribute("data-test-raised", "");
+  el.textContent = "Page header";
+  el.style.cssText = "position: relative; z-index: 10; block-size: 100vh; inline-size: 100%; pointer-events: auto; background: rgb(255, 0, 255);";
+  document.body.prepend(el);
+});
+// What is painted on top at the centre of an element: the slot words of the nearest part, or "raised" for the plant.
+const topAt = (page, sel) => page.evaluate((s) => {
+  const t = document.querySelector(s);
+  if (!t) return { missing: true };
+  const r = t.getBoundingClientRect();
+  const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+  return { raised: !!hit?.closest("[data-test-raised]"), inside: !!hit && t.contains(hit) || hit === t, hit: hit ? (hit.getAttribute("data-slot") || hit.tagName) : null };
+}, sel);
 
 // Presses Tab until fn(focused) holds, from wherever focus is. Returns the focus seen, or null.
 async function tabUntil(page, fn, { max = 20, shift = false } = {}) {
@@ -240,7 +274,57 @@ export const tests = {
     if (r.controls !== 0) problems.push(`no control: the hook's dialog holds ${r.controls} tabbable elements, so it proves nothing`);
     if (!r.onContent) problems.push(`no control: focus is on ${r.activeTag} (${r.activeSlot}), expected the content itself`);
     if (r.tabIndex !== "-1") problems.push(`no control: the content's tabindex is ${r.tabIndex}, needs -1`);
+    // A link before the first button: focus skips it. The hook puts the link in the body, ahead of Cancel.
+    await open("closed");
+    await page.evaluate(() => window.__dialogFixtures.mountWithLink());
+    await waitOpen(page);
+    await page.waitForTimeout(50);
+    const l = await page.evaluate((content) => {
+      const c = document.querySelector(content);
+      const tabbables = [...c.querySelectorAll("a[href], button")].map((e) => (e.textContent || "").trim());
+      const a = document.activeElement;
+      return { first: tabbables[0], text: a ? (a.textContent || "").trim() : null, tag: a ? a.tagName : null };
+    }, CONTENT);
+    if (l.first !== "Read the delivery terms") problems.push(`link: the first tabbable is "${l.first}", not the link, so the case proves nothing`);
+    if (l.text !== "Cancel") problems.push(`link: focus is on ${l.tag} "${l.text}", expected the first control that is not a link, "Cancel"`);
     expect.deepEqual(problems, [], problems.join("; "));
+  },
+
+  // Text at 200 percent from the first paint, so the dialog opens in the short box (set as the html element is
+  // created, before the gallery's scripts run). Whatever takes focus on open must be wholly in view.
+  "dialog-focus-on-open-in-view": async ({ page, open, expect }) => {
+    await page.addInitScript(() => {
+      new MutationObserver((_, o) => { if (document.documentElement) { document.documentElement.style.fontSize = "200%"; o.disconnect(); } }).observe(document, { childList: true });
+    });
+    const problems = [];
+    const ruleSeen = { content: 0, control: 0 };
+    for (const id of ["default", "not-dismissible", "from-menu"]) for (const [width, height] of [[320, 568], [375, 667]]) {
+      await openDialog(page, open, id, { width, height });
+      await page.waitForTimeout(100);
+      const at = `${id} at ${width} by ${height}, text 200%`;
+      const m = await page.evaluate((content) => {
+        const a = document.activeElement, c = document.querySelector(content), b = a.getBoundingClientRect();
+        return { root: getComputedStyle(document.documentElement).fontSize, onContent: a === c, text: (a.textContent || "").trim().slice(0, 30), tag: a.tagName, top: b.top, bottom: b.bottom, vh: innerHeight, scrollTop: c.scrollTop };
+      }, CONTENT);
+      if (m.root !== "32px") { problems.push(`${at}: the root font size is ${m.root}, not 32px`); continue; }
+      if (m.onContent) {
+        ruleSeen.content++;
+        if (m.scrollTop > 0.5) problems.push(`${at}: focus is on the content but it is scrolled ${m.scrollTop} px, so the top of the dialog is not in view`);
+        const titleTop = await page.evaluate((t) => document.querySelector(t).getBoundingClientRect().top, TITLE);
+        if (titleTop < -0.5 || titleTop > m.vh - 56) problems.push(`${at}: focus is on the content but the title starts at ${titleTop}, not in view`);
+        // The first Tab lands on the first control, wholly in view.
+        await page.keyboard.press("Tab");
+        await page.waitForTimeout(50);
+        const t = await page.evaluate((content) => { const a = document.activeElement, b = a.getBoundingClientRect(); return { inside: !!a.closest(content) && a !== document.querySelector(content), text: (a.textContent || "").trim(), top: b.top, bottom: b.bottom }; }, CONTENT);
+        if (!t.inside) problems.push(`${at}: the first Tab from the content left it or stayed on it`);
+        else if (t.top < -0.5 || t.bottom > m.vh + 0.5) problems.push(`${at}: the first Tab landed on "${t.text}" at ${t.top.toFixed(0)} to ${t.bottom.toFixed(0)}, outside 0 to ${m.vh}`);
+      } else {
+        ruleSeen.control++;
+        if (m.top < -0.5 || m.bottom > m.vh + 0.5) problems.push(`${at}: focus on open is on ${m.tag} "${m.text}" at ${m.top.toFixed(0)} to ${m.bottom.toFixed(0)}, outside the ${m.vh} px screen`);
+      }
+    }
+    expect.deepEqual(problems, [], problems.join("; "));
+    expect.ok(ruleSeen.content > 0, `at least one case puts the first control out of view, so the rule is exercised (content ${ruleSeen.content}, control ${ruleSeen.control})`);
   },
 
   "dialog-initial-focus-title": async ({ page, open, expect }) => {
@@ -385,8 +469,11 @@ export const tests = {
 
   "dialog-not-dismissible-has-way-out": async ({ page, open, expect }) => {
     const problems = [];
-    for (const [id, way] of [["not-dismissible", "Use a different card"], ["worst-case-320", "Go back to my basket"]]) {
-      await openDialog(page, open, id, { width: 320, height: 568 });
+    // With text at 200 percent on a phone the way out must also be on the screen once Tab reaches it.
+    for (const [id, way, width, height, big] of [["not-dismissible", "Use a different card", 320, 568, false], ["worst-case-320", "Go back to my basket", 320, 568, false], ["not-dismissible", "Use a different card", 320, 568, true], ["not-dismissible", "I have confirmed it", 375, 667, true], ["worst-case-320", "Go back to my basket", 375, 667, true]]) {
+      await openDialog(page, open, id, { width, height });
+      if (big) await textAt200(page, expect);
+      const at = `${id} at ${width} by ${height}${big ? ", text 200%" : ""}`;
       // Tab around the dialog once and collect the footer actions reached.
       const reached = new Set();
       for (let i = 0; i < 8; i++) {
@@ -397,14 +484,18 @@ export const tests = {
         }, FOOTER);
         if (r) reached.add(r);
       }
-      if (!reached.size) { problems.push(`${id}: Tab reaches no footer action`); continue; }
-      if (!reached.has(way)) { problems.push(`${id}: Tab reaches ${[...reached].join(", ")} but not "${way}"`); continue; }
+      if (!reached.size) { problems.push(`${at}: Tab reaches no footer action`); continue; }
+      if (!reached.has(way)) { problems.push(`${at}: Tab reaches ${[...reached].join(", ")} but not "${way}"`); continue; }
       const f = await tabUntil(page, (x) => x.text === way);
-      if (!f) { problems.push(`${id}: could not put focus on "${way}"`); continue; }
+      if (!f) { problems.push(`${at}: could not put focus on "${way}"`); continue; }
+      await page.waitForTimeout(50);
+      const r = await page.evaluate(() => { const b = document.activeElement.getBoundingClientRect(); return { top: b.top, bottom: b.bottom, left: b.left, right: b.right, vw: document.documentElement.clientWidth, vh: innerHeight }; });
+      if (r.top < -0.5 || r.bottom > r.vh + 0.5 || r.left < -0.5 || r.right > r.vw + 0.5) problems.push(`${at}: "${way}" has focus but lies at ${r.top.toFixed(0)} to ${r.bottom.toFixed(0)} down, ${r.left.toFixed(0)} to ${r.right.toFixed(0)} across, outside the ${r.vw} by ${r.vh} viewport`);
+      if (way === "I have confirmed it") continue; // completes the step without closing in this example
       await page.keyboard.press("Enter");
-      try { await waitClosed(page); } catch { problems.push(`${id}: Enter on "${way}" did not close the dialog`); continue; }
+      try { await waitClosed(page); } catch { problems.push(`${at}: Enter on "${way}" did not close the dialog`); continue; }
       const e = await events(page, id);
-      if (JSON.stringify(e.openChange) !== "[false]") problems.push(`${id}: onOpenChange calls were ${JSON.stringify(e.openChange)}`);
+      if (JSON.stringify(e.openChange) !== "[false]") problems.push(`${at}: onOpenChange calls were ${JSON.stringify(e.openChange)}`);
     }
     expect.deepEqual(problems, [], problems.join("; "));
   },
@@ -499,6 +590,73 @@ export const tests = {
     await waitClosed(page);
     const back = await page.waitForFunction(() => document.activeElement && document.activeElement.id === "dialog-test-before", null, { timeout: 3000 }).then(() => true, () => false);
     expect.ok(back, `on close focus returns to the element that had it when the dialog opened; it is on ${JSON.stringify(await focused(page))}`);
+
+    // Opened from a menu item, which has left the page by the time the dialog closes: focus returns to the menu's
+    // trigger, by keyboard and by pointer, and the page takes presses again (the trigger opens the menu).
+    const problems = [];
+    const onMenuTrigger = () => page.waitForFunction((sel) => document.activeElement === document.querySelector(sel), MENU_TRIGGER, { timeout: 3000 }).then(() => true, () => false);
+    const afterClose = async (how) => {
+      const where = await focused(page);
+      if (!(await onMenuTrigger())) problems.push(`${how}: after close focus is on ${where.tag} "${where.text}", not the menu's trigger "Chat options"`);
+      const pe = await page.evaluate(() => getComputedStyle(document.body).pointerEvents);
+      if (pe === "none") problems.push(`${how}: after close the body still has pointer-events none, so the page ignores presses`);
+      await clickAt(page, await box(page, MENU_TRIGGER));
+      const reopened = await page.locator(MENU_CONTENT).first().waitFor({ timeout: 3000 }).then(() => true, () => false);
+      if (!reopened) problems.push(`${how}: after close a press on the menu's trigger does not open the menu`);
+    };
+    // Keyboard: Tab to the trigger, Enter opens the menu on its first item, Enter chooses it, Escape closes the dialog.
+    await open("from-menu");
+    if (!(await tabUntil(page, (x) => x.text === "Chat options"))) problems.push("keyboard: Tab never reached the menu's trigger");
+    await page.keyboard.press("Enter");
+    await page.locator(MENU_CONTENT).first().waitFor({ timeout: 5000 });
+    await page.waitForFunction(() => (document.activeElement?.textContent || "").trim() === "Rename chat", null, { timeout: 3000 }).catch(() => {});
+    await page.keyboard.press("Enter");
+    await waitOpen(page);
+    await page.waitForTimeout(50);
+    const kIn = await focused(page);
+    if (!kIn.inside) problems.push(`keyboard: focus did not move into the dialog on open (${kIn.tag} "${kIn.text}")`);
+    await page.keyboard.press("Escape");
+    await waitClosed(page);
+    await afterClose("keyboard, Escape");
+    // Pointer: press the trigger, the item, then Cancel.
+    await openDialog(page, open, "from-menu");
+    await clickAt(page, await closePart(page, "Cancel").boundingBox());
+    await waitClosed(page);
+    await afterClose("pointer, Cancel");
+    const e = await events(page, "from-menu");
+    if (JSON.stringify(e.openChange) !== "[true,false]") problems.push(`onOpenChange calls on the pointer run were ${JSON.stringify(e.openChange)}`);
+    expect.deepEqual(problems, [], problems.join("; "));
+  },
+
+  "dialog-ref-cleanup": async ({ page, open, expect }) => {
+    await open("closed");
+    await page.evaluate(() => window.__dialogFixtures.mountRefProbe());
+    await page.locator('[data-dialog-fixture="ref-probe"]').waitFor({ state: "attached" });
+    await page.waitForFunction((c) => document.querySelectorAll(c).length === 3, CONTENT, { timeout: 5000 });
+    const count = (log, entry) => log.filter((x) => x === entry).length;
+    const opened = await page.evaluate(() => ({ log: [...(window.__dialogRefLog || [])], content: !!window.__dialogRefObjects?.content.current, body: !!window.__dialogRefObjects?.body.current }));
+    await page.evaluate(() => window.__dialogFixtures.closeRefProbe());
+    await page.waitForFunction((c) => !document.querySelector(c), CONTENT, { timeout: 5000 });
+    await page.waitForTimeout(50);
+    const closed = await page.evaluate(() => ({ log: [...(window.__dialogRefLog || [])], content: window.__dialogRefObjects?.content.current ?? null, body: window.__dialogRefObjects?.body.current ?? null }));
+    const problems = [];
+    const L = closed.log;
+    // While open, one more attach than cleanup (development mode may attach, detach and attach again).
+    if (count(opened.log, "content:attach") - count(opened.log, "content:cleanup") !== 1) problems.push(`open: the content's callback ref was attached ${count(opened.log, "content:attach")} times and cleaned up ${count(opened.log, "content:cleanup")} times`);
+    if (count(L, "content:attach") === 0) problems.push("the content's callback ref was never attached, so the case proves nothing");
+    if (count(L, "content:cleanup") !== count(L, "content:attach")) problems.push(`closed: the content's ref returned a cleanup on each of ${count(L, "content:attach")} attaches, but it ran ${count(L, "content:cleanup")} times`);
+    if (count(L, "content:null")) problems.push(`the content's ref returns a cleanup, yet it was called with null ${count(L, "content:null")} times`);
+    if (count(L, "body:attach") === 0) problems.push("the body's callback ref was never attached");
+    if (count(L, "body:null") !== count(L, "body:attach")) problems.push(`the body's ref returns no cleanup, so it needs one null per attach: ${count(L, "body:attach")} attaches, ${count(L, "body:null")} nulls`);
+    // Swapped: the body's ref returns a cleanup, the content's does not.
+    if (count(opened.log, "body2:attach") - count(opened.log, "body2:cleanup") !== 1) problems.push(`open: the swapped body's callback ref was attached ${count(opened.log, "body2:attach")} times and cleaned up ${count(opened.log, "body2:cleanup")} times`);
+    if (count(L, "body2:attach") === 0) problems.push("the swapped body's callback ref was never attached, so that case proves nothing");
+    if (count(L, "body2:cleanup") !== count(L, "body2:attach")) problems.push(`closed: the swapped body's ref returned a cleanup on each of ${count(L, "body2:attach")} attaches, but it ran ${count(L, "body2:cleanup")} times`);
+    if (count(L, "body2:null")) problems.push(`the swapped body's ref returns a cleanup, yet it was called with null ${count(L, "body2:null")} times`);
+    if (count(L, "content2:attach") === 0 || count(L, "content2:null") !== count(L, "content2:attach")) problems.push(`the swapped content's ref returns no cleanup, so it needs one null per attach: ${count(L, "content2:attach")} attaches, ${count(L, "content2:null")} nulls`);
+    if (!opened.content || !opened.body) problems.push(`open: the object refs are not set (content ${opened.content}, body ${opened.body})`);
+    if (closed.content !== null || closed.body !== null) problems.push("closed: the object refs still hold their elements");
+    expect.deepEqual(problems, [], `${problems.join("; ")} | log: ${L.join(", ")}`);
   },
 
   "dialog-background-inert": async ({ page, open, expect }) => {
@@ -568,6 +726,42 @@ export const tests = {
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
+  "dialog-above-page": async ({ page, open, expect }) => {
+    const problems = [];
+    for (const id of ["default", "not-dismissible"]) {
+      await openDialog(page, open, id);
+      await plantRaisedElement(page);
+      for (const sel of [TITLE, `${FOOTER} button:last-child`, BODY]) {
+        const t = await topAt(page, sel);
+        if (t.missing) problems.push(`${id}: ${sel} not found`);
+        else if (t.raised || !t.inside) problems.push(`${id}: at the centre of ${sel} the top element is ${t.raised ? "the page element at z-index 10" : t.hit}`);
+      }
+      // The overlay itself, outside the content: it too must cover the raised element.
+      const o = await box(page, OVERLAY);
+      const hit = await page.evaluate(({ x, y }) => { const h = document.elementFromPoint(x, y); return { raised: !!h?.closest("[data-test-raised]"), slot: h?.getAttribute("data-slot") ?? h?.tagName }; }, { x: o.x + 4, y: o.y + 4 });
+      if (hit.raised || !(hit.slot || "").split(" ").includes("dialog-overlay")) problems.push(`${id}: at the overlay's corner the top element is ${hit.raised ? "the page element at z-index 10" : hit.slot}`);
+      const z = await page.evaluate((o) => getComputedStyle(document.querySelector(o)).zIndex, OVERLAY);
+      if (z === "auto") problems.push(`${id}: the overlay's z-index is auto`);
+    }
+    // A menu opened inside the dialog paints above the dialog and above the raised element.
+    await openDialog(page, open, "with-menu");
+    await clickAt(page, await box(page, MENU_TRIGGER));
+    await page.locator(MENU_CONTENT).first().waitFor({ timeout: 5000 });
+    await plantRaisedElement(page);
+    const items = await page.locator(`${MENU_CONTENT} [data-slot~="dropdown-menu-item"]`).count();
+    for (let i = 0; i < items; i++) {
+      const t = await page.evaluate(({ content, i }) => {
+        const it = document.querySelectorAll(`${content} [data-slot~="dropdown-menu-item"]`)[i];
+        const r = it.getBoundingClientRect();
+        const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return { text: (it.textContent || "").trim(), inside: !!hit && it.contains(hit) || hit === it, hit: hit ? (hit.getAttribute("data-slot") || hit.tagName) : null };
+      }, { content: MENU_CONTENT, i });
+      if (!t.inside) problems.push(`with-menu: at the centre of the item "${t.text}" the top element is ${t.hit}`);
+    }
+    expect.ok(items >= 3, `${items} menu items were checked`);
+    expect.deepEqual(problems, [], problems.join("; "));
+  },
+
   "dialog-fits-320": async ({ page, open, expect }) => {
     const problems = [];
     for (const id of ["default", "small", "medium", "worst-case-320"]) {
@@ -613,7 +807,68 @@ export const tests = {
       if (!(b.scrollTop > 0)) problems.push(`${at}: setting the body's scrollTop did not move it`);
       if (Math.abs(b.header.top - a.header.top) > 0.5 || Math.abs(b.footer.top - a.footer.top) > 0.5) problems.push(`${at}: scrolling the body moved the header or the footer`);
     }
+    // Short boxes: text at 200 percent on phones, and 320 by 256 (1280 by 1024 zoomed to 400 percent). Header and
+    // footer cannot both stay in view and leave the body room, so the content scrolls: the body is never squeezed to
+    // nothing, the title is in view on open, and Tab brings every footer action wholly into view.
+    const short = [];
+    for (const id of ["default", "not-dismissible", "confirm-step", "worst-case-320", "long-text", "from-menu"]) for (const [w, h] of [[320, 568], [360, 640], [375, 667]]) short.push([id, w, h, true]);
+    short.push(["confirm-step", 320, 256, false], ["default", 320, 256, false]);
+    for (const [id, width, height, big] of short) {
+      // from-menu opens through its menu, so the text is made large first and the dialog opens in the short box.
+      if (id === "from-menu") {
+        await open(id, { width, height });
+        if (big) await textAt200(page, expect);
+        await clickAt(page, await box(page, MENU_TRIGGER));
+        await page.locator(MENU_CONTENT).first().waitFor({ timeout: 5000 });
+        await clickAt(page, await page.locator('[data-slot~="dropdown-menu-item"]', { hasText: "Rename chat" }).first().boundingBox());
+        await waitOpen(page);
+      } else {
+        await openDialog(page, open, id, { width, height });
+        if (big) await textAt200(page, expect);
+      }
+      await page.waitForTimeout(50);
+      const at = `${id} at ${width} by ${height}${big ? ", text 200%" : ""}`;
+      const m = await page.evaluate(({ content, title, body, footer }) => {
+        const q = (s) => document.querySelector(s);
+        const r = (e) => { const b = e.getBoundingClientRect(); return { top: b.top, bottom: b.bottom, height: b.height }; };
+        const b = q(body), c = q(content);
+        return { vh: innerHeight, content: r(c), title: r(q(title)), body: r(b), bodyScroll: b.scrollHeight, bodyClient: b.clientHeight, contentScrollable: c.scrollHeight > c.clientHeight + 1, actions: [...q(footer).querySelectorAll("button")].map((x) => (x.textContent || "").trim()) };
+      }, { content: CONTENT, title: TITLE, body: BODY, footer: FOOTER });
+      if (m.content.top < 16 - 0.5 || m.content.bottom > m.vh - 16 + 0.5) problems.push(`${at}: the content runs from ${m.content.top} to ${m.content.bottom}; it must stay within 16 and ${m.vh - 16}`);
+      // A title can be taller than the screen at 200 percent (worst-case-320's runs to about 900 px), so the check is
+      // that it starts on screen with at least its first line (the heading-5 line, 3.5rem at 200%: 56 px) in view.
+      const firstLine = Math.min(m.title.height, 56);
+      if (m.title.top < -0.5 || m.title.top + firstLine > m.vh + 0.5) problems.push(`${at}: the title (${m.title.top.toFixed(0)} to ${m.title.bottom.toFixed(0)}) does not start in view on open`);
+      if (m.body.height < 1) problems.push(`${at}: the body is squeezed to ${m.body.height} px`);
+      else if (m.bodyScroll > m.bodyClient + 1 && m.body.height < Math.min(m.bodyScroll, m.vh / 4)) problems.push(`${at}: the body shows ${m.body.height.toFixed(0)} of its ${m.bodyScroll} px in a slot under a quarter of the screen`);
+      for (const action of m.actions) {
+        await page.evaluate(() => document.activeElement?.blur?.());
+        const f = await tabUntil(page, (x) => x.text === action, { max: 12 });
+        if (!f) { problems.push(`${at}: Tab never reaches "${action}"`); continue; }
+        await page.waitForTimeout(30);
+        const r = await page.evaluate(() => { const b = document.activeElement.getBoundingClientRect(); return { top: b.top, bottom: b.bottom }; });
+        if (r.top < -0.5 || r.bottom > m.vh + 0.5) problems.push(`${at}: "${action}" has focus but lies at ${r.top.toFixed(0)} to ${r.bottom.toFixed(0)}, outside 0 to ${m.vh}`);
+      }
+    }
     expect.deepEqual(problems, [], problems.join("; "));
+  },
+
+  "dialog-body-scroll-keyboard-late": async ({ page, open, expect }) => {
+    await open("closed");
+    await page.evaluate(() => window.__dialogFixtures.mountLateBody());
+    await waitOpen(page);
+    // Hold the body's box at a fixed height, as a product's layout can, so only its content changes size.
+    await page.locator(BODY).evaluate((el) => { el.style.blockSize = "120px"; el.style.flex = "none"; });
+    await page.waitForTimeout(100);
+    const before = await page.locator(BODY).evaluate((el) => ({ tabindex: el.getAttribute("tabindex"), scrolls: el.scrollHeight > el.clientHeight + 1 }));
+    expect.ok(!before.scrolls, "the body does not scroll before its rows arrive, so the case starts from a body outside the Tab order");
+    await page.evaluate(() => window.__dialogFixtures.fillLateBody(40));
+    await page.waitForTimeout(200);
+    const after = await page.locator(BODY).evaluate((el) => ({ tabindex: el.getAttribute("tabindex"), scrollHeight: el.scrollHeight, clientHeight: el.clientHeight }));
+    expect.ok(after.scrollHeight > after.clientHeight + 1, `the rows made the body scroll (${after.scrollHeight} in ${after.clientHeight} px)`);
+    expect.equal(after.tabindex, "0", `a body that scrolls (${after.scrollHeight} in ${after.clientHeight} px) has tabindex ${after.tabindex}, so the keyboard cannot reach it to scroll`);
+    const f = await tabUntil(page, (x) => (x.slot || "").split(" ").includes("dialog-body"), { max: 6 });
+    expect.ok(f, "Tab reaches the body that now scrolls");
   },
 
   "dialog-footer-wraps": async ({ page, open, expect }) => {

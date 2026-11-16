@@ -10,7 +10,8 @@
 
 const ROOT = '[data-slot~="button"]';
 const LABEL = '[data-slot~="button-label"]';
-const ALL_EXAMPLES = ["secondary", "primary", "neutral", "ghost", "danger", "danger-soft", "outline", "success", "warning", "small", "large", "with-icons", "icon-only", "loading", "disabled", "full-width", "long-label", "as-link"];
+const ALL_EXAMPLES = ["secondary", "primary", "neutral", "ghost", "danger", "danger-soft", "outline", "success", "warning", "small", "large", "with-icons", "icon-only", "loading", "disabled", "full-width", "long-label", "as-link", "as-link-disabled", "as-link-loading"];
+const LINK_EXAMPLES = ["as-link", "as-link-disabled", "as-link-loading"];
 const VARIANT_EXAMPLES = ["secondary", "primary", "neutral", "ghost", "danger", "danger-soft", "outline", "success", "warning"];
 
 const clicks = (page, id) => page.evaluate((k) => (window.__buttonClicks && window.__buttonClicks[k]) || 0, id);
@@ -29,6 +30,18 @@ async function clickCentre(page) {
   const box = await page.locator(ROOT).first().boundingBox();
   if (!box) throw new Error("the button has no box to click");
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+}
+
+// With asChild the child link has its own onClick (recorded as "<id>:child") and an href. Presses the link by
+// pointer, by a dispatched click event and by Enter, and reports what ran: the button's onClick, the child's own
+// onClick, and whether the link navigated (the hash changed).
+async function pressLink(page, id) {
+  await page.evaluate(() => { if (location.hash) history.replaceState(null, "", location.pathname + location.search); });
+  await clickCentre(page);
+  await page.locator(ROOT).first().dispatchEvent("click");
+  const reached = await tabToButton(page);
+  if (reached) await page.keyboard.press("Enter");
+  return { reached, button: await clicks(page, id), child: await clicks(page, `${id}:child`), hash: await page.evaluate(() => location.hash) };
 }
 
 // Colour maths in the page: parse a computed colour, composite it over what is behind, and give the WCAG ratio.
@@ -71,7 +84,7 @@ export const tests = {
     for (const id of ALL_EXAMPLES) {
       await open(id);
       const tag = await page.locator(ROOT).first().evaluate((el) => el.tagName);
-      if (id === "as-link") {
+      if (LINK_EXAMPLES.includes(id)) {
         expect.equal(tag, "A", "with asChild the root is the link element");
         expect.equal(await page.locator(ROOT).first().getAttribute("href"), "#settings", "the link keeps its href");
       } else {
@@ -85,8 +98,10 @@ export const tests = {
       await open(id);
       expect.equal(await page.locator(ROOT).first().getAttribute("type"), "button", `"${id}" has type="button" when no type is given`);
     }
-    await open("as-link");
-    expect.equal(await page.locator(ROOT).first().getAttribute("type"), null, "a link rendered with asChild gets no button type");
+    for (const id of LINK_EXAMPLES) {
+      await open(id);
+      expect.equal(await page.locator(ROOT).first().getAttribute("type"), null, `"${id}": a link rendered with asChild gets no button type`);
+    }
   },
 
   "button-icons-hidden": async ({ page, open, expect }) => {
@@ -133,6 +148,21 @@ export const tests = {
     await clickCentre(page);
     await page.locator(ROOT).dispatchEvent("click");
     expect.equal(await clicks(page, "disabled"), 0, "a click on a disabled button does not call onClick");
+    // asChild: the child link's own onClick must not run either, and the link must not navigate. The live link is
+    // the control: the same three presses run both handlers three times and navigate.
+    await open("as-link");
+    const live = await pressLink(page, "as-link");
+    await open("as-link-disabled");
+    const off = await pressLink(page, "as-link-disabled");
+    const attrs = await page.locator(ROOT).first().evaluate((el) => ({ ariaDisabled: el.getAttribute("aria-disabled"), dataDisabled: el.getAttribute("data-disabled") }));
+    const problems = [];
+    if (!live.reached || live.button !== 3 || live.child !== 3 || live.hash !== "#settings") problems.push(`control: the live link ran the button's onClick ${live.button} and its own ${live.child} times (needs 3 and 3) and went to "${live.hash}"`);
+    if (!off.reached) problems.push("Tab did not reach the disabled link");
+    if (off.button !== 0) problems.push(`the disabled link ran the button's onClick ${off.button} times`);
+    if (off.child !== 0) problems.push(`the disabled link ran its own onClick ${off.child} times`);
+    if (off.hash !== "") problems.push(`the disabled link navigated to "${off.hash}"`);
+    if (attrs.ariaDisabled !== "true" || attrs.dataDisabled !== "") problems.push(`the disabled link has aria-disabled ${attrs.ariaDisabled} and data-disabled ${attrs.dataDisabled}`);
+    expect.deepEqual(problems, [], problems.join("; "));
   },
 
   "button-loading-inert": async ({ page, open, expect }) => {
@@ -147,6 +177,18 @@ export const tests = {
     await page.keyboard.press("Space");
     await clickCentre(page);
     expect.equal(await clicks(page, "loading"), 0, "Enter, Space and a click on a loading button do not call onClick");
+    // asChild: the child link's own onClick must not run either, and the link must not navigate.
+    await open("as-link");
+    const live = await pressLink(page, "as-link");
+    await open("as-link-loading");
+    const busy = await pressLink(page, "as-link-loading");
+    const problems = [];
+    if (!live.reached || live.button !== 3 || live.child !== 3 || live.hash !== "#settings") problems.push(`control: the live link ran the button's onClick ${live.button} and its own ${live.child} times (needs 3 and 3) and went to "${live.hash}"`);
+    if (!busy.reached) problems.push("Tab did not reach the loading link");
+    if (busy.button !== 0) problems.push(`the loading link ran the button's onClick ${busy.button} times`);
+    if (busy.child !== 0) problems.push(`the loading link ran its own onClick ${busy.child} times`);
+    if (busy.hash !== "") problems.push(`the loading link navigated to "${busy.hash}"`);
+    expect.deepEqual(problems, [], problems.join("; "));
   },
 
   "button-loading-stays-focusable": async ({ page, open, expect }) => {
@@ -179,10 +221,12 @@ export const tests = {
           const cs = getComputedStyle(el);
           const beside = C.backgroundOf(el.parentElement);
           const ring = C.over(C.parse(cs.outlineColor), beside);
-          return { visible: el.matches(":focus-visible"), style: cs.outlineStyle, width: parseFloat(cs.outlineWidth) || 0, ratio: C.ratio(ring, beside), ring: C.hex(ring), beside: C.hex(beside) };
+          return { visible: el.matches(":focus-visible"), style: cs.outlineStyle, width: parseFloat(cs.outlineWidth) || 0, offset: parseFloat(cs.outlineOffset) || 0, ratio: C.ratio(ring, beside), ring: C.hex(ring), beside: C.hex(beside) };
         }, ROOT);
         if (!r.visible) problems.push(`${id} ${theme}: the button does not match :focus-visible after Tab`);
         if (r.style !== "solid" || r.width < 2) problems.push(`${id} ${theme}: outline ${r.style} ${r.width} px, needs solid and at least 2 px`);
+        // A negative offset draws the ring inside the button, on its own fill, where "what is beside it" is not the page.
+        if (r.offset < 0) problems.push(`${id} ${theme}: outline-offset ${r.offset} px draws the ring inside the button; needs 0 or more`);
         if (r.ratio < 3) problems.push(`${id} ${theme}: ring ${r.ring} on ${r.beside} is ${r.ratio.toFixed(2)} to 1, needs 3`);
       }
     }

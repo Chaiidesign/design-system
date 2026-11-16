@@ -327,7 +327,8 @@
           "paddingInline": "static/160",
           "paddingBlock": "static/160",
           "duration": "duration/enter",
-          "easing": "ease/standard"
+          "easing": "ease/standard",
+          "layer": "overlay"
         },
         "content": {
           "background": "surface/primary/default",
@@ -340,7 +341,8 @@
           "width": "full",
           "maxWidth": "dialog/md",
           "duration": "duration/enter",
-          "easing": "ease/standard"
+          "easing": "ease/standard",
+          "layer": "overlay"
         },
         "header": {
           "paddingInline": "scaled/240",
@@ -370,7 +372,7 @@
           "gap": "static/80"
         }
       },
-      "why": "The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears."
+      "why": "The overlay's padding is the 16 pixel margin to the screen edge, so the content can take the full width up to its maximum. The transparent border costs nothing in normal colours and becomes the dialog's edge in forced-colours mode, where the shadow disappears. Both the overlay and the content take the Layer token overlay, so a page element with its own z-index never paints over an open dialog; a menu opened inside takes popover, one level higher."
     },
     {
       "when": {
@@ -510,7 +512,7 @@
     {
       "id": "dialog-title-required",
       "level": "MUST",
-      "text": "Every DialogContent holds a DialogTitle with text. The generated test opens each example and fails when a DialogContent has no DialogTitle inside it; every example in this spec has one.",
+      "text": "Every DialogContent holds a DialogTitle with text. The generated test opens each example and fails when a DialogContent has no DialogTitle inside it; every example in this spec has one. The test checks the gallery's examples; it cannot see a product screen, so a screen that uses Dialog needs its own check.",
       "wcag": "4.1.2",
       "check": "test:dialog-title-required"
     },
@@ -551,9 +553,16 @@
     {
       "id": "dialog-focus-on-open",
       "level": "MUST",
-      "text": "On open, focus moves inside the content: to the first control that is not a link, or to the content when there is none.",
+      "text": "On open, focus moves inside the content: to the first control that is not a link, or to the content when there is none. Focus never lands out of view: when that control is not wholly inside what the dialog shows (text at 200 percent on a phone), focus goes to the content itself, which the title names, the top of the dialog stays in view, and the first Tab moves to the first control and brings it into view.",
       "wcag": "2.4.3",
       "check": "test:dialog-focus-on-open"
+    },
+    {
+      "id": "dialog-focus-on-open-in-view",
+      "level": "MUST",
+      "text": "With text at 200 percent on 320 by 568 and 375 by 667 screens, the element focused on open is wholly in view: the first control when it is in view, otherwise the content itself; the first Tab then lands on the first control, wholly in view.",
+      "wcag": "2.4.11",
+      "check": "test:dialog-focus-on-open-in-view"
     },
     {
       "id": "dialog-initial-focus-title",
@@ -598,7 +607,7 @@
     {
       "id": "dialog-not-dismissible-has-way-out",
       "level": "MUST",
-      "text": "With content.dismissible false, the content holds at least one tabbable footer action that closes or completes the step, so a keyboard user is never trapped.",
+      "text": "With content.dismissible false, the content holds at least one tabbable footer action that closes or completes the step, so a keyboard user is never trapped. With text at 200 percent on a 320 by 568 or a 375 by 667 screen, that action is reached by Tab and is then wholly inside the viewport. The test checks the gallery's examples; it cannot see a product screen, so a screen that uses Dialog needs its own check.",
       "wcag": "2.1.2",
       "check": "test:dialog-not-dismissible-has-way-out"
     },
@@ -612,7 +621,7 @@
     {
       "id": "dialog-visible-close",
       "level": "MUST",
-      "text": "With content.dismissible true, the footer holds at least one visible close part, such as Cancel, because a person using a touch screen reader has no Escape key and may not find the overlay.",
+      "text": "With content.dismissible true, the footer holds at least one visible close part, such as Cancel, because a person using a touch screen reader has no Escape key and may not find the overlay. The test checks the gallery's examples; it cannot see a product screen, so a screen that uses Dialog needs its own check.",
       "check": "test:dialog-visible-close",
       "label": "pattern"
     },
@@ -626,9 +635,15 @@
     {
       "id": "dialog-focus-returns-without-trigger",
       "level": "MUST",
-      "text": "A dialog opened by the open prop with no trigger returns focus on close to the element that had focus when it opened. Radix alone would leave focus on the page body.",
+      "text": "A dialog opened by the open prop with no trigger returns focus on close to the element that had focus when it opened. When that element has left the page, as a DropdownMenu item that opened the dialog has, focus returns to that menu's trigger, and the page takes presses again. Radix alone would leave focus on the page body.",
       "wcag": "2.4.3",
       "check": "test:dialog-focus-returns-without-trigger"
+    },
+    {
+      "id": "dialog-ref-cleanup",
+      "level": "MUST",
+      "text": "DialogContent and DialogBody pass the caller's ref through as React 19 does: a callback ref that returns a cleanup function has that cleanup called on detach and is never called with null; any other callback ref is called with null on detach, and an object ref is set to null.",
+      "check": "test:dialog-ref-cleanup"
     },
     {
       "id": "dialog-background-inert",
@@ -644,6 +659,13 @@
       "check": "test:dialog-overlay-covers-viewport"
     },
     {
+      "id": "dialog-above-page",
+      "level": "MUST",
+      "text": "While open, the overlay and the content paint above every page element, whatever its z-index (tested with an element at z-index 10), and a DropdownMenu opened inside the dialog paints above the dialog.",
+      "wcag": "1.3.2",
+      "check": "test:dialog-above-page"
+    },
+    {
       "id": "dialog-fits-320",
       "level": "MUST",
       "text": "At a 320 pixel wide viewport the content is the viewport width less the overlay's 16 pixel padding each side, centred, and the page has no horizontal scroll.",
@@ -653,7 +675,7 @@
     {
       "id": "dialog-body-scrolls",
       "level": "MUST",
-      "text": "When the content is taller than the viewport less its margin, only the body scrolls; the header with the title and the footer with the actions stay fully visible.",
+      "text": "When the content is taller than the viewport less its margin, only the body scrolls; the header with the title and the footer with the actions stay fully visible. When the overlay's inner box is shorter than 30rem (large text, or a short window such as 1280 by 1024 zoomed to 400 percent), header and footer cannot both stay in view and leave the body room, so the whole content scrolls instead: the body keeps its full height, the title is in view on open (its start, when the title alone is taller than the screen), and Tab brings every footer action wholly into view, also when Tab wraps from the last control to the first.",
       "wcag": "1.4.10",
       "check": "test:dialog-body-scrolls"
     },
@@ -670,6 +692,13 @@
       "text": "A body that scrolls can be scrolled with the keyboard: it is focusable or holds a focusable element.",
       "wcag": "2.1.1",
       "check": "axe:scrollable-region-focusable"
+    },
+    {
+      "id": "dialog-body-scroll-keyboard-late",
+      "level": "MUST",
+      "text": "A body that starts to scroll after the dialog opened, because its content arrived later while its own box kept its size, joins the Tab order then, so it can still be scrolled with the keyboard.",
+      "wcag": "2.1.1",
+      "check": "test:dialog-body-scroll-keyboard-late"
     },
     {
       "id": "dialog-text-wraps",
@@ -1431,6 +1460,88 @@
         }
       },
       "note": "Target for the test that, while the menu is open, the first Escape closes only the menu and the second closes the dialog."
+    },
+    {
+      "id": "from-menu",
+      "title": "Opened from a menu item",
+      "props": {
+        "open": false
+      },
+      "content": {
+        "menu": {
+          "component": "DropdownMenu",
+          "content": {
+            "trigger": {
+              "props": {
+                "trigger.asChild": true
+              },
+              "button": {
+                "iconEnd": "chevron-down"
+              },
+              "children": "Chat options"
+            },
+            "content": [
+              {
+                "part": "item",
+                "children": "Rename chat",
+                "note": "Its onSelect sets the dialog's open to true."
+              },
+              {
+                "part": "item",
+                "children": "Share"
+              }
+            ]
+          }
+        },
+        "portal": {
+          "part": "overlay",
+          "children": [
+            {
+              "part": "content",
+              "children": [
+                {
+                  "part": "header",
+                  "children": [
+                    {
+                      "part": "title",
+                      "children": "Rename chat"
+                    },
+                    {
+                      "part": "description",
+                      "children": "The new name shows in your chat list."
+                    }
+                  ]
+                },
+                {
+                  "part": "body",
+                  "children": "Weekend plans"
+                },
+                {
+                  "part": "footer",
+                  "children": [
+                    {
+                      "part": "close",
+                      "props": {
+                        "close.asChild": true
+                      },
+                      "button": {},
+                      "children": "Cancel"
+                    },
+                    {
+                      "component": "Button",
+                      "props": {
+                        "variant": "primary"
+                      },
+                      "children": "Save name"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "note": "The usual way a dialog without a trigger opens: from a menu item. The item that had focus when the dialog opened is gone when it closes, so focus returns to the menu's trigger (dialog-focus-returns-without-trigger)."
     }
   ],
   "dependencies": [
@@ -1442,9 +1553,8 @@
     "A panel that slides in from an edge: that is Sheet.",
     "A non-modal dialog. Radix's modal prop is not exposed and is fixed to true: with modal false Radix renders no overlay, so the margin, the scroll lock and the inert page would all be lost.",
     "A single wrapper component that takes title, description and actions as props. Dialog keeps Radix's compound shape; a required title is enforced by the dialog-title-required test and the adapter's development warning instead of by a prop type.",
-    "Layout written in the extensions stylesheet: the overlay is fixed to the viewport, covers it and centres its child (dialog-overlay-covers-viewport); the content is a column whose height is capped at the overlay's inner box (dialog-body-scrolls); the header is a column and neither it nor the footer shrinks; the body takes the leftover height and is the only part with overflow on the block axis (dialog-body-scrolls); the footer is a row aligned to the end that wraps (dialog-footer-wraps); the title and description break long words (dialog-text-wraps).",
+    "Layout written in the extensions stylesheet: the overlay is fixed to the viewport, covers it and centres its child (dialog-overlay-covers-viewport); the content is a column whose height is capped at the overlay's inner box (dialog-body-scrolls); the header is a column and neither it nor the footer shrinks; the body takes the leftover height and is the only part with overflow on the block axis (dialog-body-scrolls); the overlay is a size container, and when its inner box is shorter than 30rem the body keeps its full height and the content scrolls instead (dialog-body-scrolls), a threshold written as a container query because a query cannot read a token; the footer is a row aligned to the end that wraps (dialog-footer-wraps); the title and description break long words (dialog-text-wraps).",
     "The entrance and exit animation itself (fade and scale). Only its duration and easing are tokens here.",
-    "Stacking order. No layer token exists, so the overlay's place above the page is left to Radix's portal order: the portal appends to the end of the body, and a later portal sits above an earlier one.",
     "Space for the iPhone home indicator and notch beyond the overlay's 16 pixel padding.",
     "A close button with an icon in the header corner.",
     "Radix's modal, onEscapeKeyDown, onPointerDownOutside, onInteractOutside, forceMount and container props: content.dismissible covers the need, and they are not part of the Souvenir surface.",

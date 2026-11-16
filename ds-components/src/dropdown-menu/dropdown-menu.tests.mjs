@@ -368,6 +368,19 @@ export const tests = {
       }
     }
     expect.ok(withShortcut >= 7, `${withShortcut} items with a shortcut hint were checked`);
+    // Edge cases no example carries, through a test hook: the plus key is "Plus" (ARIA 1.2), and a sequence of two
+    // shortcuts gets no attribute, because a space in aria-keyshortcuts separates alternatives, not steps.
+    await open("closed");
+    const EDGE = { "⌘+": "Meta+Plus", "Ctrl++": "Control+Plus", "⌘⇧+": "Meta+Shift+Plus", "Ctrl+Shift+P": "Control+Shift+P", "⌘K ⌘S": null, "Ctrl+K Ctrl+S": null };
+    await page.evaluate((hints) => window.__dropdownMenuFixtures.mountShortcuts(hints), Object.keys(EDGE));
+    await waitOpen(page);
+    const edge = await page.evaluate((items) => [...document.querySelectorAll(items)].map((e) => ({ hint: e.querySelector('[data-slot~="dropdown-menu-item-shortcut"]')?.textContent ?? null, keys: e.getAttribute("aria-keyshortcuts") })), ITEMS);
+    if (edge.length !== Object.keys(EDGE).length) problems.push(`the hook mounted ${edge.length} items, expected ${Object.keys(EDGE).length}`);
+    for (const r of edge) {
+      const want = EDGE[r.hint];
+      if (want === undefined) problems.push(`unexpected hint ${JSON.stringify(r.hint)}`);
+      else if (r.keys !== want) problems.push(`the hint ${JSON.stringify(r.hint)} should give aria-keyshortcuts ${JSON.stringify(want)}, not ${JSON.stringify(r.keys)}`);
+    }
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
@@ -992,6 +1005,38 @@ export const tests = {
     expect.deepEqual(problems, [], problems.join("; "));
   },
 
+  "dropdown-menu-above-page": async ({ page, open, expect }) => {
+    const problems = [];
+    for (const id of ["actions", "non-modal", "with-shortcuts"]) {
+      await open(id);
+      await waitOpen(page);
+      // A page element with its own stacking level (position relative, z-index 10), as tall as the viewport and first
+      // in the body. pointer-events auto, because a modal menu sets none on the body and hit-testing skips such
+      // elements, which would make the check pass by measuring nothing.
+      await page.evaluate(() => {
+        const el = document.createElement("div");
+        el.setAttribute("data-test-raised", "");
+        el.style.cssText = "position: relative; z-index: 10; block-size: 100vh; inline-size: 100%; pointer-events: auto; background: rgb(255, 0, 255);";
+        document.body.prepend(el);
+      });
+      await settle(page);
+      const r = await page.evaluate(({ content, items }) => {
+        const c = document.querySelector(content);
+        const wrapper = c.parentElement;
+        const rows = [...c.querySelectorAll(items)].map((it) => {
+          const b = it.getBoundingClientRect();
+          const hit = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+          return { text: (it.textContent || "").trim(), raised: !!hit?.closest("[data-test-raised]"), inside: !!hit && (it === hit || it.contains(hit)) };
+        });
+        return { rows, zContent: getComputedStyle(c).zIndex, zWrapper: getComputedStyle(wrapper).zIndex, wrapperPosition: getComputedStyle(wrapper).position };
+      }, { content: CONTENT, items: ITEMS });
+      if (r.rows.length < 2) problems.push(`${id}: only ${r.rows.length} items to check`);
+      for (const row of r.rows) if (!row.inside) problems.push(`${id}: at the centre of "${row.text}" the top element is ${row.raised ? "the page element at z-index 10" : "something else"}`);
+      if (r.zWrapper === "auto") problems.push(`${id}: the positioned wrapper (${r.wrapperPosition}) has z-index auto; the content has ${r.zContent}`);
+    }
+    expect.deepEqual(problems, [], problems.join("; "));
+  },
+
   "dropdown-menu-fits-viewport": async ({ page, open, expect }) => {
     const cdp = await page.context().newCDPSession(page);
     await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
@@ -1010,6 +1055,30 @@ export const tests = {
       if (m.top < 8 - 0.5 || m.bottom > m.vh - 8 + 0.5) problems.push(`${at}: the content spans ${m.top.toFixed(1)} to ${m.bottom.toFixed(1)} px down; it must stay 8 px inside 0 to ${m.vh}`);
       if (m.sw > m.vw) problems.push(`${at}: the page scrolls sideways (${m.sw} in ${m.vw} px)`);
       if (id === "worst-case-320" && m.align !== "start") problems.push(`${at}: data-align is ${m.align}; Radix shifts a start-aligned menu and keeps start`);
+    }
+    // Text at 200 percent: menu/min is 12rem, 384 px, wider than every phone here. The root font size is set before
+    // the menu opens (Radix measures on open), then the menu is opened with the keyboard.
+    for (const [id, width] of [["with-shortcuts", 320], ["with-shortcuts", 360], ["with-shortcuts", 375], ["with-shortcuts", 390], ["actions", 320], ["worst-case-320", 320], ["right-to-left", 360]]) {
+      await open(id, { width });
+      await page.setViewportSize({ width, height: 800 });
+      await waitOpen(page);
+      await page.keyboard.press("Escape");
+      await waitClosed(page);
+      await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+      expect.equal(await page.evaluate(() => getComputedStyle(document.documentElement).fontSize), "32px", "the root font size is 200 percent");
+      await press(page, "Enter");
+      await waitOpen(page);
+      await pause(page, 100);
+      const m = await page.evaluate(({ content, items }) => {
+        const c = document.querySelector(content), r = c.getBoundingClientRect(), de = document.documentElement;
+        const cut = [...c.querySelectorAll('[data-slot~="dropdown-menu-item-shortcut"], [data-slot~="dropdown-menu-item-label"]')].filter((e) => { const b = e.getBoundingClientRect(); return b.left < -0.5 || b.right > de.clientWidth + 0.5; }).map((e) => (e.textContent || "").trim());
+        return { left: r.left, right: r.right, vw: de.clientWidth, sw: de.scrollWidth, minWidth: getComputedStyle(c).minWidth, items: c.querySelectorAll(items).length, cut };
+      }, { content: CONTENT, items: ITEMS });
+      const at = `${id} at ${width}, text 200%`;
+      if (!m.items) problems.push(`${at}: the menu did not open on Enter`);
+      if (m.left < 8 - 0.5 || m.right > m.vw - 8 + 0.5) problems.push(`${at}: the content spans ${m.left.toFixed(1)} to ${m.right.toFixed(1)} px (least width ${m.minWidth}); it must stay 8 px inside 0 to ${m.vw}`);
+      if (m.cut.length) problems.push(`${at}: cut by the screen edge: ${m.cut.join(", ")}`);
+      if (m.sw > m.vw) problems.push(`${at}: the page scrolls sideways (${m.sw} in ${m.vw} px)`);
     }
     await cdp.detach();
     expect.deepEqual(problems, [], problems.join("; "));

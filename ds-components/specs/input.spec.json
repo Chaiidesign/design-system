@@ -90,7 +90,7 @@
       "element": "p",
       "primitivePart": null,
       "required": false,
-      "description": "Rendered only while invalid is true and errorMessage has text. It holds an icon and the words, so the error is never shown by colour alone. Its id is listed first in the input's aria-describedby."
+      "description": "Rendered only while invalid is true and errorMessage has words (not empty and not only spaces). It holds an icon and the words, so the error is never shown by colour alone. Its id is listed first in the input's aria-describedby."
     },
     "errorIcon": {
       "kind": "glyph",
@@ -137,7 +137,7 @@
       "default": false,
       "reflects": "data-invalid",
       "figmaProperty": null,
-      "description": "The value is wrong. With an errorMessage it sets data-invalid on the root, renders the error message and sets aria-invalid to true on the input. Without an errorMessage it does nothing: the type of the props forbids it and the component warns in development."
+      "description": "The value is wrong. It sets data-invalid on the root (the 2 pixel error edge) and aria-invalid to true on the input, and renders the error message when errorMessage has words. Fail safe: invalid with an empty or missing errorMessage still marks the field invalid, with the edge and aria-invalid but no words; the type of the props requires errorMessage and the component warns in development, because without words the person is not told what is wrong."
     },
     "required": {
       "on": "root",
@@ -324,7 +324,7 @@
         "value": "error"
       },
       "reach": "example:invalid",
-      "description": "The value is wrong and the error message is shown. The input has aria-invalid set to true at the same time and at no other time. Figma calls this state error."
+      "description": "The value is wrong: invalid is true. The input has aria-invalid set to true at the same time and at no other time, and the error message is shown when errorMessage has words. Figma calls this state error."
     },
     "placeholderShown": {
       "on": "input",
@@ -622,7 +622,8 @@
     },
     "announcements": [
       "On focus a screen reader says the label, the role, required and invalid when they apply, then the error message and the description.",
-      "The error message is not a live region. It is read when focus reaches the field; after a failed submit the form moves focus to the first invalid field. This keeps a form with many errors from talking over the person."
+      "The error message is not a live region. It is read when focus reaches the field; after a failed submit the form moves focus to the first invalid field. This keeps a form with many errors from talking over the person.",
+      "With invalid but no words in errorMessage, a screen reader says the field is invalid and gives no reason (inferred from how aria-invalid is announced; not yet checked with a screen reader). The type and the development warning exist so this never ships."
     ]
   },
   "requirements": [
@@ -663,7 +664,7 @@
     {
       "id": "input-invalid-only-with-error",
       "level": "MUST",
-      "text": "aria-invalid is true on the input only while the error message is shown, and is absent otherwise.",
+      "text": "aria-invalid is true on the input, and data-invalid is on the root, exactly while invalid is true, and both are absent otherwise. With an empty or missing errorMessage the field is still marked invalid (fail safe) and no empty error message is rendered. The id is kept from when aria-invalid followed the shown message, so reports stay comparable.",
       "wcag": "3.3.1",
       "check": "test:input-invalid-only-with-error"
     },
@@ -684,7 +685,7 @@
     {
       "id": "input-error-not-colour-alone",
       "level": "MUST",
-      "text": "An error is shown by words and an icon and a 2 pixel edge, never by colour alone.",
+      "text": "An error is shown by words and an icon and a 2 pixel edge, never by colour alone. invalid without words in errorMessage, which the type forbids, keeps only the 2 pixel edge and aria-invalid; the words are the product's to give.",
       "wcag": "1.4.1",
       "check": "test:input-error-not-colour-alone"
     },

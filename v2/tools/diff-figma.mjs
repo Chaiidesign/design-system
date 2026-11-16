@@ -2,7 +2,7 @@
 //
 // Usage:
 //   node v2/tools/diff-figma.mjs [--tokens <tokens.json>] [--css <tokens.css>] [--overrides <overrides.json>]
-//                                [--out <diff.json>] [--patch-list <figma-patch-list.md>] [--report-only] [--all]
+//                                [--out <diff.json>] [--patch-list <figma-patch-list.md>] [--no-fail | --report-only] [--all]
 //   node v2/tools/diff-figma.mjs --self-test
 //
 // Inputs (defaults are relative to the repository root, found from this file's location):
@@ -35,10 +35,15 @@
 // M is every token in Figma or in code (the union), not counting proposed tokens: they cannot agree with Figma by
 // definition, so they are counted in list 9 and named separately in the last line.
 //
-// Writes ds-tokens/audit/diff.json and ds-tokens/audit/figma-patch-list.md: the changes to make by hand in Figma, in three
-// sections: the alias changes from overrides (list 4), "Variables to add" (list 9), and "Descriptions to set" (the items of
+// Writes diff.json and figma-patch-list.md: the changes to make by hand in Figma, in three sections: the alias changes from
+// overrides (list 4), "Variables to add" (list 9: first the collections they need, saying which Figma lacks or holds empty,
+// then one row per variable with its value per mode, its Figma scopes and why), and "Descriptions to set" (the items of
 // list 8 whose Figma description is empty, with the repo's text to paste, grouped by collection).
-// Exit 0 when lists 1, 2, 3, 6 and 7 are empty, or always with --report-only. Exit 1 on any item in them.
+// Where they go: ds-tokens/audit/ for the owner's snapshot (v2/figma, the default); <snapshot folder>/audit/ when
+// SOUVENIR_SNAPSHOT_DIR names any other folder (for example v2/figma/sandbox), so ds-tokens/audit/ is never replaced by a
+// sandbox run. --out and --patch-list still win when given.
+// --report-only prints the report and writes nothing. --no-fail writes and exits 0 whatever the lists hold.
+// Exit 0 when lists 1, 2, 3, 6 and 7 are empty, or always with --report-only or --no-fail. Exit 1 on any item in them.
 // Exit 2 when an input cannot be read.
 // --self-test builds fixtures from the real Figma snapshot in a temporary folder, proves the clean set gives
 // empty lists, plants one item of each of the nine kinds and checks each lands in its own list.
@@ -46,7 +51,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, mkdtempSync, rmSync
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve as resolvePath } from 'node:path';
 import { tmpdir } from 'node:os';
-import { loadSnapshots, makeResolver, resolvedSemantic, SNAPSHOT_DIR } from './lib/snapshot.mjs';
+import { loadSnapshots, makeResolver, resolvedSemantic, SNAPSHOT_DIR, auditDir, isolationSelfTest } from './lib/snapshot.mjs';
 import { parseCssColor } from '../../scripts/lib/color.mjs';
 
 const ROOT = resolvePath(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -368,8 +373,13 @@ export function diff({ snap, tokens, css, overrides }) {
     const kind = kindOf(null, t);
     const values = Object.fromEntries(Object.entries(t.values || {}).map(([m, v]) => [normMode(m), show(v, kind)]));
     const alias = Object.fromEntries(Object.entries(t.alias || {}).map(([m, a]) => [normMode(m), a ?? null]));
-    lists.proposedNotInFigma.push({ collection: t.collection ?? null, token: t.name, cssVar: cssName(t.cssVar), type: t.type ?? null, values, alias, why: t.why ?? '' });
+    lists.proposedNotInFigma.push({ collection: t.collection ?? null, token: t.name, cssVar: cssName(t.cssVar), type: t.type ?? null, values, alias, scopes: Array.isArray(t.scopes) ? t.scopes : [], why: t.why ?? '' });
   }
+  // The collections the proposed tokens need, and whether Figma holds each (and how many variables it has there).
+  const proposedCollections = [...new Set(lists.proposedNotInFigma.map((p) => p.collection ?? '(no collection)'))].map((name) => {
+    const fig = snap.semantic.find((c) => c.name === canonCollection(name));
+    return { collection: name, inFigma: !!fig, figmaVariables: fig ? fig.variables.length : 0, toAdd: lists.proposedNotInFigma.filter((p) => (p.collection ?? '(no collection)') === name).length };
+  });
 
   // 7. tokens.css against tokens.json.
   for (const t of tokens) {
@@ -401,7 +411,7 @@ export function diff({ snap, tokens, css, overrides }) {
   const counts = Object.fromEntries(LISTS.map((l) => [l.key, lists[l.key].length]));
   const failed = LISTS.some((l) => l.fails && lists[l.key].length > 0);
   const summary = `Figma and code agree on ${agree} of ${total} tokens; ${counts.drift} drift, ${counts.intendedOverrides} intended overrides, ${counts.overridesToRemove} overrides to remove; ${counts.proposedNotInFigma} proposed in the repo, not in Figma`;
-  return { lists, counts, warnings, agree, total, failed, summary };
+  return { lists, counts, warnings, agree, total, failed, summary, proposedCollections };
 }
 
 // ---------- patch list for the owner ----------
@@ -421,7 +431,11 @@ export function patchList(result) {
   });
   const cell = (x) => String(x ?? '').replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ').trim();
   const valueText = (a) => Object.entries(a.values).map(([m, v]) => `${m}: ${a.alias?.[m] ? `${a.alias[m]} (${v})` : v}`).join('; ');
-  const table = adds.map((a) => `| ${cell(a.collection)} | ${cell(a.token)} | ${cell(valueText(a))} | ${cell(a.why || 'No reason given.')} |`);
+  // No Figma scope fits a duration, an easing or a stacking level, so Motion and Layer variables carry none.
+  const scopeText = (a) => (a.scopes && a.scopes.length ? a.scopes.join(', ') : ['Motion', 'Layer'].includes(a.collection) ? 'none (no Figma scope fits)' : 'none given');
+  const table = adds.map((a) => `| ${cell(a.collection)} | ${cell(a.token)} | ${cell(valueText(a))} | ${cell(scopeText(a))} | ${cell(a.why || 'No reason given.')} |`);
+  const colls = result.proposedCollections || [];
+  const collRows = colls.map((c) => `| ${cell(c.collection)} | ${c.inFigma ? (c.figmaVariables ? `exists (${c.figmaVariables} variables)` : 'exists, empty') : 'create it'} | ${c.toAdd} |`);
   return [
     '# Changes to make by hand in Figma',
     '',
@@ -433,7 +447,8 @@ export function patchList(result) {
     '',
     ...(adds.length
       ? ['Tokens the repo proposes that Figma does not hold as variables. The snapshot reads variables only: a token Figma already keeps as a style (for example a shadow kept as an effect style) is listed here too; for those, check the style and add a variable only if one is wanted.', '',
-        '| Collection | Name | Value per mode | Why |', '| --- | --- | --- | --- |', ...table]
+        ...(collRows.length ? ['Collections these variables go in. Create the missing ones first, each with one mode called default unless the rows below give light and dark.', '', '| Collection | In Figma | Variables to add |', '| --- | --- | --- |', ...collRows, ''] : []),
+        '| Collection | Name | Value per mode | Scopes | Why |', '| --- | --- | --- | --- | --- |', ...table]
       : ['None: no token is proposed in the repo.']),
     '',
     '## Descriptions to set',
@@ -610,7 +625,7 @@ function selfTest() {
     tok('surface/error').description = 'Background for error messages.';
     tok('surface/error').descriptionSource = 'drafted';
     // 9. A token only in code, marked proposed, present in both files. (text/ghost above is not marked, and must still fail.)
-    const proposedTok = { name: 'border/planted', collection: 'Themes', category: 'color', type: 'color', cssVar: '--color-border-planted', description: 'Planted.', values: { light: '#8c8f97', dark: '#7e8188' }, alias: { light: 'neutral/light/500', dark: 'neutral/dark/500' }, scopes: [], overridden: null, proposed: true, why: 'Planted | proposed.' };
+    const proposedTok = { name: 'border/planted', collection: 'Themes', category: 'color', type: 'color', cssVar: '--color-border-planted', description: 'Planted.', values: { light: '#8c8f97', dark: '#7e8188' }, alias: { light: 'neutral/light/500', dark: 'neutral/dark/500' }, scopes: ['STROKE_COLOR'], overridden: null, proposed: true, why: 'Planted | proposed.' };
     fx.tokens.push(proposedTok);
     fx.blocks.get('root').set('--color-border-planted', '#8c8f97');
     fx.blocks.get('dark').set('--color-border-planted', '#7e8188');
@@ -648,8 +663,10 @@ function selfTest() {
       '- Themes, text/link/default, light: change alias from pink/600 to pink/700. Pink 600 is below 4.5 to 1 on surface/secondary.',
       '', '## Variables to add', '',
       'Tokens the repo proposes that Figma does not hold as variables. The snapshot reads variables only: a token Figma already keeps as a style (for example a shadow kept as an effect style) is listed here too; for those, check the style and add a variable only if one is wanted.', '',
-      '| Collection | Name | Value per mode | Why |', '| --- | --- | --- | --- |',
-      '| Themes | border/planted | light: neutral/light/500 (#8c8f97); dark: neutral/dark/500 (#7e8188) | Planted \\| proposed. |', '',
+      'Collections these variables go in. Create the missing ones first, each with one mode called default unless the rows below give light and dark.', '',
+      '| Collection | In Figma | Variables to add |', '| --- | --- | --- |', `| Themes | exists (${snap.semantic.find((c) => c.name === 'Themes').variables.length} variables) | 1 |`, '',
+      '| Collection | Name | Value per mode | Scopes | Why |', '| --- | --- | --- | --- | --- |',
+      '| Themes | border/planted | light: neutral/light/500 (#8c8f97); dark: neutral/dark/500 (#7e8188) | STROKE_COLOR | Planted \\| proposed. |', '',
       '## Descriptions to set', '',
       '1 Figma variable has an empty description. Paste the text into each variable\'s description field. Source is where the text comes from (ds-tokens/descriptions.json): owner, drafted or proposed.', '',
       '### Themes (1)', '', '| Name | Description to paste | Source |', '| --- | --- | --- |', '| surface/error | Background for error messages. | drafted |', '',
@@ -724,6 +741,27 @@ function selfTest() {
       `Motion: 100 against "100ms" should agree and 160 against "170ms" should be the only drift; drift ${JSON.stringify(md)}, counts ${JSON.stringify(mr.counts)}`);
     lines.push(`Caught Motion duration: Figma 100 = repo 100ms agrees; ${md[0] ? describe('drift', md[0]) : 'nothing'} is the only drift`);
 
+    // Proposed tokens in collections Figma lacks or holds empty: the patch list names each collection and what to do,
+    // and every row carries its scopes (Motion and Layer: none, because no Figma scope fits).
+    const cfx = cleanFixture();
+    const ptok = (collection, name, values, scopes, extra = {}) => ({ name, collection, category: collection.toLowerCase(), type: 'number', cssVar: `--${collection.toLowerCase()}-${name.replace('/', '-')}`, description: 'Planted.', values, alias: { default: null }, scopes, overridden: null, proposed: true, why: 'Planted.', ...extra });
+    const borderEmpty = snap.semantic.some((c) => c.name === 'Border' && c.variables.length === 0);
+    cfx.tokens.push(ptok('Layer', 'planted', { default: 1000 }, []), ptok('Border', 'width/planted', { default: '1px' }, ['STROKE_FLOAT'], { type: 'dimension', cssVar: '--border-width-planted' }));
+    cfx.blocks.get('root').set('--layer-planted', '1000');
+    cfx.blocks.get('root').set('--border-width-planted', '1px');
+    const cr = run(cfx, 'collections');
+    const cpl = patchList(cr);
+    const wantRows = ['| Layer | create it | 1 |', `| Border | ${borderEmpty ? 'exists, empty' : 'exists'}`, '| Layer | planted | default: 1000 | none (no Figma scope fits) | Planted. |', '| Border | width/planted | default: 1 | STROKE_FLOAT | Planted. |'];
+    const missingRows = wantRows.filter((w) => !cpl.includes(w));
+    expect(!cr.failed && missingRows.length === 0, `patch list should name the Layer collection to create, the Border collection${borderEmpty ? ' as empty' : ''}, and each variable's scopes; missing ${JSON.stringify(missingRows)} in:\n${cpl}`);
+    lines.push(`Caught collections and scopes in the patch list: Layer -> create it, Border -> ${borderEmpty ? 'exists, empty' : 'exists'}; Layer row scopes "none (no Figma scope fits)", Border row scopes STROKE_FLOAT`);
+
+    // Output isolation: a sandbox snapshot writes to <its folder>/audit/, --report-only writes nothing (child processes).
+    for (const r of isolationSelfTest(fileURLToPath(import.meta.url), ['diff.json', 'figma-patch-list.md'], ['--no-fail'])) {
+      if (!r.text.startsWith('PASS')) errors.push(r.text);
+      lines.push(r.text);
+    }
+
     for (const line of lines) console.log(line);
   } catch (e) {
     errors.push(`self-test crashed: ${e.stack || e.message}`);
@@ -731,7 +769,7 @@ function selfTest() {
     rmSync(dir, { recursive: true, force: true });
   }
   for (const e of errors) console.log(`Problem: ${e}`);
-  console.log(errors.length ? `Self-test failed: ${errors.length} problem(s).` : 'Self-test passed: all 9 planted kinds were caught, each in its own list (a proposed token listed without failing, an unmarked one failing), descriptions to set were grouped by collection, a Motion duration in ms matched its Figma number, and the clean fixture gave empty lists.');
+  console.log(errors.length ? `Self-test failed: ${errors.length} problem(s).` : 'Self-test passed: all 9 planted kinds were caught, each in its own list (a proposed token listed without failing, an unmarked one failing), descriptions to set were grouped by collection, a Motion duration in ms matched its Figma number, the patch list named the collections to create and each variable\'s scopes, a sandbox run wrote only to its own audit folder and --report-only wrote nothing, and the clean fixture gave empty lists.');
   process.exit(errors.length ? 1 : 0);
 }
 
@@ -746,9 +784,10 @@ function main() {
     css: opt('--css', join(ROOT, 'ds-tokens', 'dist', 'tokens.css')),
     overrides: opt('--overrides', join(ROOT, 'ds-tokens', 'overrides.json')),
   };
-  const out = opt('--out', join(ROOT, 'ds-tokens', 'audit', 'diff.json'));
-  const patchOut = opt('--patch-list', join(ROOT, 'ds-tokens', 'audit', 'figma-patch-list.md'));
+  const out = opt('--out', join(auditDir(), 'diff.json'));
+  const patchOut = opt('--patch-list', join(auditDir(), 'figma-patch-list.md'));
   const reportOnly = argv.includes('--report-only');
+  const noFail = argv.includes('--no-fail');
 
   const input = loadInputs(paths);
   for (const w of input.warnings) console.log(`Warning: ${w}`);
@@ -762,6 +801,11 @@ function main() {
 
   const result = diff({ snap, tokens: input.tokens, css: input.css, overrides: input.overrides });
   printReport(result, { all: argv.includes('--all') });
+  if (reportOnly) {
+    console.log('Report only: nothing written.');
+    console.log(result.summary);
+    process.exit(0);
+  }
 
   mkdirSync(dirname(out), { recursive: true });
   mkdirSync(dirname(patchOut), { recursive: true });
@@ -773,9 +817,10 @@ function main() {
     counts: result.counts, lists: result.lists, warnings: result.warnings, summary: result.summary,
   }, null, 2) + '\n');
   writeFileSync(patchOut, patchList(result));
-  console.log(`Wrote ${out.slice(ROOT.length + 1) || out} and ${patchOut.slice(ROOT.length + 1) || patchOut}.`);
+  const rel = (p) => (p.startsWith(ROOT) ? p.slice(ROOT.length + 1) : p);
+  console.log(`Wrote ${rel(out)} and ${rel(patchOut)}.`);
   console.log(result.summary);
-  process.exit(result.failed && !reportOnly ? 1 : 0);
+  process.exit(result.failed && !noFail ? 1 : 0);
 }
 
 main();

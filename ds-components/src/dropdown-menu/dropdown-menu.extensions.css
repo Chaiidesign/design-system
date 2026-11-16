@@ -5,9 +5,13 @@
 @layer ds.extensions {
   /* The content: capped at the width and height Radix reports as available, so it fits a 320 pixel screen inside
      the collision padding and scrolls inside itself when it is taller than the space (dropdown-menu-fits-viewport,
-     dropdown-menu-scrolls-when-tall). menu/max still applies where it is the smaller. */
+     dropdown-menu-scrolls-when-tall). menu/max still applies where it is the smaller. The least width menu/min is
+     capped the same way: with text at 200 percent it is 384 pixels, wider than a phone, and a least width beats a
+     greatest one, so without the cap the menu ran off the screen. This file sets the least width only to cap the
+     spec's own token, never to choose another; the spec's notCarried says so. */
   [data-slot~="dropdown-menu-content"] {
     box-sizing: border-box;
+    min-inline-size: min(var(--size-menu-min), var(--radix-dropdown-menu-content-available-width));
     max-inline-size: min(var(--size-menu-max), var(--radix-dropdown-menu-content-available-width));
     max-block-size: var(--radix-dropdown-menu-content-available-height);
     overflow-y: auto;

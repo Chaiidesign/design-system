@@ -14,23 +14,35 @@
 //   ds-tokens/dist/tokens.json         only with --built: the flat array build-tokens.mjs writes, one object per
 //                                      token with resolved values per mode under "values"; proposed tokens included
 //
-// Outputs
-//   ds-tokens/audit/contrast.json             every measured pair, exempt and distinct sections, totals
-//   ds-tokens/audit/contrast.html             one self-contained visual report
-//   ds-tokens/audit/proposed-overrides.json   the proposed fixes
+// One report, two token sets. Every writing run measures both, when ds-tokens/dist/tokens.json exists:
+//   Figma as it stands   the snapshot alone: no overrides, no proposed tokens
+//   built                ds-tokens/dist/tokens.json: Figma plus ds-tokens/overrides.json plus the proposed tokens
+// and lists, per pair and mode, the ratio in each, the change, and what changed it (the override and its reason, or the
+// proposed token Figma does not hold). So every fail in either set is shown with what fixed it, or that nothing did.
+//
+// Outputs (in ds-tokens/audit/ for the owner's snapshot; in <snapshot folder>/audit/ when SOUVENIR_SNAPSHOT_DIR names any
+// other folder, for example v2/figma/sandbox, so a sandbox run never replaces the owner's report)
+//   contrast.json             top level: the built set (counts, totals, pairs, exempt, distinct, missing), as before;
+//                             "figma": the same fields for Figma as it stands; "changes": one row per pair and mode that
+//                             differs, with both results and what changed it; "change_counts" (unchanged pairs counted). Without a built file the top level is Figma and there is no
+//                             "figma" or "changes".
+//   contrast.html             one self-contained visual report holding both sets and the changes
+//   proposed-overrides.json   the proposed fixes for the set that decides the exit code (below)
 //
 // How to run
-//   node v2/tools/audit-contrast.mjs                 audit the Figma snapshot; exit 1 if any non-exempt pair fails
-//   node v2/tools/audit-contrast.mjs --report-only   same, but always exit 0 once the files are written
-//   node v2/tools/audit-contrast.mjs --built         read ds-tokens/dist/tokens.json instead of the snapshot
-//   node v2/tools/audit-contrast.mjs --self-test     plant a known failing pair in memory and check it is caught
+//   node v2/tools/audit-contrast.mjs --built         write the report; exit 1 if a non-exempt pair of the BUILT set fails
+//                                                    (or a declared name is missing from it)
+//   node v2/tools/audit-contrast.mjs                 write the same report; exit 1 if a pair of Figma as it stands fails
+//   add --no-fail                                    write the report, always exit 0
+//   add --report-only                                print only: write nothing at all, always exit 0
+//   node v2/tools/audit-contrast.mjs --self-test     planted cases in memory, plus the output isolation in child processes
 //
 // The last line printed is always a one-line summary.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative } from 'node:path';
-import { loadSnapshots, makeResolver } from './lib/snapshot.mjs';
+import { loadSnapshots, makeResolver, auditDir, isolationSelfTest, SNAPSHOT_DIR } from './lib/snapshot.mjs';
 import {
   hexToSrgb, relativeLuminance, contrastRatio, srgbToOklch, oklchToLinearSrgb, linearSrgbToOklab,
   hueDistance, parseCssColor,
@@ -40,7 +52,8 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
 const PAIRS_FILE = join(HERE, 'contrast-pairs.json');
 const BUILT_FILE = join(ROOT, 'ds-tokens', 'dist', 'tokens.json');
-const OUT_DIR = join(ROOT, 'ds-tokens', 'audit');
+const OUT_DIR = auditDir();
+const OVERRIDES_FILE = join(ROOT, 'ds-tokens', 'overrides.json');
 
 // The lead's starting thresholds for "hard to tell apart". They are not a standard.
 const DE_NORMAL = 0.06;
@@ -126,7 +139,7 @@ function modelFromSnapshot() {
       tokens.set(`${c.name}::${v.name}`, { collection: c.name, name: v.name, modes: c.modes, perMode });
     }
   }
-  return finishModel({ tokens, primitives, source: 'Figma snapshot (v2/figma via v2/tools/lib/snapshot.mjs)' });
+  return finishModel({ tokens, primitives, source: `Figma as it stands: snapshot ${relative(ROOT, SNAPSHOT_DIR) || SNAPSHOT_DIR} (no overrides, no proposed tokens)` });
 }
 
 // --built: ds-tokens/dist/tokens.json, as v2/tools/build-tokens.mjs writes it: a flat array, one object per
@@ -153,7 +166,7 @@ function modelFromBuiltArray(built, primitives, source) {
       }
       perMode[mode] = { value, alias };
     }
-    tokens.set(`${e.collection}::${e.name}`, { collection: e.collection, name: e.name, modes, perMode, proposed: e.proposed === true });
+    tokens.set(`${e.collection}::${e.name}`, { collection: e.collection, name: e.name, modes, perMode, proposed: e.proposed === true, why: e.why || '' });
   });
   return finishModel({ tokens, primitives, source });
 }
@@ -501,6 +514,92 @@ function distinctAll(model, config) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Before and after: Figma as it stands against the built set
+
+// overrides.json (read only) by "token|mode", for the reason a value changed. Collection may be the Figma name or "color".
+function overrideIndex(list) {
+  const m = new Map();
+  for (const o of Array.isArray(list) ? list : []) {
+    if (!o || !o.token) continue;
+    const coll = !o.collection || /^(themes|colou?r)$/i.test(o.collection) ? 'Themes' : o.collection;
+    m.set(`${coll}::${o.token}|${o.mode}`, o);
+  }
+  return m;
+}
+function readOverrides() {
+  if (!existsSync(OVERRIDES_FILE)) return [];
+  try { return JSON.parse(readFileSync(OVERRIDES_FILE, 'utf8')); } catch { return []; }
+}
+
+const CHANGE_STATUS = {
+  fixed: 'fails in Figma, passes built',
+  still: 'fails in Figma and built',
+  broken: 'passes in Figma, fails built',
+  addedPass: 'not in Figma (a token is proposed), passes built',
+  addedFail: 'not in Figma (a token is proposed), fails built',
+  lost: 'in Figma, missing from built',
+  changed: 'passes in both, value changed',
+  same: 'unchanged',
+  exempt: 'exempt (measured, never failed)',
+};
+
+// One row per pair and mode in either set. `fixedBy` names, for each side of the pair whose value differs, the override
+// (from -> to, and its reason) or the proposed token that Figma lacks.
+function compareSets(figmaModel, figmaRes, builtModel, builtRes, overrides) {
+  const key = (r) => `${r.collection}|${r.rule}|${r.mode}|${r.fg}|${r.bg}`;
+  const side = (r) => (r ? { ratio: r.ratio, ratio_raw: r.ratio_raw, pass: r.pass, fg_value: r.fg_value, bg_value: r.bg_value, fg_alias: r.fg_alias, bg_alias: r.bg_alias, fg_shown: r.fg_shown, bg_shown: r.bg_shown } : null);
+  const fig = new Map(figmaRes.rows.map((r) => [key(r), r]));
+  const blt = new Map(builtRes.rows.map((r) => [key(r), r]));
+  const ovr = overrideIndex(overrides);
+  const rows = [];
+  // Figma's rows first in their order, then rows only the built set has.
+  const keys = [...fig.keys(), ...[...blt.keys()].filter((k) => !fig.has(k))];
+  for (const k of keys) {
+    const f = fig.get(k), b = blt.get(k);
+    const r = f || b;
+    const why = [];
+    for (const name of [r.fg, r.bg]) {
+      const inFigma = figmaModel.tokens.has(`${r.collection}::${name}`);
+      if (!inFigma) {
+        const pt = builtModel.tokens.get(`${r.collection}::${name}`);
+        why.push(`${name}: proposed in the repo, not in Figma${pt && pt.why ? `. Why: ${pt.why}` : ''}`);
+        continue;
+      }
+      if (!f || !b) continue;
+      const which = name === r.fg ? 'fg' : 'bg';
+      if (String(f[`${which}_value`]).toLowerCase() === String(b[`${which}_value`]).toLowerCase()) continue;
+      const o = ovr.get(`${r.collection}::${name}|${r.mode}`);
+      const from = f[`${which}_alias`] || f[`${which}_value`];
+      const to = b[`${which}_alias`] || b[`${which}_value`];
+      why.push(o ? `${name}: override ${from} -> ${to}. ${String(o.reason || 'No reason given.').trim()}` : `${name}: ${from} -> ${to} with no override (drift)`);
+    }
+    let status;
+    if (r.exempt) status = 'exempt';
+    else if (!f && b) status = b.pass ? 'addedPass' : 'addedFail';
+    else if (f && !b) status = 'lost';
+    else if (!f.pass && b.pass) status = 'fixed';
+    else if (!f.pass && !b.pass) status = 'still';
+    else if (f.pass && !b.pass) status = 'broken';
+    else status = why.length ? 'changed' : 'same';
+    rows.push({
+      rule: r.rule, collection: r.collection, mode: r.mode, fg: r.fg, bg: r.bg, exempt: r.exempt, min: r.min,
+      figma: side(f), built: side(b),
+      change: f && b ? round2(b.ratio_raw - f.ratio_raw) : null,
+      status, status_text: CHANGE_STATUS[status], fixed_by: why,
+    });
+  }
+  const changeCounts = Object.fromEntries(Object.keys(CHANGE_STATUS).map((s) => [s, rows.filter((x) => x.status === s).length]));
+  return { rows, changeCounts };
+}
+
+// The exit code: the set named by --built (or Figma without it) must have no failing pair and no missing name.
+function exitCode(argv, figmaRes, builtRes) {
+  if (argv.includes('--report-only') || argv.includes('--no-fail')) return 0;
+  const deciding = argv.includes('--built') ? builtRes : figmaRes;
+  return deciding.counts.fail > 0 || deciding.missing.length > 0 ? 1 : 0;
+}
+
+// ---------------------------------------------------------------------------------------------
 // Totals and outputs
 
 function totals(rows) {
@@ -523,6 +622,18 @@ function swatch(fg, bg, ratio, verdict, title) {
   // verdict: 'pass' | 'fail' | 'exempt'. The mark sits below the swatch on the page background, as a word and a symbol.
   const mark = verdict === 'pass' ? '<span class="mark ok">&#10003; Pass</span>' : verdict === 'fail' ? '<span class="mark bad">&#10007; Fail</span>' : '<span class="mark ex">&#8211; Exempt</span>';
   return `<figure class="cell ${verdict}"><div class="sw" style="background:${esc(bg)};color:${esc(fg)}">Aa ${ratio.toFixed(2)}</div><figcaption>${mark}<span class="nm">${title}</span></figcaption></figure>`;
+}
+
+function renderChanges(cmp, figmaMeta) {
+  const order = ['fixed', 'still', 'broken', 'addedFail', 'addedPass', 'lost', 'changed'];
+  const shown = cmp.rows.filter((r) => order.includes(r.status)).sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
+  const cell = (x, min) => (x ? swatch(x.fg_shown, x.bg_shown, x.ratio_raw, x.pass ? 'pass' : 'fail', `${esc(x.fg_alias || x.fg_value)}<br>on ${esc(x.bg_alias || x.bg_value)}`) : '<figure class="cell none"><div class="sw nofix">not in Figma</div></figure>');
+  const counts = order.map((s) => `<li><b>${cmp.changeCounts[s]}</b> ${esc(CHANGE_STATUS[s])}</li>`).join('') + `<li><b>${cmp.changeCounts.same}</b> unchanged</li><li><b>${cmp.changeCounts.exempt}</b> exempt</li>`;
+  const body = shown.map((r) => `<tr class="st-${r.status}"><td>${esc(r.status_text)}</td><td>${esc(r.rule)}<br><small>${esc(r.mode)}, min ${r.min}</small></td><td>${esc(r.fg)}<br><small>on ${esc(r.bg)}</small></td><td class="sw-td">${cell(r.figma)}</td><td class="sw-td">${cell(r.built)}</td><td>${r.change === null ? '&#8211;' : `${r.change > 0 ? '+' : ''}${r.change.toFixed(2)}`}</td><td class="why-td">${r.fixed_by.length ? r.fixed_by.map(esc).join('<br>') : '&#8211;'}</td></tr>`).join('');
+  return `<h2 id="changes">Before and after</h2>
+<p class="why">Before is ${esc(figmaMeta.source)}: ${figmaMeta.counts.measured} pairs measured, ${figmaMeta.counts.pass} pass, <strong>${figmaMeta.counts.fail} fail</strong>, ${figmaMeta.counts.exempt} exempt${figmaMeta.counts.missing_names ? `, and ${figmaMeta.counts.missing_names} declared names Figma does not hold (pairs on tokens the repo proposes)` : ''}. After is the built set below. Every pair that fails in either set, that only the built set can measure, or whose colours changed is listed, with what changed it.</p>
+<ul class="counts">${counts}</ul>
+<div class="tablewrap"><table class="changes"><thead><tr><th scope="col">Result</th><th scope="col">Rule</th><th scope="col">Pair</th><th scope="col">Figma as it stands</th><th scope="col">Built</th><th scope="col">Change</th><th scope="col">What changed it</th></tr></thead><tbody>${body || '<tr><td colspan="7">No pair changed.</td></tr>'}</tbody></table></div>`;
 }
 
 function renderHtml(report) {
@@ -611,14 +722,19 @@ dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.85rem;mar
 .chip{display:flex;flex-direction:column;align-items:center}.chip span{display:block;width:56px;height:32px;border-radius:4px;border:1px solid var(--line)}
 .mono{font-family:ui-monospace,Menlo,monospace;font-size:.75rem;word-break:break-word;color:var(--muted)}
 .dist h4 .mark{display:inline}
+.counts{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:.85rem}
+table.changes th,table.changes td{text-align:left;vertical-align:top;white-space:normal}table.changes .sw-td{width:150px}table.changes .why-td{min-width:22em;max-width:40em;font-size:.8rem}
+table.changes .cell{width:140px}
 </style></head><body><main>
 <h1>Contrast audit</h1>
-<p class="why">Source: ${esc(meta.source)}. Generated ${esc(meta.generated)}. WCAG 2 contrast ratios; a pair passes when its unrounded ratio reaches the rule's minimum. Every swatch shows "Aa" and the ratio in the real foreground colour on the real background colour; the pass or fail mark is written below it.</p>
+${report.compare ? `<p><strong>Figma as it stands: ${report.figmaMeta.counts.fail} of ${report.figmaMeta.counts.pass + report.figmaMeta.counts.fail} scored pairs fail. Built set: ${meta.counts.fail} of ${meta.counts.pass + meta.counts.fail} fail.</strong> <a href="#changes">Every fail and what fixed it</a>.</p>` : '<p class="why">Only one set was measured: no built file was found, so there is no before-and-after comparison.</p>'}
+<p class="why">${report.compare ? 'The summary, pairs and proposals below are for the built set (what ships). ' : ''}Source: ${esc(meta.source)}. Generated ${esc(meta.generated)}. WCAG 2 contrast ratios; a pair passes when its unrounded ratio reaches the rule's minimum. Every swatch shows "Aa" and the ratio in the real foreground colour on the real background colour; the pass or fail mark is written below it.</p>
 <p><strong>${meta.counts.measured} pairs measured, ${meta.counts.pass} pass, ${meta.counts.fail} fail, ${meta.counts.exempt} exempt.</strong>${missing.length ? ` ${missing.length} declared names do not exist.` : ''}</p>
 <h2>Summary</h2>
 <div class="tablewrap"><table><thead><tr><th rowspan="2" scope="col">Rule</th>${modeHead}</tr><tr>${subHead}</tr></thead><tbody>${sumRows}</tbody></table></div>
 ${missHtml}
-<h2>Pairs by rule</h2>${sections}
+${report.compare ? renderChanges(report.compare, report.figmaMeta) : ''}
+<h2>Pairs by rule${report.compare ? ', built set' : ''}</h2>${sections}
 <h2>Proposed fixes</h2>
 <p class="why">Each proposal moves one token to another step of a primitive ramp it is already on, and is checked against the values as they are now, not against the other proposals. Applying several at once can change each other's results, so rerun this audit with --built after applying them.</p>
 ${propHtml}
@@ -683,14 +799,14 @@ function audit(model, config) {
   return { rows, proposals, distinct: dist.rows, missing: allMissing, summary, counts };
 }
 
-function writeOutputs(model, config, result) {
-  mkdirSync(OUT_DIR, { recursive: true });
-  const meta = { source: model.source, generated: new Date().toISOString(), rules: config.rules, exempt: config.exempt || [], counts: result.counts };
+// The files, as strings. `primary` is the set the report leads with (built when it exists); `figma` and `compare` are null
+// when only one set was measured. `proposals` are those of the set that decides the exit code.
+function renderOutputs(config, primary, figma, compare, proposals) {
+  const generated = new Date().toISOString();
+  const meta = { source: primary.model.source, generated, rules: config.rules, exempt: config.exempt || [], counts: primary.result.counts };
   const strip = (r) => ({ rule: r.rule, mode: r.mode, fg: r.fg, bg: r.bg, fg_value: r.fg_value, bg_value: r.bg_value, fg_alias: r.fg_alias, bg_alias: r.bg_alias, ratio: r.ratio, min: r.min, pass: r.pass });
-  const json = {
-    $description: 'WCAG 2 contrast of every colour pair declared in v2/tools/contrast-pairs.json, written by v2/tools/audit-contrast.mjs. pass is decided on the unrounded ratio.',
+  const section = ({ model, result }) => ({
     source: model.source,
-    generated: meta.generated,
     counts: result.counts,
     totals: result.summary,
     pairs: result.rows.filter((r) => !r.exempt).map(strip),
@@ -701,10 +817,21 @@ function writeOutputs(model, config, result) {
     },
     missing: result.missing,
     ...(model.notInBuilt ? { not_in_built_file: model.notInBuilt } : {}),
+  });
+  const { source, ...top } = section(primary);
+  const json = {
+    $description: 'WCAG 2 contrast of every colour pair declared in v2/tools/contrast-pairs.json, written by v2/tools/audit-contrast.mjs. pass is decided on the unrounded ratio.'
+      + (figma ? ' The top level is the built set (ds-tokens/dist/tokens.json: Figma, the overrides and the proposed tokens); "figma" is the same measurement of Figma as it stands; "changes" holds one row per pair and mode that differs between the two (unchanged pairs are only counted, in change_counts.same), with both results and what changed it.' : ''),
+    source,
+    generated,
+    ...top,
+    ...(figma ? { figma: section(figma), changes: compare.rows.filter((r) => r.status !== 'same').map(({ figma: f, built: b, ...r }) => ({ ...r, figma: f && { ratio: f.ratio, pass: f.pass, fg_alias: f.fg_alias, bg_alias: f.bg_alias, fg_value: f.fg_value, bg_value: f.bg_value }, built: b && { ratio: b.ratio, pass: b.pass, fg_alias: b.fg_alias, bg_alias: b.bg_alias, fg_value: b.fg_value, bg_value: b.bg_value } })), change_counts: compare.changeCounts } : {}),
   };
-  writeFileSync(join(OUT_DIR, 'contrast.json'), JSON.stringify(json, null, 2) + '\n');
-  writeFileSync(join(OUT_DIR, 'proposed-overrides.json'), JSON.stringify(result.proposals, null, 2) + '\n');
-  writeFileSync(join(OUT_DIR, 'contrast.html'), renderHtml({ ...result, meta }));
+  return {
+    'contrast.json': JSON.stringify(json, null, 2) + '\n',
+    'proposed-overrides.json': JSON.stringify(proposals, null, 2) + '\n',
+    'contrast.html': renderHtml({ ...primary.result, meta, compare, figmaMeta: figma && { source: figma.model.source, counts: figma.result.counts } }),
+  };
 }
 
 function summaryLine(c) {
@@ -782,25 +909,76 @@ function selfTest() {
   try { modelFromBuiltArray({ values: {} }, primitives, 'self-test object'); } catch { threw = true; }
   if (!threw) problems.push('--built reader accepted an object that is not an array');
 
+  // Before and after in one report. Figma: text/on is white on a yellow fill (fails). Built: text/on moved to grey/900 by
+  // an override with a reason (fixed), text/primary unchanged, and a proposed border/strong/default Figma lacks (measurable
+  // only in the built set). The changes must name each case, the override reason and the proposed token; the exit code
+  // must follow the built set with --built and Figma without it.
+  const cmpConfig = { ...config, rules: [...config.rules.filter((x) => x.id !== 'planted-missing'), { id: 'edge', min: 3, fg: ['border/strong/default'], bg: ['surface/primary/default'] }], distinct: [] };
+  const figmaRes = audit(model, cmpConfig);
+  const bArr = [
+    entry('text/on', { light: '#111111' }, { light: 'grey/900' }), entry('text/primary', { light: '#111111' }, { light: 'grey/900' }),
+    entry('surface/primary/default', { light: '#ffffff' }, { light: 'grey/0' }), entry('surface/warning/bold', { light: '#ffff00' }, { light: 'yellow/300' }),
+    entry('border/strong/default', { light: '#666666' }, { light: 'grey/600' }, { proposed: true, why: 'test' }),
+  ];
+  const bModel = modelFromBuiltArray(bArr, primitives, 'self-test built');
+  const builtRes = audit(bModel, cmpConfig);
+  const cmp = compareSets(model, figmaRes, bModel, builtRes, [{ token: 'text/on', collection: 'Themes', mode: 'light', to: 'grey/900', reason: 'Planted reason: white fails on yellow.' }]);
+  const crow = (fg) => cmp.rows.find((x) => x.fg === fg);
+  const fixed = crow('text/on'), same = crow('text/primary'), added = crow('border/strong/default');
+  if (!fixed || fixed.status !== 'fixed' || !fixed.fixed_by.some((w) => w.includes('override grey/0 -> grey/900') && w.includes('Planted reason'))) problems.push(`before/after: text/on should be "fixed" by the override with its reason, got ${JSON.stringify(fixed && { status: fixed.status, by: fixed.fixed_by })}`);
+  if (fixed && !(fixed.figma.ratio === 1.07 && fixed.built.pass === true && fixed.change > 0)) problems.push(`before/after: text/on should carry both ratios (1.07 before) and a positive change, got ${fixed && fixed.figma.ratio} -> ${fixed && fixed.built.ratio}`);
+  if (!same || same.status !== 'same') problems.push(`before/after: text/primary should be unchanged, got ${same && same.status}`);
+  if (!added || added.status !== 'addedPass' || added.figma !== null || !added.fixed_by.some((w) => w.includes('border/strong/default: proposed') && w.includes('Why: test'))) problems.push(`before/after: border/strong/default should be measurable only in the built set and named as proposed, got ${JSON.stringify(added && { status: added.status, by: added.fixed_by })}`);
+  const html = renderOutputs(cmpConfig, { model: bModel, result: builtRes }, { model, result: figmaRes }, cmp, builtRes.proposals);
+  const page = html['contrast.html'];
+  const cj = JSON.parse(html['contrast.json']);
+  if (!page.includes('Figma as it stands: 1 of 2 scored pairs fail. Built set: 0 of 3 fail.') || !page.includes('Planted reason: white fails on yellow.') || !page.includes('id="changes"')) problems.push('before/after: the page should state both sets\' fail counts and show the change row with the override reason');
+  if (!(cj.figma && cj.figma.counts.fail === 1 && cj.counts.fail === 0 && Array.isArray(cj.figma.pairs) && Array.isArray(cj.figma.totals) && cj.changes.length === cmp.rows.filter((x) => x.status !== 'same').length && !cj.changes.some((x) => x.fg === 'text/primary') && cj.change_counts.fixed === 1 && cj.change_counts.same === 1)) problems.push('before/after: contrast.json should hold the built set on top, Figma under "figma" in the same shape, and the changes');
+  // Exit code: --built follows the built set (clean here) even though Figma fails; without --built Figma decides; and a
+  // failing built set fails --built. --no-fail and --report-only never fail.
+  const failingBuilt = { counts: { fail: 1 }, missing: [] };
+  const codes = [exitCode(['--built'], figmaRes, builtRes), exitCode([], figmaRes, builtRes), exitCode(['--built'], figmaRes, failingBuilt), exitCode(['--built', '--no-fail'], figmaRes, failingBuilt), exitCode(['--built', '--report-only'], figmaRes, failingBuilt)];
+  if (codes.join() !== '0,1,1,0,0') problems.push(`exit codes for (--built, clean built), (no flag, failing Figma), (--built, failing built), --no-fail, --report-only should be 0,1,1,0,0, got ${codes.join()}`);
+  // Output isolation, in child processes against a temporary copy of the snapshot.
+  for (const r of isolationSelfTest(fileURLToPath(import.meta.url), ['contrast.json', 'contrast.html', 'proposed-overrides.json'], ['--built', '--no-fail'])) {
+    console.log(`  ${r.text}`);
+    if (!r.text.startsWith('PASS')) problems.push(r.text);
+  }
+
   for (const x of problems) console.log(`  problem: ${x}`);
-  console.log(problems.length ? `Self-test failed: ${problems.length} problem${problems.length === 1 ? '' : 's'}.` : `Self-test passed: the failing pair (ratio ${fail.ratio}) was caught, the passing pair was not flagged, the missing name was reported, a proposal moved text/on to ${p.to}, and --built read a tokens.json-shaped array with proposed tokens (a 1.67 control boundary caught).`);
+  console.log(problems.length ? `Self-test failed: ${problems.length} problem${problems.length === 1 ? '' : 's'}.` : `Self-test passed: the failing pair (ratio ${fail.ratio}) was caught, the passing pair was not flagged, the missing name was reported, a proposal moved text/on to ${p.to}, --built read a tokens.json-shaped array with proposed tokens (a 1.67 control boundary caught), the before-and-after report named a fixed pair with its override reason and a pair only a proposed token makes measurable, the exit code followed the built set with --built, and a sandbox run wrote only to its own audit folder while --report-only wrote nothing.`);
   return problems.length ? 1 : 0;
 }
 
 function main(argv) {
   if (argv.includes('--self-test')) return selfTest();
   const config = JSON.parse(readFileSync(PAIRS_FILE, 'utf8'));
-  let model = modelFromSnapshot();
-  if (argv.includes('--built')) model = modelFromBuilt(model);
-  const result = audit(model, config);
-  writeOutputs(model, config, result);
-  printConsole(result.rows, result.summary, result.proposals, result.distinct, result.missing);
-  console.log(`\nWrote ${['contrast.json', 'contrast.html', 'proposed-overrides.json'].map((f) => relative(ROOT, join(OUT_DIR, f))).join(', ')}`);
-  if (model.notInBuilt) console.log(`Read ${model.tokens.size} colour tokens from the built file, ${model.proposedCount} of them proposed; ${model.notInBuilt.length} Figma colour token-modes missing from it.`);
-  if (result.missing.length) console.log(`${result.missing.length} declared token name${result.missing.length === 1 ? '' : 's'} do not exist; these count as failures.`);
-  console.log(summaryLine(result.counts));
-  const failed = result.counts.fail > 0 || result.missing.length > 0;
-  return failed && !argv.includes('--report-only') ? 1 : 0;
+  const figmaModel = modelFromSnapshot();
+  // The built set is measured whenever the built file exists; --built only makes it decide the exit code, and makes a
+  // missing built file an error.
+  const builtModel = argv.includes('--built') || existsSync(BUILT_FILE) ? modelFromBuilt(figmaModel) : null;
+  const figma = { model: figmaModel, result: audit(figmaModel, config) };
+  const built = builtModel ? { model: builtModel, result: audit(builtModel, config) } : null;
+  const compare = built ? compareSets(figmaModel, figma.result, builtModel, built.result, readOverrides()) : null;
+  const deciding = argv.includes('--built') ? built : figma;
+  const primary = built || figma;
+  printConsole(primary.result.rows, primary.result.summary, deciding.result.proposals, primary.result.distinct, primary.result.missing);
+  if (compare) {
+    const c = compare.changeCounts;
+    console.log(`\nBefore and after (Figma as it stands -> built): ${c.fixed} fixed, ${c.still} still failing, ${c.broken} newly failing, ${c.addedPass + c.addedFail} only measurable with a proposed token (${c.addedFail} fail), ${c.changed} changed and passing in both, ${c.same} unchanged, ${c.exempt} exempt.`);
+    console.log(`Figma as it stands: ${summaryLine(figma.result.counts)}${figma.result.missing.length ? `; ${figma.result.missing.length} declared names Figma does not hold` : ''}.`);
+  }
+  if (argv.includes('--report-only')) console.log('\nReport only: nothing written.');
+  else {
+    const files = renderOutputs(config, primary, built ? figma : null, compare, deciding.result.proposals);
+    mkdirSync(OUT_DIR, { recursive: true });
+    for (const [name, text] of Object.entries(files)) writeFileSync(join(OUT_DIR, name), text);
+    console.log(`\nWrote ${Object.keys(files).map((f) => (join(OUT_DIR, f).startsWith(ROOT) ? relative(ROOT, join(OUT_DIR, f)) : join(OUT_DIR, f))).join(', ')}`);
+  }
+  if (builtModel) console.log(`Read ${builtModel.tokens.size} colour tokens from the built file, ${builtModel.proposedCount} of them proposed; ${builtModel.notInBuilt.length} Figma colour token-modes missing from it.`);
+  if (deciding.result.missing.length) console.log(`${deciding.result.missing.length} declared token name${deciding.result.missing.length === 1 ? '' : 's'} do not exist in the ${deciding === built ? 'built set' : 'Figma snapshot'}; these count as failures.`);
+  console.log(`${deciding === built ? 'Built set' : 'Figma as it stands'}: ${summaryLine(deciding.result.counts)}`);
+  return exitCode(argv, figma.result, built ? built.result : null);
 }
 
 try {

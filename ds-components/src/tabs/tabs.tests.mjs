@@ -676,10 +676,14 @@ export const tests = {
           const line = C.over(C.parse(ind[`border${edge}Color`]), page_);
           const lineWidth = parseFloat(ind[`border${edge}Width`]) || 0;
           const fill = C.over(C.parse(getComputedStyle(t).backgroundColor), page_);
-          return { variant: t.closest('[data-slot~="tabs"]').getAttribute("data-variant"), line: C.hex(line), lineWidth, lineRatio: C.ratio(line, page_), fill: C.hex(fill), fillRatio: C.ratio(fill, page_), page: C.hex(page_) };
+          // The line must be painted, not only computed: the indicator has a box and is visible.
+          const el = t.querySelector(INDICATOR), b = el.getBoundingClientRect();
+          const painted = b.width > 0 && b.height > 0 && el.checkVisibility({ visibilityProperty: true, opacityProperty: true });
+          return { variant: t.closest('[data-slot~="tabs"]').getAttribute("data-variant"), painted, box: `${b.width} by ${b.height}`, line: C.hex(line), lineWidth, lineRatio: C.ratio(line, page_), fill: C.hex(fill), fillRatio: C.ratio(fill, page_), page: C.hex(page_) };
         }, { LIST, TAB, INDICATOR });
         if (r.variant === "line") {
           if (r.lineWidth < 1.99) problems.push(`${id} ${theme}: the selected tab's line is ${r.lineWidth} px`);
+          if (!r.painted) problems.push(`${id} ${theme}: the selected tab's indicator is not painted (box ${r.box}, or hidden)`);
           if (r.lineRatio < 3) problems.push(`${id} ${theme}: the line ${r.line} on ${r.page} is ${r.lineRatio.toFixed(2)} to 1, needs 3`);
         } else if (r.fillRatio < 3) problems.push(`${id} ${theme}: the fill ${r.fill} on ${r.page} is ${r.fillRatio.toFixed(2)} to 1, needs 3`);
       }
@@ -698,10 +702,12 @@ export const tests = {
           return [...document.querySelectorAll(TAB)].map((t) => {
             const ind = getComputedStyle(t.querySelector(INDICATOR));
             const widths = ["Top", "Right", "Bottom", "Left"].map((s) => [parseFloat(ind[`border${s}Width`]) || 0, C.parse(ind[`border${s}Color`])[3]]);
+            const el = t.querySelector(INDICATOR), b = el.getBoundingClientRect();
+            const painted = b.width > 0 && b.height > 0 && el.checkVisibility({ visibilityProperty: true, opacityProperty: true });
             return {
               selected: t.getAttribute("aria-selected") === "true",
               weight: parseInt(getComputedStyle(t.querySelector(LABEL)).fontWeight, 10),
-              line: widths.some(([w, a]) => w >= 1.99 && a > 0),
+              line: painted && widths.some(([w, a]) => w >= 1.99 && a > 0),
               fill: C.parse(getComputedStyle(t).backgroundColor)[3] > 0,
             };
           });
@@ -790,6 +796,32 @@ export const tests = {
         }
         const de = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
         if (de[0] > de[1]) problems.push(`${id}: after scrolling the list, the page scrolls sideways (${de[0]} in ${de[1]})`);
+      }
+    }
+    // Text at 200 percent (root font size, as every token is in rem) on narrow screens: a vertical list must not
+    // squeeze its panel. The panel sits beside the list with at least half the root's width, or below the whole list
+    // at the root's full width; its text fits inside it, and the page does not scroll sideways.
+    for (const id of ["vertical", "vertical-pill", "no-loop"]) {
+      for (const width of [320, 360]) {
+        await open(id, { width });
+        await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+        await page.evaluate(async () => { await document.fonts.ready; });
+        const m = await page.evaluate(({ ROOT, LIST, PANEL }) => {
+          const de = document.documentElement;
+          const root = document.querySelector(ROOT).getBoundingClientRect();
+          const l = document.querySelector(LIST).getBoundingClientRect();
+          const panel = [...document.querySelectorAll(PANEL)].find((e) => !e.hidden);
+          const p = panel.getBoundingClientRect();
+          return { rootFont: getComputedStyle(de).fontSize, page: { sw: de.scrollWidth, cw: de.clientWidth }, root: { left: root.left, right: root.right, width: root.width }, list: { left: l.left, right: l.right, bottom: l.bottom, width: l.width }, panel: { left: p.left, right: p.right, top: p.top, width: p.width, sw: panel.scrollWidth, cw: panel.clientWidth } };
+        }, { ROOT, LIST, PANEL });
+        const at = `${id} at ${width} with text at 200%`;
+        if (m.rootFont !== "32px") { problems.push(`${at}: the root font size is ${m.rootFont}, so this proves nothing`); continue; }
+        if (m.page.sw > m.page.cw) problems.push(`${at}: the page scrolls sideways (${m.page.sw} px in ${m.page.cw})`);
+        const beside = m.panel.top < m.list.bottom - 0.5;
+        if (beside && m.panel.width < m.root.width / 2 - 0.5) problems.push(`${at}: the panel beside the list is ${Math.round(m.panel.width)} px of the root's ${Math.round(m.root.width)}; needs half or the list above it`);
+        if (!beside && Math.abs(m.panel.width - m.root.width) > 1) problems.push(`${at}: the panel below the list is ${Math.round(m.panel.width)} px, not the root's full ${Math.round(m.root.width)}`);
+        if (m.panel.sw > m.panel.cw + 1) problems.push(`${at}: the panel's text (${m.panel.sw} px) overflows the panel (${m.panel.cw} px)`);
+        if (m.panel.right > m.page.cw + 0.5 || m.list.right > m.page.cw + 0.5) problems.push(`${at}: the list (right ${Math.round(m.list.right)}) or panel (right ${Math.round(m.panel.right)}) leaves the ${m.page.cw} px screen`);
       }
     }
     await cdp.detach();
@@ -995,5 +1027,28 @@ export const tests = {
     }
     await cdp.detach();
     expect.deepEqual(problems, [], problems.join("; "));
+  },
+
+  // Every part forwards a ref to its element. A React 19 callback ref that returns a cleanup gets that cleanup called
+  // on unmount and is never called with null; an object ref is set and then cleared. The fixture mounts once without
+  // StrictMode, so each count is exactly one.
+  "tabs-ref-cleanup": async ({ page, open, expect }) => {
+    await open("line");
+    const r = await page.evaluate(() => window.__tabsFixtures.refCleanup());
+    const problems = [];
+    const at = r.log.indexOf("unmount");
+    if (at < 0) problems.push(`the fixture did not run: ${JSON.stringify(r.log)}`);
+    for (const [name, slot] of [["root", "tabs"], ["list", "tabs-list"], ["trigger", "tabs-trigger"], ["content", "tabs-content"]]) {
+      const mine = r.log.map((e, i) => [e, i]).filter(([e]) => e.startsWith(`${name}:`));
+      const attaches = mine.filter(([e]) => e.startsWith(`${name}:attach`));
+      const cleanups = mine.filter(([e]) => e === `${name}:cleanup`);
+      const nulls = mine.filter(([e]) => e === `${name}:null`);
+      if (attaches.length !== 1 || attaches[0][0] !== `${name}:attach:${slot}`) problems.push(`${name}: attached ${attaches.length} times (${attaches.map(([e]) => e).join(", ")}), needs once to its ${slot} element`);
+      if (cleanups.length !== 1 || cleanups[0][1] < at) problems.push(`${name}: its cleanup ran ${cleanups.length} times${cleanups.length ? "" : ""}; needs once, on unmount`);
+      if (nulls.length) problems.push(`${name}: the callback ref was called with null ${nulls.length} times; with a cleanup returned it must not be`);
+    }
+    if (r.objectAttached !== "tabs-list") problems.push(`an object ref on the list holds ${r.objectAttached} after mount, needs the list`);
+    if (r.objectAfter !== null) problems.push(`an object ref on the list still holds ${r.objectAfter} after unmount`);
+    expect.deepEqual(problems, [], `${problems.join("; ")} (log: ${r.log.join(", ")})`);
   },
 };

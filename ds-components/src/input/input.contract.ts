@@ -17,7 +17,7 @@ export interface InputProps {
   description?: React.ReactNode;
   /** What is wrong and how to fix it. Shown only while invalid is true. On the errorText part. */
   errorMessage?: React.ReactNode;
-  /** The value is wrong. With an errorMessage it sets data-invalid on the root, renders the error message and sets aria-invalid to true on the input. Without an errorMessage it does nothing: the type of the props forbids it and the component warns in development. */
+  /** The value is wrong. It sets data-invalid on the root (the 2 pixel error edge) and aria-invalid to true on the input, and renders the error message when errorMessage has words. Fail safe: invalid with an empty or missing errorMessage still marks the field invalid, with the edge and aria-invalid but no words; the type of the props requires errorMessage and the component warns in development, because without words the person is not told what is wrong. */
   invalid?: boolean;
   /** A value must be given. Sets data-required on the root, the native required attribute on the input, and shows the word Required after the label. */
   required?: boolean;

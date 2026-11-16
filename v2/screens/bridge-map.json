@@ -1,5 +1,5 @@
 {
-  "$description": "Hand-written. How each semantic --sv-* custom property of version 0.2 (dist/tokens.css) is re-pointed at a V2 token (ds-tokens/dist/tokens.css) so that 0.2's screens render with V2 values. v2/tools/build-compare.mjs writes v2/screens/bridge.css from this file and fails if a semantic --sv-* property is missing here, if a V2 property named here is missing from either V2 token file, or if a component token no longer follows the semantic token listed. 'why' says which V2 token does the same job and what changes.",
+  "$description": "Hand-written. How each semantic --sv-* custom property of version 0.2 (dist/tokens.css) is re-pointed at a V2 token (ds-tokens/dist/tokens.css) so that 0.2's screens render with V2 values. v2/tools/build-compare.mjs writes v2/screens/bridge.css (column C) and v2/screens/bridge-as-given.css (column B, 'mapped' with the 'asGiven' entries applied) from this file and fails if a semantic --sv-* property is missing here, if a V2 property named here is missing from the token file of the column that uses it, or if a component token no longer follows the semantic token listed. 'why' says which V2 token does the same job and what changes.",
   "mapped": [
     { "sv": "--sv-color-ground", "v2": "--color-surface-secondary", "why": "The page background behind panels. V2's secondary surface is the off-white page tone in light. In dark V2 makes secondary (#242528) lighter than primary (#18191a), so panels sit darker than the page in dark, the opposite of 0.2. Kept as the lead specified; the inversion is V2's own choice." },
     { "sv": "--sv-color-panel", "v2": "--color-surface-primary", "why": "The surface of a card or panel. V2's primary surface is the main content surface (white in light)." },
@@ -44,6 +44,21 @@
     { "sv": "--sv-focus-offset", "v2": "--border-ring-offset", "why": "Gap between a control and its focus outline. 2px, same value." },
     { "sv": "--sv-duration-quick", "v2": "--duration-fast", "why": "Short state change. V2's fast is 100ms, 0.2's quick is 120ms." }
   ],
+  "asGiven": {
+    "$description": "Hand-written. Column B (V2 as given) must use only what Figma holds: its token file is built with --no-overrides --no-proposed. For each semantic property below, B's bridge differs from 'mapped': either it names another token that Figma does hold, or Figma holds no token for the job and B uses a literal. Every literal is shown on the comparison page as invented by this column. A literal is set to the value C gets from the proposed token it stands in for, so that B and C differ only where Figma's own values differ; build-compare.mjs fails if a literal stops matching C's value, if B's bridge names a token that is not in B's token file, or if it names a proposed token.",
+    "entries": [
+      { "sv": "--sv-color-edge", "v2": "--color-border-primary", "why": "The border of a control. Figma holds no strong border: border/strong is proposed in the repo. border/primary is the border Figma gives a control at rest (it also holds border/primary/hover and border/primary/active for the other states)." },
+      { "sv": "--sv-size-control", "literal": "2.75rem", "why": "Height of a field, select or button. Figma has no size tokens; 44px is what C gets from the proposed size/control/lg." },
+      { "sv": "--sv-size-control-primary", "literal": "2.75rem", "why": "Height of the primary button. Figma has no size tokens; 44px is what C gets from the proposed size/control/lg." },
+      { "sv": "--sv-size-mark", "literal": "1.25rem", "why": "Size of a mark (select arrow, checkbox box, error glyph). Figma has no size tokens; 20px is what C gets from the proposed size/icon/md." },
+      { "sv": "--sv-size-mark-inset", "literal": "1.25rem", "why": "Size of the status mark. Figma has no size tokens; 20px is what C gets from the proposed size/icon/md." },
+      { "sv": "--sv-border-thin", "literal": "1px", "why": "Thin border width. Figma's Border collection is empty; 1px is what C gets from the proposed width/sm." },
+      { "sv": "--sv-border-thick", "literal": "2px", "why": "Control border width. Figma's Border collection is empty; 2px is what C gets from the proposed width/md." },
+      { "sv": "--sv-focus-width", "literal": "2px", "why": "Focus outline width. Figma has no focus ring width; 2px is what C gets from the proposed ring/width." },
+      { "sv": "--sv-focus-offset", "literal": "2px", "why": "Gap between a control and its focus outline. Figma has no ring offset; 2px is what C gets from the proposed ring/offset." },
+      { "sv": "--sv-duration-quick", "literal": "100ms", "why": "Short state change. Figma has no motion tokens; 100ms is what C gets from the proposed duration/fast." }
+    ]
+  },
   "notMapped": [
     { "sv": "--sv-font-line-height-body", "why": "0.2 uses a unitless ratio (1.5) that scales with each element's size, and one rule multiplies it by a font size in calc(). V2's line heights are fixed rem values per text size; one fixed value would cramp larger text and make that calc() invalid. 0.2's value stays." },
     { "sv": "--sv-font-line-height-tight", "why": "Same reason as the body line height: a unitless ratio (1.2) used on headings of several sizes, where V2 has a fixed rem per size. 0.2's value stays." },
