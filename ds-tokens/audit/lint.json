@@ -1,0 +1,2032 @@
+{
+  "tool": "v2/tools/lint-tokens.mjs",
+  "sources": [
+    "v2/figma/semantic.txt",
+    "v2/figma/primitives.txt"
+  ],
+  "severities": {
+    "breaks the standard": "the file contradicts a written rule of the standard",
+    "decide": "a person has to choose",
+    "note": "listed for a person to confirm"
+  },
+  "rules": [
+    {
+      "id": "name-case",
+      "standardRule": "1",
+      "title": "Names are lowercase kebab-case, slash between levels, no spaces",
+      "findings": 1
+    },
+    {
+      "id": "state-segment",
+      "standardRule": "3",
+      "title": "A state is always its own last segment",
+      "findings": 0
+    },
+    {
+      "id": "state-set",
+      "standardRule": "3",
+      "title": "State groups are complete and siblings are written the same way",
+      "findings": 2
+    },
+    {
+      "id": "size-scale",
+      "standardRule": "4",
+      "title": "One size scale xs, sm, md, lg, xl, 2xl; no names taken from a pixel value",
+      "findings": 3
+    },
+    {
+      "id": "primitive-hygiene",
+      "standardRule": "5",
+      "title": "Primitives are named by value and are all used",
+      "findings": 2
+    },
+    {
+      "id": "alias",
+      "standardRule": "6",
+      "title": "Every semantic token aliases a primitive, written the same way as its siblings",
+      "findings": 3
+    },
+    {
+      "id": "mode-names",
+      "standardRule": "7",
+      "title": "Mode names are lowercase words; a one-mode collection calls its mode default",
+      "findings": 0
+    },
+    {
+      "id": "collection-names",
+      "standardRule": "8",
+      "title": "Collections are named for their category",
+      "findings": 2
+    },
+    {
+      "id": "description",
+      "standardRule": "9",
+      "title": "Every semantic token has a one-line description",
+      "findings": 5
+    },
+    {
+      "id": "scopes",
+      "standardRule": "10",
+      "title": "Every token has scopes that match its job, never all scopes",
+      "findings": 3
+    },
+    {
+      "id": "code-syntax",
+      "standardRule": "10",
+      "title": "Every token has WEB code syntax, and it follows the naming rule",
+      "findings": 1
+    },
+    {
+      "id": "tailwind-namespace",
+      "standardRule": "10",
+      "title": "CSS prefixes follow the Tailwind v4 theme namespaces in the standard's table",
+      "findings": 3
+    },
+    {
+      "id": "default-dropped",
+      "standardRule": "separator sentence",
+      "title": "Each surface changes only the separator, never the words",
+      "findings": 1
+    },
+    {
+      "id": "one-job",
+      "standardRule": "one job per token",
+      "title": "One job per token: tokens that promise different jobs do not share a value",
+      "findings": 20
+    },
+    {
+      "id": "same-in-both-modes",
+      "standardRule": null,
+      "title": "Colour tokens whose light and dark values are equal",
+      "findings": 1
+    },
+    {
+      "id": "type-scale",
+      "standardRule": null,
+      "title": "Type scale: readable sizes, no page zoom on fields, no duplicate roles, numeric weights",
+      "findings": 7
+    },
+    {
+      "id": "density",
+      "standardRule": null,
+      "title": "Compact density keeps the steps apart and never grows",
+      "findings": 1
+    },
+    {
+      "id": "missing-categories",
+      "standardRule": null,
+      "title": "Token categories that have not been started",
+      "findings": 10
+    }
+  ],
+  "counts": {
+    "rules": 18,
+    "findings": 65,
+    "breaksTheStandard": 24,
+    "decide": 29,
+    "notes": 12,
+    "byRule": {
+      "name-case": 1,
+      "state-segment": 0,
+      "state-set": 2,
+      "size-scale": 3,
+      "primitive-hygiene": 2,
+      "alias": 3,
+      "mode-names": 0,
+      "collection-names": 2,
+      "description": 5,
+      "scopes": 3,
+      "code-syntax": 1,
+      "tailwind-namespace": 3,
+      "default-dropped": 1,
+      "one-job": 20,
+      "same-in-both-modes": 1,
+      "type-scale": 7,
+      "density": 1,
+      "missing-categories": 10
+    }
+  },
+  "findings": [
+    {
+      "rule": "name-case",
+      "standardRule": "1",
+      "severity": "breaks the standard",
+      "message": "These names have a part that is not lowercase kebab-case (capital letters, spaces, a leading or trailing hyphen, or other characters).",
+      "count": 1,
+      "tokens": [
+        "primitive Colors: neutral/dark/-100"
+      ]
+    },
+    {
+      "rule": "state-set",
+      "standardRule": "3",
+      "severity": "decide",
+      "message": "These surface or interactive groups have a hover state but no active or disabled state. Either the set is incomplete or these groups are meant to have only hover.",
+      "count": 33,
+      "tokens": [
+        "Themes: interactive/error/* (lacks active and disabled)",
+        "Themes: interactive/success/* (lacks active and disabled)",
+        "Themes: interactive/warning/* (lacks active and disabled)",
+        "Themes: surface/accent/teal/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/teal/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/teal/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/blue/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/blue/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/blue/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/violet/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/violet/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/violet/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/amber/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/amber/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/amber/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/pink/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/pink/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/pink/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/green/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/green/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/green/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/orange/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/orange/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/orange/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/red/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/red/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/red/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/rose/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/rose/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/rose/bold/* (lacks active and disabled)",
+        "Themes: surface/accent/neutral/subtlest/* (lacks active and disabled)",
+        "Themes: surface/accent/neutral/subtle/* (lacks active and disabled)",
+        "Themes: surface/accent/neutral/bold/* (lacks active and disabled)"
+      ]
+    },
+    {
+      "rule": "state-set",
+      "standardRule": "3",
+      "severity": "decide",
+      "message": "Sibling groups are written differently: one has states, the other is a single token without /default.",
+      "count": 1,
+      "tokens": [
+        "Themes: border/secondary has no states while border/primary/* has them"
+      ]
+    },
+    {
+      "rule": "size-scale",
+      "standardRule": "4",
+      "severity": "breaks the standard",
+      "message": "These names use xsmall, small, base, medium or large instead of xs, sm, md, lg, xl, 2xl.",
+      "count": 22,
+      "tokens": [
+        "Typography: font-size/section-label-base (base -> md)",
+        "Typography: font-size/label-large (large -> lg)",
+        "Typography: font-size/label-base (base -> md)",
+        "Typography: font-size/label-small (small -> sm)",
+        "Typography: font-size/label-xsmall (xsmall -> xs)",
+        "Typography: font-size/body-large (large -> lg)",
+        "Typography: font-size/body-base (base -> md)",
+        "Typography: font-size/body-small (small -> sm)",
+        "Typography: font-size/body-xsmall (xsmall -> xs)",
+        "Typography: line-height/section-label-base (base -> md)",
+        "Typography: line-height/label-large (large -> lg)",
+        "Typography: line-height/label-base (base -> md)",
+        "Typography: line-height/label-small (small -> sm)",
+        "Typography: line-height/label-xsmall (xsmall -> xs)",
+        "Typography: line-height/body-large (large -> lg)",
+        "Typography: line-height/body-base (base -> md)",
+        "Typography: line-height/body-small (small -> sm)",
+        "Typography: line-height/body-xsmall (xsmall -> xs)",
+        "Typography: font-weight/section-label-base (base -> md)",
+        "Radius: container/small (small -> sm)",
+        "Radius: container/medium (medium -> md)",
+        "Radius: container/large (large -> lg)"
+      ]
+    },
+    {
+      "rule": "size-scale",
+      "standardRule": "4",
+      "severity": "breaks the standard",
+      "message": "These radius names are taken from a pixel value (the height of the thing they round), which the standard forbids.",
+      "count": 8,
+      "tokens": [
+        "Radius: height/16",
+        "Radius: height/20",
+        "Radius: height/24",
+        "Radius: height/28",
+        "Radius: height/36",
+        "Radius: height/44",
+        "Radius: height/32",
+        "Radius: height/40"
+      ]
+    },
+    {
+      "rule": "size-scale",
+      "standardRule": "4",
+      "severity": "decide",
+      "message": "These semantic names are numbers (the pixel value times ten), not the xs to 2xl scale. The standard names radius/height/20 as the example; it does not say whether a spacing step counts.",
+      "count": 26,
+      "tokens": [
+        "Density: scaled/400",
+        "Density: scaled/320",
+        "Density: scaled/280",
+        "Density: scaled/240",
+        "Density: scaled/200",
+        "Density: scaled/160",
+        "Density: scaled/120",
+        "Density: scaled/100",
+        "Density: scaled/80",
+        "Density: scaled/60",
+        "Density: scaled/40",
+        "Density: scaled/20",
+        "Density: scaled/0",
+        "Density: static/400",
+        "Density: static/320",
+        "Density: static/280",
+        "Density: static/240",
+        "Density: static/200",
+        "Density: static/160",
+        "Density: static/120",
+        "Density: static/100",
+        "Density: static/80",
+        "Density: static/60",
+        "Density: static/40",
+        "Density: static/20",
+        "Density: static/0"
+      ]
+    },
+    {
+      "rule": "primitive-hygiene",
+      "standardRule": "5",
+      "severity": "decide",
+      "message": "64 primitives are reached by no semantic token. By family: orange (1 of 11: 500); teal (1 of 11: 500); violet (1 of 11: 500); pink (1 of 11: 500); neutral/light (1 of 15: 350); neutral/dark (2 of 16: -100, 350); rose (1 of 11: 500); not-used/slate (whole family, 11); not-used/gray (whole family, 11); not-used/zinc (whole family, 11); typography/font-size (2 of 11: 24, 36); typography/line-height (3 of 11: 12, 36, 44); typography/font-family (whole family, 1); typography/font-weight (2 of 5: 400, 800); Space (top level) (10 of 23: 36, 44, 48, 52, 56, 64, 72, 80, 88, 96); Radius (top level) (5 of 11: 0, 20, 24, 32, rounded-full).",
+      "count": 64,
+      "tokens": [
+        "primitive Colors: orange/500",
+        "primitive Colors: teal/500",
+        "primitive Colors: violet/500",
+        "primitive Colors: pink/500",
+        "primitive Colors: neutral/light/350",
+        "primitive Colors: neutral/dark/-100",
+        "primitive Colors: neutral/dark/350",
+        "primitive Colors: rose/500",
+        "primitive Colors: not-used/slate/50",
+        "primitive Colors: not-used/slate/100",
+        "primitive Colors: not-used/slate/200",
+        "primitive Colors: not-used/slate/300",
+        "primitive Colors: not-used/slate/400",
+        "primitive Colors: not-used/slate/500",
+        "primitive Colors: not-used/slate/600",
+        "primitive Colors: not-used/slate/700",
+        "primitive Colors: not-used/slate/800",
+        "primitive Colors: not-used/slate/900",
+        "primitive Colors: not-used/slate/950",
+        "primitive Colors: not-used/gray/50",
+        "primitive Colors: not-used/gray/100",
+        "primitive Colors: not-used/gray/200",
+        "primitive Colors: not-used/gray/300",
+        "primitive Colors: not-used/gray/400",
+        "primitive Colors: not-used/gray/500",
+        "primitive Colors: not-used/gray/600",
+        "primitive Colors: not-used/gray/700",
+        "primitive Colors: not-used/gray/800",
+        "primitive Colors: not-used/gray/900",
+        "primitive Colors: not-used/gray/950",
+        "primitive Colors: not-used/zinc/50",
+        "primitive Colors: not-used/zinc/100",
+        "primitive Colors: not-used/zinc/200",
+        "primitive Colors: not-used/zinc/300",
+        "primitive Colors: not-used/zinc/400",
+        "primitive Colors: not-used/zinc/500",
+        "primitive Colors: not-used/zinc/600",
+        "primitive Colors: not-used/zinc/700",
+        "primitive Colors: not-used/zinc/800",
+        "primitive Colors: not-used/zinc/900",
+        "primitive Colors: not-used/zinc/950",
+        "primitive Typography: typography/font-size/24",
+        "primitive Typography: typography/font-size/36",
+        "primitive Typography: typography/line-height/12",
+        "primitive Typography: typography/line-height/36",
+        "primitive Typography: typography/line-height/44",
+        "primitive Typography: typography/font-family/font",
+        "primitive Typography: typography/font-weight/400",
+        "primitive Typography: typography/font-weight/800",
+        "primitive Space: 36",
+        "primitive Space: 44",
+        "primitive Space: 48",
+        "primitive Space: 52",
+        "primitive Space: 56",
+        "primitive Space: 64",
+        "primitive Space: 72",
+        "primitive Space: 80",
+        "primitive Space: 88",
+        "primitive Space: 96",
+        "primitive Radius: 0",
+        "primitive Radius: 20",
+        "primitive Radius: 24",
+        "primitive Radius: 32",
+        "primitive Radius: rounded-full"
+      ],
+      "families": [
+        {
+          "family": "orange",
+          "unused": 1,
+          "of": 11,
+          "steps": [
+            "500"
+          ]
+        },
+        {
+          "family": "teal",
+          "unused": 1,
+          "of": 11,
+          "steps": [
+            "500"
+          ]
+        },
+        {
+          "family": "violet",
+          "unused": 1,
+          "of": 11,
+          "steps": [
+            "500"
+          ]
+        },
+        {
+          "family": "pink",
+          "unused": 1,
+          "of": 11,
+          "steps": [
+            "500"
+          ]
+        },
+        {
+          "family": "neutral/light",
+          "unused": 1,
+          "of": 15,
+          "steps": [
+            "350"
+          ]
+        },
+        {
+          "family": "neutral/dark",
+          "unused": 2,
+          "of": 16,
+          "steps": [
+            "-100",
+            "350"
+          ]
+        },
+        {
+          "family": "rose",
+          "unused": 1,
+          "of": 11,
+          "steps": [
+            "500"
+          ]
+        },
+        {
+          "family": "not-used/slate",
+          "unused": 11,
+          "of": 11,
+          "steps": [
+            "50",
+            "100",
+            "200",
+            "300",
+            "400",
+            "500",
+            "600",
+            "700",
+            "800",
+            "900",
+            "950"
+          ]
+        },
+        {
+          "family": "not-used/gray",
+          "unused": 11,
+          "of": 11,
+          "steps": [
+            "50",
+            "100",
+            "200",
+            "300",
+            "400",
+            "500",
+            "600",
+            "700",
+            "800",
+            "900",
+            "950"
+          ]
+        },
+        {
+          "family": "not-used/zinc",
+          "unused": 11,
+          "of": 11,
+          "steps": [
+            "50",
+            "100",
+            "200",
+            "300",
+            "400",
+            "500",
+            "600",
+            "700",
+            "800",
+            "900",
+            "950"
+          ]
+        },
+        {
+          "family": "typography/font-size",
+          "unused": 2,
+          "of": 11,
+          "steps": [
+            "24",
+            "36"
+          ]
+        },
+        {
+          "family": "typography/line-height",
+          "unused": 3,
+          "of": 11,
+          "steps": [
+            "12",
+            "36",
+            "44"
+          ]
+        },
+        {
+          "family": "typography/font-family",
+          "unused": 1,
+          "of": 1,
+          "steps": [
+            "font"
+          ]
+        },
+        {
+          "family": "typography/font-weight",
+          "unused": 2,
+          "of": 5,
+          "steps": [
+            "400",
+            "800"
+          ]
+        },
+        {
+          "family": "Space (top level)",
+          "unused": 10,
+          "of": 23,
+          "steps": [
+            "36",
+            "44",
+            "48",
+            "52",
+            "56",
+            "64",
+            "72",
+            "80",
+            "88",
+            "96"
+          ]
+        },
+        {
+          "family": "Radius (top level)",
+          "unused": 5,
+          "of": 11,
+          "steps": [
+            "0",
+            "20",
+            "24",
+            "32",
+            "rounded-full"
+          ]
+        }
+      ]
+    },
+    {
+      "rule": "primitive-hygiene",
+      "standardRule": "5",
+      "severity": "breaks the standard",
+      "message": "These primitive names contain a word that is not a value, a colour family or a category (for example not-used, font, rounded-full).",
+      "count": 35,
+      "tokens": [
+        "primitive Colors: not-used/slate/50",
+        "primitive Colors: not-used/slate/100",
+        "primitive Colors: not-used/slate/200",
+        "primitive Colors: not-used/slate/300",
+        "primitive Colors: not-used/slate/400",
+        "primitive Colors: not-used/slate/500",
+        "primitive Colors: not-used/slate/600",
+        "primitive Colors: not-used/slate/700",
+        "primitive Colors: not-used/slate/800",
+        "primitive Colors: not-used/slate/900",
+        "primitive Colors: not-used/slate/950",
+        "primitive Colors: not-used/gray/50",
+        "primitive Colors: not-used/gray/100",
+        "primitive Colors: not-used/gray/200",
+        "primitive Colors: not-used/gray/300",
+        "primitive Colors: not-used/gray/400",
+        "primitive Colors: not-used/gray/500",
+        "primitive Colors: not-used/gray/600",
+        "primitive Colors: not-used/gray/700",
+        "primitive Colors: not-used/gray/800",
+        "primitive Colors: not-used/gray/900",
+        "primitive Colors: not-used/gray/950",
+        "primitive Colors: not-used/zinc/50",
+        "primitive Colors: not-used/zinc/100",
+        "primitive Colors: not-used/zinc/200",
+        "primitive Colors: not-used/zinc/300",
+        "primitive Colors: not-used/zinc/400",
+        "primitive Colors: not-used/zinc/500",
+        "primitive Colors: not-used/zinc/600",
+        "primitive Colors: not-used/zinc/700",
+        "primitive Colors: not-used/zinc/800",
+        "primitive Colors: not-used/zinc/900",
+        "primitive Colors: not-used/zinc/950",
+        "primitive Typography: typography/font-family/font",
+        "primitive Radius: rounded-full"
+      ]
+    },
+    {
+      "rule": "alias",
+      "standardRule": "6",
+      "severity": "breaks the standard",
+      "message": "These semantic tokens hold a raw value although a primitive with that value exists.",
+      "count": 2,
+      "tokens": [
+        "Typography: font-family/sans holds Geist = primitive Typography typography/font-family/font",
+        "Radius: round/full holds 9999 = primitive Radius rounded-full"
+      ]
+    },
+    {
+      "rule": "alias",
+      "standardRule": "6",
+      "severity": "breaks the standard",
+      "message": "These semantic tokens hold a raw value that no primitive has; a primitive should exist for it.",
+      "count": 18,
+      "tokens": [
+        "Surface Gradients: red/glow-warm-fade holds #fed7aa00 (light), #7c2d1200 (dark); no primitive has these values",
+        "Surface Gradients: red/glow-fade holds #f8717100 (light), #b91c1c00 (dark); no primitive has these values",
+        "Surface Gradients: orange/glow-warm-fade holds #fde68a00 (light), #78350f00 (dark); no primitive has these values",
+        "Surface Gradients: orange/glow-fade holds #fb923c00 (light), #c2410c00 (dark); no primitive has these values",
+        "Surface Gradients: amber/glow-warm-fade holds #feb9cf00 (light), #5f0c2300 (dark); no primitive has these values",
+        "Surface Gradients: amber/glow-fade holds #fbbf2400 (light), #b4530900 (dark); no primitive has these values",
+        "Surface Gradients: green/glow-warm-fade holds #fde68a00 (light), #78350f00 (dark); no primitive has these values",
+        "Surface Gradients: green/glow-fade holds #4ade8000 (light), #15803d00 (dark); no primitive has these values",
+        "Surface Gradients: teal/glow-warm-fade holds #bbf7d000 (light), #14532d00 (dark); no primitive has these values",
+        "Surface Gradients: teal/glow-fade holds #2dd4bf00 (light), #0f766e00 (dark); no primitive has these values",
+        "Surface Gradients: blue/glow-warm-fade holds #ddd6fe00 (light), #4c1d9500 (dark); no primitive has these values",
+        "Surface Gradients: blue/glow-fade holds #60a5fa00 (light), #1d4ed800 (dark); no primitive has these values",
+        "Surface Gradients: violet/glow-warm-fade holds #fbcfe800 (light), #83184300 (dark); no primitive has these values",
+        "Surface Gradients: violet/glow-fade holds #a78bfa00 (light), #6d28d900 (dark); no primitive has these values",
+        "Surface Gradients: pink/glow-warm-fade holds #feb9cf00 (light), #5f0c2300 (dark); no primitive has these values",
+        "Surface Gradients: pink/glow-fade holds #f472b600 (light), #be185d00 (dark); no primitive has these values",
+        "Surface Gradients: rose/glow-warm-fade holds #fed7aa00 (light), #7c2d1200 (dark); no primitive has these values",
+        "Surface Gradients: rose/glow-fade holds #fb5b8e00 (light), #b80a4100 (dark); no primitive has these values"
+      ]
+    },
+    {
+      "rule": "alias",
+      "standardRule": "6",
+      "severity": "note",
+      "message": "These aliases cross modes (a dark value points at a light neutral, or the other way) where their siblings do not. Listed, not failed: it may be intended.",
+      "count": 4,
+      "tokens": [
+        "Themes: text/on (dark -> neutral/light/0)",
+        "Themes: icon/on (dark -> neutral/light/0)",
+        "Themes: surface/accent/neutral/bold/default (dark -> neutral/light/900)",
+        "Themes: surface/accent/neutral/bold/hover (dark -> neutral/light/800)"
+      ]
+    },
+    {
+      "rule": "collection-names",
+      "standardRule": "8",
+      "severity": "breaks the standard",
+      "message": "These collection names are not in the category list (Color, Typography, Radius, Space, Gradient). The collection name becomes the JSON path and CSS prefix, so this decides every exported name.",
+      "count": 4,
+      "tokens": [
+        "collection Themes should be Color",
+        "collection Density should be Space",
+        "collection Surface Gradients should be Gradient",
+        "primitive collection Colors should be Color"
+      ]
+    },
+    {
+      "rule": "collection-names",
+      "standardRule": "8",
+      "severity": "decide",
+      "message": "These collections are empty and not in the category list: fill them or remove them.",
+      "count": 1,
+      "tokens": [
+        "collection Border has no variables"
+      ]
+    },
+    {
+      "rule": "description",
+      "standardRule": "9",
+      "severity": "breaks the standard",
+      "message": "171 of 171 tokens in Themes have no description.",
+      "count": 171,
+      "tokens": [
+        "Themes: text/primary",
+        "Themes: text/secondary",
+        "Themes: text/placeholder",
+        "Themes: text/disabled",
+        "Themes: text/inverse",
+        "Themes: text/on",
+        "Themes: text/link/default",
+        "Themes: text/link/hover",
+        "Themes: text/link/active",
+        "Themes: text/error",
+        "Themes: text/success",
+        "Themes: text/warning",
+        "Themes: text/info",
+        "Themes: icon/primary",
+        "Themes: icon/secondary",
+        "Themes: icon/disabled",
+        "Themes: icon/inverse",
+        "Themes: icon/on",
+        "Themes: icon/brand",
+        "Themes: icon/error",
+        "Themes: icon/success",
+        "Themes: icon/warning",
+        "Themes: icon/info",
+        "Themes: surface/primary/default",
+        "Themes: surface/primary/hover",
+        "Themes: surface/primary/active",
+        "Themes: surface/primary/disabled",
+        "Themes: surface/secondary/default",
+        "Themes: surface/secondary/hover",
+        "Themes: surface/secondary/active",
+        "Themes: surface/secondary/disabled",
+        "Themes: surface/tertiary/default",
+        "Themes: surface/tertiary/hover",
+        "Themes: surface/tertiary/active",
+        "Themes: surface/tertiary/disabled",
+        "Themes: surface/error",
+        "Themes: surface/success",
+        "Themes: surface/warning",
+        "Themes: surface/info",
+        "Themes: interactive/primary/default",
+        "Themes: interactive/primary/hover",
+        "Themes: interactive/primary/active",
+        "Themes: interactive/primary/disabled",
+        "Themes: interactive/neutral/default",
+        "Themes: interactive/neutral/hover",
+        "Themes: interactive/neutral/active",
+        "Themes: interactive/neutral/disabled",
+        "Themes: interactive/secondary/default",
+        "Themes: interactive/secondary/hover",
+        "Themes: interactive/secondary/active",
+        "Themes: interactive/secondary/disabled",
+        "Themes: interactive/error/default",
+        "Themes: interactive/error/hover",
+        "Themes: interactive/success/default",
+        "Themes: interactive/success/hover",
+        "Themes: interactive/warning/default",
+        "Themes: interactive/warning/hover",
+        "Themes: border/primary/default",
+        "Themes: border/secondary",
+        "Themes: border/primary/hover",
+        "Themes: border/primary/active",
+        "Themes: border/primary/disabled",
+        "Themes: border/focus",
+        "Themes: border/info",
+        "Themes: border/error",
+        "Themes: border/success",
+        "Themes: border/warning",
+        "Themes: text/accent/teal/default",
+        "Themes: text/accent/teal/bold",
+        "Themes: icon/accent/teal/default",
+        "Themes: icon/accent/teal/bold",
+        "Themes: text/accent/blue/default",
+        "Themes: text/accent/blue/bold",
+        "Themes: icon/accent/blue/default",
+        "Themes: icon/accent/blue/bold",
+        "Themes: text/accent/violet/default",
+        "Themes: text/accent/violet/bold",
+        "Themes: icon/accent/violet/default",
+        "Themes: icon/accent/violet/bold",
+        "Themes: text/accent/amber/default",
+        "Themes: text/accent/amber/bold",
+        "Themes: icon/accent/amber/default",
+        "Themes: icon/accent/amber/bold",
+        "Themes: text/accent/pink/default",
+        "Themes: text/accent/pink/bold",
+        "Themes: icon/accent/pink/default",
+        "Themes: icon/accent/pink/bold",
+        "Themes: text/accent/green/default",
+        "Themes: text/accent/green/bold",
+        "Themes: icon/accent/green/default",
+        "Themes: icon/accent/green/bold",
+        "Themes: text/accent/orange/default",
+        "Themes: text/accent/orange/bold",
+        "Themes: icon/accent/orange/default",
+        "Themes: icon/accent/orange/bold",
+        "Themes: text/accent/red/default",
+        "Themes: text/accent/red/bold",
+        "Themes: icon/accent/red/default",
+        "Themes: icon/accent/red/bold",
+        "Themes: text/accent/rose/default",
+        "Themes: text/accent/rose/bold",
+        "Themes: icon/accent/rose/default",
+        "Themes: icon/accent/rose/bold",
+        "Themes: surface/accent/teal/subtlest/default",
+        "Themes: surface/accent/teal/subtlest/hover",
+        "Themes: surface/accent/teal/subtle/default",
+        "Themes: surface/accent/teal/subtle/hover",
+        "Themes: surface/accent/teal/bold/default",
+        "Themes: surface/accent/teal/bold/hover",
+        "Themes: surface/accent/blue/subtlest/default",
+        "Themes: surface/accent/blue/subtlest/hover",
+        "Themes: surface/accent/blue/subtle/default",
+        "Themes: surface/accent/blue/subtle/hover",
+        "Themes: surface/accent/blue/bold/default",
+        "Themes: surface/accent/blue/bold/hover",
+        "Themes: surface/accent/violet/subtlest/default",
+        "Themes: surface/accent/violet/subtlest/hover",
+        "Themes: surface/accent/violet/subtle/default",
+        "Themes: surface/accent/violet/subtle/hover",
+        "Themes: surface/accent/violet/bold/default",
+        "Themes: surface/accent/violet/bold/hover",
+        "Themes: surface/accent/amber/subtlest/default",
+        "Themes: surface/accent/amber/subtlest/hover",
+        "Themes: surface/accent/amber/subtle/default",
+        "Themes: surface/accent/amber/subtle/hover",
+        "Themes: surface/accent/amber/bold/default",
+        "Themes: surface/accent/amber/bold/hover",
+        "Themes: surface/accent/pink/subtlest/default",
+        "Themes: surface/accent/pink/subtlest/hover",
+        "Themes: surface/accent/pink/subtle/default",
+        "Themes: surface/accent/pink/subtle/hover",
+        "Themes: surface/accent/pink/bold/default",
+        "Themes: surface/accent/pink/bold/hover",
+        "Themes: surface/accent/green/subtlest/default",
+        "Themes: surface/accent/green/subtlest/hover",
+        "Themes: surface/accent/green/subtle/default",
+        "Themes: surface/accent/green/subtle/hover",
+        "Themes: surface/accent/green/bold/default",
+        "Themes: surface/accent/green/bold/hover",
+        "Themes: surface/accent/orange/subtlest/default",
+        "Themes: surface/accent/orange/subtlest/hover",
+        "Themes: surface/accent/orange/subtle/default",
+        "Themes: surface/accent/orange/subtle/hover",
+        "Themes: surface/accent/orange/bold/default",
+        "Themes: surface/accent/orange/bold/hover",
+        "Themes: surface/accent/red/subtlest/default",
+        "Themes: surface/accent/red/subtlest/hover",
+        "Themes: surface/accent/red/subtle/default",
+        "Themes: surface/accent/red/subtle/hover",
+        "Themes: surface/accent/red/bold/default",
+        "Themes: surface/accent/red/bold/hover",
+        "Themes: surface/accent/rose/subtlest/default",
+        "Themes: surface/accent/rose/subtlest/hover",
+        "Themes: surface/accent/rose/subtle/default",
+        "Themes: surface/accent/rose/subtle/hover",
+        "Themes: surface/accent/rose/bold/default",
+        "Themes: surface/accent/rose/bold/hover",
+        "Themes: surface/accent/neutral/subtlest/default",
+        "Themes: surface/accent/neutral/subtlest/hover",
+        "Themes: surface/accent/neutral/subtle/default",
+        "Themes: surface/accent/neutral/subtle/hover",
+        "Themes: surface/accent/neutral/bold/default",
+        "Themes: surface/accent/neutral/bold/hover",
+        "Themes: text/accent/neutral/default",
+        "Themes: text/accent/neutral/bold",
+        "Themes: icon/accent/neutral/default",
+        "Themes: icon/accent/neutral/bold",
+        "Themes: text/brand",
+        "Themes: border/brand",
+        "Themes: surface/brand/subtle",
+        "Themes: surface/brand/bold"
+      ],
+      "collection": "Themes"
+    },
+    {
+      "rule": "description",
+      "standardRule": "9",
+      "severity": "breaks the standard",
+      "message": "36 of 36 tokens in Typography have no description.",
+      "count": 36,
+      "tokens": [
+        "Typography: font-size/heading-1",
+        "Typography: font-size/heading-2",
+        "Typography: font-size/heading-3",
+        "Typography: font-size/heading-4",
+        "Typography: font-size/heading-5",
+        "Typography: font-size/heading-6",
+        "Typography: font-size/section-label-base",
+        "Typography: font-size/label-large",
+        "Typography: font-size/label-base",
+        "Typography: font-size/label-small",
+        "Typography: font-size/label-xsmall",
+        "Typography: font-size/body-large",
+        "Typography: font-size/body-base",
+        "Typography: font-size/body-small",
+        "Typography: font-size/body-xsmall",
+        "Typography: line-height/heading-1",
+        "Typography: line-height/heading-2",
+        "Typography: line-height/heading-3",
+        "Typography: line-height/heading-4",
+        "Typography: line-height/heading-5",
+        "Typography: line-height/heading-6",
+        "Typography: line-height/section-label-base",
+        "Typography: line-height/label-large",
+        "Typography: line-height/label-base",
+        "Typography: line-height/label-small",
+        "Typography: line-height/label-xsmall",
+        "Typography: line-height/body-large",
+        "Typography: line-height/body-base",
+        "Typography: line-height/body-small",
+        "Typography: line-height/body-xsmall",
+        "Typography: font-weight/heading",
+        "Typography: font-weight/section-label-base",
+        "Typography: font-weight/label",
+        "Typography: font-weight/body",
+        "Typography: font-weight/emphasis",
+        "Typography: font-family/sans"
+      ],
+      "collection": "Typography"
+    },
+    {
+      "rule": "description",
+      "standardRule": "9",
+      "severity": "breaks the standard",
+      "message": "12 of 12 tokens in Radius have no description.",
+      "count": 12,
+      "tokens": [
+        "Radius: height/16",
+        "Radius: height/20",
+        "Radius: height/24",
+        "Radius: height/28",
+        "Radius: height/36",
+        "Radius: height/44",
+        "Radius: container/small",
+        "Radius: container/medium",
+        "Radius: container/large",
+        "Radius: round/full",
+        "Radius: height/32",
+        "Radius: height/40"
+      ],
+      "collection": "Radius"
+    },
+    {
+      "rule": "description",
+      "standardRule": "9",
+      "severity": "breaks the standard",
+      "message": "26 of 26 tokens in Density have no description.",
+      "count": 26,
+      "tokens": [
+        "Density: scaled/400",
+        "Density: scaled/320",
+        "Density: scaled/280",
+        "Density: scaled/240",
+        "Density: scaled/200",
+        "Density: scaled/160",
+        "Density: scaled/120",
+        "Density: scaled/100",
+        "Density: scaled/80",
+        "Density: scaled/60",
+        "Density: scaled/40",
+        "Density: scaled/20",
+        "Density: scaled/0",
+        "Density: static/400",
+        "Density: static/320",
+        "Density: static/280",
+        "Density: static/240",
+        "Density: static/200",
+        "Density: static/160",
+        "Density: static/120",
+        "Density: static/100",
+        "Density: static/80",
+        "Density: static/60",
+        "Density: static/40",
+        "Density: static/20",
+        "Density: static/0"
+      ],
+      "collection": "Density"
+    },
+    {
+      "rule": "description",
+      "standardRule": "9",
+      "severity": "breaks the standard",
+      "message": "45 of 63 tokens in Surface Gradients have no description.",
+      "count": 45,
+      "tokens": [
+        "Surface Gradients: red/base-start",
+        "Surface Gradients: red/base-end",
+        "Surface Gradients: red/glow-warm",
+        "Surface Gradients: red/glow",
+        "Surface Gradients: red/text",
+        "Surface Gradients: orange/base-start",
+        "Surface Gradients: orange/base-end",
+        "Surface Gradients: orange/glow-warm",
+        "Surface Gradients: orange/glow",
+        "Surface Gradients: orange/text",
+        "Surface Gradients: amber/base-start",
+        "Surface Gradients: amber/base-end",
+        "Surface Gradients: amber/glow-warm",
+        "Surface Gradients: amber/glow",
+        "Surface Gradients: amber/text",
+        "Surface Gradients: green/base-start",
+        "Surface Gradients: green/base-end",
+        "Surface Gradients: green/glow-warm",
+        "Surface Gradients: green/glow",
+        "Surface Gradients: green/text",
+        "Surface Gradients: teal/base-start",
+        "Surface Gradients: teal/base-end",
+        "Surface Gradients: teal/glow-warm",
+        "Surface Gradients: teal/glow",
+        "Surface Gradients: teal/text",
+        "Surface Gradients: blue/base-start",
+        "Surface Gradients: blue/base-end",
+        "Surface Gradients: blue/glow-warm",
+        "Surface Gradients: blue/glow",
+        "Surface Gradients: blue/text",
+        "Surface Gradients: violet/base-start",
+        "Surface Gradients: violet/base-end",
+        "Surface Gradients: violet/glow-warm",
+        "Surface Gradients: violet/glow",
+        "Surface Gradients: violet/text",
+        "Surface Gradients: pink/base-start",
+        "Surface Gradients: pink/base-end",
+        "Surface Gradients: pink/glow-warm",
+        "Surface Gradients: pink/glow",
+        "Surface Gradients: pink/text",
+        "Surface Gradients: rose/base-start",
+        "Surface Gradients: rose/base-end",
+        "Surface Gradients: rose/glow-warm",
+        "Surface Gradients: rose/glow",
+        "Surface Gradients: rose/text"
+      ],
+      "collection": "Surface Gradients"
+    },
+    {
+      "rule": "scopes",
+      "standardRule": "10",
+      "severity": "breaks the standard",
+      "message": "These semantic tokens are scoped to ALL_SCOPES, which the standard forbids.",
+      "count": 35,
+      "tokens": [
+        "Typography: font-size/heading-1",
+        "Typography: font-size/heading-2",
+        "Typography: font-size/heading-3",
+        "Typography: font-size/heading-4",
+        "Typography: font-size/heading-5",
+        "Typography: font-size/heading-6",
+        "Typography: font-size/section-label-base",
+        "Typography: font-size/label-large",
+        "Typography: font-size/label-base",
+        "Typography: font-size/label-small",
+        "Typography: font-size/label-xsmall",
+        "Typography: font-size/body-large",
+        "Typography: font-size/body-base",
+        "Typography: font-size/body-small",
+        "Typography: font-size/body-xsmall",
+        "Typography: line-height/heading-1",
+        "Typography: line-height/heading-2",
+        "Typography: line-height/heading-3",
+        "Typography: line-height/heading-4",
+        "Typography: line-height/heading-5",
+        "Typography: line-height/heading-6",
+        "Typography: line-height/section-label-base",
+        "Typography: line-height/label-large",
+        "Typography: line-height/label-base",
+        "Typography: line-height/label-small",
+        "Typography: line-height/label-xsmall",
+        "Typography: line-height/body-large",
+        "Typography: line-height/body-base",
+        "Typography: line-height/body-small",
+        "Typography: line-height/body-xsmall",
+        "Typography: font-weight/heading",
+        "Typography: font-weight/section-label-base",
+        "Typography: font-weight/label",
+        "Typography: font-weight/body",
+        "Typography: font-weight/emphasis"
+      ]
+    },
+    {
+      "rule": "scopes",
+      "standardRule": "10",
+      "severity": "breaks the standard",
+      "message": "These tokens have no scopes at all.",
+      "count": 18,
+      "tokens": [
+        "Surface Gradients: red/glow-warm-fade",
+        "Surface Gradients: red/glow-fade",
+        "Surface Gradients: orange/glow-warm-fade",
+        "Surface Gradients: orange/glow-fade",
+        "Surface Gradients: amber/glow-warm-fade",
+        "Surface Gradients: amber/glow-fade",
+        "Surface Gradients: green/glow-warm-fade",
+        "Surface Gradients: green/glow-fade",
+        "Surface Gradients: teal/glow-warm-fade",
+        "Surface Gradients: teal/glow-fade",
+        "Surface Gradients: blue/glow-warm-fade",
+        "Surface Gradients: blue/glow-fade",
+        "Surface Gradients: violet/glow-warm-fade",
+        "Surface Gradients: violet/glow-fade",
+        "Surface Gradients: pink/glow-warm-fade",
+        "Surface Gradients: pink/glow-fade",
+        "Surface Gradients: rose/glow-warm-fade",
+        "Surface Gradients: rose/glow-fade"
+      ]
+    },
+    {
+      "rule": "scopes",
+      "standardRule": "10",
+      "severity": "breaks the standard",
+      "message": "These scopes contradict the name (ALL_SCOPES counts here too, because it is not the one scope the name promises).",
+      "count": 35,
+      "tokens": [
+        "Typography: font-size/heading-1 is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/heading-2 is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/heading-3 is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/heading-4 is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/heading-5 is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/heading-6 is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/section-label-base is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/label-large is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/label-base is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/label-small is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/label-xsmall is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/body-large is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/body-base is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/body-small is a font size but scoped ALL_SCOPES",
+        "Typography: font-size/body-xsmall is a font size but scoped ALL_SCOPES",
+        "Typography: line-height/heading-1 is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/heading-2 is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/heading-3 is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/heading-4 is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/heading-5 is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/heading-6 is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/section-label-base is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/label-large is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/label-base is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/label-small is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/label-xsmall is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/body-large is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/body-base is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/body-small is a line height but scoped ALL_SCOPES",
+        "Typography: line-height/body-xsmall is a line height but scoped ALL_SCOPES",
+        "Typography: font-weight/heading is a font weight but scoped ALL_SCOPES",
+        "Typography: font-weight/section-label-base is a font weight but scoped ALL_SCOPES",
+        "Typography: font-weight/label is a font weight but scoped ALL_SCOPES",
+        "Typography: font-weight/body is a font weight but scoped ALL_SCOPES",
+        "Typography: font-weight/emphasis is a font weight but scoped ALL_SCOPES"
+      ]
+    },
+    {
+      "rule": "code-syntax",
+      "standardRule": "10",
+      "severity": "decide",
+      "message": "225 of 225 primitives have no WEB code syntax. Rule 10 says every token has one; rule 5 says components never reach primitives. Decide whether primitives get CSS names.",
+      "count": 225,
+      "tokens": [
+        "primitive Colors: red/50",
+        "primitive Colors: red/100",
+        "primitive Colors: red/200",
+        "primitive Colors: red/300",
+        "primitive Colors: red/400",
+        "primitive Colors: red/500",
+        "primitive Colors: red/600",
+        "primitive Colors: red/700",
+        "primitive Colors: red/800",
+        "primitive Colors: red/900",
+        "primitive Colors: red/950",
+        "primitive Colors: orange/50",
+        "primitive Colors: orange/100",
+        "primitive Colors: orange/200",
+        "primitive Colors: orange/300",
+        "primitive Colors: orange/400",
+        "primitive Colors: orange/500",
+        "primitive Colors: orange/600",
+        "primitive Colors: orange/700",
+        "primitive Colors: orange/800",
+        "primitive Colors: orange/900",
+        "primitive Colors: orange/950",
+        "primitive Colors: amber/50",
+        "primitive Colors: amber/100",
+        "primitive Colors: amber/200",
+        "primitive Colors: amber/300",
+        "primitive Colors: amber/400",
+        "primitive Colors: amber/500",
+        "primitive Colors: amber/600",
+        "primitive Colors: amber/700",
+        "primitive Colors: amber/800",
+        "primitive Colors: amber/900",
+        "primitive Colors: amber/950",
+        "primitive Colors: green/50",
+        "primitive Colors: green/100",
+        "primitive Colors: green/200",
+        "primitive Colors: green/300",
+        "primitive Colors: green/400",
+        "primitive Colors: green/500",
+        "primitive Colors: green/600",
+        "primitive Colors: green/700",
+        "primitive Colors: green/800",
+        "primitive Colors: green/900",
+        "primitive Colors: green/950",
+        "primitive Colors: teal/50",
+        "primitive Colors: teal/100",
+        "primitive Colors: teal/200",
+        "primitive Colors: teal/300",
+        "primitive Colors: teal/400",
+        "primitive Colors: teal/500",
+        "primitive Colors: teal/600",
+        "primitive Colors: teal/700",
+        "primitive Colors: teal/800",
+        "primitive Colors: teal/900",
+        "primitive Colors: teal/950",
+        "primitive Colors: blue/50",
+        "primitive Colors: blue/100",
+        "primitive Colors: blue/200",
+        "primitive Colors: blue/300",
+        "primitive Colors: blue/400",
+        "primitive Colors: blue/500",
+        "primitive Colors: blue/600",
+        "primitive Colors: blue/700",
+        "primitive Colors: blue/800",
+        "primitive Colors: blue/900",
+        "primitive Colors: blue/950",
+        "primitive Colors: violet/50",
+        "primitive Colors: violet/100",
+        "primitive Colors: violet/200",
+        "primitive Colors: violet/300",
+        "primitive Colors: violet/400",
+        "primitive Colors: violet/500",
+        "primitive Colors: violet/600",
+        "primitive Colors: violet/700",
+        "primitive Colors: violet/800",
+        "primitive Colors: violet/900",
+        "primitive Colors: violet/950",
+        "primitive Colors: pink/50",
+        "primitive Colors: pink/100",
+        "primitive Colors: pink/200",
+        "primitive Colors: pink/300",
+        "primitive Colors: pink/400",
+        "primitive Colors: pink/500",
+        "primitive Colors: pink/600",
+        "primitive Colors: pink/700",
+        "primitive Colors: pink/800",
+        "primitive Colors: pink/900",
+        "primitive Colors: pink/950",
+        "primitive Colors: rose/50",
+        "primitive Colors: neutral/light/0",
+        "primitive Colors: neutral/light/100",
+        "primitive Colors: neutral/light/200",
+        "primitive Colors: neutral/light/250",
+        "primitive Colors: neutral/light/300",
+        "primitive Colors: neutral/light/350",
+        "primitive Colors: neutral/light/400",
+        "primitive Colors: neutral/light/500",
+        "primitive Colors: neutral/light/600",
+        "primitive Colors: neutral/light/700",
+        "primitive Colors: neutral/light/800",
+        "primitive Colors: neutral/light/900",
+        "primitive Colors: neutral/dark/-100",
+        "primitive Colors: neutral/dark/0",
+        "primitive Colors: neutral/dark/100",
+        "primitive Colors: neutral/dark/200",
+        "primitive Colors: neutral/dark/250",
+        "primitive Colors: neutral/dark/300",
+        "primitive Colors: neutral/dark/350",
+        "primitive Colors: neutral/dark/400",
+        "primitive Colors: neutral/dark/500",
+        "primitive Colors: neutral/dark/600",
+        "primitive Colors: neutral/dark/700",
+        "primitive Colors: neutral/dark/800",
+        "primitive Colors: neutral/dark/900",
+        "primitive Colors: neutral/dark/1000",
+        "primitive Colors: neutral/dark/1100",
+        "primitive Colors: neutral/dark/1200",
+        "primitive Colors: rose/100",
+        "primitive Colors: rose/200",
+        "primitive Colors: rose/300",
+        "primitive Colors: rose/400",
+        "primitive Colors: rose/500",
+        "primitive Colors: rose/600",
+        "primitive Colors: rose/700",
+        "primitive Colors: rose/800",
+        "primitive Colors: rose/900",
+        "primitive Colors: rose/950",
+        "primitive Colors: not-used/slate/50",
+        "primitive Colors: not-used/slate/100",
+        "primitive Colors: not-used/slate/200",
+        "primitive Colors: not-used/slate/300",
+        "primitive Colors: not-used/slate/400",
+        "primitive Colors: not-used/slate/500",
+        "primitive Colors: not-used/slate/600",
+        "primitive Colors: not-used/slate/700",
+        "primitive Colors: not-used/slate/800",
+        "primitive Colors: not-used/slate/900",
+        "primitive Colors: not-used/slate/950",
+        "primitive Colors: not-used/gray/50",
+        "primitive Colors: not-used/gray/100",
+        "primitive Colors: not-used/gray/200",
+        "primitive Colors: not-used/gray/300",
+        "primitive Colors: not-used/gray/400",
+        "primitive Colors: not-used/gray/500",
+        "primitive Colors: not-used/gray/600",
+        "primitive Colors: not-used/gray/700",
+        "primitive Colors: not-used/gray/800",
+        "primitive Colors: not-used/gray/900",
+        "primitive Colors: not-used/gray/950",
+        "primitive Colors: not-used/zinc/50",
+        "primitive Colors: not-used/zinc/100",
+        "primitive Colors: not-used/zinc/200",
+        "primitive Colors: not-used/zinc/300",
+        "primitive Colors: not-used/zinc/400",
+        "primitive Colors: not-used/zinc/500",
+        "primitive Colors: not-used/zinc/600",
+        "primitive Colors: not-used/zinc/700",
+        "primitive Colors: not-used/zinc/800",
+        "primitive Colors: not-used/zinc/900",
+        "primitive Colors: not-used/zinc/950",
+        "primitive Colors: neutral/light/1000",
+        "primitive Colors: neutral/light/1100",
+        "primitive Colors: neutral/light/1200",
+        "primitive Typography: typography/font-size/10",
+        "primitive Typography: typography/font-size/12",
+        "primitive Typography: typography/font-size/14",
+        "primitive Typography: typography/font-size/16",
+        "primitive Typography: typography/font-size/18",
+        "primitive Typography: typography/font-size/20",
+        "primitive Typography: typography/font-size/24",
+        "primitive Typography: typography/font-size/28",
+        "primitive Typography: typography/font-size/32",
+        "primitive Typography: typography/font-size/36",
+        "primitive Typography: typography/font-size/40",
+        "primitive Typography: typography/line-height/12",
+        "primitive Typography: typography/line-height/16",
+        "primitive Typography: typography/line-height/20",
+        "primitive Typography: typography/line-height/24",
+        "primitive Typography: typography/line-height/28",
+        "primitive Typography: typography/line-height/32",
+        "primitive Typography: typography/line-height/36",
+        "primitive Typography: typography/line-height/40",
+        "primitive Typography: typography/line-height/44",
+        "primitive Typography: typography/line-height/48",
+        "primitive Typography: typography/line-height/56",
+        "primitive Typography: typography/font-family/font",
+        "primitive Typography: typography/font-weight/400",
+        "primitive Typography: typography/font-weight/500",
+        "primitive Typography: typography/font-weight/600",
+        "primitive Typography: typography/font-weight/700",
+        "primitive Typography: typography/font-weight/800",
+        "primitive Space: 0",
+        "primitive Space: 2",
+        "primitive Space: 4",
+        "primitive Space: 6",
+        "primitive Space: 8",
+        "primitive Space: 10",
+        "primitive Space: 12",
+        "primitive Space: 16",
+        "primitive Space: 20",
+        "primitive Space: 24",
+        "primitive Space: 28",
+        "primitive Space: 32",
+        "primitive Space: 36",
+        "primitive Space: 40",
+        "primitive Space: 44",
+        "primitive Space: 48",
+        "primitive Space: 52",
+        "primitive Space: 56",
+        "primitive Space: 64",
+        "primitive Space: 72",
+        "primitive Space: 80",
+        "primitive Space: 88",
+        "primitive Space: 96",
+        "primitive Radius: 0",
+        "primitive Radius: 2",
+        "primitive Radius: 4",
+        "primitive Radius: 6",
+        "primitive Radius: 8",
+        "primitive Radius: 12",
+        "primitive Radius: 16",
+        "primitive Radius: 20",
+        "primitive Radius: 24",
+        "primitive Radius: 32",
+        "primitive Radius: rounded-full"
+      ]
+    },
+    {
+      "rule": "tailwind-namespace",
+      "standardRule": "10",
+      "severity": "breaks the standard",
+      "message": "15 tokens use the CSS prefix --font-size- where the standard's table promises --text-.",
+      "count": 15,
+      "tokens": [
+        "Typography: font-size/heading-1",
+        "Typography: font-size/heading-2",
+        "Typography: font-size/heading-3",
+        "Typography: font-size/heading-4",
+        "Typography: font-size/heading-5",
+        "Typography: font-size/heading-6",
+        "Typography: font-size/section-label-base",
+        "Typography: font-size/label-large",
+        "Typography: font-size/label-base",
+        "Typography: font-size/label-small",
+        "Typography: font-size/label-xsmall",
+        "Typography: font-size/body-large",
+        "Typography: font-size/body-base",
+        "Typography: font-size/body-small",
+        "Typography: font-size/body-xsmall"
+      ],
+      "actualPrefix": "--font-size-",
+      "promisedPrefix": "--text-"
+    },
+    {
+      "rule": "tailwind-namespace",
+      "standardRule": "10",
+      "severity": "breaks the standard",
+      "message": "15 tokens use the CSS prefix --line-height- where the standard's table promises --leading-.",
+      "count": 15,
+      "tokens": [
+        "Typography: line-height/heading-1",
+        "Typography: line-height/heading-2",
+        "Typography: line-height/heading-3",
+        "Typography: line-height/heading-4",
+        "Typography: line-height/heading-5",
+        "Typography: line-height/heading-6",
+        "Typography: line-height/section-label-base",
+        "Typography: line-height/label-large",
+        "Typography: line-height/label-base",
+        "Typography: line-height/label-small",
+        "Typography: line-height/label-xsmall",
+        "Typography: line-height/body-large",
+        "Typography: line-height/body-base",
+        "Typography: line-height/body-small",
+        "Typography: line-height/body-xsmall"
+      ],
+      "actualPrefix": "--line-height-",
+      "promisedPrefix": "--leading-"
+    },
+    {
+      "rule": "tailwind-namespace",
+      "standardRule": "10",
+      "severity": "breaks the standard",
+      "message": "1 tokens use the CSS prefix --font-family- where the standard's table promises --font-.",
+      "count": 1,
+      "tokens": [
+        "Typography: font-family/sans"
+      ],
+      "actualPrefix": "--font-family-",
+      "promisedPrefix": "--font-"
+    },
+    {
+      "rule": "default-dropped",
+      "standardRule": "separator sentence",
+      "severity": "decide",
+      "message": "61 tokens end in /default in Figma but their code syntax drops the word default. The standard says each surface changes only the separator, never the words; the file does otherwise. Decide which one is right.",
+      "count": 61,
+      "tokens": [
+        "Themes: text/link/default",
+        "Themes: surface/primary/default",
+        "Themes: surface/secondary/default",
+        "Themes: surface/tertiary/default",
+        "Themes: interactive/primary/default",
+        "Themes: interactive/neutral/default",
+        "Themes: interactive/secondary/default",
+        "Themes: interactive/error/default",
+        "Themes: interactive/success/default",
+        "Themes: interactive/warning/default",
+        "Themes: border/primary/default",
+        "Themes: text/accent/teal/default",
+        "Themes: icon/accent/teal/default",
+        "Themes: text/accent/blue/default",
+        "Themes: icon/accent/blue/default",
+        "Themes: text/accent/violet/default",
+        "Themes: icon/accent/violet/default",
+        "Themes: text/accent/amber/default",
+        "Themes: icon/accent/amber/default",
+        "Themes: text/accent/pink/default",
+        "Themes: icon/accent/pink/default",
+        "Themes: text/accent/green/default",
+        "Themes: icon/accent/green/default",
+        "Themes: text/accent/orange/default",
+        "Themes: icon/accent/orange/default",
+        "Themes: text/accent/red/default",
+        "Themes: icon/accent/red/default",
+        "Themes: text/accent/rose/default",
+        "Themes: icon/accent/rose/default",
+        "Themes: surface/accent/teal/subtlest/default",
+        "Themes: surface/accent/teal/subtle/default",
+        "Themes: surface/accent/teal/bold/default",
+        "Themes: surface/accent/blue/subtlest/default",
+        "Themes: surface/accent/blue/subtle/default",
+        "Themes: surface/accent/blue/bold/default",
+        "Themes: surface/accent/violet/subtlest/default",
+        "Themes: surface/accent/violet/subtle/default",
+        "Themes: surface/accent/violet/bold/default",
+        "Themes: surface/accent/amber/subtlest/default",
+        "Themes: surface/accent/amber/subtle/default",
+        "Themes: surface/accent/amber/bold/default",
+        "Themes: surface/accent/pink/subtlest/default",
+        "Themes: surface/accent/pink/subtle/default",
+        "Themes: surface/accent/pink/bold/default",
+        "Themes: surface/accent/green/subtlest/default",
+        "Themes: surface/accent/green/subtle/default",
+        "Themes: surface/accent/green/bold/default",
+        "Themes: surface/accent/orange/subtlest/default",
+        "Themes: surface/accent/orange/subtle/default",
+        "Themes: surface/accent/orange/bold/default",
+        "Themes: surface/accent/red/subtlest/default",
+        "Themes: surface/accent/red/subtle/default",
+        "Themes: surface/accent/red/bold/default",
+        "Themes: surface/accent/rose/subtlest/default",
+        "Themes: surface/accent/rose/subtle/default",
+        "Themes: surface/accent/rose/bold/default",
+        "Themes: surface/accent/neutral/subtlest/default",
+        "Themes: surface/accent/neutral/subtle/default",
+        "Themes: surface/accent/neutral/bold/default",
+        "Themes: text/accent/neutral/default",
+        "Themes: icon/accent/neutral/default"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "breaks the standard",
+      "message": "text/link/hover and text/link/active resolve to the same value in dark (#f9a8d4), so the hover state cannot be told from the active state.",
+      "count": 2,
+      "tokens": [
+        "Themes: text/link/hover",
+        "Themes: text/link/active"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "breaks the standard",
+      "message": "surface/primary/hover and surface/primary/disabled resolve to the same value in light and dark (#f8f8f8, #242528), so the hover state cannot be told from the disabled state.",
+      "count": 2,
+      "tokens": [
+        "Themes: surface/primary/hover",
+        "Themes: surface/primary/disabled"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "breaks the standard",
+      "message": "surface/secondary/hover and surface/secondary/disabled resolve to the same value in light and dark (#f0f1f2, #2b2c2f), so the hover state cannot be told from the disabled state.",
+      "count": 2,
+      "tokens": [
+        "Themes: surface/secondary/hover",
+        "Themes: surface/secondary/disabled"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "breaks the standard",
+      "message": "surface/tertiary/active and surface/tertiary/disabled resolve to the same value in light and dark (#dddee1, #3d3f43), so the active state cannot be told from the disabled state.",
+      "count": 2,
+      "tokens": [
+        "Themes: surface/tertiary/active",
+        "Themes: surface/tertiary/disabled"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "breaks the standard",
+      "message": "interactive/primary/hover and interactive/primary/active resolve to the same value in light and dark (#831843, #be185d), so the hover state cannot be told from the active state.",
+      "count": 2,
+      "tokens": [
+        "Themes: interactive/primary/hover",
+        "Themes: interactive/primary/active"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "breaks the standard",
+      "message": "interactive/secondary/hover and interactive/secondary/disabled resolve to the same value in light and dark (#f0f1f2, #2b2c2f), so the hover state cannot be told from the disabled state.",
+      "count": 2,
+      "tokens": [
+        "Themes: interactive/secondary/hover",
+        "Themes: interactive/secondary/disabled"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "5 surface or interactive tokens share one value (light #f8f8f8; dark #242528) while their names promise different jobs.",
+      "count": 5,
+      "tokens": [
+        "Themes: surface/primary/hover",
+        "Themes: surface/primary/disabled",
+        "Themes: surface/secondary/default",
+        "Themes: interactive/secondary/default",
+        "Themes: surface/accent/neutral/subtlest/default"
+      ],
+      "value": [
+        "light #f8f8f8",
+        "dark #242528"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "8 surface or interactive tokens share one value (light #f0f1f2; dark #2b2c2f) while their names promise different jobs.",
+      "count": 8,
+      "tokens": [
+        "Themes: surface/primary/active",
+        "Themes: surface/secondary/hover",
+        "Themes: surface/secondary/disabled",
+        "Themes: surface/tertiary/default",
+        "Themes: interactive/primary/disabled",
+        "Themes: interactive/secondary/hover",
+        "Themes: interactive/secondary/disabled",
+        "Themes: surface/accent/neutral/subtlest/hover"
+      ],
+      "value": [
+        "light #f0f1f2",
+        "dark #2b2c2f"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "5 surface or interactive tokens share one value (light #dddee1) while their names promise different jobs.",
+      "count": 5,
+      "tokens": [
+        "Themes: surface/tertiary/active",
+        "Themes: surface/tertiary/disabled",
+        "Themes: interactive/neutral/disabled",
+        "Themes: interactive/secondary/active",
+        "Themes: surface/accent/neutral/subtle/default"
+      ],
+      "value": [
+        "light #dddee1"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (light #9d174d) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: interactive/primary/default",
+        "Themes: surface/accent/pink/bold/hover",
+        "Themes: surface/brand/bold"
+      ],
+      "value": [
+        "light #9d174d"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (light #831843) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: interactive/primary/hover",
+        "Themes: interactive/primary/active",
+        "Themes: surface/accent/pink/bold/default"
+      ],
+      "value": [
+        "light #831843"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "4 surface or interactive tokens share one value (dark #3d3f43) while their names promise different jobs.",
+      "count": 4,
+      "tokens": [
+        "Themes: surface/tertiary/active",
+        "Themes: surface/tertiary/disabled",
+        "Themes: interactive/neutral/disabled",
+        "Themes: interactive/secondary/active"
+      ],
+      "value": [
+        "dark #3d3f43"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #166534) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: interactive/success/hover",
+        "Themes: surface/accent/green/subtle/hover",
+        "Themes: surface/accent/green/bold/hover"
+      ],
+      "value": [
+        "dark #166534"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #92400e) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: interactive/warning/hover",
+        "Themes: surface/accent/amber/subtle/hover",
+        "Themes: surface/accent/amber/bold/hover"
+      ],
+      "value": [
+        "dark #92400e"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #78350f) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: surface/accent/amber/subtlest/hover",
+        "Themes: surface/accent/amber/subtle/default",
+        "Themes: surface/accent/amber/bold/default"
+      ],
+      "value": [
+        "dark #78350f"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #831843) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: surface/accent/pink/subtlest/hover",
+        "Themes: surface/accent/pink/subtle/default",
+        "Themes: surface/accent/pink/bold/default"
+      ],
+      "value": [
+        "dark #831843"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #14532d) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: surface/accent/green/subtlest/hover",
+        "Themes: surface/accent/green/subtle/default",
+        "Themes: surface/accent/green/bold/default"
+      ],
+      "value": [
+        "dark #14532d"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #7c2d12) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: surface/accent/orange/subtlest/hover",
+        "Themes: surface/accent/orange/subtle/default",
+        "Themes: surface/accent/orange/bold/default"
+      ],
+      "value": [
+        "dark #7c2d12"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #7f1d1d) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: surface/accent/red/subtlest/hover",
+        "Themes: surface/accent/red/subtle/default",
+        "Themes: surface/accent/red/bold/default"
+      ],
+      "value": [
+        "dark #7f1d1d"
+      ]
+    },
+    {
+      "rule": "one-job",
+      "standardRule": "one job per token",
+      "severity": "decide",
+      "message": "3 surface or interactive tokens share one value (dark #5f0c23) while their names promise different jobs.",
+      "count": 3,
+      "tokens": [
+        "Themes: surface/accent/rose/subtlest/hover",
+        "Themes: surface/accent/rose/subtle/default",
+        "Themes: surface/accent/rose/bold/default"
+      ],
+      "value": [
+        "dark #5f0c23"
+      ]
+    },
+    {
+      "rule": "same-in-both-modes",
+      "standardRule": null,
+      "severity": "note",
+      "message": "37 colour tokens have the same value in light and dark. Confirm each is meant.",
+      "count": 37,
+      "tokens": [
+        "Themes: text/on (#ffffff)",
+        "Themes: icon/on (#ffffff)",
+        "Themes: interactive/error/default (#dc2626)",
+        "Themes: interactive/error/hover (#b91c1c)",
+        "Themes: interactive/success/default (#15803d)",
+        "Themes: interactive/success/hover (#166534)",
+        "Themes: interactive/warning/default (#b45309)",
+        "Themes: interactive/warning/hover (#92400e)",
+        "Themes: text/accent/teal/bold (#ccfbf1)",
+        "Themes: text/accent/blue/bold (#dbeafe)",
+        "Themes: text/accent/violet/bold (#ede9fe)",
+        "Themes: text/accent/amber/bold (#fef3c7)",
+        "Themes: text/accent/pink/bold (#fce7f3)",
+        "Themes: text/accent/green/bold (#dcfce7)",
+        "Themes: text/accent/orange/bold (#ffedd5)",
+        "Themes: text/accent/red/bold (#fee2e2)",
+        "Themes: text/accent/rose/bold (#ffdbe7)",
+        "Themes: surface/accent/teal/bold/default (#0f766e)",
+        "Themes: surface/accent/teal/bold/hover (#0d9488)",
+        "Themes: surface/accent/blue/bold/default (#1d4ed8)",
+        "Themes: surface/accent/blue/bold/hover (#2563eb)",
+        "Themes: surface/accent/violet/bold/default (#6d28d9)",
+        "Themes: surface/accent/violet/bold/hover (#7c3aed)",
+        "Themes: surface/accent/amber/bold/default (#78350f)",
+        "Themes: surface/accent/amber/bold/hover (#92400e)",
+        "Themes: surface/accent/pink/bold/default (#831843)",
+        "Themes: surface/accent/pink/bold/hover (#9d174d)",
+        "Themes: surface/accent/green/bold/default (#14532d)",
+        "Themes: surface/accent/green/bold/hover (#166534)",
+        "Themes: surface/accent/orange/bold/default (#7c2d12)",
+        "Themes: surface/accent/orange/bold/hover (#9a3412)",
+        "Themes: surface/accent/red/bold/default (#7f1d1d)",
+        "Themes: surface/accent/red/bold/hover (#991b1b)",
+        "Themes: surface/accent/rose/bold/default (#5f0c23)",
+        "Themes: surface/accent/rose/bold/hover (#890b31)",
+        "Themes: surface/accent/neutral/bold/default (#3b3d42)",
+        "Themes: surface/accent/neutral/bold/hover (#505258)"
+      ]
+    },
+    {
+      "rule": "type-scale",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "These font sizes are under 12 px.",
+      "count": 2,
+      "tokens": [
+        "Typography: font-size/label-xsmall (10 px)",
+        "Typography: font-size/body-xsmall (10 px)"
+      ]
+    },
+    {
+      "rule": "type-scale",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "These body roles are under 16 px. A form field's typed text uses a body role, and iOS zooms the page when a focused field's text is under 16 px. (Label roles are not counted: the zoom depends only on the field's own text.)",
+      "count": 3,
+      "tokens": [
+        "Typography: font-size/body-base (14 px)",
+        "Typography: font-size/body-small (12 px)",
+        "Typography: font-size/body-xsmall (10 px)"
+      ]
+    },
+    {
+      "rule": "type-scale",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "These roles have identical font size and line height (16/24 px), so they are one style under several names.",
+      "count": 3,
+      "tokens": [
+        "Typography role heading-6",
+        "Typography role label-large",
+        "Typography role body-large"
+      ],
+      "sizeAndLineHeight": "16/24"
+    },
+    {
+      "rule": "type-scale",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "These roles have identical font size and line height (14/20 px), so they are one style under several names.",
+      "count": 3,
+      "tokens": [
+        "Typography role section-label-base",
+        "Typography role label-base",
+        "Typography role body-base"
+      ],
+      "sizeAndLineHeight": "14/20"
+    },
+    {
+      "rule": "type-scale",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "These roles have identical font size and line height (12/16 px), so they are one style under several names.",
+      "count": 2,
+      "tokens": [
+        "Typography role label-small",
+        "Typography role body-small"
+      ],
+      "sizeAndLineHeight": "12/16"
+    },
+    {
+      "rule": "type-scale",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "These roles have identical font size and line height (10/16 px), so they are one style under several names.",
+      "count": 2,
+      "tokens": [
+        "Typography role label-xsmall",
+        "Typography role body-xsmall"
+      ],
+      "sizeAndLineHeight": "10/16"
+    },
+    {
+      "rule": "type-scale",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "These weight tokens hold a style name instead of a number (CSS font-weight needs 100 to 900).",
+      "count": 5,
+      "tokens": [
+        "Typography: font-weight/heading (Bold)",
+        "Typography: font-weight/section-label-base (Bold)",
+        "Typography: font-weight/label (SemiBold)",
+        "Typography: font-weight/body (Medium)",
+        "Typography: font-weight/emphasis (Bold)"
+      ]
+    },
+    {
+      "rule": "density",
+      "standardRule": null,
+      "severity": "decide",
+      "message": "3 steps that differ in standard all become 2 in compact, so compact cannot tell them apart.",
+      "count": 3,
+      "tokens": [
+        "Density: scaled/60 (6 -> 2)",
+        "Density: scaled/40 (4 -> 2)",
+        "Density: scaled/20 (2 -> 2)"
+      ],
+      "compactValue": 2
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers border width.",
+      "count": 1,
+      "tokens": [
+        "category: border width"
+      ],
+      "category": "border width"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers motion or duration.",
+      "count": 1,
+      "tokens": [
+        "category: motion or duration"
+      ],
+      "category": "motion or duration"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers easing.",
+      "count": 1,
+      "tokens": [
+        "category: easing"
+      ],
+      "category": "easing"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers elevation or shadow.",
+      "count": 1,
+      "tokens": [
+        "category: elevation or shadow"
+      ],
+      "category": "elevation or shadow"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers opacity.",
+      "count": 1,
+      "tokens": [
+        "category: opacity"
+      ],
+      "category": "opacity"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers z-index.",
+      "count": 1,
+      "tokens": [
+        "category: z-index"
+      ],
+      "category": "z-index"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers breakpoint.",
+      "count": 1,
+      "tokens": [
+        "category: breakpoint"
+      ],
+      "category": "breakpoint"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers icon size.",
+      "count": 1,
+      "tokens": [
+        "category: icon size"
+      ],
+      "category": "icon size"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers control height.",
+      "count": 1,
+      "tokens": [
+        "category: control height"
+      ],
+      "category": "control height"
+    },
+    {
+      "rule": "missing-categories",
+      "standardRule": null,
+      "severity": "note",
+      "message": "Not started: no variable name or collection covers focus ring width and offset.",
+      "count": 1,
+      "tokens": [
+        "category: focus ring width and offset"
+      ],
+      "category": "focus ring width and offset"
+    }
+  ]
+}

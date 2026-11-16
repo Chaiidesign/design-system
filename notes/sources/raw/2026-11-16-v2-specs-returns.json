@@ -1,0 +1,733 @@
+{
+ "specs": [
+  {
+   "kind": "spec",
+   "slug": "input",
+   "component": "Input",
+   "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/specs/input.spec.json",
+   "valid": true,
+   "validation_output": "The ajv command printed two notices that it ignores the \"uri\" format, then printed: valid. I also ran a scripted hand check, kept at /private/tmp/claude-501/-Users-chaitanyalandge-Library-Application-Support-Claude-scratch-workspaces-ebabe688-c813-4d37-95fc-498a492cc12d-5e00ea11-9ff3-4643-b571-765ec27a06ab-scratch-2026-11-13-02c7be/b28519ae-d5a9-4657-800a-f0c0e2b58dcd/scratchpad/check-spec.mjs. It checks that every token named in a style is in the collection its property calls for, in v2/figma/semantic.txt or in ds-tokens/proposed/tokens.json, and that every part kind takes only the properties it may. It also checks that every state, prop value, part, role and precedence name exists, that every keyboard test id has a requirement, and that every prop used in an example is declared. It printed: hand check: no problems. The first run found one fault: easing/standard was missing. While I was working, the lead renamed it to ease/standard in tokens.json and button.spec.json. I changed the spec to ease/standard and reran both checks, which passed. The same script run on button.spec.json flags only the example prop href, which Button does not declare.",
+   "counts": "11 parts, 20 props, 6 states, 11 style rules, 29 requirements, 19 examples",
+   "radix_facts": [
+    "Radix has no Input part, so primitive.package is null and the control is the native input element. Of the installed @radix-ui packages (react-tabs, react-dialog, react-menu, react-dropdown-menu, react-id, react-slot and the rest), none is a text field.",
+    "@radix-ui/react-label is not installed (ls node_modules/@radix-ui/react-label: No such file or directory), so the label part is the native label element tied with for and id. Its primitivePart is null.",
+    "node_modules/@radix-ui/react-id/dist/index.mjs ends with `return deterministicId || (id ? `radix-${id}` : \"\");`. Its id comes from React.useId and falls back to a counter set in a layout effect. The spec says only that ids come from useId when the id prop is not given. It does not say whether the adapter calls React.useId directly or Radix's useId; Radix's version adds a radix- prefix.",
+    "No Radix data attributes apply. Every state selector is native (:hover, :focus-within, :placeholder-shown) or a data attribute set from a prop on the root (data-disabled, data-readonly, data-invalid). Each prop that sets one has its reflects field set to the same attribute.",
+    "I fetched the W3C WAI Forms tutorial index (https://www.w3.org/WAI/tutorials/forms/) and two of its pages: instructions (/instructions/) and notifications (/notifications/). From them the spec takes these points. Use the label element for the name. Tie instructions and errors to the field with aria-describedby. Placeholder text is not a replacement for a label. Mark required fields in the label text. Error messages say how to fix the problem. After a failed submit, move focus to the first field with an error. The tutorial does not explain aria-invalid; it only names WCAG technique ARIA21."
+   ],
+   "tokens_missing": [],
+   "decisions": [
+    "State selectors for disabled, read-only and invalid are data attributes on the root (data-disabled, data-readonly, data-invalid), not the native :disabled or [aria-invalid] on the input. This is so the label, control, prefix and suffix can all be styled from one place. The native disabled, readonly and required attributes and aria-invalid are still set on the input.",
+    "invalid takes effect only together with an errorMessage. Without one, the type checker reports an error and the component warns in development. data-invalid and aria-invalid are both set only while the error message is shown, so aria-describedby never points to an empty or missing element.",
+    "aria-describedby lists the error message id first, then the description id, so the error is read right after the name.",
+    "The error message is not a live region. It is read when focus reaches the field, and the form moves focus to the first invalid field after a failed submit. Reason: if every field announced its own error at once, the screen reader would talk over the person. Label: pattern, from the W3C notifications page and the Atlassian text field guidance.",
+    "Required is marked with the visible word Required after the label (part requiredMark, role indicator, aria-hidden). The native required attribute tells screen readers, so they do not hear it twice. It is never marked with colour or an asterisk alone. Whether people understand the word faster than an asterisk is an assumption (requirement input-required-word-understood).",
+    "The control uses a minimum height (size/control/sm, md and lg) rather than a fixed height, so text at 200 percent makes it taller instead of clipping. Button uses a fixed height. paddingBlock static/40 gives enlarged text some space above and below.",
+    "Where the pointer is coarse, the input, prefix and suffix use body-large (16 px) at every size and the control is at least size/target/min tall. The lg size also uses body-large everywhere.",
+    "Invalid adds border/error at width/md. Disabled sets the width back to width/sm, since precedence puts disabled first. Read-only keeps the strong edge and text/primary and changes only the fill, to surface/secondary/default, so the value stays readable.",
+    "When disabled, the label stays text/primary so the field still says what it is. Only the value, prefix and suffix use text/disabled, on surface/primary/disabled with border/primary/disabled.",
+    "The prefix and suffix are aria-hidden (role indicator). The label must say what they mean, for example Tip amount in dollars, and a content rule says so.",
+    "inputMode is an enum with default null, meaning the attribute is left off and the browser picks the keyboard from type. A checker that requires the default to be one of the values will reject this. The alternative is a default of text, which would override the email and tel keyboards.",
+    "There is a SHOULD requirement to use type text with inputMode numeric or decimal for amounts, card numbers and codes instead of type number. Label: pattern. Checkout is the first slice, so this matters early.",
+    "The native input's slot is input-input, following slug plus part name as on Button. It reads awkwardly; a reviewer may prefer input-field.",
+    "The error message is a container (a p element) holding an errorIcon glyph and an errorText span. This lets the icon-to-text gap be a token, because the schema does not let a text part take gap.",
+    "The figma field is component Input, wasCalled InputField, confirmed false. The figmaProperty names (label, description, errorMessage, invalid, required, disabled, readOnly, size, placeholder, prefix, suffix) are my reading and have not been checked against Figma."
+   ],
+   "pushback": [
+    "The schema has no pseudo-element. The placeholder colour is declared on the input under the :placeholder-shown state, but in Chrome a colour on the input does not reach ::placeholder, because the browser gives the placeholder its own colour. A generator that renders the rule literally will ship the wrong placeholder colour. The state description and the rule's why tell the renderer to write it to ::placeholder, but the schema needs a pseudo-element or a placeholderColor property.",
+    "No part kind fits a slot that may hold either an icon or short text. The prefix and suffix are kind text, which takes colour and typography but not iconSize, so an icon placed there cannot be sized from the spec.",
+    "React's InputHTMLAttributes already has size (a number, meaning the width in characters) and prefix (a string, from RDFa). The typed props need Omit<..., 'size' | 'prefix'>, or the type checker will complain as soon as engineers start.",
+    "Token prefixes are inconsistent. tokens.json names Size tokens without a prefix (control/md), but specs write size/control/md, as Button does. Border and Motion tokens are written without a prefix (width/sm, ease/standard). A checker has to know this rule for each collection.",
+    "While I worked, the lead renamed easing/standard to ease/standard in tokens.json and button.spec.json. My spec now uses ease/standard. Any other spec written from the brief's wording will have the old name.",
+    "The schema cannot say that a state on one part (focus on the control, through :focus-within) is caused by another part (the input). It also cannot say that a state on the root styles its descendants. Renderers have to infer both from the part's position in the anatomy.",
+    "The schema's focus fields onOpen and onClose do not apply to a text field. I filled them with 'Not applicable' rather than leave them out, so a checker that expects them finds them."
+   ],
+   "not_done": [
+    "Contrast is not measured. The spec only states contrast requirements: the edge at 3 to 1, text at 4.5 to 1, the placeholder, and the focus ring. text/placeholder is known to fail in light until the override lands.",
+    "Figma mapping is not confirmed against the Components file.",
+    "No Icon spec exists, so dependencies is empty even though the prefix, suffix and error icon take icons.",
+    "The examples for hover and focus are state stories. Their notes say what the test does, and the schema has no field for setting a state in an example.",
+    "I did not review the other spec or the generated folder that appeared alongside this one (dialog.spec.json, ds-components/generated/)."
+   ]
+  },
+  {
+   "kind": "spec",
+   "slug": "tabs",
+   "component": "Tabs",
+   "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/specs/tabs.spec.json",
+   "valid": true,
+   "validation_output": "valid (ajv also printed two warnings to stderr: unknown format \"uri\" ignored at #/properties/accessibility/properties/reference). A hand-check script compared every style token against v2/figma/semantic.txt by collection, plus ds-tokens/proposed/tokens.json. It also checked every state, prop, prop value, part and role named in the rules. It printed \"hand check clean\". On the first run it caught easing/standard: the lead renamed that token to ease/standard in tokens.json while I was working (Button changed to match), and I fixed it in the spec.",
+   "counts": "5 parts (root, list, trigger, indicator, content), 15 props, 5 states, 16 style rules, 28 requirements (21 MUST, 6 SHOULD, 1 COULD), 13 keyboard entries, 12 examples",
+   "radix_facts": [
+    "@radix-ui/react-tabs 1.2.1, dist/index.mjs line 35: orientation = \"horizontal\" is the default on Root",
+    "react-tabs index.mjs line 37: activationMode = ActivationMode.Automatic, so the default is automatic; the values are automatic and manual",
+    "react-tabs index.mjs line 44: defaultProp: defaultValue ?? \"\" means no tab is selected unless value or defaultValue is given. That is why the spec makes one of them required",
+    "react-tabs index.mjs line 61: Root renders dir={direction} and \"data-orientation\": orientation",
+    "react-direction dist/index.mjs lines 17-20: useDirection returns localDir || globalDir || Direction.LTR, so dir falls back to ltr and can be inherited from a DirectionProvider",
+    "react-tabs index.mjs line 74: List has loop = true by default",
+    "react-tabs index.mjs lines 88-89: List has role \"tablist\" and \"aria-orientation\": context.orientation",
+    "react-roving-focus 1.2.1 index.mjs lines 100-101: the group (List) gets tabIndex 0 (-1 while tabbing back out or with no focusable items) and \"data-orientation\"",
+    "react-roving-focus index.mjs lines 175-176: each item (Trigger) gets tabIndex 0 only when it is the current tab stop, -1 otherwise, plus \"data-orientation\"",
+    "react-tabs index.mjs line 112: focusable: !disabled, so the arrow keys skip a disabled trigger",
+    "react-tabs index.mjs lines 117-123: Trigger has type \"button\", role \"tab\", aria-selected, aria-controls=contentId, \"data-state\": isSelected ? \"active\" : \"inactive\", \"data-disabled\": disabled ? \"\" : undefined, and the native disabled attribute",
+    "react-tabs index.mjs line 130: a primary mouse-down without Ctrl selects. Line 140: Space or Enter selects. Lines 144-146: focus selects unless activationMode is manual",
+    "react-tabs index.mjs lines 171-177: Content has data-state active or inactive, data-orientation, role \"tabpanel\", aria-labelledby=triggerId, hidden={!present}, and tabIndex 0. Children are rendered only while present",
+    "react-roving-focus index.mjs lines 212-220: MAP_KEY_TO_FOCUS_INTENT maps ArrowLeft and ArrowUp to prev, ArrowRight and ArrowDown to next, PageUp and Home to first, PageDown and End to last",
+    "react-roving-focus index.mjs lines 222-235: in rtl, ArrowLeft and ArrowRight swap. A vertical list ignores Left and Right, and a horizontal list ignores Up and Down",
+    "react-roving-focus index.mjs line 192: a key with metaKey, ctrlKey, altKey or shiftKey is ignored. Line 200: wrapping happens only when loop is true. Lines 185-187: Shift+Tab calls onItemShiftTab so focus leaves the group",
+    "react-tabs dist/index.d.ts line 55: forceMount?: true on Content. The spec does not expose it",
+    "WAI-ARIA APG Tabs page, fetched: Tab enters at the active tab and then goes to the tabpanel. Left/Right for horizontal, Up/Down for vertical, wrapping. Home and End are optional. Space or Enter activates when focus does not. Automatic activation is recommended only when panels show without delay. The tabpanel gets tabindex 0 when its first content is not focusable. aria-orientation is vertical for vertical lists. The page does not cover whether disabled tabs are focusable"
+   ],
+   "tokens_missing": [],
+   "decisions": [
+    "Variant line or pill, default line. line marks the selected tab with a border/brand line 2 pixels thick (width/md) and a heavier label. pill fills the selected tab with interactive/neutral/default and a text/inverse label. I chose not to use a pink pill fill: a filled brand shape reads as the page's primary action and would compete with the primary button.",
+    "The selected tab is shown in three ways, not by colour alone. The label weight goes from body-base (500) to label-base (600), both 14 on 20 so the row height holds. In line, the label goes from text/secondary to text/primary and the brand line appears. In pill, the fill appears. The label is never set in text/brand. Measured contrast: border/brand is 7.88:1 in light and 3.83:1 in dark against the page, which passes 3:1 for non-text. The pill fill is 21:1 and 17.61:1, and text/inverse on it is 21:1 and 17.61:1. text/secondary is 5.10:1 in light and 7.66:1 in dark; on surface/primary/hover it is 4.80:1 and 6.66:1.",
+    "I changed weight through the type role, not fontWeight, because no collection is defined for the fontWeight property. A SHOULD with test tabs-no-width-shift asks the renderer to reserve the heavier width.",
+    "Size has sm (32) and md (40), default md, with no lg because a tab is navigation and never the main action. Where the pointer is coarse, tabs grow to size/target/min (44).",
+    "The indicator is its own part: a layer with role indicator, aria-hidden, drawn by its border with width/md, transparent until selected. The schema has no one-sided border, so its edge is set by a requirement with a test: bottom when horizontal, inline-start when vertical. Being a border also keeps it visible in forced colours. Pill gets a forced-colours rule that adds a 2 pixel border in the current colour.",
+    "State names: the trigger state is called selected (selector [data-state=\"active\"]) so it never collides with :active, which Button uses for a press. disabled uses [data-disabled]. contentFocus (:focus-visible on the panel) exists because Radix gives the panel tabIndex 0, so the panel needs a focus ring. orientation is a prop that reflects data-orientation, not a state.",
+    "The list has static/40 padding on every side, which equals focus/width plus focus/offset. A list that scrolls sideways also clips on the other axis and would cut off the focus rings. A test checks the rings of the first and last tab.",
+    "The props are flat, so props on the compound parts get prefixed names: triggerValue, triggerDisabled and contentValue. The adapter passes them to Radix as value and disabled. label is the trigger's words; children is the panel's content.",
+    "value or defaultValue is required by the type checker (tabs-one-selected), because Radix otherwise starts with no tab selected. ariaLabel or ariaLabelledby on the list is also required by type.",
+    "dir is an enum ltr or rtl with default ltr, which reflects Radix's fallback; the description says it is inherited from a DirectionProvider when not given.",
+    "Size tokens use the size/ prefix (size/control/md, size/target/min) to match button.spec.json, although tokens.json names them control/md and so on. The checker should strip size/ for the Size collection, as my hand check did. Motion easing uses ease/standard, the name the lead changed to during this run.",
+    "The keyboard table lists PageUp and PageDown because Radix handles them, and says that the APG does not ask for them.",
+    "Requirements that make claims about people carry labels. tabs-selected-in-view-on-mount and tabs-few-tabs (two to four tabs on a phone) are labelled assumption and belong in the human test plan."
+   ],
+   "pushback": [
+    "The declarations have no overflow property, so 'the list scrolls sideways inside itself and the page never does' can only be a requirement (tabs-list-scrolls-inside, test tabs-no-page-scroll-320, plus axe scrollable-region-focusable). A style rule cannot say it.",
+    "The declarations have no layout direction (flex row or column) and no alignment, so horizontal versus vertical layout is a requirement (tabs-orientation-layout) that the renderer meets from data-orientation.",
+    "The declarations have no per-side border, so neither an underline nor a list divider can be expressed. The underline became a separate indicator part whose edge is given only in prose and a requirement (tabs-indicator-edge). The divider under the whole list is in notCarried. A borderSide or borderBlockEndWidth property would fix both.",
+    "The declarations have no white-space or text-overflow, so 'labels stay on one line and are never ellipsised' is a requirement, not a style.",
+    "Props are a flat map keyed by name, so a compound component cannot have value on Root, Trigger and Content at once. I prefixed them (triggerValue, contentValue, triggerDisabled). The schema could allow props grouped by part, or a 'name' field separate from the key.",
+    "Size tokens are written size/control/md in Button but named control/md in tokens.json. The schema does not say whether the collection prefix belongs in the path, so the checker has to decide.",
+    "The fontWeight declaration has no assigned collection. I avoided it by switching type roles.",
+    "State figma mappings: there is no known Figma property for selected. I wrote property selected with value true as a guess, and figma.confirmed is false."
+   ],
+   "not_done": [
+    "Figma property mapping is unconfirmed: the Components file was not available, so the variant values line and pill and every figmaProperty are my proposal, not read from Figma.",
+    "None of the generated test ids exist yet. They are named for the generator to create.",
+    "I did not run the contrast audit tool (v2/tools/audit-contrast.mjs) or add the tab pairs to v2/tools/contrast-pairs.json, because I may edit only the spec. I computed the ratios with the repo's own resolver and color library in a scratch script.",
+    "I did not check the label-base weight change for layout shift in a browser. It is left to test tabs-no-width-shift.",
+    "I did not call a second reviewer after writing the file."
+   ]
+  },
+  {
+   "kind": "spec",
+   "slug": "dropdown-menu",
+   "component": "DropdownMenu",
+   "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/specs/dropdown-menu.spec.json",
+   "valid": true,
+   "validation_output": "unknown format \"uri\" ignored in schema at path \"#/properties/accessibility/properties/reference\"\nunknown format \"uri\" ignored in schema at path \"#/properties/accessibility/properties/reference\"\nvalid\n\nI also ran the lead's checker in memory: I imported checkSpecs from v2/tools/check-specs.mjs and ran it on button and dropdown-menu, without running main, so no generated files were written. It reported \"checks 28 findings 14\". All 14 findings are in button.spec.json and none are in dropdown-menu.spec.json. My own extra script found no keyboard test id without a matching test requirement, no example part missing from the anatomy, and no \"controls\" pointing at a missing prop.",
+   "counts": "16 parts, 31 props, 18 states, 13 style rules, 42 requirements (36 MUST, 3 SHOULD, 3 COULD), 15 examples. Also 12 keyboard entries, 6 content rules, 1 dependency (Button) and 12 notCarried entries.",
+   "radix_facts": [
+    "Versions: react-dropdown-menu 2.2.1, react-menu 2.2.1, react-popper 1.4.0 (from each package.json).",
+    "Root modal defaults to true: react-dropdown-menu/dist/index.mjs line 31, `modal = true`. defaultOpen falls back to false at line 37, `defaultProp: defaultOpen ?? false`.",
+    "Trigger attributes, react-dropdown-menu/dist/index.mjs lines 67-74: type button, aria-haspopup \"menu\", aria-expanded context.open, aria-controls set only while open, data-state open or closed, data-disabled \"\" when disabled, and the native disabled attribute.",
+    "Trigger opens on pointerdown, not click, with the left button and no Ctrl key: lines 77-81.",
+    "Trigger keys, lines 83-88: Enter and Space toggle open; ArrowDown only opens; all three call preventDefault. ArrowUp is not handled.",
+    "Content gets aria-labelledby set to the trigger id at line 110. Focus returns to the trigger on close unless there was an outside interaction while non-modal or a right-click: lines 114-124.",
+    "Content exposes --radix-dropdown-menu-content-available-width and --radix-dropdown-menu-content-available-height: lines 129-133.",
+    "loop defaults to false: react-menu/dist/index.mjs line 186, `loop = false`.",
+    "Content sets role menu, aria-orientation vertical and data-state from getOpenState (open or closed): react-menu lines 327-330. getOpenState is at lines 799-801.",
+    "On mount, focus goes to the content element itself, not an item: react-menu lines 295-298. Roving entry focus is cancelled when the menu was not opened by keyboard: lines 320-322.",
+    "Inside the content, Tab is cancelled with preventDefault (react-menu line 342). A printable character with no modifier starts type-ahead (line 343). When the content element itself has focus, ArrowDown, PageUp and Home focus the first enabled item, and ArrowUp, PageDown and End focus the last (FIRST_KEYS and LAST_KEYS at lines 38-39; handler at lines 346-352).",
+    "Type-ahead skips disabled items, and its search buffer resets after 1000 ms: react-menu lines 233-251. getNextMatch (lines 824-835) treats a repeated single letter as stepping through the items that start with it.",
+    "Modal content hides everything else with hideOthers, traps focus, disables outside pointer events and locks scroll: react-menu lines 144-162. Non-modal does none of these: lines 166-179.",
+    "Item select: Enter and Space click the item (SELECTION_KEYS at line 37; handler at lines 434-446). Space is ignored while a type-ahead search is in progress (lines 438-441). The menu closes unless onSelect calls preventDefault (lines 407-418).",
+    "Item data attributes: data-highlighted \"\" while focused, aria-disabled and data-disabled \"\" when disabled: react-menu lines 475-478. Focus is set by onFocus and onBlur at lines 499-500. A mouse pointermove focuses the item (lines 480-494) and applies only to pointerType mouse (whenMouse, lines 859-861). Disabled items are not focusable (line 472, `focusable: !disabled`).",
+    "Checkbox item: role menuitemcheckbox, aria-checked (mixed when indeterminate), data-state from getCheckedState: react-menu lines 512-518. checked defaults to false at line 510. getCheckedState returns indeterminate, checked or unchecked: line 807-808.",
+    "Radio item: role menuitemradio, aria-checked, data-state checked or unchecked: react-menu lines 547-554. RadioGroup renders MenuGroup, which is role group: lines 538 and 387.",
+    "Label is a plain div with no role and no link to its group: react-menu lines 390-395.",
+    "ItemIndicator is mounted only while checked or indeterminate, unless forceMount is set, and carries data-state: react-menu lines 576-583.",
+    "Separator: role separator, aria-orientation horizontal: react-menu lines 593-598.",
+    "Popper defaults: side bottom, sideOffset 0, align center, alignOffset 0, avoidCollisions true, collisionPadding 0, sticky partial, hideWhenDetached false: react-popper/dist/index.mjs lines 103-112.",
+    "Popper middleware runs shift (main axis only) before flip: react-popper lines 147-155. So a menu near a side edge shifts sideways and data-align does not change.",
+    "Content carries data-side and data-align from the placement actually used: react-popper lines 247-248.",
+    "Roving focus key map: ArrowUp is prev, ArrowDown is next, PageUp and Home are first, PageDown and End are last: react-roving-focus/dist/index.mjs lines 212-220. Wrap-around happens only when loop is set (line 200)."
+   ],
+   "tokens_missing": [
+    {
+     "collection": "Size",
+     "name": "separator/thickness",
+     "value": "1 (px)",
+     "why": "No Size token is 1 pixel, so the separator's height cannot be a token. The spec draws the separator as the border of an empty div with width/sm, which renders a 2 pixel line (top and bottom edges together). Once this token exists, the separator rule becomes height separator/thickness with background border/primary/default."
+    }
+   ],
+   "decisions": [
+    "The highlighted item is filled with interactive/neutral/default and its text is text/inverse. An error-tone item is filled with interactive/error/default and its text is text/on. Reason: in a menu the highlight is the only sign of keyboard focus. Every subtle fill measured is almost invisible against the content: in light, surface/primary/hover is 1.06 to 1 and surface/tertiary/default is 1.13 to 1. The near-black fill is 21 to 1 in light and 17.6 to 1 in dark. Measured: text/inverse on it is 21 and 17.6, text/on on interactive/error/default is 4.83, and the error fill against the content is 4.83 in light and 3.65 in dark. To reverse, swap one token per rule back to surface/tertiary/default (1.13 to 1) with text/primary, and accept that keyboard focus is barely visible.",
+    "Prop keys follow one rule. A root prop is named plainly (open, modal, dir). A prop of any other part is named part.prop (item.disabled, radioGroup.value, content.side). Reason: disabled, children and value each exist on several parts, and props are a flat map.",
+    "Souvenir changes three Radix defaults. content.align is start instead of center, so the menu lines up under the trigger. content.sideOffset is 4 instead of 0, the value of static/40. content.collisionPadding is 8 instead of 0, the value of static/80, so a menu never touches the edge of a phone screen. side bottom, modal true and loop false are kept as Radix sets them.",
+    "Radix's behaviour is kept wherever it differs from the WAI-ARIA pattern, and each difference is stated in the spec and pinned by a test. Tab inside the menu is held and does not close it. Space on a checkbox or radio item closes the menu. Disabled items are skipped rather than focusable. ArrowUp on the trigger does nothing. Reason: the generated tests run against Radix, and patching the primitive would mean maintaining a fork. Keeping a checkbox item open on select is recorded as a COULD with the label assumption.",
+    "Highlight is styled only through [data-highlighted], never through :hover, and items show no focus ring. In forced-colours mode, where background fills are removed, the highlighted item instead draws a border/focus outline of focus/width with no offset.",
+    "Item labels use body-base, group labels use label-base in text/secondary, and shortcut hints use body-small in text/secondary. Items are at least control/sm tall, and target/min where the pointer is coarse. The group label is a step larger than label-small because the UI fixes tracker asks for bigger section headers in the model selector.",
+    "Checkbox and radio items have an indicatorBox part that is always present, icon/sm wide. Radix unmounts the ItemIndicator when the item is unchecked, and without the box the label would move sideways.",
+    "Checked state is a boolean only. Radix's indeterminate value is not offered.",
+    "The trigger has no styles in this spec, because Button owns its look. The chevron that shows open and closed is left to the Button's iconEnd and recorded as a COULD (dropdown-menu-trigger-shows-open, label assumption).",
+    "Size tokens are written without a prefix (control/sm, icon/sm, target/min, menu/min, menu/max), because those are the names in ds-tokens/proposed/tokens.json and the names the checker looks up. This differs from Button; see pushback.",
+    "Figma mappings: figma.component is Dropdown, which is also wasCalled, and confirmed is false. The highlighted state maps to state=highlighted, as the owner's map names it, and the disabled states map to state=disabled. Every figmaProperty is null, because the Components file was not checked."
+   ],
+   "pushback": [
+    "button.spec.json fails the lead's checker 14 times. 13 are token findings: it writes size/control/md, size/icon/sm, size/target/min and so on, but tokens.json and the checker use control/md, icon/sm and target/min. The 14th is an example-props finding: the as-link example uses href, which Button does not list as a prop. I did not edit Button because it is not on my MAY EDIT list. Either fix Button or teach the checker to accept the size/ prefix.",
+    "Root and Portal render no DOM element. The schema requires the first anatomy part's slot to equal the slug, so data-slot=\"dropdown-menu\" is reserved but no element in the page carries it.",
+    "Prop names collide across parts (disabled, children, value). The schema has one flat props map and no way to scope a prop to a part, so I used the part.prop key convention. The generators for typed props and stories must know to split on the dot.",
+    "A controlled prop has no real default, but the schema requires a default for every boolean and enum prop. open and dir declare false and ltr, and their descriptions say the default means absent. A generator that applies defaults blindly would hold the menu shut or override a direction provider.",
+    "The schema has no maxHeight, overflow, margin, opacity or transform properties. So the content's inner scrolling and its cap to the available width and height, both set from Radix CSS variables, live in requirements for the adapter rather than in styles. Separator spacing and enter and exit motion are not specified at all.",
+    "The schema has no way to style a part only inside one item kind. itemIcon and itemShortcut are written only for plain items. itemLabel is shared by all three item kinds, which means three props (item.children, checkboxItem.children, radioItem.children) all target the one itemLabel part.",
+    "Each item kind needs its own highlighted, disabled and checked states, because a state is on exactly one part. That gives nine near-duplicate states and three repeated base declarations. The schema cannot say that one state applies to several parts.",
+    "A label is a div with text that needs padding. The text kind may not take padding, so label is declared as a container.",
+    "Examples for a compound component have no defined structure. The content field holds my own nested shape: part, props keyed by spec prop names, a button object for the trigger's Button props, children, and label. The story generator needs to agree on it."
+   ],
+   "not_done": [
+    "The lint rule no-hover-on-menu-items, named by the requirement dropdown-menu-no-hover-selector, does not exist yet.",
+    "Highlight and text contrast were measured from the Figma snapshot token values only (my scratch script used v2/tools/lib/snapshot.mjs and scripts/lib/color.mjs). Nothing has been rendered, and the forced-colours outline has not been seen in a browser.",
+    "No browser test, stylesheet, typed props or story was generated; the 30 test: ids exist only as requirements.",
+    "The Figma Dropdown component was not opened, so every figma mapping and figmaProperty is unconfirmed.",
+    "The claim that Radix shifts rather than flips alignment at the right edge, and the 320 pixel worst case, come from reading the middleware order. They were not run.",
+    "v2/tools/check-specs.mjs was not run through its main entry point, because that writes ds-components/generated, which is not on my edit list. I imported its checkSpecs function instead.",
+    "The WAI-ARIA pages were fetched and summarised through WebFetch, which returns a summary rather than the full page text."
+   ]
+  },
+  {
+   "kind": "spec",
+   "slug": "dialog",
+   "component": "Dialog",
+   "file": "/Users/chaitanyalandge/Library/Application Support/Claude/scratch-workspaces/ebabe688-c813-4d37-95fc-498a492cc12d/5e00ea11-9ff3-4643-b571-765ec27a06ab/scratch-2026-11-13-02c7be/ds-components/specs/dialog.spec.json",
+   "valid": true,
+   "validation_output": "valid (ajv also printed: unknown format \"uri\" ignored in schema at path \"#/properties/accessibility/properties/reference\", twice; this is a warning from the schema, not an error). Hand check, run with a script (scratchpad check-dialog.mjs) that tests every style token against semantic.txt by collection plus ds-tokens/proposed/tokens.json, every state, prop value, part and role, every precedence entry and every keyboard test id against a requirement: \"hand check: nothing found\". The first run found easing/standard missing. The proposed tokens.json was changed during this run to name the curve ease/standard (git diff shows a 1-line change in ds-tokens/proposed/tokens.json). The spec now uses ease/standard.",
+   "counts": "11 parts, 13 props, 6 states, 5 style rules, 30 requirements (24 MUST, 5 SHOULD, 1 COULD), 11 examples",
+   "radix_facts": [
+    "@radix-ui/react-dialog is version 1.3.1. dist/index.mjs:37 `modal = true` is the default for modal.",
+    "index.mjs:44 `defaultProp: defaultOpen ?? false`: defaultOpen defaults to false, and open is controlled through useControllableState with onOpenChange.",
+    "index.mjs:82-86 Trigger: `type: \"button\"`, `\"aria-haspopup\": \"dialog\"`, `\"aria-expanded\": context.open`, `\"aria-controls\": context.open ? context.contentId : void 0`, `\"data-state\": getState(context.open)`. getState returns open or closed.",
+    "index.mjs:109 Overlay: `return context.modal ? ... : null`, so Overlay renders only when modal is true.",
+    "index.mjs:126 the scroll lock is on the Overlay (RemoveScroll wraps Overlay), and index.mjs:137 Overlay has `\"data-state\"`.",
+    "index.mjs:263 Content has `\"data-state\": getState(context.open)`. Title (Primitive.h2, line 284), Description (Primitive.p, line 297) and Close (line 308, type button) have no data-state.",
+    "index.mjs:259-262 Content sets `role: \"dialog\"`. `aria-labelledby` is set only when `context.titlePresent`, and `aria-describedby` only when descriptionPresent. Radix sets no aria-modal anywhere: a grep for aria-modal in dist found nothing.",
+    "index.mjs:165 `hideOthers(content)` puts aria-hidden on everything outside the content. index.mjs:172-173 `trapFocus: context.open`, `disableOutsidePointerEvents: context.open`. react-dismissable-layer index.mjs:113 sets `ownerDocument.body.style.pointerEvents = \"none\"`.",
+    "index.mjs:251 FocusScope has `loop: true`, so Tab and Shift+Tab wrap (react-focus-scope index.mjs:124-145).",
+    "Focus on open: react-focus-scope index.mjs:99 `focusFirst(removeLinks(getTabbableCandidates(container)))` focuses the first tabbable element that is not a link. index.mjs:101 `focus(container)` is the fallback when nothing is tabbable, and index.mjs:147 gives the container `tabIndex: -1`. onOpenAutoFocus is FocusScope's onMountAutoFocus and can be prevented.",
+    "Focus on close (modal), react-dialog index.mjs:174-177: onCloseAutoFocus calls `event.preventDefault(); context.triggerRef.current?.focus();`. Focus always goes to the trigger. With no Trigger part, nothing is focused. A consumer handler that calls preventDefault first replaces this behaviour (composeEventHandlers).",
+    "Non-modal close, index.mjs:208: focus returns to the trigger only if the person did not interact outside.",
+    "Escape, react-dismissable-layer index.mjs:92-99: `if (event.key !== \"Escape\") return; onEscapeKeyDown?.(event); if (!event.defaultPrevented && onDismiss) {...onDismiss()}`. The listener is on the document in the capture phase (line 105, `{ capture: true }`) and is only active when `isHighestLayer` (line 90).",
+    "Outside press: index.mjs:266 `deferPointerDownOutside: true` and index.mjs:267 `onDismiss: () => context.onOpenChange(false)`. index.mjs:181-182: a right-click or Ctrl+left-click outside calls preventDefault, so it does not close. Focus outside is always prevented in modal mode (index.mjs onFocusOutside preventDefault).",
+    "Missing Title warning: there is none in 1.3.1. index.mjs:316-317 `var WarningProvider = ... return props.children;` and index.d.ts:94 marks it `@deprecated Noop component to avoid breaking changes`. A grep for warn in dist found nothing.",
+    "APG Dialog (Modal) page fetched: Tab and Shift+Tab wrap; Escape closes; initial focus usually goes to the first focusable element, or to a static element with tabindex -1 for long content; for hard-to-reverse actions, the least destructive action; focus returns to the invoking element; role dialog, aria-modal true, aria-labelledby the visible title, and aria-describedby optional, to be left out for structured content."
+   ],
+   "tokens_missing": [
+    {
+     "collection": "Size",
+     "name": "dialog/margin",
+     "value": "16",
+     "why": "The gap between the dialog and the screen edge on a narrow screen. The spec uses Density static/160 as overlay padding in its place. That is a spacing token standing in for a layout margin, and it is the nearest existing token."
+    },
+    {
+     "collection": "Layer",
+     "name": "layer/overlay",
+     "value": "a z-index above page content and menus",
+     "why": "The overlay must stack above everything. No layer tokens exist, so the spec does not use the layer property and lists stacking under notCarried."
+    }
+   ],
+   "decisions": [
+    "The public API takes props (title, description, children for the body, actions, trigger) and composes the Radix parts inside. Reason: a required title prop lets the type checker enforce the name. Radix 1.3.1 no longer warns when Title is missing, and a compound API cannot enforce that a child is present.",
+    "modal is fixed to true and is not a prop. Reason: with modal false, Radix renders no overlay (index.mjs:109), so the 16 pixel margin, the scroll lock and the inert page would all be lost. A non-modal surface would be Popover or Sheet. The task asked me to consider Radix's props, so please confirm.",
+    "Content is nested inside Overlay, and the overlay's padding (static/160) is the margin to the screen edge. Reason: it is the only way to express that margin with tokens, since the schema has no margin property. Radix supports this nesting, and hideOthers keeps the overlay visible because it is an ancestor of the content.",
+    "The open prop has default null, meaning not set, so the dialog holds its own state. Reason: the schema requires a default for a boolean, and false would be wrong, because a set false makes the dialog controlled and always closed.",
+    "I added an initialFocus prop (control or title, default control). Reason: APG says long content should focus a static element at the top. The default matches what Radix does.",
+    "Content gets a transparent width/sm border, as Button does, so the edge survives in forced-colours mode where shadow/lg disappears. Title uses heading-5 (18 px), description body-base in text/secondary, and header, body and footer padding scaled/240 so it shrinks in compact density.",
+    "Exit is faster than entrance: the closed and overlayClosed states use duration/fast, while open uses duration/base.",
+    "The dismissible prop goes on content, not root, because it is carried out through Content's Escape and outside-press handlers. When it is false, a tabbable footer action that ends the step is a MUST, because WCAG 2.1.2 forbids trapping keyboard users.",
+    "figmaProperty for size, title and description is guessed as the same name, with figma.confirmed false. The Components file was not available, so the Modal mapping is unchecked."
+   ],
+   "pushback": [
+    "Root and Portal render no DOM element. The schema requires an element and says data-slot is carried in every renderer, but data-slot=dialog and data-slot=dialog-portal never reach the page. I used kind slot and an element string that begins with none. The schema needs a way to mark a part that has no element.",
+    "The declarations cannot state position, inset, display or flex direction, max-height, overflow or margin. The core mobile behaviour (content height capped at the viewport, only the body scrolls, header and footer stay visible) is therefore stated as MUST requirements (dialog-fits-320, dialog-body-scrolls) and in notCarried, not in styles.",
+    "The opacity property has no tokens, and there is no keyframe or transform property, so the dialog's fade and scale cannot be specified. Only duration and easing are given.",
+    "The layer property exists in the schema, but there is no Layer token collection, so overlay stacking is left out.",
+    "A boolean prop must have a default, but a controlled open prop has no honest boolean default. I used null.",
+    "Roles.json says the dialog role exposes aria-modal, but Radix 1.3.1 never sets it. The adapter must add it (requirement dialog-aria-modal).",
+    "Each state entry has only one part (on), so the data-state values on content, overlay and trigger need six separately named states (open, closed, overlayOpen, overlayClosed, triggerOpen, triggerClosed). A state that spans parts would be cleaner.",
+    "Button's spec uses easing/standard, but tokens.json now names it ease/standard. The Button spec is out of date and should be updated by whoever owns it."
+   ],
+   "not_done": [
+    "No browser tests, stylesheet or adapter code were written. The requirement test ids are names only, and none of them exist yet.",
+    "Not checked against the Figma Components file: every figma mapping is unconfirmed.",
+    "Not checked: text contrast of text/secondary against surface/primary/default in dark mode. I relied on the requirement and the generated test, not my own measurement.",
+    "AlertDialog and Sheet are named in notCarried but have no specs. The no-description example uses a plain list instead of a cost summary component, because no such spec exists yet."
+   ]
+  }
+ ],
+ "checker": {
+  "kind": "checker",
+  "commands": [
+   {
+    "command": "node v2/tools/check-specs.mjs --self-test",
+    "exit_code": 0,
+    "last_line": "ok   dark-label-on-brand: fired alone (1 finding): button.spec.json at styles[33].parts.label.color: the text part label is set to text/brand, which is 3.83 to 1 in the dark theme, below the 4.5 to 1 body text needs.  (Exactly 14 lines, all 'ok', each check fired alone against Button's own baseline findings.)"
+   },
+   {
+    "command": "node v2/tools/check-specs.mjs  (final real run, only button.spec.json on disk)",
+    "exit_code": 1,
+    "last_line": "1 specs, 14 checks run, 14 findings"
+   },
+   {
+    "command": "node v2/tools/check-specs.mjs --report-only",
+    "exit_code": 0,
+    "last_line": "1 specs, 14 checks run, 14 findings"
+   },
+   {
+    "command": "node v2/tools/check-specs.mjs --report-only <scratchpad>/input.spec.json (truncated JSON) <scratchpad>/tabs.spec.json (wrong types everywhere, root slot 'button') <scratchpad>/dialog.spec.json (a JSON array) <scratchpad>/missing.spec.json ds-components/specs/button.spec.json",
+    "exit_code": 0,
+    "last_line": "5 specs, 31 checks run, 48 findings  (Robustness test. The truncated file and the missing file each became one 'read' finding. The array file became one 'schema' finding. The half-written file ran all 14 checks without crashing. The cross-spec slot-unique check fired in both directions between tabs and button. Afterwards the full real run was repeated, so the generated files reflect only the real specs.)"
+   }
+  ],
+  "findings_in_real_specs": [
+   "When the final run finished, only ds-components/specs/button.spec.json existed. input, tabs, dropdown-menu and dialog were all missing. The run found 14 errors and 0 warnings in Button. Every one is real and still open, because button.spec.json is not on my MAY EDIT list.",
+   "token, 13 errors: Button names its Size tokens with a 'size/' prefix: size/control/sm, size/control/md and size/control/lg (height and width at styles[0], [21], [22], [24], [25], [26]), size/icon/sm and size/icon/md (iconSize on iconStart, iconEnd and spinner at styles[0] and [21]), and size/target/min (minHeight at styles[23]). ds-tokens/proposed/tokens.json names these tokens control/*, icon/* and target/min in the Size collection. Button writes every other collection without a prefix (width/sm, focus/offset, height/40, static/160), so the spec does not follow its own pattern. Each message suggests the near match, for example 'Did you mean \"control/md\"?'. Someone has to decide whether to rename the tokens in the spec or in the proposed file. I did not loosen the check to let Button pass.",
+   "example-props, 1 error: examples[15] ('as-link') passes href. Under asChild that prop goes through to the child link, but it is not listed in props, and the only exemption is children. The fix is either to list href or a pass-through rule in the spec, or to drop it from the example.",
+   "Tokens Button uses: 34 come from Figma (the semantic Themes, Density, Radius and Typography collections) and 5 are proposed and not yet in Figma: width/sm, focus/width, focus/offset, duration/fast and easing/standard. The 13 Size references above were not counted, because they do not resolve.",
+   "Generated files: ds-components/generated/spec-index.json lists Button with 5 parts, 13 props and 5 states, plus check ids by kind: 13 test, 1 axe, 1 lint, 1 type, 2 manual. ds-components/generated/test-ids.json lists 13 test ids, each with its spec, requirement id, level and text.",
+   "The dark-label-on-brand check found nothing in Button, because no text part uses text/brand."
+  ],
+  "not_done": [
+   "The 14 Button errors are still open: the Size token naming (spec or proposed file) and the href in the as-link example. Fixing them needs an edit to button.spec.json or to ds-tokens/proposed/tokens.json, and neither is on my MAY EDIT list. Until then, the plain real run exits 1.",
+   "input, tabs, dropdown-menu and dialog were not on disk at the final run, so none of them has been checked. Running the tool again once they land will check them and regenerate the index files. If they copy Button's size/... form, they will get the same Size errors.",
+   "opacity and layer have no token collection yet. My choice: a value for either that is not a keyword is reported as a warning (check 'token', severity warn) and is not checked against any token list.",
+   "Unreadable files are reported under a fifteenth id, 'read', outside the 14 checks. 'C checks run' counts each check run on each spec: 14 per readable spec, 1 per unreadable file or file that is not a JSON object.",
+   "The self-test plants every fault inside one copy of Button, so the cross-spec forms of slot-unique and requirement-ids are not covered by the self-test. Only the ad-hoc run against the scratchpad broken files showed the cross-spec slot-unique check firing. The cross-spec requirement-ids check has not been seen firing at all.",
+   "In spec-index.json the token split is under the keys fromFigma and proposed, not 'from-figma'.",
+   "fontWeight values are looked up as font-weight/<value>, so a spec must write the bare name (for example 'label'). A value written as the full path 'font-weight/label' would be reported as a token error."
+  ]
+ },
+ "figma": {
+  "kind": "figma",
+  "reached_components_file": false,
+  "file_key": "",
+  "components": [
+   {
+    "figma_name": "Button (read from a remote copy in the Semantic Tokens file, key 1b0eab109ff3b188d68f6cf59ffe97f799caebd4, not the current library)",
+    "node_id": "14:74",
+    "properties": [
+     {
+      "name": "variant",
+      "type": "VARIANT",
+      "values": [
+       "primary",
+       "secondary",
+       "tertiary",
+       "outline",
+       "ghost",
+       "danger",
+       "dangerSoft"
+      ],
+      "default": "primary"
+     },
+     {
+      "name": "state",
+      "type": "VARIANT",
+      "values": [
+       "default",
+       "hover",
+       "focus",
+       "disabled"
+      ],
+      "default": "default"
+     },
+     {
+      "name": "size",
+      "type": "VARIANT",
+      "values": [
+       "sm",
+       "md",
+       "lg"
+      ],
+      "default": "sm"
+     },
+     {
+      "name": "iconOnly",
+      "type": "VARIANT",
+      "values": [
+       "false",
+       "true"
+      ],
+      "default": "false"
+     },
+     {
+      "name": "label#2218:8",
+      "type": "TEXT",
+      "values": [],
+      "default": "Call to action"
+     },
+     {
+      "name": "prefix#2218:0",
+      "type": "INSTANCE_SWAP",
+      "values": [],
+      "default": "14:22"
+     },
+     {
+      "name": "suffix#2218:2",
+      "type": "INSTANCE_SWAP",
+      "values": [],
+      "default": "14:22"
+     },
+     {
+      "name": "showPrefix#2218:6",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     },
+     {
+      "name": "showSuffix#2218:4",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     }
+    ]
+   },
+   {
+    "figma_name": "Input (remote copy in the Semantic Tokens file, key 25e9177deb48302160dd209d8132375727f41b69)",
+    "node_id": "14:1017",
+    "properties": [
+     {
+      "name": "variant",
+      "type": "VARIANT",
+      "values": [
+       "primary",
+       "secondary"
+      ],
+      "default": "primary"
+     },
+     {
+      "name": "state",
+      "type": "VARIANT",
+      "values": [
+       "placeholder",
+       "hover",
+       "focus",
+       "filled",
+       "error",
+       "disabled"
+      ],
+      "default": "placeholder"
+     },
+     {
+      "name": "type",
+      "type": "VARIANT",
+      "values": [
+       "text",
+       "password",
+       "number"
+      ],
+      "default": "text"
+     },
+     {
+      "name": "value#13605:7",
+      "type": "TEXT",
+      "values": [],
+      "default": "value"
+     }
+    ]
+   },
+   {
+    "figma_name": "TextField (remote copy in the Semantic Tokens file, key 971a93e4b0dd1885365982cc3ed15c24dc9dbc89; wraps Input through typeInput)",
+    "node_id": "14:6419",
+    "properties": [
+     {
+      "name": "state",
+      "type": "VARIANT",
+      "values": [
+       "placeholder",
+       "hover",
+       "focus",
+       "filled",
+       "error",
+       "disabled"
+      ],
+      "default": "placeholder"
+     },
+     {
+      "name": "showLabel#13683:73",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     },
+     {
+      "name": "showDescription#13605:5",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     },
+     {
+      "name": "typeInput#13683:0",
+      "type": "INSTANCE_SWAP",
+      "values": [],
+      "default": "14:1018"
+     }
+    ]
+   },
+   {
+    "figma_name": "Tabs (remote copy in the Semantic Tokens file, key 666610279a89608bb1b851229857a33726a0e870; has no state property)",
+    "node_id": "14:2168",
+    "properties": [
+     {
+      "name": "variant",
+      "type": "VARIANT",
+      "values": [
+       "primary",
+       "secondary"
+      ],
+      "default": "primary"
+     },
+     {
+      "name": "behavior",
+      "type": "VARIANT",
+      "values": [
+       "hug",
+       "fill"
+      ],
+      "default": "hug"
+     },
+     {
+      "name": "showOption1..showOption5 (#3054:11-15)",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     },
+     {
+      "name": "showOption6..showOption10 (#14995:5-25)",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "false"
+     },
+     {
+      "name": "showScrollShadow#6261:36",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "false"
+     }
+    ]
+   },
+   {
+    "figma_name": "_TabsElement (the tab trigger; remote copy, key a6fac69696b30919fe3712cf547df5bc95a53b07)",
+    "node_id": "14:2072",
+    "properties": [
+     {
+      "name": "variant",
+      "type": "VARIANT",
+      "values": [
+       "primary",
+       "secondary"
+      ],
+      "default": "primary"
+     },
+     {
+      "name": "state",
+      "type": "VARIANT",
+      "values": [
+       "default",
+       "hover",
+       "selected",
+       "disabled"
+      ],
+      "default": "default"
+     },
+     {
+      "name": "orientation",
+      "type": "VARIANT",
+      "values": [
+       "horizontal",
+       "vertical"
+      ],
+      "default": "horizontal"
+     },
+     {
+      "name": "label#3054:1",
+      "type": "TEXT",
+      "values": [],
+      "default": "Option"
+     },
+     {
+      "name": "prefix#6261:0",
+      "type": "INSTANCE_SWAP",
+      "values": [],
+      "default": "14:580"
+     },
+     {
+      "name": "showPrefix#6261:9",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "false"
+     },
+     {
+      "name": "suffix#6261:18",
+      "type": "INSTANCE_SWAP",
+      "values": [],
+      "default": "14:580"
+     },
+     {
+      "name": "showSuffix#6261:27",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "false"
+     }
+    ]
+   },
+   {
+    "figma_name": "Dropdown (plain COMPONENT, not a set; remote copy, key 447a08dca0043ec76578df3b659eb8c8b452c060; has no state property)",
+    "node_id": "14:6608",
+    "properties": [
+     {
+      "name": "showGroups#2405:0",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     },
+     {
+      "name": "showDivider#2405:1",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     }
+    ]
+   },
+   {
+    "figma_name": "DropdownItem (the menu item; remote copy, key ac62fd8df828a46263d19de857edab3c657e30f9)",
+    "node_id": "14:836",
+    "properties": [
+     {
+      "name": "state",
+      "type": "VARIANT",
+      "values": [
+       "default",
+       "hover",
+       "selected",
+       "focus",
+       "disabled"
+      ],
+      "default": "default"
+     },
+     {
+      "name": "type",
+      "type": "VARIANT",
+      "values": [
+       "initial",
+       "danger"
+      ],
+      "default": "initial"
+     },
+     {
+      "name": "title#2399:10",
+      "type": "TEXT",
+      "values": [],
+      "default": "Title"
+     },
+     {
+      "name": "description#2399:9",
+      "type": "TEXT",
+      "values": [],
+      "default": "Description"
+     },
+     {
+      "name": "showDescription#2399:11",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     },
+     {
+      "name": "prefix#2399:13",
+      "type": "INSTANCE_SWAP",
+      "values": [],
+      "default": "14:580"
+     },
+     {
+      "name": "suffix#2399:12",
+      "type": "INSTANCE_SWAP",
+      "values": [],
+      "default": "14:580"
+     },
+     {
+      "name": "showPrefix#2399:7",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     },
+     {
+      "name": "showSuffix#2399:8",
+      "type": "BOOLEAN",
+      "values": [
+       "true",
+       "false"
+      ],
+      "default": "true"
+     }
+    ]
+   },
+   {
+    "figma_name": "Modal (library component set 0bd1b5057c3aeb0f49c00bd733770d43bcc541bc; properties not readable)",
+    "node_id": "",
+    "properties": []
+   }
+  ],
+  "tried": [
+   "ToolSearch select of the five Figma tools: loaded get_libraries, search_design_system, get_metadata, get_design_context, use_figma.",
+   "get_libraries on tQCQMknnwZ2W2L9w60NTeQ: the file subscribes to the team library 'Souvenir DS Components' (library key lk-4a3090b4...011a), plus 'Souvenir DS Prematives' and 'Souvenir DS Semantic Tokens'. The response gave no file key for the components file.",
+   "search_design_system on tQCQMknnwZ2W2L9w60NTeQ for Button, Input, Tabs, Dropdown and Modal: found the library component sets Button 2f7f5e10..., Input 9b9ac829..., Tabs e7cca74f..., Modal 0bd1b505..., DropdownItem 3e4b56e4..., and the plain component Dropdown 09d134de.... It also found TextField-like neighbours (InputGroup, InputOTP, TextArea). Only Button and Input carry descriptions, which list their axes in prose. No property definitions or node IDs came back, and none of the names carries a star.",
+   "get_metadata on tQCQMknnwZ2W2L9w60NTeQ with no node: pages Cover, ---, Colot testing (0:1), Semantic tokens (309:11037), Gradients, Surface gradients — preview.",
+   "Skill figma:figma-use loaded, as use_figma requires.",
+   "use_figma, read-only, page Colot testing: 2,809 instances, all remote. Read componentPropertyDefinitions only from COMPONENT_SET owners, or from Dropdown, which is a COMPONENT with no set parent. Got Button, Input, TextField, InputGroup, Tabs, _TabsElement, Dropdown, DropdownItem and CloseButton. No Modal or Dialog instances.",
+   "use_figma, read-only, page Semantic tokens: 234 instances, all local _Swatch components. None of the five components."
+  ],
+  "changed_anything_in_figma": false,
+  "notes": [
+   "Not reached: no file key for 'Souvenir DS Components' turned up. Every property definition here was read from remote component copies cached inside the Semantic Tokens file (tQCQMknnwZ2W2L9w60NTeQ). The node_ids are local IDs of those remote copies in that file, not IDs in the components file.",
+   "These copies are NOT the current library components. Their component keys all differ from the library search keys: Button 1b0eab10 vs 2f7f5e10, Input 25e9177d vs 9b9ac829, Tabs 66661027 vs e7cca74f, Dropdown 447a08dc vs 09d134de, DropdownItem ac62fd8d vs 3e4b56e4. The in-file Button has 7 x 4 x 3 x 2 = 168 variants. That matches neither the library's own description (288 local) nor the published count the description mentions (224). Treat these definitions as a real read of an older or different source, not as the components file.",
+   "Button state conflict: the in-file copy has state = default | hover | focus | disabled, with sizes sm | md | lg and a 'tertiary' variant. The library description (prose written by the author, not a property read) says state = default | hover | focus | disabled | pressed | loading, size = xs | sm | md | lg, and 6 variants with no tertiary. It also says the published version lacks pressed and loading and still has tertiary. Ask the owner which one is the truth before mapping pressed and loading.",
+   "Input: the in-file definitions and the library description agree. state = placeholder | hover | focus | filled | error | disabled, default placeholder. variant = primary | secondary. type = text | password | number. Placeholder and filled describe the content, not an interaction. Error is a state in Figma and maps to aria-invalid in code. TextField (label + Input + description) has the same state list.",
+   "Tabs: the Tabs set has no state property. State lives on the trigger part _TabsElement: default | hover | selected | disabled. selected is the likely match for Radix data-state=active. _TabsElement also has orientation horizontal | vertical.",
+   "Dropdown: a plain COMPONENT with only showGroups and showDivider. State lives on DropdownItem: default | hover | selected | focus | disabled, with type initial | danger. hover and focus are separate here. Radix menu items use data-highlighted for both, so the lead must decide how they merge.",
+   "Modal: no instance exists in either page of the Semantic Tokens file, and the library entry has no description. Its properties are unknown and were not guessed. No Dialog component was found.",
+   "Ready stars: none of the five library names carries a star, so the library marks none of them ready.",
+   "The only route that would return the live library definitions without the components file key is figma.importComponentSetByKeyAsync / importComponentByKeyAsync with the library keys above. That loads library nodes into the document, which the brief forbids, so it was not done. It needs the owner's approval, or the owner can share the components file key.",
+   "No document edits were made. The only side effect was the plugin switching its current page once in each read call."
+  ]
+ }
+}

@@ -110,7 +110,8 @@ export function hexToRgba(hex) {
 
 // The name a variable has in CSS, by the rule in the naming standard, to compare with the WEB code syntax in Figma.
 // Rule as the file uses it today: prefix by collection, slashes become hyphens, and a trailing /default is dropped.
-export const CSS_PREFIX = { Themes: 'color', Typography: '', Radius: 'radius', Density: 'spacing', 'Surface Gradients': 'gradient', Border: 'border' };
+// Size, Motion and Elevation are collections the repo proposes (ds-tokens/proposed/); Motion and Elevation names already start with the Tailwind namespace (duration/, ease/, shadow/).
+export const CSS_PREFIX = { Themes: 'color', Typography: '', Radius: 'radius', Density: 'spacing', 'Surface Gradients': 'gradient', Border: 'border', Size: 'size', Motion: '', Elevation: '' };
 export function expectedSyntax(v) {
   const prefix = CSS_PREFIX[v.collection];
   const path = v.name.replace(/\/default$/, '').split('/').join('-');

@@ -1,0 +1,618 @@
+[
+ {
+  "token": "text/secondary",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "neutral/light/800",
+  "reason": "Contrast: worst pair was 3.79 to 1 (text/secondary on surface/tertiary/active (text-on-base)); with this step the worst is 5.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/error",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "red/700",
+  "reason": "Contrast: worst pair was 3.59 to 1 (text/error on surface/tertiary/active (text-on-base)); with this step the worst is 4.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base, status-text-on-status-surface"
+ },
+ {
+  "token": "text/error",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "red/300",
+  "reason": "Contrast: worst pair was 3.81 to 1 (text/error on surface/tertiary/active (text-on-base)); with this step the worst is 5.56 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/success",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "green/800",
+  "reason": "Contrast: worst pair was 2.45 to 1 (text/success on surface/tertiary/active (text-on-base)); with this step the worst is 5.3 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base, status-text-on-status-surface"
+ },
+ {
+  "token": "text/warning",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "amber/800",
+  "reason": "Contrast: worst pair was 2.37 to 1 (text/warning on surface/tertiary/active (text-on-base)); with this step the worst is 5.27 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base, status-text-on-status-surface"
+ },
+ {
+  "token": "text/info",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "blue/700",
+  "reason": "Contrast: worst pair was 3.84 to 1 (text/info on surface/tertiary/active (text-on-base)); with this step the worst is 4.98 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/info",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/300",
+  "reason": "Contrast: worst pair was 4.15 to 1 (text/info on surface/tertiary/active (text-on-base)); with this step the worst is 5.85 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/brand",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/300",
+  "reason": "Contrast: worst pair was 2.3 to 1 (text/brand on surface/tertiary/active (text-on-base)); with this step the worst is 5.82 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "text-on-base, text-on-brand-subtle"
+ },
+ {
+  "token": "text/placeholder",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "neutral/light/700",
+  "reason": "Contrast: worst pair was 3.05 to 1 (text/placeholder on surface/secondary/default (placeholder-on-base)); with this step the worst is 4.8 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "placeholder-on-base"
+ },
+ {
+  "token": "text/placeholder",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "neutral/dark/600",
+  "reason": "Contrast: worst pair was 3.93 to 1 (text/placeholder on surface/secondary/default (placeholder-on-base)); with this step the worst is 5.36 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "placeholder-on-base"
+ },
+ {
+  "token": "text/accent/teal/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "teal/800",
+  "reason": "Contrast: worst pair was 2.97 to 1 (text/accent/teal/default on surface/accent/teal/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.02 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/teal/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "teal/300",
+  "reason": "Contrast: worst pair was 1.39 to 1 (text/accent/teal/default on surface/accent/teal/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.13 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/blue/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/300",
+  "reason": "Contrast: worst pair was 1.3 to 1 (text/accent/blue/default on surface/accent/blue/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.84 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/blue/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "blue/700",
+  "reason": "Contrast: worst pair was 3.64 to 1 (text/accent/blue/default on surface/accent/blue/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.72 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface"
+ },
+ {
+  "token": "text/accent/violet/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "violet/300",
+  "reason": "Contrast: worst pair was 1.26 to 1 (text/accent/violet/default on surface/accent/violet/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.87 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/violet/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "violet/700",
+  "reason": "Contrast: worst pair was 4.1 to 1 (text/accent/violet/default on surface/accent/violet/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.12 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface"
+ },
+ {
+  "token": "text/accent/amber/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "amber/800",
+  "reason": "Contrast: worst pair was 2.56 to 1 (text/accent/amber/default on surface/accent/amber/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.69 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/amber/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "amber/300",
+  "reason": "Contrast: worst pair was 1.41 to 1 (text/accent/amber/default on surface/accent/amber/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.92 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/pink/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "pink/800",
+  "reason": "Contrast: worst pair was 3.33 to 1 (text/accent/pink/default on surface/accent/pink/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.7 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/pink/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/200",
+  "reason": "Contrast: worst pair was 1.31 to 1 (text/accent/pink/default on surface/accent/pink/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.7 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/green/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "green/800",
+  "reason": "Contrast: worst pair was 2.72 to 1 (text/accent/green/default on surface/accent/green/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.88 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/green/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "green/300",
+  "reason": "Contrast: worst pair was 1.42 to 1 (text/accent/green/default on surface/accent/green/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.08 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/orange/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "orange/800",
+  "reason": "Contrast: worst pair was 2.63 to 1 (text/accent/orange/default on surface/accent/orange/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.4 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/orange/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "orange/200",
+  "reason": "Contrast: worst pair was 1.41 to 1 (text/accent/orange/default on surface/accent/orange/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.4 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/red/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "red/800",
+  "reason": "Contrast: worst pair was 3.34 to 1 (text/accent/red/default on surface/accent/red/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.74 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface"
+ },
+ {
+  "token": "text/accent/red/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "red/200",
+  "reason": "Contrast: worst pair was 1.28 to 1 (text/accent/red/default on surface/accent/red/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.74 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/rose/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "rose/800",
+  "reason": "Contrast: worst pair was 2.94 to 1 (text/accent/rose/default on surface/accent/rose/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.06 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "text/accent/rose/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "rose/200",
+  "reason": "Contrast: worst pair was 1.46 to 1 (text/accent/rose/default on surface/accent/rose/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.06 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-text-on-accent-surface, accent-text-on-base"
+ },
+ {
+  "token": "icon/success",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "green/700",
+  "reason": "Contrast: worst pair was 2.91 to 1 (icon/success on surface/tertiary/default (icon-on-base)); with this step the worst is 4.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "icon-on-base"
+ },
+ {
+  "token": "icon/warning",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "amber/700",
+  "reason": "Contrast: worst pair was 2.82 to 1 (icon/warning on surface/tertiary/default (icon-on-base)); with this step the worst is 4.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "icon-on-base"
+ },
+ {
+  "token": "icon/accent/teal/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "teal/500",
+  "reason": "Contrast: worst pair was 1.73 to 1 (icon/accent/teal/default on surface/accent/teal/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/blue/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/400",
+  "reason": "Contrast: worst pair was 1.55 to 1 (icon/accent/blue/default on surface/accent/blue/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.07 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/violet/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "violet/400",
+  "reason": "Contrast: worst pair was 1.54 to 1 (icon/accent/violet/default on surface/accent/violet/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.03 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/amber/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "amber/500",
+  "reason": "Contrast: worst pair was 1.81 to 1 (icon/accent/amber/default on surface/accent/amber/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.22 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/amber/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "amber/700",
+  "reason": "Contrast: worst pair was 2.86 to 1 (icon/accent/amber/default on surface/accent/amber/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.51 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/pink/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/400",
+  "reason": "Contrast: worst pair was 1.6 to 1 (icon/accent/pink/default on surface/accent/pink/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.64 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/green/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "green/500",
+  "reason": "Contrast: worst pair was 1.82 to 1 (icon/accent/green/default on surface/accent/green/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/orange/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "orange/500",
+  "reason": "Contrast: worst pair was 1.81 to 1 (icon/accent/orange/default on surface/accent/orange/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.34 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/red/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "red/400",
+  "reason": "Contrast: worst pair was 1.55 to 1 (icon/accent/red/default on surface/accent/red/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.62 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/rose/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "rose/500",
+  "reason": "Contrast: worst pair was 2.02 to 1 (icon/accent/rose/default on surface/accent/rose/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "border/warning",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "amber/700",
+  "reason": "Contrast: worst pair was 3 to 1 (border/warning on surface/secondary/default (status-and-brand-borders)); with this step the worst is 4.73 to 1. Nearest step on the same ramp that passes every declared pair.",
+  "rule": "status-and-brand-borders"
+ },
+ {
+  "token": "text/link/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "pink/800",
+  "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/link/hover",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "pink/900",
+  "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/link/active",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "pink/950",
+  "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+  "rule": "one-job"
+ },
+ {
+  "token": "text/link/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/300",
+  "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/link/hover",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/200",
+  "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+  "rule": "text-on-base"
+ },
+ {
+  "token": "text/link/active",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/100",
+  "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+  "rule": "one-job"
+ },
+ {
+  "token": "interactive/primary/active",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "pink/950",
+  "reason": "One job per token: pressed was the same colour as hover, so a press gave no feedback.",
+  "rule": "one-job"
+ },
+ {
+  "token": "interactive/primary/active",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/800",
+  "reason": "One job per token: pressed was the same colour as hover, so a press gave no feedback.",
+  "rule": "one-job"
+ },
+ {
+  "token": "surface/accent/teal/bold/hover",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "teal/800",
+  "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/teal/bold/hover",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "teal/800",
+  "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/blue/bold/hover",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "blue/800",
+  "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/blue/bold/hover",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/800",
+  "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
+  "rule": "accent-bold-text-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/teal/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "teal/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/teal/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "teal/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/blue/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "blue/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/blue/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "blue/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/violet/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "violet/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/violet/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "violet/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/amber/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "amber/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/amber/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "amber/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/pink/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "pink/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/pink/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "pink/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/green/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "green/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/green/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "green/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/orange/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "orange/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/orange/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "orange/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/red/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "red/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/red/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "red/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/rose/bold",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "rose/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "icon/accent/rose/bold",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "rose/100",
+  "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+  "rule": "accent-bold-icon-on-bold-surface"
+ },
+ {
+  "token": "surface/accent/neutral/subtle/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "neutral/dark/300",
+  "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+  "rule": "accent-text-on-accent-surface"
+ },
+ {
+  "token": "surface/accent/neutral/subtle/hover",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "neutral/dark/350",
+  "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+  "rule": "accent-text-on-accent-surface"
+ },
+ {
+  "token": "text/accent/neutral/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "neutral/dark/900",
+  "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+  "rule": "accent-text-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/neutral/default",
+  "collection": "Themes",
+  "mode": "dark",
+  "to": "neutral/dark/800",
+  "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+  "rule": "accent-icon-on-accent-surface"
+ },
+ {
+  "token": "text/accent/neutral/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "neutral/light/900",
+  "reason": "Contrast on the subtle neutral surfaces.",
+  "rule": "accent-text-on-accent-surface"
+ },
+ {
+  "token": "icon/accent/neutral/default",
+  "collection": "Themes",
+  "mode": "light",
+  "to": "neutral/light/700",
+  "reason": "Contrast on the subtle neutral surfaces.",
+  "rule": "accent-icon-on-accent-surface"
+ }
+]

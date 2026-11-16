@@ -1,74 +1,420 @@
 {
   "$description": "Which colour tokens must be readable on which, and how strongly. Written by the lead on 16 November 2026 from the token names in the Figma snapshot. A pair is listed when the names say the two are meant to meet. <hue> expands to every hue in 'hues'; <base> to every surface in 'base'. Ratios are WCAG 2.2: 4.5 for text (1.4.3), 3 for icons, control boundaries and focus indicators (1.4.11, 2.4.13).",
-  "hues": ["teal", "blue", "violet", "amber", "pink", "green", "orange", "red", "rose", "neutral"],
-  "gradientHues": ["red", "orange", "amber", "green", "teal", "blue", "violet", "pink", "rose"],
-  "base": [
-    "surface/primary/default", "surface/primary/hover", "surface/primary/active",
-    "surface/secondary/default", "surface/secondary/hover", "surface/secondary/active",
-    "surface/tertiary/default", "surface/tertiary/hover", "surface/tertiary/active"
+  "hues": [
+    "teal",
+    "blue",
+    "violet",
+    "amber",
+    "pink",
+    "green",
+    "orange",
+    "red",
+    "rose",
+    "neutral"
   ],
-  "baseDefault": ["surface/primary/default", "surface/secondary/default", "surface/tertiary/default"],
+  "gradientHues": [
+    "red",
+    "orange",
+    "amber",
+    "green",
+    "teal",
+    "blue",
+    "violet",
+    "pink",
+    "rose"
+  ],
+  "base": [
+    "surface/primary/default",
+    "surface/primary/hover",
+    "surface/primary/active",
+    "surface/secondary/default",
+    "surface/secondary/hover",
+    "surface/secondary/active",
+    "surface/tertiary/default",
+    "surface/tertiary/hover",
+    "surface/tertiary/active"
+  ],
+  "baseDefault": [
+    "surface/primary/default",
+    "surface/secondary/default",
+    "surface/tertiary/default"
+  ],
   "fills": [
-    "interactive/primary/default", "interactive/primary/hover", "interactive/primary/active",
-    "interactive/error/default", "interactive/error/hover",
-    "interactive/success/default", "interactive/success/hover",
-    "interactive/warning/default", "interactive/warning/hover",
+    "interactive/primary/default",
+    "interactive/primary/hover",
+    "interactive/primary/active",
+    "interactive/error/default",
+    "interactive/error/hover",
+    "interactive/success/default",
+    "interactive/success/hover",
+    "interactive/warning/default",
+    "interactive/warning/hover",
     "surface/brand/bold"
   ],
   "rules": [
-    { "id": "text-on-base", "min": 4.5, "why": "Body, secondary, link, status and brand text can sit on any of the three surface tiers in any of their states.",
-      "fg": ["text/primary", "text/secondary", "text/link/default", "text/link/hover", "text/link/active", "text/error", "text/success", "text/warning", "text/info", "text/brand"],
-      "bg": ["<base>"] },
-    { "id": "placeholder-on-base", "min": 4.5, "why": "Placeholder text is text. WCAG 1.4.3 has no exception for it.",
-      "fg": ["text/placeholder"], "bg": ["<base>"] },
-    { "id": "status-text-on-status-surface", "min": 4.5, "why": "A status message is text of its status colour, or body text, on the tinted status surface.",
-      "expand": ["error", "success", "warning", "info"], "fg": ["text/<x>", "text/primary", "text/secondary"], "bg": ["surface/<x>"] },
-    { "id": "accent-text-on-accent-surface", "min": 4.5, "why": "A tag or badge: accent text on its own subtle surfaces, default and hover.",
-      "fg": ["text/accent/<hue>/default"], "bg": ["surface/accent/<hue>/subtlest/default", "surface/accent/<hue>/subtlest/hover", "surface/accent/<hue>/subtle/default", "surface/accent/<hue>/subtle/hover"] },
-    { "id": "accent-text-on-base", "min": 4.5, "why": "Accent text used as coloured text on a plain surface.",
-      "fg": ["text/accent/<hue>/default"], "bg": ["surface/primary/default", "surface/secondary/default"] },
-    { "id": "accent-bold-text-on-bold-surface", "min": 4.5, "why": "A solid tag or badge: bold accent text on the bold surface, default and hover.",
-      "fg": ["text/accent/<hue>/bold"], "bg": ["surface/accent/<hue>/bold/default", "surface/accent/<hue>/bold/hover"] },
-    { "id": "label-on-fill", "min": 4.5, "why": "The label of a primary, error, success or warning button, and text on the bold brand surface.",
-      "fg": ["text/on"], "bg": ["<fills>"] },
-    { "id": "label-on-neutral-fill", "min": 4.5, "why": "The label of the neutral (black in light, white in dark) button.",
-      "fg": ["text/inverse"], "bg": ["interactive/neutral/default", "interactive/neutral/hover", "interactive/neutral/active"] },
-    { "id": "label-on-secondary-fill", "min": 4.5, "why": "The label of the secondary button.",
-      "fg": ["text/primary"], "bg": ["interactive/secondary/default", "interactive/secondary/hover", "interactive/secondary/active"] },
-    { "id": "text-on-brand-subtle", "min": 4.5, "why": "Brand and body text on the subtle brand surface.",
-      "fg": ["text/brand", "text/primary", "text/secondary"], "bg": ["surface/brand/subtle"] },
-    { "id": "icon-on-base", "min": 3, "why": "An icon that carries meaning, on any default surface tier.",
-      "fg": ["icon/primary", "icon/secondary", "icon/brand", "icon/error", "icon/success", "icon/warning", "icon/info"], "bg": ["<baseDefault>"] },
-    { "id": "icon-on-fill", "min": 3, "why": "An icon inside a filled button.",
-      "fg": ["icon/on"], "bg": ["<fills>"] },
-    { "id": "icon-on-neutral-fill", "min": 3, "why": "An icon inside the neutral button.",
-      "fg": ["icon/inverse"], "bg": ["interactive/neutral/default", "interactive/neutral/hover", "interactive/neutral/active"] },
-    { "id": "accent-icon-on-accent-surface", "min": 3, "why": "An icon inside a tag or badge.",
-      "fg": ["icon/accent/<hue>/default"], "bg": ["surface/accent/<hue>/subtlest/default", "surface/accent/<hue>/subtle/default", "surface/primary/default"] },
-    { "id": "accent-bold-icon-on-bold-surface", "min": 3, "why": "An icon inside a solid tag or badge.",
-      "fg": ["icon/accent/<hue>/bold"], "bg": ["surface/accent/<hue>/bold/default", "surface/accent/<hue>/bold/hover"] },
-    { "id": "control-boundary", "min": 3, "why": "Where a border is the only thing that shows the edge of an input, checkbox or other control, WCAG 1.4.11 asks 3 to 1 against what is beside it. A border used only to divide content is exempt.",
-      "fg": ["border/primary/default", "border/primary/hover", "border/primary/active", "border/secondary"], "bg": ["surface/primary/default", "surface/secondary/default"] },
-    { "id": "focus-ring", "min": 3, "why": "The focus ring against every surface it can be drawn on, and against the primary fill it sits beside (WCAG 2.4.13, 1.4.11).",
-      "fg": ["border/focus"], "bg": ["<baseDefault>", "surface/brand/subtle", "interactive/primary/default", "interactive/neutral/default", "interactive/secondary/default"] },
-    { "id": "status-and-brand-borders", "min": 3, "why": "A coloured border that signals a state, such as an invalid field, against the surface beside it.",
-      "fg": ["border/error", "border/success", "border/warning", "border/info", "border/brand"], "bg": ["surface/primary/default", "surface/secondary/default"] },
-    { "id": "gradient-text", "min": 4.5, "why": "Text set on a gradient surface must pass on every stop of that gradient, so the weakest stop decides.",
-      "collection": "Surface Gradients", "expandGradient": true, "fg": ["<g>/text"], "bg": ["<g>/base-start", "<g>/base-end", "<g>/glow-warm", "<g>/glow"] }
+    {
+      "id": "text-on-base",
+      "min": 4.5,
+      "why": "Body, secondary, link, status and brand text can sit on any of the three surface tiers in any of their states.",
+      "fg": [
+        "text/primary",
+        "text/secondary",
+        "text/link/default",
+        "text/link/hover",
+        "text/link/active",
+        "text/error",
+        "text/success",
+        "text/warning",
+        "text/info",
+        "text/brand"
+      ],
+      "bg": [
+        "<base>"
+      ]
+    },
+    {
+      "id": "placeholder-on-base",
+      "min": 4.5,
+      "why": "Placeholder text is text; WCAG 1.4.3 has no exception for it. It only ever sits inside a text field, and a field's own surface is the primary or the secondary surface at rest, so those two are the pairs.",
+      "fg": [
+        "text/placeholder"
+      ],
+      "bg": [
+        "surface/primary/default",
+        "surface/secondary/default"
+      ]
+    },
+    {
+      "id": "status-text-on-status-surface",
+      "min": 4.5,
+      "why": "A status message is text of its status colour, or body text, on the tinted status surface.",
+      "expand": [
+        "error",
+        "success",
+        "warning",
+        "info"
+      ],
+      "fg": [
+        "text/<x>",
+        "text/primary",
+        "text/secondary"
+      ],
+      "bg": [
+        "surface/<x>"
+      ]
+    },
+    {
+      "id": "accent-text-on-accent-surface",
+      "min": 4.5,
+      "why": "A tag or badge: accent text on its own subtle surfaces, default and hover.",
+      "fg": [
+        "text/accent/<hue>/default"
+      ],
+      "bg": [
+        "surface/accent/<hue>/subtlest/default",
+        "surface/accent/<hue>/subtlest/hover",
+        "surface/accent/<hue>/subtle/default",
+        "surface/accent/<hue>/subtle/hover"
+      ]
+    },
+    {
+      "id": "accent-text-on-base",
+      "min": 4.5,
+      "why": "Accent text used as coloured text on a plain surface.",
+      "fg": [
+        "text/accent/<hue>/default"
+      ],
+      "bg": [
+        "surface/primary/default",
+        "surface/secondary/default"
+      ]
+    },
+    {
+      "id": "accent-bold-text-on-bold-surface",
+      "min": 4.5,
+      "why": "A solid tag or badge: bold accent text on the bold surface, default and hover.",
+      "fg": [
+        "text/accent/<hue>/bold"
+      ],
+      "bg": [
+        "surface/accent/<hue>/bold/default",
+        "surface/accent/<hue>/bold/hover"
+      ]
+    },
+    {
+      "id": "label-on-fill",
+      "min": 4.5,
+      "why": "The label of a primary, error, success or warning button, and text on the bold brand surface.",
+      "fg": [
+        "text/on"
+      ],
+      "bg": [
+        "<fills>"
+      ]
+    },
+    {
+      "id": "label-on-neutral-fill",
+      "min": 4.5,
+      "why": "The label of the neutral (black in light, white in dark) button.",
+      "fg": [
+        "text/inverse"
+      ],
+      "bg": [
+        "interactive/neutral/default",
+        "interactive/neutral/hover",
+        "interactive/neutral/active"
+      ]
+    },
+    {
+      "id": "label-on-secondary-fill",
+      "min": 4.5,
+      "why": "The label of the secondary button.",
+      "fg": [
+        "text/primary"
+      ],
+      "bg": [
+        "interactive/secondary/default",
+        "interactive/secondary/hover",
+        "interactive/secondary/active"
+      ]
+    },
+    {
+      "id": "text-on-brand-subtle",
+      "min": 4.5,
+      "why": "Brand and body text on the subtle brand surface.",
+      "fg": [
+        "text/brand",
+        "text/primary",
+        "text/secondary"
+      ],
+      "bg": [
+        "surface/brand/subtle"
+      ]
+    },
+    {
+      "id": "icon-on-base",
+      "min": 3,
+      "why": "An icon that carries meaning, on any default surface tier.",
+      "fg": [
+        "icon/primary",
+        "icon/secondary",
+        "icon/brand",
+        "icon/error",
+        "icon/success",
+        "icon/warning",
+        "icon/info"
+      ],
+      "bg": [
+        "<baseDefault>"
+      ]
+    },
+    {
+      "id": "icon-on-fill",
+      "min": 3,
+      "why": "An icon inside a filled button.",
+      "fg": [
+        "icon/on"
+      ],
+      "bg": [
+        "<fills>"
+      ]
+    },
+    {
+      "id": "icon-on-neutral-fill",
+      "min": 3,
+      "why": "An icon inside the neutral button.",
+      "fg": [
+        "icon/inverse"
+      ],
+      "bg": [
+        "interactive/neutral/default",
+        "interactive/neutral/hover",
+        "interactive/neutral/active"
+      ]
+    },
+    {
+      "id": "accent-icon-on-accent-surface",
+      "min": 3,
+      "why": "An icon inside a tag or badge.",
+      "fg": [
+        "icon/accent/<hue>/default"
+      ],
+      "bg": [
+        "surface/accent/<hue>/subtlest/default",
+        "surface/accent/<hue>/subtle/default",
+        "surface/primary/default"
+      ]
+    },
+    {
+      "id": "accent-bold-icon-on-bold-surface",
+      "min": 3,
+      "why": "An icon inside a solid tag or badge.",
+      "fg": [
+        "icon/accent/<hue>/bold"
+      ],
+      "bg": [
+        "surface/accent/<hue>/bold/default",
+        "surface/accent/<hue>/bold/hover"
+      ]
+    },
+    {
+      "id": "control-boundary",
+      "min": 3,
+      "why": "The edge of an input, checkbox or radio is the only thing that shows where the control is, so WCAG 1.4.11 asks 3 to 1 against what is beside it. border/strong is the token for that job. border/primary and border/secondary divide content and are exempt (see 'exempt').",
+      "fg": [
+        "border/strong/default",
+        "border/strong/hover"
+      ],
+      "bg": [
+        "surface/primary/default",
+        "surface/secondary/default"
+      ]
+    },
+    {
+      "id": "focus-ring",
+      "min": 3,
+      "why": "The focus ring is drawn focus/offset away from its control, so what sits beside it is the surface, not the control's fill (WCAG 2.4.13, 1.4.11). It must reach 3 to 1 against every surface it can be drawn on.",
+      "fg": [
+        "border/focus"
+      ],
+      "bg": [
+        "<baseDefault>",
+        "surface/brand/subtle"
+      ]
+    },
+    {
+      "id": "status-and-brand-borders",
+      "min": 3,
+      "why": "A coloured border that signals a state, such as an invalid field, against the surface beside it.",
+      "fg": [
+        "border/error",
+        "border/success",
+        "border/warning",
+        "border/info",
+        "border/brand"
+      ],
+      "bg": [
+        "surface/primary/default",
+        "surface/secondary/default"
+      ]
+    },
+    {
+      "id": "gradient-text",
+      "min": 4.5,
+      "why": "Text set on a gradient surface must pass on every stop of that gradient, so the weakest stop decides.",
+      "collection": "Surface Gradients",
+      "expandGradient": true,
+      "fg": [
+        "<g>/text"
+      ],
+      "bg": [
+        "<g>/base-start",
+        "<g>/base-end",
+        "<g>/glow-warm",
+        "<g>/glow"
+      ]
+    }
   ],
   "exempt": [
-    { "id": "disabled", "why": "WCAG 1.4.3 and 1.4.11 exempt inactive controls. Ratios are reported so the choice is visible.",
-      "fg": ["text/disabled", "icon/disabled"], "bg": ["surface/primary/disabled", "surface/secondary/disabled", "surface/tertiary/disabled", "interactive/primary/disabled", "interactive/neutral/disabled", "interactive/secondary/disabled", "surface/primary/default"] }
+    {
+      "id": "disabled",
+      "why": "WCAG 1.4.3 and 1.4.11 exempt inactive controls. Ratios are reported so the choice is visible.",
+      "fg": [
+        "text/disabled",
+        "icon/disabled"
+      ],
+      "bg": [
+        "surface/primary/disabled",
+        "surface/secondary/disabled",
+        "surface/tertiary/disabled",
+        "interactive/primary/disabled",
+        "interactive/neutral/disabled",
+        "interactive/secondary/disabled",
+        "surface/primary/default"
+      ]
+    },
+    {
+      "id": "dividers",
+      "why": "A line that only divides content is not a control boundary, and WCAG 1.4.11 does not apply to it. Ratios are reported so nobody uses these tokens as the edge of an input.",
+      "fg": [
+        "border/primary/default",
+        "border/primary/hover",
+        "border/primary/active",
+        "border/secondary"
+      ],
+      "bg": [
+        "surface/primary/default",
+        "surface/secondary/default"
+      ]
+    },
+    {
+      "id": "focus-ring-beside-fills",
+      "why": "Reported only: how the focus ring would compare with a fill if a component drew it with no gap. The ring is always drawn with focus/offset, so these do not fail.",
+      "fg": [
+        "border/focus"
+      ],
+      "bg": [
+        "interactive/primary/default",
+        "interactive/neutral/default",
+        "interactive/secondary/default",
+        "interactive/error/default"
+      ]
+    }
   ],
   "distinct": [
-    { "id": "primary-vs-destructive", "why": "The main action and the destructive action must not be mistaken for each other, including by people with red-green colour blindness.", "a": "interactive/primary/default", "b": "interactive/error/default" },
-    { "id": "brand-text-vs-error-text", "why": "Brand text and error text must not be mistaken for each other.", "a": "text/brand", "b": "text/error" },
-    { "id": "link-vs-error-text", "why": "A link and an error message must not be mistaken for each other.", "a": "text/link/default", "b": "text/error" },
-    { "id": "brand-border-vs-error-border", "why": "A selected or branded field edge and an invalid field edge must look different.", "a": "border/brand", "b": "border/error" },
-    { "id": "focus-vs-info", "why": "A focus ring and an info border share a hue; note whether they are the same colour.", "a": "border/focus", "b": "border/info" },
-    { "id": "primary-hover-vs-default", "why": "Hover must be visibly different from rest.", "a": "interactive/primary/default", "b": "interactive/primary/hover" },
-    { "id": "primary-active-vs-hover", "why": "Pressed must be visibly different from hover.", "a": "interactive/primary/hover", "b": "interactive/primary/active" },
-    { "id": "surface-hover-vs-disabled", "why": "One job per token: a hovered surface and a disabled surface should not be the same grey.", "a": "surface/primary/hover", "b": "surface/primary/disabled" },
-    { "id": "surface-hover-vs-secondary", "why": "One job per token: a hovered primary surface and the resting secondary surface should not be the same grey.", "a": "surface/primary/hover", "b": "surface/secondary/default" }
+    {
+      "id": "primary-vs-destructive",
+      "why": "The main action and the destructive action must not be mistaken for each other, including by people with red-green colour blindness.",
+      "a": "interactive/primary/default",
+      "b": "interactive/error/default"
+    },
+    {
+      "id": "brand-text-vs-error-text",
+      "why": "Brand text and error text must not be mistaken for each other.",
+      "a": "text/brand",
+      "b": "text/error"
+    },
+    {
+      "id": "link-vs-error-text",
+      "why": "A link and an error message must not be mistaken for each other.",
+      "a": "text/link/default",
+      "b": "text/error"
+    },
+    {
+      "id": "brand-border-vs-error-border",
+      "why": "A selected or branded field edge and an invalid field edge must look different.",
+      "a": "border/brand",
+      "b": "border/error"
+    },
+    {
+      "id": "focus-vs-info",
+      "why": "A focus ring and an info border share a hue; note whether they are the same colour.",
+      "a": "border/focus",
+      "b": "border/info"
+    },
+    {
+      "id": "primary-hover-vs-default",
+      "why": "Hover must be visibly different from rest.",
+      "a": "interactive/primary/default",
+      "b": "interactive/primary/hover"
+    },
+    {
+      "id": "primary-active-vs-hover",
+      "why": "Pressed must be visibly different from hover.",
+      "a": "interactive/primary/hover",
+      "b": "interactive/primary/active"
+    },
+    {
+      "id": "surface-hover-vs-disabled",
+      "why": "One job per token: a hovered surface and a disabled surface should not be the same grey.",
+      "a": "surface/primary/hover",
+      "b": "surface/primary/disabled"
+    },
+    {
+      "id": "surface-hover-vs-secondary",
+      "why": "One job per token: a hovered primary surface and the resting secondary surface should not be the same grey.",
+      "a": "surface/primary/hover",
+      "b": "surface/secondary/default"
+    }
   ]
 }

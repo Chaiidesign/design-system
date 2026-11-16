@@ -2,218 +2,701 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://souvenir.example/ds/component.schema.json",
   "title": "Souvenir component spec",
-  "description": "What any Souvenir component spec may say. Schema version 0.1.0, versioned apart from the specs written against it. A spec is a contract: the stylesheet, the typed props, the stories, the docs page and the tests are generated from it, and no platform owns it. Each decision is stated once. Styles name tokens by their Figma path and never hold a raw value.",
+  "description": "What any Souvenir component spec may say. Schema version 0.1.0, versioned apart from the specs written against it. A spec is a contract: the stylesheet, the typed props, the stories, the docs page and the tests are generated from it, and no platform owns it. Each decision is stated once. Styles name tokens by their Figma path and never hold a raw value. Known limits of schema 0.1.0, to settle by decision record before 0.2.0: a state sits on exactly one part, so a compound component repeats near-identical states; examples of compound components have no fixed shape; handlers have no signature; there is no opacity, layer or motion-keyframe token to point at.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "name", "slug", "stage", "summary", "anatomy", "props", "states", "styles", "accessibility", "requirements", "examples", "notCarried"],
+  "required": [
+    "schemaVersion",
+    "name",
+    "slug",
+    "stage",
+    "summary",
+    "anatomy",
+    "props",
+    "states",
+    "styles",
+    "accessibility",
+    "requirements",
+    "examples",
+    "notCarried"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
-    "schemaVersion": { "const": "0.1.0" },
-    "name": { "type": "string", "pattern": "^[A-Z][A-Za-z]+$", "description": "PascalCase, singular, the same in Figma, code, stories and docs." },
-    "slug": { "type": "string", "pattern": "^[a-z][a-z-]*$", "description": "kebab-case form of the name. It is the folder name and the data-slot of the root." },
-    "stage": { "enum": ["alpha", "beta", "stable"] },
-    "summary": { "type": "string", "maxLength": 160 },
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "0.1.0"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z]+$",
+      "description": "PascalCase, singular, the same in Figma, code, stories and docs."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z-]*$",
+      "description": "kebab-case form of the name. It is the folder name and the data-slot of the root."
+    },
+    "stage": {
+      "enum": [
+        "alpha",
+        "beta",
+        "stable"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 160
+    },
     "figma": {
-      "type": "object", "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "description": "Where the component lives in Figma and how sure the mapping is.",
       "properties": {
-        "component": { "type": ["string", "null"] },
-        "wasCalled": { "type": ["string", "null"], "description": "The name it had in Figma before the Radix rename, such as Modal or Dropdown." },
-        "confirmed": { "type": "boolean", "description": "false while the mapping to Figma properties is the lead's reading and has not been checked against the Components file." }
+        "component": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "wasCalled": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The name it had in Figma before the Radix rename, such as Modal or Dropdown."
+        },
+        "confirmed": {
+          "type": "boolean",
+          "description": "false while the mapping to Figma properties is the lead's reading and has not been checked against the Components file."
+        }
       }
     },
     "primitive": {
-      "type": "object", "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "description": "The behaviour library the React adapter wraps, if any. The spec stays valid without it: another platform maps the same roles to its own controls.",
-      "required": ["package"],
+      "required": [
+        "package"
+      ],
       "properties": {
-        "package": { "type": ["string", "null"], "description": "For example @radix-ui/react-tabs. null when plain HTML is enough." },
-        "native": { "type": ["string", "null"], "description": "What plain HTML offers for the same job, such as the dialog element, and what it lacks." }
+        "package": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "For example @radix-ui/react-tabs. null when plain HTML is enough."
+        },
+        "native": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "What plain HTML offers for the same job, such as the dialog element, and what it lacks."
+        }
       }
     },
     "anatomy": {
-      "type": "object", "minProperties": 1,
+      "type": "object",
+      "minProperties": 1,
       "description": "Every named part. The key is the part's camelCase name; the first key is the root.",
-      "additionalProperties": { "$ref": "#/$defs/part" }
+      "additionalProperties": {
+        "$ref": "#/$defs/part"
+      }
     },
     "props": {
       "type": "object",
-      "description": "The public surface. Every prop is typed, and a prop with a fixed set of values lists them and names a default. Authored order is kept.",
-      "additionalProperties": { "$ref": "#/$defs/prop" }
+      "description": "The public surface. Every prop is typed, and a prop with a fixed set of values lists them and names a default. Authored order is kept. A prop of the root is keyed by its name (variant). A prop of any other part is keyed part.prop (trigger.value, content.side), because several parts of a compound component can take a prop of the same name; the generator splits on the first dot. A default of null means the prop is unset unless given: a controlled state prop such as open, or an attribute the browser should choose.",
+      "additionalProperties": {
+        "$ref": "#/$defs/prop"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z][A-Za-z]*(\\.[a-z][A-Za-z]*)?$"
+      }
     },
     "states": {
       "type": "object",
       "description": "Each state the component can be in, as one explicit entry: which part it is on, the selector that matches it in code, and the Figma property value it corresponds to. States are never encoded in names.",
-      "additionalProperties": { "$ref": "#/$defs/state" }
+      "additionalProperties": {
+        "$ref": "#/$defs/state"
+      }
     },
     "precedence": {
-      "type": "array", "items": { "type": "string" },
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "State names from strongest to weakest. When two apply at once the earlier one decides the look, for example disabled before hover."
     },
     "styles": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "description": "Layered rules, read in order like a stylesheet. Each pairs a configuration (prop values and states, all of which must hold) with only the declarations that change. The first entry has an empty 'when' and is the base.",
-      "items": { "$ref": "#/$defs/rule" }
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
     },
     "accessibility": {
-      "type": "object", "additionalProperties": false,
-      "required": ["pattern", "name", "keyboard", "focus"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pattern",
+        "name",
+        "keyboard",
+        "focus"
+      ],
       "properties": {
-        "pattern": { "type": "string", "description": "The published pattern this follows, by name." },
-        "reference": { "type": "string", "format": "uri" },
-        "name": {
-          "type": "object", "additionalProperties": false, "required": ["from"],
-          "description": "Where the accessible name of each named part comes from.",
-          "properties": { "from": { "type": "string" }, "note": { "type": "string" } }
+        "pattern": {
+          "type": "string",
+          "description": "The published pattern this follows, by name."
         },
-        "keyboard": { "type": "array", "items": { "$ref": "#/$defs/key" } },
-        "focus": {
-          "type": "object", "additionalProperties": false,
+        "reference": {
+          "type": "string",
+          "format": "uri"
+        },
+        "name": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "from"
+          ],
+          "description": "Where the accessible name of each named part comes from.",
           "properties": {
-            "order": { "type": "string" },
-            "onOpen": { "type": "string" },
-            "onClose": { "type": "string" },
-            "trapped": { "type": "boolean" },
-            "ring": { "type": "string", "description": "Which part draws the focus ring." }
+            "from": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            }
           }
         },
-        "announcements": { "type": "array", "items": { "type": "string" } }
+        "keyboard": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/key"
+          }
+        },
+        "focus": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order": {
+              "type": "string"
+            },
+            "onOpen": {
+              "type": "string"
+            },
+            "onClose": {
+              "type": "string"
+            },
+            "trapped": {
+              "type": "boolean"
+            },
+            "ring": {
+              "type": "string",
+              "description": "Which part draws the focus ring."
+            }
+          }
+        },
+        "announcements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "requirements": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "description": "What the component must, should and could do that styles and props cannot say: behaviour, accessibility, content. Each names how it is checked. A requirement checked by 'test' must have a test of that id; one checked by 'manual' is listed in the report as not proven by a machine.",
-      "items": { "$ref": "#/$defs/requirement" }
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
     },
     "content": {
-      "type": "array", "items": { "type": "string" },
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "Rules for the words inside the component."
     },
     "examples": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 1,
       "description": "Composed uses. Each becomes a story, a gallery cell and a test target.",
-      "items": { "$ref": "#/$defs/example" }
+      "items": {
+        "$ref": "#/$defs/example"
+      }
     },
-    "dependencies": { "type": "array", "items": { "type": "string" }, "description": "Other Souvenir components this one is built with. Each must have a spec." },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Other Souvenir components this one is built with. Each must have a spec."
+    },
     "notCarried": {
-      "type": "array", "items": { "type": "string" },
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
       "description": "What this spec does not say, stated openly so nobody assumes it does."
     }
   },
   "$defs": {
     "part": {
-      "type": "object", "additionalProperties": false,
-      "required": ["kind", "slot", "element", "description"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "slot",
+        "element",
+        "description"
+      ],
       "properties": {
-        "kind": { "enum": ["container", "text", "glyph", "control", "slot", "layer"], "description": "What sort of thing the part is. It limits which style properties the part may take: text takes colour and typography; a glyph takes colour and size; a container, control or layer takes the box properties; a slot takes none." },
-        "role": { "type": ["string", "null"], "description": "What the part does, from the role list in ds-components/schema/roles.json. A role bundles an element, keyboard handling, an announcement and a name. null for a part with no behaviour of its own." },
-        "slot": { "type": "string", "pattern": "^[a-z][a-z-]*$", "description": "The value of the data-slot attribute this part carries in every renderer." },
-        "element": { "type": "string", "description": "The HTML element the part renders by default." },
-        "primitivePart": { "type": ["string", "null"], "description": "The part of the behaviour library this wraps, such as Tabs.Trigger." },
-        "required": { "type": "boolean", "default": true },
-        "repeats": { "type": "boolean", "default": false },
-        "description": { "type": "string" }
+        "kind": {
+          "enum": [
+            "container",
+            "text",
+            "glyph",
+            "control",
+            "slot",
+            "layer"
+          ],
+          "description": "What sort of thing the part is. It limits which style properties the part may take: text takes colour and typography; a glyph takes colour and size; a container, control or layer takes the box properties; a slot takes none."
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "What the part does, from the role list in ds-components/schema/roles.json. A role bundles an element, keyboard handling, an announcement and a name. null for a part with no behaviour of its own."
+        },
+        "slot": {
+          "type": "string",
+          "pattern": "^[a-z][a-z-]*$",
+          "description": "The value of the data-slot attribute this part carries in every renderer. A part whose element is null reserves the name and emits nothing."
+        },
+        "element": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The HTML element the part renders by default. null for a part that renders no element of its own, such as a Radix Root or Portal: it then carries no data-slot in the page and may take no styles or states."
+        },
+        "primitivePart": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The part of the behaviour library this wraps, such as Tabs.Trigger."
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        },
+        "repeats": {
+          "type": "boolean",
+          "default": false
+        },
+        "description": {
+          "type": "string"
+        }
       }
     },
     "prop": {
-      "type": "object", "additionalProperties": false,
-      "required": ["on", "type", "description"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "on",
+        "type",
+        "description"
+      ],
       "properties": {
-        "on": { "type": "string", "description": "The part that takes the prop, by anatomy key." },
-        "type": { "enum": ["enum", "boolean", "string", "number", "node", "handler"] },
-        "values": { "type": "array", "items": { "type": "string" }, "description": "Required for an enum: every legal value, lowercase." },
-        "default": { "description": "Required for enum and boolean props." },
-        "required": { "type": "boolean", "default": false },
-        "reflects": { "type": ["string", "null"], "description": "The attribute the prop sets on its part so that styles can see it, such as data-variant. null when styles do not need it." },
-        "figmaProperty": { "type": ["string", "null"], "description": "The Figma component property of the same name, or null for a prop that exists only in code." },
-        "controls": { "type": "string", "description": "For a state prop in a controlled pair, the handler that reports its change." },
-        "description": { "type": "string" }
+        "on": {
+          "type": "string",
+          "description": "The part that takes the prop, by anatomy key."
+        },
+        "type": {
+          "enum": [
+            "enum",
+            "boolean",
+            "string",
+            "number",
+            "node",
+            "handler"
+          ]
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required for an enum: every legal value, lowercase."
+        },
+        "default": {
+          "description": "Required for enum and boolean props."
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "reflects": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The attribute the prop sets on its part so that styles can see it, such as data-variant. null when styles do not need it."
+        },
+        "figmaProperty": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The Figma component property of the same name, or null for a prop that exists only in code."
+        },
+        "controls": {
+          "type": "string",
+          "description": "For a state prop in a controlled pair, the handler that reports its change."
+        },
+        "description": {
+          "type": "string"
+        }
       },
       "allOf": [
-        { "if": { "properties": { "type": { "const": "enum" } } }, "then": { "required": ["values", "default"] } },
-        { "if": { "properties": { "type": { "const": "boolean" } } }, "then": { "required": ["default"] } }
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "enum"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "values",
+              "default"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "boolean"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "default"
+            ]
+          }
+        }
       ]
     },
     "state": {
-      "type": "object", "additionalProperties": false,
-      "required": ["on", "selector", "source", "description"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "on",
+        "selector",
+        "source",
+        "description"
+      ],
       "properties": {
-        "on": { "type": "string", "description": "The part the state is on, by anatomy key." },
-        "selector": { "type": "string", "description": "What matches the part in this state, written to follow the part's own selector: a pseudo-class such as :hover, or an attribute such as [data-state=\"active\"]." },
-        "source": { "enum": ["native", "aria", "primitive", "prop"], "description": "Who sets it: the browser, an ARIA attribute, the behaviour library, or one of this component's props." },
-        "figma": { "type": ["object", "null"], "additionalProperties": false, "properties": { "property": { "type": "string" }, "value": { "type": "string" } }, "description": "The Figma property and value that draw this state." },
-        "reach": { "type": "string", "description": "How a test puts the component into this state, in words a script can follow: hover, press, focus-by-keyboard, click, key:ArrowRight, prop:disabled=true." },
-        "description": { "type": "string" }
+        "on": {
+          "type": "string",
+          "description": "The part the state is on, by anatomy key."
+        },
+        "selector": {
+          "type": "string",
+          "description": "What matches the part in this state, written to follow the part's own selector: a pseudo-class such as :hover, or an attribute such as [data-state=\"active\"]."
+        },
+        "source": {
+          "enum": [
+            "native",
+            "aria",
+            "primitive",
+            "prop"
+          ],
+          "description": "Who sets it: the browser, an ARIA attribute, the behaviour library, or one of this component's props."
+        },
+        "figma": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "property": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "description": "The Figma property and value that draw this state."
+        },
+        "reach": {
+          "type": "string",
+          "description": "How a test puts the component into this state, in words a script can follow: hover, press, focus-by-keyboard, click, key:ArrowRight, prop:disabled=true."
+        },
+        "description": {
+          "type": "string"
+        }
       }
     },
     "rule": {
-      "type": "object", "additionalProperties": false,
-      "required": ["when", "parts"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "when",
+        "parts"
+      ],
       "properties": {
         "when": {
-          "type": "object", "additionalProperties": false,
+          "type": "object",
+          "additionalProperties": false,
           "properties": {
-            "props": { "type": "object", "additionalProperties": { "type": ["string", "boolean"] } },
-            "states": { "type": "array", "items": { "type": "string" } },
-            "media": { "enum": ["coarse-pointer", "reduced-motion", "forced-colors"] }
+            "props": {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              }
+            },
+            "states": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "media": {
+              "enum": [
+                "coarse-pointer",
+                "reduced-motion",
+                "forced-colors"
+              ]
+            }
           }
         },
         "parts": {
-          "type": "object", "minProperties": 1,
-          "additionalProperties": { "$ref": "#/$defs/declarations" }
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/declarations"
+          }
         },
-        "why": { "type": "string" }
+        "why": {
+          "type": "string"
+        }
       }
     },
     "declarations": {
-      "type": "object", "additionalProperties": false,
-      "description": "Each value is a token named by its Figma path, such as interactive/primary/hover or radius: height/40, or one of the keywords none, transparent, current, inherit, full. Never a raw colour or length.",
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Each value is a token named by its Figma path, such as interactive/primary/hover or radius: height/40, or one of the keywords none, transparent, current, inherit, full. Never a raw colour or length. The path is the variable's name inside its collection, with no collection name in front: control/md for a height, width/sm for a border, static/160 for padding. Layout that the properties here cannot say (display, direction, alignment, overflow, position, a one-sided border) is hand-written in the component's extensions stylesheet and pinned by a requirement with a test.",
       "properties": {
-        "background": { "type": "string" }, "color": { "type": "string" },
-        "borderColor": { "type": "string" }, "borderWidth": { "type": "string" }, "borderStyle": { "enum": ["solid", "dashed", "none"] },
-        "radius": { "type": "string" },
-        "height": { "type": "string" }, "minHeight": { "type": "string" }, "width": { "type": "string" }, "minWidth": { "type": "string" }, "maxWidth": { "type": "string" },
-        "paddingInline": { "type": "string" }, "paddingBlock": { "type": "string" }, "gap": { "type": "string" },
-        "typography": { "type": "string", "description": "A type role such as label-base: sets font size, line height and weight together." },
-        "fontWeight": { "type": "string" },
-        "iconSize": { "type": "string" },
-        "shadow": { "type": "string" }, "opacity": { "type": "string" },
-        "outlineColor": { "type": "string" }, "outlineWidth": { "type": "string" }, "outlineOffset": { "type": "string" },
-        "duration": { "type": "string" }, "easing": { "type": "string" },
-        "cursor": { "enum": ["pointer", "default", "not-allowed", "text", "progress"] },
-        "textDecoration": { "enum": ["none", "underline"] },
-        "layer": { "type": "string" }
+        "background": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "borderWidth": {
+          "type": "string"
+        },
+        "borderStyle": {
+          "enum": [
+            "solid",
+            "dashed",
+            "none"
+          ]
+        },
+        "radius": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "minHeight": {
+          "type": "string"
+        },
+        "width": {
+          "type": "string"
+        },
+        "minWidth": {
+          "type": "string"
+        },
+        "maxWidth": {
+          "type": "string"
+        },
+        "paddingInline": {
+          "type": "string"
+        },
+        "paddingBlock": {
+          "type": "string"
+        },
+        "gap": {
+          "type": "string"
+        },
+        "typography": {
+          "type": "string",
+          "description": "A type role such as label-base: sets font size, line height and weight together."
+        },
+        "fontWeight": {
+          "type": "string"
+        },
+        "iconSize": {
+          "type": "string"
+        },
+        "shadow": {
+          "type": "string"
+        },
+        "opacity": {
+          "type": "string"
+        },
+        "outlineColor": {
+          "type": "string"
+        },
+        "outlineWidth": {
+          "type": "string"
+        },
+        "outlineOffset": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "easing": {
+          "type": "string"
+        },
+        "cursor": {
+          "enum": [
+            "pointer",
+            "default",
+            "not-allowed",
+            "text",
+            "progress"
+          ]
+        },
+        "textDecoration": {
+          "enum": [
+            "none",
+            "underline"
+          ]
+        },
+        "layer": {
+          "type": "string"
+        },
+        "placeholderColor": {
+          "type": "string",
+          "description": "The colour of placeholder text. Rendered on the ::placeholder pseudo-element of the part, because a colour set on the input itself does not reach it."
+        }
       }
     },
     "key": {
-      "type": "object", "additionalProperties": false,
-      "required": ["key", "on", "does"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "on",
+        "does"
+      ],
       "properties": {
-        "key": { "type": "string" }, "on": { "type": "string" }, "does": { "type": "string" },
-        "test": { "type": ["string", "null"], "description": "The id of the generated test that proves it, or null when it is the browser's own behaviour." }
+        "key": {
+          "type": "string"
+        },
+        "on": {
+          "type": "string"
+        },
+        "does": {
+          "type": "string"
+        },
+        "test": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The id of the generated test that proves it, or null when it is the browser's own behaviour."
+        }
       }
     },
     "requirement": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "level", "text", "check"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "level",
+        "text",
+        "check"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
-        "level": { "enum": ["MUST", "SHOULD", "COULD"] },
-        "text": { "type": "string" },
-        "wcag": { "type": "string", "description": "The success criterion it serves, such as 2.1.1." },
-        "check": { "type": "string", "pattern": "^(test|axe|lint|type|manual):[a-z0-9-]+$", "description": "How it is proven: a generated browser test, an axe rule, a lint rule, the type checker, or a person." },
-        "label": { "enum": ["research", "pattern", "assumption"], "description": "For a claim about people: supported by cited research, inferred from established patterns, or an assumption that needs a test with people." }
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "level": {
+          "enum": [
+            "MUST",
+            "SHOULD",
+            "COULD"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "wcag": {
+          "type": "string",
+          "description": "The success criterion it serves, such as 2.1.1."
+        },
+        "check": {
+          "type": "string",
+          "pattern": "^(test|axe|lint|type|manual):[a-z0-9-]+$",
+          "description": "How it is proven: a generated browser test, an axe rule, a lint rule, the type checker, or a person."
+        },
+        "label": {
+          "enum": [
+            "research",
+            "pattern",
+            "assumption"
+          ],
+          "description": "For a claim about people: supported by cited research, inferred from established patterns, or an assumption that needs a test with people."
+        }
       }
     },
     "example": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "title", "props"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "props"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
-        "title": { "type": "string" },
-        "props": { "type": "object" },
-        "content": { "description": "The children: a string, or for a compound component a nested structure the renderer understands." },
-        "note": { "type": "string" }
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "props": {
+          "type": "object"
+        },
+        "content": {
+          "description": "The children: a string, or for a compound component a nested structure the renderer understands."
+        },
+        "note": {
+          "type": "string"
+        }
       }
     }
   }
