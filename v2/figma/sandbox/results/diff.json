@@ -1,0 +1,2922 @@
+{
+  "tool": "v2/tools/diff-figma.mjs",
+  "inputs": {
+    "figma": "v2/figma/semantic.txt + primitives.txt",
+    "tokens": "ds-tokens/dist/tokens.json",
+    "css": "ds-tokens/dist/tokens.css",
+    "overrides": "ds-tokens/overrides.json"
+  },
+  "agreement": "Agree means: in both Figma and code, the same value in every mode, the CSS name matches the Figma WEB code syntax, and tokens.css matches tokens.json. Descriptions are not part of agreement. A token whose override is no longer needed still agrees. The total is every token in Figma or in code.",
+  "agree": 326,
+  "total": 329,
+  "failed": true,
+  "counts": {
+    "missingInCode": 0,
+    "notInFigma": 0,
+    "drift": 3,
+    "intendedOverrides": 0,
+    "overridesToRemove": 77,
+    "cssNameDiffers": 0,
+    "cssFileMismatch": 0,
+    "descriptionDiffers": 291,
+    "proposedNotInFigma": 2
+  },
+  "lists": {
+    "missingInCode": [],
+    "notInFigma": [],
+    "drift": [
+      {
+        "collection": "Motion",
+        "token": "duration/fast",
+        "mode": "default",
+        "figmaValue": "100",
+        "repoValue": "100ms",
+        "figmaAlias": null,
+        "note": ""
+      },
+      {
+        "collection": "Motion",
+        "token": "duration/base",
+        "mode": "default",
+        "figmaValue": "160",
+        "repoValue": "160ms",
+        "figmaAlias": null,
+        "note": ""
+      },
+      {
+        "collection": "Motion",
+        "token": "duration/spin",
+        "mode": "default",
+        "figmaValue": "800",
+        "repoValue": "800ms",
+        "figmaAlias": null,
+        "note": ""
+      }
+    ],
+    "intendedOverrides": [],
+    "overridesToRemove": [
+      {
+        "collection": "Themes",
+        "token": "text/secondary",
+        "mode": "light",
+        "figmaValue": "#505258",
+        "repoValue": "#505258",
+        "figmaAlias": "neutral/light/800",
+        "overrideTo": "neutral/light/800",
+        "reason": "Contrast: worst pair was 3.79 to 1 (text/secondary on surface/tertiary/active (text-on-base)); with this step the worst is 5.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/placeholder",
+        "mode": "light",
+        "figmaValue": "#6b6e76",
+        "repoValue": "#6b6e76",
+        "figmaAlias": "neutral/light/700",
+        "overrideTo": "neutral/light/700",
+        "reason": "Contrast: worst pair was 3.05 to 1 (text/placeholder on surface/secondary/default (placeholder-on-base)); with this step the worst is 4.8 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/placeholder",
+        "mode": "dark",
+        "figmaValue": "#96999e",
+        "repoValue": "#96999e",
+        "figmaAlias": "neutral/dark/600",
+        "overrideTo": "neutral/dark/600",
+        "reason": "Contrast: worst pair was 3.93 to 1 (text/placeholder on surface/secondary/default (placeholder-on-base)); with this step the worst is 5.36 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/default",
+        "mode": "light",
+        "figmaValue": "#9d174d",
+        "repoValue": "#9d174d",
+        "figmaAlias": "pink/800",
+        "overrideTo": "pink/800",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/default",
+        "mode": "dark",
+        "figmaValue": "#f9a8d4",
+        "repoValue": "#f9a8d4",
+        "figmaAlias": "pink/300",
+        "overrideTo": "pink/300",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/hover",
+        "mode": "light",
+        "figmaValue": "#831843",
+        "repoValue": "#831843",
+        "figmaAlias": "pink/900",
+        "overrideTo": "pink/900",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/hover",
+        "mode": "dark",
+        "figmaValue": "#fbcfe8",
+        "repoValue": "#fbcfe8",
+        "figmaAlias": "pink/200",
+        "overrideTo": "pink/200",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/active",
+        "mode": "light",
+        "figmaValue": "#500724",
+        "repoValue": "#500724",
+        "figmaAlias": "pink/950",
+        "overrideTo": "pink/950",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/active",
+        "mode": "dark",
+        "figmaValue": "#fce7f3",
+        "repoValue": "#fce7f3",
+        "figmaAlias": "pink/100",
+        "overrideTo": "pink/100",
+        "reason": "Links must pass on all three surface tiers; the one-pager lists 'pink links on secondary and tertiary surfaces' as an open failure. Default, hover and active stay three different steps.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/error",
+        "mode": "light",
+        "figmaValue": "#b91c1c",
+        "repoValue": "#b91c1c",
+        "figmaAlias": "red/700",
+        "overrideTo": "red/700",
+        "reason": "Contrast: worst pair was 3.59 to 1 (text/error on surface/tertiary/active (text-on-base)); with this step the worst is 4.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/error",
+        "mode": "dark",
+        "figmaValue": "#fca5a5",
+        "repoValue": "#fca5a5",
+        "figmaAlias": "red/300",
+        "overrideTo": "red/300",
+        "reason": "Contrast: worst pair was 3.81 to 1 (text/error on surface/tertiary/active (text-on-base)); with this step the worst is 5.56 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/success",
+        "mode": "light",
+        "figmaValue": "#166534",
+        "repoValue": "#166534",
+        "figmaAlias": "green/800",
+        "overrideTo": "green/800",
+        "reason": "Contrast: worst pair was 2.45 to 1 (text/success on surface/tertiary/active (text-on-base)); with this step the worst is 5.3 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/warning",
+        "mode": "light",
+        "figmaValue": "#92400e",
+        "repoValue": "#92400e",
+        "figmaAlias": "amber/800",
+        "overrideTo": "amber/800",
+        "reason": "Contrast: worst pair was 2.37 to 1 (text/warning on surface/tertiary/active (text-on-base)); with this step the worst is 5.27 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/info",
+        "mode": "light",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1d4ed8",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/700",
+        "reason": "Contrast: worst pair was 3.84 to 1 (text/info on surface/tertiary/active (text-on-base)); with this step the worst is 4.98 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/info",
+        "mode": "dark",
+        "figmaValue": "#93c5fd",
+        "repoValue": "#93c5fd",
+        "figmaAlias": "blue/300",
+        "overrideTo": "blue/300",
+        "reason": "Contrast: worst pair was 4.15 to 1 (text/info on surface/tertiary/active (text-on-base)); with this step the worst is 5.85 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/success",
+        "mode": "light",
+        "figmaValue": "#15803d",
+        "repoValue": "#15803d",
+        "figmaAlias": "green/700",
+        "overrideTo": "green/700",
+        "reason": "Contrast: worst pair was 2.91 to 1 (icon/success on surface/tertiary/default (icon-on-base)); with this step the worst is 4.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/warning",
+        "mode": "light",
+        "figmaValue": "#b45309",
+        "repoValue": "#b45309",
+        "figmaAlias": "amber/700",
+        "overrideTo": "amber/700",
+        "reason": "Contrast: worst pair was 2.82 to 1 (icon/warning on surface/tertiary/default (icon-on-base)); with this step the worst is 4.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/active",
+        "mode": "light",
+        "figmaValue": "#500724",
+        "repoValue": "#500724",
+        "figmaAlias": "pink/950",
+        "overrideTo": "pink/950",
+        "reason": "One job per token: pressed was the same colour as hover, so a press gave no feedback.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/active",
+        "mode": "dark",
+        "figmaValue": "#9d174d",
+        "repoValue": "#9d174d",
+        "figmaAlias": "pink/800",
+        "overrideTo": "pink/800",
+        "reason": "One job per token: pressed was the same colour as hover, so a press gave no feedback.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "border/warning",
+        "mode": "light",
+        "figmaValue": "#b45309",
+        "repoValue": "#b45309",
+        "figmaAlias": "amber/700",
+        "overrideTo": "amber/700",
+        "reason": "Contrast: worst pair was 3 to 1 (border/warning on surface/secondary/default (status-and-brand-borders)); with this step the worst is 4.73 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/default",
+        "mode": "light",
+        "figmaValue": "#115e59",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/800",
+        "overrideTo": "teal/800",
+        "reason": "Contrast: worst pair was 2.97 to 1 (text/accent/teal/default on surface/accent/teal/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.02 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/default",
+        "mode": "dark",
+        "figmaValue": "#5eead4",
+        "repoValue": "#5eead4",
+        "figmaAlias": "teal/300",
+        "overrideTo": "teal/300",
+        "reason": "Contrast: worst pair was 1.39 to 1 (text/accent/teal/default on surface/accent/teal/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.13 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/default",
+        "mode": "dark",
+        "figmaValue": "#14b8a6",
+        "repoValue": "#14b8a6",
+        "figmaAlias": "teal/500",
+        "overrideTo": "teal/500",
+        "reason": "Contrast: worst pair was 1.73 to 1 (icon/accent/teal/default on surface/accent/teal/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.81 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/bold",
+        "mode": "light",
+        "figmaValue": "#ccfbf1",
+        "repoValue": "#ccfbf1",
+        "figmaAlias": "teal/100",
+        "overrideTo": "teal/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/bold",
+        "mode": "dark",
+        "figmaValue": "#ccfbf1",
+        "repoValue": "#ccfbf1",
+        "figmaAlias": "teal/100",
+        "overrideTo": "teal/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/default",
+        "mode": "light",
+        "figmaValue": "#1d4ed8",
+        "repoValue": "#1d4ed8",
+        "figmaAlias": "blue/700",
+        "overrideTo": "blue/700",
+        "reason": "Contrast: worst pair was 3.64 to 1 (text/accent/blue/default on surface/accent/blue/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.72 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/default",
+        "mode": "dark",
+        "figmaValue": "#93c5fd",
+        "repoValue": "#93c5fd",
+        "figmaAlias": "blue/300",
+        "overrideTo": "blue/300",
+        "reason": "Contrast: worst pair was 1.3 to 1 (text/accent/blue/default on surface/accent/blue/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.84 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/default",
+        "mode": "dark",
+        "figmaValue": "#60a5fa",
+        "repoValue": "#60a5fa",
+        "figmaAlias": "blue/400",
+        "overrideTo": "blue/400",
+        "reason": "Contrast: worst pair was 1.55 to 1 (icon/accent/blue/default on surface/accent/blue/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.07 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/bold",
+        "mode": "light",
+        "figmaValue": "#dbeafe",
+        "repoValue": "#dbeafe",
+        "figmaAlias": "blue/100",
+        "overrideTo": "blue/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/bold",
+        "mode": "dark",
+        "figmaValue": "#dbeafe",
+        "repoValue": "#dbeafe",
+        "figmaAlias": "blue/100",
+        "overrideTo": "blue/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/default",
+        "mode": "light",
+        "figmaValue": "#6d28d9",
+        "repoValue": "#6d28d9",
+        "figmaAlias": "violet/700",
+        "overrideTo": "violet/700",
+        "reason": "Contrast: worst pair was 4.1 to 1 (text/accent/violet/default on surface/accent/violet/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.12 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/default",
+        "mode": "dark",
+        "figmaValue": "#c4b5fd",
+        "repoValue": "#c4b5fd",
+        "figmaAlias": "violet/300",
+        "overrideTo": "violet/300",
+        "reason": "Contrast: worst pair was 1.26 to 1 (text/accent/violet/default on surface/accent/violet/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.87 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/default",
+        "mode": "dark",
+        "figmaValue": "#a78bfa",
+        "repoValue": "#a78bfa",
+        "figmaAlias": "violet/400",
+        "overrideTo": "violet/400",
+        "reason": "Contrast: worst pair was 1.54 to 1 (icon/accent/violet/default on surface/accent/violet/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.03 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/bold",
+        "mode": "light",
+        "figmaValue": "#ede9fe",
+        "repoValue": "#ede9fe",
+        "figmaAlias": "violet/100",
+        "overrideTo": "violet/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/bold",
+        "mode": "dark",
+        "figmaValue": "#ede9fe",
+        "repoValue": "#ede9fe",
+        "figmaAlias": "violet/100",
+        "overrideTo": "violet/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/default",
+        "mode": "light",
+        "figmaValue": "#92400e",
+        "repoValue": "#92400e",
+        "figmaAlias": "amber/800",
+        "overrideTo": "amber/800",
+        "reason": "Contrast: worst pair was 2.56 to 1 (text/accent/amber/default on surface/accent/amber/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.69 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/default",
+        "mode": "dark",
+        "figmaValue": "#fcd34d",
+        "repoValue": "#fcd34d",
+        "figmaAlias": "amber/300",
+        "overrideTo": "amber/300",
+        "reason": "Contrast: worst pair was 1.41 to 1 (text/accent/amber/default on surface/accent/amber/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 4.92 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/default",
+        "mode": "light",
+        "figmaValue": "#b45309",
+        "repoValue": "#b45309",
+        "figmaAlias": "amber/700",
+        "overrideTo": "amber/700",
+        "reason": "Contrast: worst pair was 2.86 to 1 (icon/accent/amber/default on surface/accent/amber/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.51 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/default",
+        "mode": "dark",
+        "figmaValue": "#f59e0b",
+        "repoValue": "#f59e0b",
+        "figmaAlias": "amber/500",
+        "overrideTo": "amber/500",
+        "reason": "Contrast: worst pair was 1.81 to 1 (icon/accent/amber/default on surface/accent/amber/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4.22 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/bold",
+        "mode": "light",
+        "figmaValue": "#fef3c7",
+        "repoValue": "#fef3c7",
+        "figmaAlias": "amber/100",
+        "overrideTo": "amber/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/bold",
+        "mode": "dark",
+        "figmaValue": "#fef3c7",
+        "repoValue": "#fef3c7",
+        "figmaAlias": "amber/100",
+        "overrideTo": "amber/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/default",
+        "mode": "light",
+        "figmaValue": "#9d174d",
+        "repoValue": "#9d174d",
+        "figmaAlias": "pink/800",
+        "overrideTo": "pink/800",
+        "reason": "Contrast: worst pair was 3.33 to 1 (text/accent/pink/default on surface/accent/pink/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.7 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/default",
+        "mode": "dark",
+        "figmaValue": "#fbcfe8",
+        "repoValue": "#fbcfe8",
+        "figmaAlias": "pink/200",
+        "overrideTo": "pink/200",
+        "reason": "Contrast: worst pair was 1.31 to 1 (text/accent/pink/default on surface/accent/pink/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.7 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/default",
+        "mode": "dark",
+        "figmaValue": "#f472b6",
+        "repoValue": "#f472b6",
+        "figmaAlias": "pink/400",
+        "overrideTo": "pink/400",
+        "reason": "Contrast: worst pair was 1.6 to 1 (icon/accent/pink/default on surface/accent/pink/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.64 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/bold",
+        "mode": "light",
+        "figmaValue": "#fce7f3",
+        "repoValue": "#fce7f3",
+        "figmaAlias": "pink/100",
+        "overrideTo": "pink/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/bold",
+        "mode": "dark",
+        "figmaValue": "#fce7f3",
+        "repoValue": "#fce7f3",
+        "figmaAlias": "pink/100",
+        "overrideTo": "pink/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/default",
+        "mode": "light",
+        "figmaValue": "#166534",
+        "repoValue": "#166534",
+        "figmaAlias": "green/800",
+        "overrideTo": "green/800",
+        "reason": "Contrast: worst pair was 2.72 to 1 (text/accent/green/default on surface/accent/green/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.88 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/default",
+        "mode": "dark",
+        "figmaValue": "#86efac",
+        "repoValue": "#86efac",
+        "figmaAlias": "green/300",
+        "overrideTo": "green/300",
+        "reason": "Contrast: worst pair was 1.42 to 1 (text/accent/green/default on surface/accent/green/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.08 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/default",
+        "mode": "dark",
+        "figmaValue": "#22c55e",
+        "repoValue": "#22c55e",
+        "figmaAlias": "green/500",
+        "overrideTo": "green/500",
+        "reason": "Contrast: worst pair was 1.82 to 1 (icon/accent/green/default on surface/accent/green/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 4 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/bold",
+        "mode": "light",
+        "figmaValue": "#dcfce7",
+        "repoValue": "#dcfce7",
+        "figmaAlias": "green/100",
+        "overrideTo": "green/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/bold",
+        "mode": "dark",
+        "figmaValue": "#dcfce7",
+        "repoValue": "#dcfce7",
+        "figmaAlias": "green/100",
+        "overrideTo": "green/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/default",
+        "mode": "light",
+        "figmaValue": "#9a3412",
+        "repoValue": "#9a3412",
+        "figmaAlias": "orange/800",
+        "overrideTo": "orange/800",
+        "reason": "Contrast: worst pair was 2.63 to 1 (text/accent/orange/default on surface/accent/orange/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.4 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/default",
+        "mode": "dark",
+        "figmaValue": "#fed7aa",
+        "repoValue": "#fed7aa",
+        "figmaAlias": "orange/200",
+        "overrideTo": "orange/200",
+        "reason": "Contrast: worst pair was 1.41 to 1 (text/accent/orange/default on surface/accent/orange/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.4 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/default",
+        "mode": "dark",
+        "figmaValue": "#f97316",
+        "repoValue": "#f97316",
+        "figmaAlias": "orange/500",
+        "overrideTo": "orange/500",
+        "reason": "Contrast: worst pair was 1.81 to 1 (icon/accent/orange/default on surface/accent/orange/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.34 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/bold",
+        "mode": "light",
+        "figmaValue": "#ffedd5",
+        "repoValue": "#ffedd5",
+        "figmaAlias": "orange/100",
+        "overrideTo": "orange/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/bold",
+        "mode": "dark",
+        "figmaValue": "#ffedd5",
+        "repoValue": "#ffedd5",
+        "figmaAlias": "orange/100",
+        "overrideTo": "orange/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/default",
+        "mode": "light",
+        "figmaValue": "#991b1b",
+        "repoValue": "#991b1b",
+        "figmaAlias": "red/800",
+        "overrideTo": "red/800",
+        "reason": "Contrast: worst pair was 3.34 to 1 (text/accent/red/default on surface/accent/red/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.74 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/default",
+        "mode": "dark",
+        "figmaValue": "#fecaca",
+        "repoValue": "#fecaca",
+        "figmaAlias": "red/200",
+        "overrideTo": "red/200",
+        "reason": "Contrast: worst pair was 1.28 to 1 (text/accent/red/default on surface/accent/red/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 5.74 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/default",
+        "mode": "dark",
+        "figmaValue": "#f87171",
+        "repoValue": "#f87171",
+        "figmaAlias": "red/400",
+        "overrideTo": "red/400",
+        "reason": "Contrast: worst pair was 1.55 to 1 (icon/accent/red/default on surface/accent/red/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.62 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/bold",
+        "mode": "light",
+        "figmaValue": "#fee2e2",
+        "repoValue": "#fee2e2",
+        "figmaAlias": "red/100",
+        "overrideTo": "red/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/bold",
+        "mode": "dark",
+        "figmaValue": "#fee2e2",
+        "repoValue": "#fee2e2",
+        "figmaAlias": "red/100",
+        "overrideTo": "red/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/default",
+        "mode": "light",
+        "figmaValue": "#890b31",
+        "repoValue": "#890b31",
+        "figmaAlias": "rose/800",
+        "overrideTo": "rose/800",
+        "reason": "Contrast: worst pair was 2.94 to 1 (text/accent/rose/default on surface/accent/rose/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.06 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/default",
+        "mode": "dark",
+        "figmaValue": "#feb9cf",
+        "repoValue": "#feb9cf",
+        "figmaAlias": "rose/200",
+        "overrideTo": "rose/200",
+        "reason": "Contrast: worst pair was 1.46 to 1 (text/accent/rose/default on surface/accent/rose/subtle/hover (accent-text-on-accent-surface)); with this step the worst is 6.06 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/default",
+        "mode": "dark",
+        "figmaValue": "#f82065",
+        "repoValue": "#f82065",
+        "figmaAlias": "rose/500",
+        "overrideTo": "rose/500",
+        "reason": "Contrast: worst pair was 2.02 to 1 (icon/accent/rose/default on surface/accent/rose/subtle/default (accent-icon-on-accent-surface)); with this step the worst is 3.44 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/bold",
+        "mode": "light",
+        "figmaValue": "#ffdbe7",
+        "repoValue": "#ffdbe7",
+        "figmaAlias": "rose/100",
+        "overrideTo": "rose/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/bold",
+        "mode": "dark",
+        "figmaValue": "#ffdbe7",
+        "repoValue": "#ffdbe7",
+        "figmaAlias": "rose/100",
+        "overrideTo": "rose/100",
+        "reason": "The bold surface is the same in both modes, so the icon on it must be too. In dark it was the 900 step on a 700 to 900 surface, as low as 1 to 1. It now matches text/accent/<hue>/bold, which the one-pager already fixed.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/hover",
+        "mode": "light",
+        "figmaValue": "#115e59",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/800",
+        "overrideTo": "teal/800",
+        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/hover",
+        "mode": "dark",
+        "figmaValue": "#115e59",
+        "repoValue": "#115e59",
+        "figmaAlias": "teal/800",
+        "overrideTo": "teal/800",
+        "reason": "teal/100 text on the teal/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to teal/800, as it already does for the six hues whose bold surface is 900.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/hover",
+        "mode": "light",
+        "figmaValue": "#1e40af",
+        "repoValue": "#1e40af",
+        "figmaAlias": "blue/800",
+        "overrideTo": "blue/800",
+        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/hover",
+        "mode": "dark",
+        "figmaValue": "#1e40af",
+        "repoValue": "#1e40af",
+        "figmaAlias": "blue/800",
+        "overrideTo": "blue/800",
+        "reason": "blue/100 text on the blue/600 hover surface fails 4.5 to 1 (the one-pager lists it). Hover now goes darker, to blue/800, as it already does for the six hues whose bold surface is 900.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/default",
+        "mode": "dark",
+        "figmaValue": "#3d3f43",
+        "repoValue": "#3d3f43",
+        "figmaAlias": "neutral/dark/300",
+        "overrideTo": "neutral/dark/300",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/hover",
+        "mode": "dark",
+        "figmaValue": "#4b4d51",
+        "repoValue": "#4b4d51",
+        "figmaAlias": "neutral/dark/350",
+        "overrideTo": "neutral/dark/350",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/default",
+        "mode": "light",
+        "figmaValue": "#3b3d42",
+        "repoValue": "#3b3d42",
+        "figmaAlias": "neutral/light/900",
+        "overrideTo": "neutral/light/900",
+        "reason": "Contrast on the subtle neutral surfaces.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/default",
+        "mode": "dark",
+        "figmaValue": "#cecfd2",
+        "repoValue": "#cecfd2",
+        "figmaAlias": "neutral/dark/900",
+        "overrideTo": "neutral/dark/900",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/default",
+        "mode": "light",
+        "figmaValue": "#6b6e76",
+        "repoValue": "#6b6e76",
+        "figmaAlias": "neutral/light/700",
+        "overrideTo": "neutral/light/700",
+        "reason": "Contrast on the subtle neutral surfaces.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/default",
+        "mode": "dark",
+        "figmaValue": "#bfc1c4",
+        "repoValue": "#bfc1c4",
+        "figmaAlias": "neutral/dark/800",
+        "overrideTo": "neutral/dark/800",
+        "reason": "In dark the subtle neutral surface was neutral/dark/700, a light grey, with text of the same step on it: 1 to 1. The surface now mirrors light (a low step) and the text and icon sit high on the ramp.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      },
+      {
+        "collection": "Themes",
+        "token": "text/brand",
+        "mode": "dark",
+        "figmaValue": "#f9a8d4",
+        "repoValue": "#f9a8d4",
+        "figmaAlias": "pink/300",
+        "overrideTo": "pink/300",
+        "reason": "Contrast: worst pair was 2.3 to 1 (text/brand on surface/tertiary/active (text-on-base)); with this step the worst is 5.82 to 1. Nearest step on the same ramp that passes every declared pair.",
+        "sources": [
+          "overrides.json",
+          "tokens.json"
+        ]
+      }
+    ],
+    "cssNameDiffers": [],
+    "cssFileMismatch": [],
+    "descriptionDiffers": [
+      {
+        "collection": "Themes",
+        "token": "text/primary",
+        "figma": "Body text and headings on any surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/secondary",
+        "figma": "Supporting text, such as hints and details, on any surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/placeholder",
+        "figma": "Placeholder text inside an empty field.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/disabled",
+        "figma": "Text of a control that cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/inverse",
+        "figma": "Text on an inverse surface, such as a tooltip.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/on",
+        "figma": "Text on a bold brand or action fill, such as a primary button.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/default",
+        "figma": "A link at rest.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/hover",
+        "figma": "A link under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/link/active",
+        "figma": "A link while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/error",
+        "figma": "Text that reports an error, such as a field message.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/success",
+        "figma": "Text that confirms something worked.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/warning",
+        "figma": "Text that warns before something goes wrong.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/info",
+        "figma": "Text that gives neutral information or a tip.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/primary",
+        "figma": "Icons that sit beside body text.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/secondary",
+        "figma": "Supporting icons, such as a chevron or a hint.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/disabled",
+        "figma": "An icon in a control that cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/inverse",
+        "figma": "An icon on an inverse surface, such as a tooltip.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/on",
+        "figma": "An icon on a bold brand or action fill.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/brand",
+        "figma": "An icon in the brand colour.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/error",
+        "figma": "An icon that marks an error.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/success",
+        "figma": "An icon that marks success.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/warning",
+        "figma": "An icon that marks a warning.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/info",
+        "figma": "An icon that marks information.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/default",
+        "figma": "The page and card background.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/hover",
+        "figma": "A row or item on the page under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/active",
+        "figma": "A row or item on the page while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/primary/disabled",
+        "figma": "A row or item on the page when it cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/default",
+        "figma": "A grouped area on the page, such as a field or a panel.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/hover",
+        "figma": "A grouped area under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/active",
+        "figma": "A grouped area while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/secondary/disabled",
+        "figma": "A grouped area when it cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/default",
+        "figma": "A nested area inside a grouped area, such as a chip.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/hover",
+        "figma": "A nested area under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/active",
+        "figma": "A nested area while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/tertiary/disabled",
+        "figma": "A nested area when it cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/error",
+        "figma": "The background of an error message or banner.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/success",
+        "figma": "The background of a success message or banner.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/warning",
+        "figma": "The background of a warning message or banner.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/info",
+        "figma": "The background of an information message or banner.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/default",
+        "figma": "The fill of the main action button.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/hover",
+        "figma": "The main action button under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/active",
+        "figma": "The main action button while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/primary/disabled",
+        "figma": "The main action button when it cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/default",
+        "figma": "The fill of a neutral button, such as Cancel.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/hover",
+        "figma": "A neutral button under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/active",
+        "figma": "A neutral button while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/neutral/disabled",
+        "figma": "A neutral button when it cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/default",
+        "figma": "The fill of a secondary button.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/hover",
+        "figma": "A secondary button under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/active",
+        "figma": "A secondary button while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/secondary/disabled",
+        "figma": "A secondary button when it cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/error/default",
+        "figma": "The fill of a destructive action button, such as Delete.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/error/hover",
+        "figma": "A destructive action button under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/success/default",
+        "figma": "The fill of a confirming action button.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/success/hover",
+        "figma": "A confirming action button under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/warning/default",
+        "figma": "The fill of a button for an action that needs care.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "interactive/warning/hover",
+        "figma": "A button for an action that needs care under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/default",
+        "figma": "The edge of a card, divider or container.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/secondary",
+        "figma": "A quieter edge, such as a divider inside a card.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/hover",
+        "figma": "The edge of a card or container under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/active",
+        "figma": "The edge of a card or container while it is pressed.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/primary/disabled",
+        "figma": "The edge of a card or container when it cannot be used.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/focus",
+        "figma": "The ring around whatever has keyboard focus.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/info",
+        "figma": "The edge of an information message.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/error",
+        "figma": "The edge of a field with an error, or of an error message.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/success",
+        "figma": "The edge of a success message.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/warning",
+        "figma": "The edge of a warning message.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/default",
+        "figma": "Teal text on a teal accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/teal/bold",
+        "figma": "Stronger teal text, for emphasis on a teal accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/default",
+        "figma": "A teal icon on a teal accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/teal/bold",
+        "figma": "A stronger teal icon on a teal accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/default",
+        "figma": "Blue text on a blue accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/blue/bold",
+        "figma": "Stronger blue text, for emphasis on a blue accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/default",
+        "figma": "A blue icon on a blue accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/blue/bold",
+        "figma": "A stronger blue icon on a blue accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/default",
+        "figma": "Violet text on a violet accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/violet/bold",
+        "figma": "Stronger violet text, for emphasis on a violet accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/default",
+        "figma": "A violet icon on a violet accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/violet/bold",
+        "figma": "A stronger violet icon on a violet accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/default",
+        "figma": "Amber text on an amber accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/amber/bold",
+        "figma": "Stronger amber text, for emphasis on an amber accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/default",
+        "figma": "An amber icon on an amber accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/amber/bold",
+        "figma": "A stronger amber icon on an amber accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/default",
+        "figma": "Pink text on a pink accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/pink/bold",
+        "figma": "Stronger pink text, for emphasis on a pink accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/default",
+        "figma": "A pink icon on a pink accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/pink/bold",
+        "figma": "A stronger pink icon on a pink accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/default",
+        "figma": "Green text on a green accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/green/bold",
+        "figma": "Stronger green text, for emphasis on a green accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/default",
+        "figma": "A green icon on a green accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/green/bold",
+        "figma": "A stronger green icon on a green accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/default",
+        "figma": "Orange text on an orange accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/orange/bold",
+        "figma": "Stronger orange text, for emphasis on an orange accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/default",
+        "figma": "An orange icon on an orange accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/orange/bold",
+        "figma": "A stronger orange icon on an orange accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/default",
+        "figma": "Red text on a red accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/red/bold",
+        "figma": "Stronger red text, for emphasis on a red accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/default",
+        "figma": "A red icon on a red accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/red/bold",
+        "figma": "A stronger red icon on a red accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/default",
+        "figma": "Rose text on a rose accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/rose/bold",
+        "figma": "Stronger rose text, for emphasis on a rose accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/default",
+        "figma": "A rose icon on a rose accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/rose/bold",
+        "figma": "A stronger rose icon on a rose accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtlest/default",
+        "figma": "The faintest teal background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtlest/hover",
+        "figma": "The faintest teal background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtle/default",
+        "figma": "A light teal background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/subtle/hover",
+        "figma": "A light teal background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/default",
+        "figma": "A strong teal background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/teal/bold/hover",
+        "figma": "A strong teal background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtlest/default",
+        "figma": "The faintest blue background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtlest/hover",
+        "figma": "The faintest blue background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtle/default",
+        "figma": "A light blue background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/subtle/hover",
+        "figma": "A light blue background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/default",
+        "figma": "A strong blue background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/blue/bold/hover",
+        "figma": "A strong blue background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtlest/default",
+        "figma": "The faintest violet background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtlest/hover",
+        "figma": "The faintest violet background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtle/default",
+        "figma": "A light violet background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/subtle/hover",
+        "figma": "A light violet background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/bold/default",
+        "figma": "A strong violet background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/violet/bold/hover",
+        "figma": "A strong violet background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtlest/default",
+        "figma": "The faintest amber background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtlest/hover",
+        "figma": "The faintest amber background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtle/default",
+        "figma": "A light amber background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/subtle/hover",
+        "figma": "A light amber background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/bold/default",
+        "figma": "A strong amber background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/amber/bold/hover",
+        "figma": "A strong amber background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtlest/default",
+        "figma": "The faintest pink background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtlest/hover",
+        "figma": "The faintest pink background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtle/default",
+        "figma": "A light pink background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/subtle/hover",
+        "figma": "A light pink background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/bold/default",
+        "figma": "A strong pink background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/pink/bold/hover",
+        "figma": "A strong pink background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtlest/default",
+        "figma": "The faintest green background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtlest/hover",
+        "figma": "The faintest green background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtle/default",
+        "figma": "A light green background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/subtle/hover",
+        "figma": "A light green background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/bold/default",
+        "figma": "A strong green background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/green/bold/hover",
+        "figma": "A strong green background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtlest/default",
+        "figma": "The faintest orange background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtlest/hover",
+        "figma": "The faintest orange background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtle/default",
+        "figma": "A light orange background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/subtle/hover",
+        "figma": "A light orange background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/bold/default",
+        "figma": "A strong orange background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/orange/bold/hover",
+        "figma": "A strong orange background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtlest/default",
+        "figma": "The faintest red background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtlest/hover",
+        "figma": "The faintest red background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtle/default",
+        "figma": "A light red background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/subtle/hover",
+        "figma": "A light red background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/bold/default",
+        "figma": "A strong red background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/red/bold/hover",
+        "figma": "A strong red background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtlest/default",
+        "figma": "The faintest rose background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtlest/hover",
+        "figma": "The faintest rose background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtle/default",
+        "figma": "A light rose background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/subtle/hover",
+        "figma": "A light rose background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/bold/default",
+        "figma": "A strong rose background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/rose/bold/hover",
+        "figma": "A strong rose background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtlest/default",
+        "figma": "The faintest neutral background, for a large tinted area.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtlest/hover",
+        "figma": "The faintest neutral background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/default",
+        "figma": "A light neutral background, such as a tag or badge.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/subtle/hover",
+        "figma": "A light neutral background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/bold/default",
+        "figma": "A strong neutral background, such as a solid tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/accent/neutral/bold/hover",
+        "figma": "A strong neutral background under the pointer.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/default",
+        "figma": "Neutral text on a neutral accent surface, such as a tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/accent/neutral/bold",
+        "figma": "Stronger neutral text, for emphasis on a neutral accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/default",
+        "figma": "A neutral icon on a neutral accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "icon/accent/neutral/bold",
+        "figma": "A stronger neutral icon on a neutral accent surface.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "text/brand",
+        "figma": "Text in the brand colour, such as a highlighted word.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "border/brand",
+        "figma": "A brand edge, such as a selected card.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/brand/subtle",
+        "figma": "A light brand background, such as a selected item or a promotion.",
+        "repo": ""
+      },
+      {
+        "collection": "Themes",
+        "token": "surface/brand/bold",
+        "figma": "A strong brand background, such as a banner.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-1",
+        "figma": "Font size of a level 1 heading, the page title.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-2",
+        "figma": "Font size of a level 2 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-3",
+        "figma": "Font size of a level 3 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-4",
+        "figma": "Font size of a level 4 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-5",
+        "figma": "Font size of a level 5 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/heading-6",
+        "figma": "Font size of a level 6 heading, the smallest.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/section-label-base",
+        "figma": "Font size of a section label, the small heading above a group of items.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-large",
+        "figma": "Font size of a label on a large control.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-base",
+        "figma": "Font size of a label on a default control.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-small",
+        "figma": "Font size of a label on a small control or tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/label-xsmall",
+        "figma": "Font size of the smallest labels, such as a badge count.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-large",
+        "figma": "Font size of large body text, such as an introduction.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-base",
+        "figma": "Font size of body text.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-small",
+        "figma": "Font size of small body text, such as help text or a caption.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-size/body-xsmall",
+        "figma": "Font size of the smallest body text, such as a legal note.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-1",
+        "figma": "Line height of a level 1 heading, the page title.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-2",
+        "figma": "Line height of a level 2 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-3",
+        "figma": "Line height of a level 3 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-4",
+        "figma": "Line height of a level 4 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-5",
+        "figma": "Line height of a level 5 heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/heading-6",
+        "figma": "Line height of a level 6 heading, the smallest.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/section-label-base",
+        "figma": "Line height of a section label, the small heading above a group of items.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-large",
+        "figma": "Line height of a label on a large control.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-base",
+        "figma": "Line height of a label on a default control.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-small",
+        "figma": "Line height of a label on a small control or tag.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/label-xsmall",
+        "figma": "Line height of the smallest labels, such as a badge count.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-large",
+        "figma": "Line height of large body text, such as an introduction.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-base",
+        "figma": "Line height of body text.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-small",
+        "figma": "Line height of small body text, such as help text or a caption.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "line-height/body-xsmall",
+        "figma": "Line height of the smallest body text, such as a legal note.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/heading",
+        "figma": "Weight of every heading.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/section-label-base",
+        "figma": "Weight of a section label.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/label",
+        "figma": "Weight of labels on controls.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/body",
+        "figma": "Weight of body text.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-weight/emphasis",
+        "figma": "Weight of emphasised words inside body text.",
+        "repo": ""
+      },
+      {
+        "collection": "Typography",
+        "token": "font-family/sans",
+        "figma": "The typeface for all interface text.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/16",
+        "figma": "Corners of a control 16 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/20",
+        "figma": "Corners of a control 20 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/24",
+        "figma": "Corners of a control 24 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/28",
+        "figma": "Corners of a control 28 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/36",
+        "figma": "Corners of a control 36 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/44",
+        "figma": "Corners of a control 44 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "container/small",
+        "figma": "Corners of a small container, such as a tag or tooltip.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "container/medium",
+        "figma": "Corners of a card or menu.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "container/large",
+        "figma": "Corners of a dialog or sheet.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "round/full",
+        "figma": "A fully round corner, for pills and circles.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/32",
+        "figma": "Corners of a control 32 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Radius",
+        "token": "height/40",
+        "figma": "Corners of a control 40 pixels tall.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/400",
+        "figma": "Step 400 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/320",
+        "figma": "Step 320 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/280",
+        "figma": "Step 280 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/240",
+        "figma": "Step 240 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/200",
+        "figma": "Step 200 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/160",
+        "figma": "Step 160 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/120",
+        "figma": "Step 120 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/100",
+        "figma": "Step 100 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/80",
+        "figma": "Step 80 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/60",
+        "figma": "Step 60 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/40",
+        "figma": "Step 40 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/20",
+        "figma": "Step 20 of the spacing that tightens in compact density, for padding and gaps inside components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "scaled/0",
+        "figma": "No space, in any density.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/400",
+        "figma": "Step 400 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/320",
+        "figma": "Step 320 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/280",
+        "figma": "Step 280 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/240",
+        "figma": "Step 240 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/200",
+        "figma": "Step 200 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/160",
+        "figma": "Step 160 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/120",
+        "figma": "Step 120 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/100",
+        "figma": "Step 100 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/80",
+        "figma": "Step 80 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/60",
+        "figma": "Step 60 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/40",
+        "figma": "Step 40 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/20",
+        "figma": "Step 20 of the spacing that stays the same in every density, for layout between components.",
+        "repo": ""
+      },
+      {
+        "collection": "Density",
+        "token": "static/0",
+        "figma": "No space, in any density.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/base-start",
+        "figma": "Start colour of the red gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/base-end",
+        "figma": "End colour of the red gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/glow-warm",
+        "figma": "The warm glow laid over the red gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/glow",
+        "figma": "The main glow laid over the red gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "red/text",
+        "figma": "Text on the red gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/base-start",
+        "figma": "Start colour of the orange gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/base-end",
+        "figma": "End colour of the orange gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/glow-warm",
+        "figma": "The warm glow laid over the orange gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/glow",
+        "figma": "The main glow laid over the orange gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "orange/text",
+        "figma": "Text on the orange gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/base-start",
+        "figma": "Start colour of the amber gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/base-end",
+        "figma": "End colour of the amber gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/glow-warm",
+        "figma": "The warm glow laid over the amber gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/glow",
+        "figma": "The main glow laid over the amber gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "amber/text",
+        "figma": "Text on the amber gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/base-start",
+        "figma": "Start colour of the green gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/base-end",
+        "figma": "End colour of the green gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/glow-warm",
+        "figma": "The warm glow laid over the green gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/glow",
+        "figma": "The main glow laid over the green gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "green/text",
+        "figma": "Text on the green gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/base-start",
+        "figma": "Start colour of the teal gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/base-end",
+        "figma": "End colour of the teal gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/glow-warm",
+        "figma": "The warm glow laid over the teal gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/glow",
+        "figma": "The main glow laid over the teal gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "teal/text",
+        "figma": "Text on the teal gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/base-start",
+        "figma": "Start colour of the blue gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/base-end",
+        "figma": "End colour of the blue gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/glow-warm",
+        "figma": "The warm glow laid over the blue gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/glow",
+        "figma": "The main glow laid over the blue gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "blue/text",
+        "figma": "Text on the blue gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/base-start",
+        "figma": "Start colour of the violet gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/base-end",
+        "figma": "End colour of the violet gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/glow-warm",
+        "figma": "The warm glow laid over the violet gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/glow",
+        "figma": "The main glow laid over the violet gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "violet/text",
+        "figma": "Text on the violet gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/base-start",
+        "figma": "Start colour of the pink gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/base-end",
+        "figma": "End colour of the pink gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/glow-warm",
+        "figma": "The warm glow laid over the pink gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/glow",
+        "figma": "The main glow laid over the pink gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "pink/text",
+        "figma": "Text on the pink gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/base-start",
+        "figma": "Start colour of the rose gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/base-end",
+        "figma": "End colour of the rose gradient background.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/glow-warm",
+        "figma": "The warm glow laid over the rose gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/glow",
+        "figma": "The main glow laid over the rose gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Surface Gradients",
+        "token": "rose/text",
+        "figma": "Text on the rose gradient.",
+        "repo": ""
+      },
+      {
+        "collection": "Border",
+        "token": "width/md",
+        "figma": "The edge of a selected or invalid control, and the active tab&#39;s underline.",
+        "repo": "The edge of a selected or invalid control, and the active tab's underline."
+      }
+    ],
+    "proposedNotInFigma": [
+      {
+        "collection": "Elevation",
+        "token": "shadow/md",
+        "cssVar": "--shadow-md",
+        "type": "shadow",
+        "values": {
+          "light": "0 4px 16px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.08)",
+          "dark": "0 4px 16px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.4)"
+        },
+        "alias": {
+          "light": null,
+          "dark": null
+        },
+        "why": "Elevation is not started in Figma. A menu on a white page needs more than a faint border to read as above it."
+      },
+      {
+        "collection": "Elevation",
+        "token": "shadow/lg",
+        "cssVar": "--shadow-lg",
+        "type": "shadow",
+        "values": {
+          "light": "0 16px 48px rgb(0 0 0 / 0.18), 0 2px 8px rgb(0 0 0 / 0.08)",
+          "dark": "0 16px 48px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.4)"
+        },
+        "alias": {
+          "light": null,
+          "dark": null
+        },
+        "why": "Elevation is not started in Figma."
+      }
+    ]
+  },
+  "warnings": [],
+  "summary": "Figma and code agree on 326 of 329 tokens; 3 drift, 0 intended overrides, 77 overrides to remove; 2 proposed in the repo, not in Figma"
+}

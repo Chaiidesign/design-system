@@ -18,7 +18,7 @@
 // name before creating it and updates it otherwise, and it refuses to run in any other file.
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseSnapshot } from '../lib/snapshot.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -195,23 +195,24 @@ function primitiveScript(rows) {
 }
 
 function semanticBody(chunk) {
-  // chunk: rows of possibly several collections, in order.
-  const needPrims = [...new Set(chunk.flatMap((r) => r.vals.filter((x) => x.a).map((x) => x.a[0])))].sort();
+  // chunk: rows of possibly several collections, in order. Compact rows: [name, type C|F|S, values per mode, scopes, WEB syntax, description];
+  // a value is [primitive collection index, primitive name] for an alias, or the literal itself.
+  const P = [...new Set(chunk.flatMap((r) => r.vals.filter((x) => x.a).map((x) => x.a[0])))].sort();
+  const colls = [...new Set(chunk.map((r) => r.c))];
+  const blocks = colls.map((name) => ({ name, modes: chunk.find((r) => r.c === name).m, rows: chunk.filter((r) => r.c === name).map((r) => [r.n, r.t[0], r.vals.map((x) => (x.a ? [P.indexOf(x.a[0]), x.a[1]] : x.v)), r.s, r.x, r.d]) }));
   let body = PREAMBLE;
   body += `// Primitive targets, found by name in the DS V2 primitive collections. Every alias is checked before anything is written.
-const prim = {};
-for (const pn of ${JSON.stringify(needPrims)}) { const pc = findCol(pn); if (!pc) throw new Error('Run 01-primitives first: ' + pn + ' is missing'); prim[pn] = varsIn(pc); }
-const ROWS = ${JSON.stringify(chunk.map((r) => ({ c: r.c, n: r.n, t: r.t, m: r.m, vals: r.vals, s: r.s, x: r.x, d: r.d })))};
+const P = ${JSON.stringify(P)};
+const prim = P.map((pn) => { const pc = findCol(pn); if (!pc) throw new Error('Run 01-primitives first: ' + pn + ' is missing'); return varsIn(pc); });
+const TYPE = { C: 'COLOR', F: 'FLOAT', S: 'STRING' };
+const BLOCKS = ${JSON.stringify(blocks)};
 const missing = [];
-for (const r of ROWS) for (const x of r.vals) if (x.a && !prim[x.a[0]].get(x.a[1])) missing.push(r.n + ' -> ' + x.a.join(' '));
+for (const b of BLOCKS) for (const r of b.rows) for (const x of r[2]) if (Array.isArray(x) && !prim[x[0]].get(x[1])) missing.push(r[0] + ' -> ' + P[x[0]] + ' ' + x[1]);
 if (missing.length) throw new Error('Alias targets missing: ' + missing.join('; '));
-const valueOf = (r) => r.vals.map((x, i) => [r.m[i], x.a ? { type: 'VARIABLE_ALIAS', id: prim[x.a[0]].get(x.a[1]).id } : r.t === 'COLOR' ? rgba(x.v) : x.v]);
 `;
-  const colls = [...new Set(chunk.map((r) => r.c))];
   colls.forEach((name, k) => {
-    const modes = chunk.find((r) => r.c === name).m;
-    body += collectionOpen(name, modes, k);
-    body += `for (const r of ROWS.filter((r) => r.c === ${JSON.stringify(name)})) upsert(col${k}, vars${k}, r, modes${k}, valueOf);\n`;
+    body += collectionOpen(name, blocks[k].modes, k);
+    body += `for (const [n, t, vals, s, x, d] of BLOCKS[${k}].rows) upsert(col${k}, vars${k}, { n, t: TYPE[t], s, x, d }, modes${k}, () => vals.map((v, i) => [BLOCKS[${k}].modes[i], Array.isArray(v) ? { type: 'VARIABLE_ALIAS', id: prim[v[0]].get(v[1]).id } : t === 'C' ? rgba(v) : v]));\n`;
   });
   body += 'return result;\n';
   return body;
@@ -314,7 +315,7 @@ page.appendChild(root);
 const title = text('Souvenir DS V2 tokens', 32, 'text/primary', 'Bold');
 title.setBoundVariable('fontSize', T('font-size/heading-2')); title.setBoundVariable('lineHeight', T('line-height/heading-2'));
 root.appendChild(title);
-const intro = wrapText(text('Every colour role, the type scale, the radius scale and the spacing scale of the merged DS V2 token set, drawn with the "(DS V2)" variables in this file. Generated on ${PAGE_DATE} from the repo by v2/tools/figma/make-sandbox-scripts.mjs; the left frame uses the light mode of Themes (DS V2), the right frame the dark mode.', 14, 'text/secondary'), 1200);
+const intro = wrapText(text('This page shows every colour role (left in light mode, right in dark mode), the type scale, the radius scale and the spacing scale of the DS V2 tokens, drawn only with the "(DS V2)" variables of this file and generated on ${PAGE_DATE} from the repo by v2/tools/figma/make-sandbox-scripts.mjs.', 14, 'text/secondary'), 1200);
 intro.setBoundVariable('fontSize', T('font-size/body-base')); intro.setBoundVariable('lineHeight', T('line-height/body-base'));
 root.appendChild(intro);
 const row = figma.createAutoLayout('HORIZONTAL', { name: 'Modes', itemSpacing: 48 });
@@ -348,7 +349,7 @@ for (const [group, names] of GROUPS) {
     const chip = figma.createAutoLayout('HORIZONTAL', { name: 'chip', primaryAxisAlignItems: 'CENTER', counterAxisAlignItems: 'CENTER' });
     sw.appendChild(chip);
     chip.resize(160, 56); chip.primaryAxisSizingMode = 'FIXED'; chip.counterAxisSizingMode = 'FIXED';
-    chip.cornerRadius = 8;
+    for (const k of ['topLeftRadius', 'topRightRadius', 'bottomLeftRadius', 'bottomRightRadius']) chip.setBoundVariable(k, v('Radius (DS V2)', 'container/small'));
     if (group === 'text') {
       chip.fills = [paint(C(ON_SURFACE[n]))];
       chip.strokes = [paint(C('border/primary/default'))]; chip.strokeWeight = 1;
@@ -444,9 +445,11 @@ function selfTest() {
     if (!code.startsWith('// GENERATED') || !code.includes('SANDBOX ONLY')) problems.push(`${name}: missing the generated/sandbox header`);
     if (!code.includes(`if (figma.fileKey !== SANDBOX) throw`)) problems.push(`${name}: missing the file-key guard`);
     try { new AsyncFunction('figma', code); } catch (e) { problems.push(`${name}: does not parse: ${e.message}`); }
-    for (const m of code.matchAll(/createVariableCollection\(([^)]*)\)/g)) {
-      let arg;
-      try { arg = JSON.parse(m[1]); } catch { problems.push(`${name}: createVariableCollection(${m[1]}) is not a literal name`); continue; }
+    const calls = [...code.matchAll(/createVariableCollection\(/g)].length;
+    const literals = [...code.matchAll(/createVariableCollection\(("(?:[^"\\]|\\.)*")\)/g)];
+    if (calls !== literals.length) problems.push(`${name}: ${calls - literals.length} createVariableCollection call(s) without a literal name`);
+    for (const m of literals) {
+      const arg = JSON.parse(m[1]);
       if (!SAFE_COLLECTIONS.has(arg)) problems.push(`${name}: createVariableCollection("${arg}") is not a sandbox-safe name`);
     }
     if (/\.remove\(\)/.test(code) && !(name.endsWith('-page.figma.js') && code.includes("page.children.filter((n) => n.name === ROOT_NAME)) n.remove()"))) problems.push(`${name}: calls remove()`);
@@ -465,8 +468,9 @@ function selfTest() {
   process.exit(problems.length ? 1 : 0);
 }
 
-if (process.argv.includes('--self-test')) selfTest();
-else {
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain && process.argv.includes('--self-test')) selfTest();
+else if (isMain) {
   const { files, counts } = generate();
   mkdirSync(OUT_DIR, { recursive: true });
   for (const f of readdirSync(OUT_DIR)) if (f.endsWith('.figma.js') && !files.some(([n]) => n === f)) throw new Error(`stale file ${f} in ${OUT_DIR}: remove it by hand`);

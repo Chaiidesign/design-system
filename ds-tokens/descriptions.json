@@ -476,25 +476,25 @@
   {
     "collection": "Themes",
     "name": "text/accent/amber/default",
-    "description": "Amber text on a amber accent surface, such as a tag.",
+    "description": "Amber text on an amber accent surface, such as a tag.",
     "source": "drafted"
   },
   {
     "collection": "Themes",
     "name": "text/accent/amber/bold",
-    "description": "Stronger amber text, for emphasis on a amber accent surface.",
+    "description": "Stronger amber text, for emphasis on an amber accent surface.",
     "source": "drafted"
   },
   {
     "collection": "Themes",
     "name": "icon/accent/amber/default",
-    "description": "A amber icon on a amber accent surface.",
+    "description": "An amber icon on an amber accent surface.",
     "source": "drafted"
   },
   {
     "collection": "Themes",
     "name": "icon/accent/amber/bold",
-    "description": "A stronger amber icon on a amber accent surface.",
+    "description": "A stronger amber icon on an amber accent surface.",
     "source": "drafted"
   },
   {
@@ -548,25 +548,25 @@
   {
     "collection": "Themes",
     "name": "text/accent/orange/default",
-    "description": "Orange text on a orange accent surface, such as a tag.",
+    "description": "Orange text on an orange accent surface, such as a tag.",
     "source": "drafted"
   },
   {
     "collection": "Themes",
     "name": "text/accent/orange/bold",
-    "description": "Stronger orange text, for emphasis on a orange accent surface.",
+    "description": "Stronger orange text, for emphasis on an orange accent surface.",
     "source": "drafted"
   },
   {
     "collection": "Themes",
     "name": "icon/accent/orange/default",
-    "description": "A orange icon on a orange accent surface.",
+    "description": "An orange icon on an orange accent surface.",
     "source": "drafted"
   },
   {
     "collection": "Themes",
     "name": "icon/accent/orange/bold",
-    "description": "A stronger orange icon on a orange accent surface.",
+    "description": "A stronger orange icon on an orange accent surface.",
     "source": "drafted"
   },
   {
@@ -1941,6 +1941,12 @@
     "collection": "Motion",
     "name": "duration/base",
     "description": "A menu or dialog appearing or leaving.",
+    "source": "proposed, ds-tokens/proposed/tokens.json"
+  },
+  {
+    "collection": "Motion",
+    "name": "duration/spin",
+    "description": "One turn of a spinner.",
     "source": "proposed, ds-tokens/proposed/tokens.json"
   },
   {

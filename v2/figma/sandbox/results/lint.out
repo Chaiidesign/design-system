@@ -1,0 +1,314 @@
+Token lint: read 329 semantic variables in 8 collections and 192 primitive variables in 4 collections.
+
+name-case (standard rule 1): Names are lowercase kebab-case, slash between levels, no spaces. 1 finding.
+  [breaks the standard] These names have a part that is not lowercase kebab-case (capital letters, spaces, a leading or trailing hyphen, or other characters). (1)
+      primitive Colors: neutral/dark/-100
+
+state-segment (standard rule 3): A state is always its own last segment. 1 finding.
+  [breaks the standard] A state word sits before the last segment; the state must be the last segment. (2)
+      Border: focus/width
+      Border: focus/offset
+
+state-set (standard rule 3): State groups are complete and siblings are written the same way. 2 findings.
+  [decide] These surface or interactive groups have a hover state but no active or disabled state. Either the set is incomplete or these groups are meant to have only hover. (33)
+      Themes: interactive/error/* (lacks active and disabled)
+      Themes: interactive/success/* (lacks active and disabled)
+      Themes: interactive/warning/* (lacks active and disabled)
+      Themes: surface/accent/teal/subtlest/* (lacks active and disabled)
+      Themes: surface/accent/teal/subtle/* (lacks active and disabled)
+      Themes: surface/accent/teal/bold/* (lacks active and disabled)
+      Themes: surface/accent/blue/subtlest/* (lacks active and disabled)
+      Themes: surface/accent/blue/subtle/* (lacks active and disabled)
+      ... and 25 more (all listed in lint.json)
+  [decide] Sibling groups are written differently: one has states, the other is a single token without /default. (1)
+      Themes: border/secondary has no states while border/primary/* has them
+
+size-scale (standard rule 4): One size scale xs, sm, md, lg, xl, 2xl; no names taken from a pixel value. 3 findings.
+  [breaks the standard] These names use xsmall, small, base, medium or large instead of xs, sm, md, lg, xl, 2xl. (23)
+      Typography: font-size/section-label-base (base -> md)
+      Typography: font-size/label-large (large -> lg)
+      Typography: font-size/label-base (base -> md)
+      Typography: font-size/label-small (small -> sm)
+      Typography: font-size/label-xsmall (xsmall -> xs)
+      Typography: font-size/body-large (large -> lg)
+      Typography: font-size/body-base (base -> md)
+      Typography: font-size/body-small (small -> sm)
+      ... and 15 more (all listed in lint.json)
+  [breaks the standard] These radius names are taken from a pixel value (the height of the thing they round), which the standard forbids. (8)
+      Radius: height/16
+      Radius: height/20
+      Radius: height/24
+      Radius: height/28
+      Radius: height/36
+      Radius: height/44
+      Radius: height/32
+      Radius: height/40
+  [decide] These semantic names are numbers (the pixel value times ten), not the xs to 2xl scale. The standard names radius/height/20 as the example; it does not say whether a spacing step counts. (26)
+      Density: scaled/400
+      Density: scaled/320
+      Density: scaled/280
+      Density: scaled/240
+      Density: scaled/200
+      Density: scaled/160
+      Density: scaled/120
+      Density: scaled/100
+      ... and 18 more (all listed in lint.json)
+
+primitive-hygiene (standard rule 5): Primitives are named by value and are all used. 2 findings.
+  [decide] 30 primitives are reached by no semantic token. By family: orange (1 of 11: 300); amber (1 of 11: 600); violet (1 of 11: 500); pink (1 of 11: 500); neutral/light (1 of 15: 350); neutral/dark (1 of 16: -100); rose (1 of 11: 300); typography/font-size (2 of 11: 24, 36); typography/line-height (3 of 11: 12, 36, 44); typography/font-family (whole family, 1); typography/font-weight (2 of 5: 400, 800); Space (top level) (10 of 23: 36, 44, 48, 52, 56, 64, 72, 80, 88, 96); Radius (top level) (5 of 11: 0, 20, 24, 32, rounded-full). (30)
+      primitive Colors: orange/300
+      primitive Colors: amber/600
+      primitive Colors: violet/500
+      primitive Colors: pink/500
+      primitive Colors: neutral/light/350
+      primitive Colors: neutral/dark/-100
+      primitive Colors: rose/300
+      primitive Typography: typography/font-size/24
+      ... and 22 more (all listed in lint.json)
+  [breaks the standard] These primitive names contain a word that is not a value, a colour family or a category (for example not-used, font, rounded-full). (2)
+      primitive Typography: typography/font-family/font
+      primitive Radius: rounded-full
+
+alias (standard rule 6): Every semantic token aliases a primitive, written the same way as its siblings. 3 findings.
+  [breaks the standard] These semantic tokens hold a raw value although a primitive with that value exists. (11)
+      Typography: font-family/sans holds Geist = primitive Typography typography/font-family/font
+      Radius: round/full holds 9999 = primitive Radius rounded-full
+      Border: width/md holds 2 = primitive Space 2 or Radius 2
+      Border: focus/width holds 2 = primitive Space 2 or Radius 2
+      Border: focus/offset holds 2 = primitive Space 2 or Radius 2
+      Size: control/sm holds 32 = primitive Typography typography/font-size/32 or Typography typography/line-height/32 or Space 32 or Radius 32
+      Size: control/md holds 40 = primitive Typography typography/font-size/40 or Typography typography/line-height/40 or Space 40
+      Size: control/lg holds 44 = primitive Typography typography/line-height/44 or Space 44
+      ... and 3 more (all listed in lint.json)
+  [breaks the standard] These semantic tokens hold a raw value that no primitive has; a primitive should exist for it. (28)
+      Themes: surface/overlay holds #00000080 (light), #000000b3 (dark); no primitive has these values
+      Surface Gradients: red/glow-warm-fade holds #fed7aa00 (light), #7c2d1200 (dark); no primitive has these values
+      Surface Gradients: red/glow-fade holds #f8717100 (light), #b91c1c00 (dark); no primitive has these values
+      Surface Gradients: orange/glow-warm-fade holds #fde68a00 (light), #78350f00 (dark); no primitive has these values
+      Surface Gradients: orange/glow-fade holds #fb923c00 (light), #c2410c00 (dark); no primitive has these values
+      Surface Gradients: amber/glow-warm-fade holds #feb9cf00 (light), #5f0c2300 (dark); no primitive has these values
+      Surface Gradients: amber/glow-fade holds #fbbf2400 (light), #b4530900 (dark); no primitive has these values
+      Surface Gradients: green/glow-warm-fade holds #fde68a00 (light), #78350f00 (dark); no primitive has these values
+      ... and 20 more (all listed in lint.json)
+  [note] These aliases cross modes (a dark value points at a light neutral, or the other way) where their siblings do not. Listed, not failed: it may be intended. (4)
+      Themes: text/on (dark -> neutral/light/0)
+      Themes: icon/on (dark -> neutral/light/0)
+      Themes: surface/accent/neutral/bold/default (dark -> neutral/light/900)
+      Themes: surface/accent/neutral/bold/hover (dark -> neutral/light/800)
+
+mode-names (standard rule 7): Mode names are lowercase words; a one-mode collection calls its mode default. 0 findings.
+
+collection-names (standard rule 8): Collections are named for their category. 1 finding.
+  [breaks the standard] These collection names are not in the category list (Color, Typography, Radius, Space, Gradient). The collection name becomes the JSON path and CSS prefix, so this decides every exported name. (7)
+      collection Themes should be Color
+      collection Density should be Space
+      collection Surface Gradients should be Gradient
+      collection Border should be one of Color, Typography, Radius, Space, Gradient
+      collection Size should be one of Color, Typography, Radius, Space, Gradient
+      collection Motion should be one of Color, Typography, Radius, Space, Gradient
+      primitive collection Colors should be Color
+
+description (standard rule 9): Every semantic token has a one-line description. 0 findings.
+
+scopes (standard rule 10): Every token has scopes that match its job, never all scopes. 1 finding.
+  [breaks the standard] These tokens have no scopes at all. (196)
+      primitive Colors: red/50
+      primitive Colors: red/100
+      primitive Colors: red/200
+      primitive Colors: red/300
+      primitive Colors: red/400
+      primitive Colors: red/500
+      primitive Colors: red/600
+      primitive Colors: red/700
+      ... and 188 more (all listed in lint.json)
+
+code-syntax (standard rule 10): Every token has WEB code syntax, and it follows the naming rule. 1 finding.
+  [decide] 192 of 192 primitives have no WEB code syntax. Rule 10 says every token has one; rule 5 says components never reach primitives. Decide whether primitives get CSS names. (192)
+      primitive Colors: red/50
+      primitive Colors: red/100
+      primitive Colors: red/200
+      primitive Colors: red/300
+      primitive Colors: red/400
+      primitive Colors: red/500
+      primitive Colors: red/600
+      primitive Colors: red/700
+      ... and 184 more (all listed in lint.json)
+
+tailwind-namespace (standard rule 10): CSS prefixes follow the Tailwind v4 theme namespaces in the standard's table. 3 findings.
+  [breaks the standard] 15 tokens use the CSS prefix --font-size- where the standard's table promises --text-. (15)
+      Typography: font-size/heading-1
+      Typography: font-size/heading-2
+      Typography: font-size/heading-3
+      Typography: font-size/heading-4
+      Typography: font-size/heading-5
+      Typography: font-size/heading-6
+      Typography: font-size/section-label-base
+      Typography: font-size/label-large
+      ... and 7 more (all listed in lint.json)
+  [breaks the standard] 15 tokens use the CSS prefix --line-height- where the standard's table promises --leading-. (15)
+      Typography: line-height/heading-1
+      Typography: line-height/heading-2
+      Typography: line-height/heading-3
+      Typography: line-height/heading-4
+      Typography: line-height/heading-5
+      Typography: line-height/heading-6
+      Typography: line-height/section-label-base
+      Typography: line-height/label-large
+      ... and 7 more (all listed in lint.json)
+  [breaks the standard] 1 tokens use the CSS prefix --font-family- where the standard's table promises --font-. (1)
+      Typography: font-family/sans
+
+default-dropped (standard: separator sentence): Each surface changes only the separator, never the words. 1 finding.
+  [decide] 62 tokens end in /default in Figma but their code syntax drops the word default. The standard says each surface changes only the separator, never the words; the file does otherwise. Decide which one is right. (62)
+      Themes: text/link/default
+      Themes: surface/primary/default
+      Themes: surface/secondary/default
+      Themes: surface/tertiary/default
+      Themes: interactive/primary/default
+      Themes: interactive/neutral/default
+      Themes: interactive/secondary/default
+      Themes: interactive/error/default
+      ... and 54 more (all listed in lint.json)
+
+one-job (standard: one job per token): One job per token: tokens that promise different jobs do not share a value. 17 findings.
+  [breaks the standard] surface/primary/hover and surface/primary/disabled resolve to the same value in light and dark (#f8f8f8, #242528), so the hover state cannot be told from the disabled state. (2)
+      Themes: surface/primary/hover
+      Themes: surface/primary/disabled
+  [breaks the standard] surface/secondary/hover and surface/secondary/disabled resolve to the same value in light and dark (#f0f1f2, #2b2c2f), so the hover state cannot be told from the disabled state. (2)
+      Themes: surface/secondary/hover
+      Themes: surface/secondary/disabled
+  [breaks the standard] surface/tertiary/active and surface/tertiary/disabled resolve to the same value in light and dark (#dddee1, #3d3f43), so the active state cannot be told from the disabled state. (2)
+      Themes: surface/tertiary/active
+      Themes: surface/tertiary/disabled
+  [breaks the standard] interactive/secondary/hover and interactive/secondary/disabled resolve to the same value in light and dark (#f0f1f2, #2b2c2f), so the hover state cannot be told from the disabled state. (2)
+      Themes: interactive/secondary/hover
+      Themes: interactive/secondary/disabled
+  [decide] 5 surface or interactive tokens share one value (light #f8f8f8; dark #242528) while their names promise different jobs. (5)
+      Themes: surface/primary/hover
+      Themes: surface/primary/disabled
+      Themes: surface/secondary/default
+      Themes: interactive/secondary/default
+      Themes: surface/accent/neutral/subtlest/default
+  [decide] 8 surface or interactive tokens share one value (light #f0f1f2; dark #2b2c2f) while their names promise different jobs. (8)
+      Themes: surface/primary/active
+      Themes: surface/secondary/hover
+      Themes: surface/secondary/disabled
+      Themes: surface/tertiary/default
+      Themes: interactive/primary/disabled
+      Themes: interactive/secondary/hover
+      Themes: interactive/secondary/disabled
+      Themes: surface/accent/neutral/subtlest/hover
+  [decide] 5 surface or interactive tokens share one value (light #dddee1; dark #3d3f43) while their names promise different jobs. (5)
+      Themes: surface/tertiary/active
+      Themes: surface/tertiary/disabled
+      Themes: interactive/neutral/disabled
+      Themes: interactive/secondary/active
+      Themes: surface/accent/neutral/subtle/default
+  [decide] 3 surface or interactive tokens share one value (light #9d174d) while their names promise different jobs. (3)
+      Themes: interactive/primary/default
+      Themes: surface/accent/pink/bold/hover
+      Themes: surface/brand/bold
+  [decide] 3 surface or interactive tokens share one value (dark #9d174d) while their names promise different jobs. (3)
+      Themes: interactive/primary/active
+      Themes: surface/accent/pink/subtle/hover
+      Themes: surface/accent/pink/bold/hover
+  [decide] 3 surface or interactive tokens share one value (dark #166534) while their names promise different jobs. (3)
+      Themes: interactive/success/hover
+      Themes: surface/accent/green/subtle/hover
+      Themes: surface/accent/green/bold/hover
+  [decide] 3 surface or interactive tokens share one value (dark #92400e) while their names promise different jobs. (3)
+      Themes: interactive/warning/hover
+      Themes: surface/accent/amber/subtle/hover
+      Themes: surface/accent/amber/bold/hover
+  [decide] 3 surface or interactive tokens share one value (dark #78350f) while their names promise different jobs. (3)
+      Themes: surface/accent/amber/subtlest/hover
+      Themes: surface/accent/amber/subtle/default
+      Themes: surface/accent/amber/bold/default
+  [decide] 3 surface or interactive tokens share one value (dark #831843) while their names promise different jobs. (3)
+      Themes: surface/accent/pink/subtlest/hover
+      Themes: surface/accent/pink/subtle/default
+      Themes: surface/accent/pink/bold/default
+  [decide] 3 surface or interactive tokens share one value (dark #14532d) while their names promise different jobs. (3)
+      Themes: surface/accent/green/subtlest/hover
+      Themes: surface/accent/green/subtle/default
+      Themes: surface/accent/green/bold/default
+  [decide] 3 surface or interactive tokens share one value (dark #7c2d12) while their names promise different jobs. (3)
+      Themes: surface/accent/orange/subtlest/hover
+      Themes: surface/accent/orange/subtle/default
+      Themes: surface/accent/orange/bold/default
+  [decide] 3 surface or interactive tokens share one value (dark #7f1d1d) while their names promise different jobs. (3)
+      Themes: surface/accent/red/subtlest/hover
+      Themes: surface/accent/red/subtle/default
+      Themes: surface/accent/red/bold/default
+  [decide] 3 surface or interactive tokens share one value (dark #5f0c23) while their names promise different jobs. (3)
+      Themes: surface/accent/rose/subtlest/hover
+      Themes: surface/accent/rose/subtle/default
+      Themes: surface/accent/rose/bold/default
+
+same-in-both-modes (not in the standard): Colour tokens whose light and dark values are equal. 1 finding.
+  [note] 46 colour tokens have the same value in light and dark. Confirm each is meant. (46)
+      Themes: text/on (#ffffff)
+      Themes: icon/on (#ffffff)
+      Themes: interactive/error/default (#dc2626)
+      Themes: interactive/error/hover (#b91c1c)
+      Themes: interactive/success/default (#15803d)
+      Themes: interactive/success/hover (#166534)
+      Themes: interactive/warning/default (#b45309)
+      Themes: interactive/warning/hover (#92400e)
+      ... and 38 more (all listed in lint.json)
+
+type-scale (not in the standard): Type scale: readable sizes, no page zoom on fields, no duplicate roles, numeric weights. 7 findings.
+  [decide] These font sizes are under 12 px. (2)
+      Typography: font-size/label-xsmall (10 px)
+      Typography: font-size/body-xsmall (10 px)
+  [decide] These body roles are under 16 px. A form field's typed text uses a body role, and iOS zooms the page when a focused field's text is under 16 px. (Label roles are not counted: the zoom depends only on the field's own text.) (3)
+      Typography: font-size/body-base (14 px)
+      Typography: font-size/body-small (12 px)
+      Typography: font-size/body-xsmall (10 px)
+  [decide] These roles have identical font size and line height (16/24 px), so they are one style under several names. (3)
+      Typography role heading-6
+      Typography role label-large
+      Typography role body-large
+  [decide] These roles have identical font size and line height (14/20 px), so they are one style under several names. (3)
+      Typography role section-label-base
+      Typography role label-base
+      Typography role body-base
+  [decide] These roles have identical font size and line height (12/16 px), so they are one style under several names. (2)
+      Typography role label-small
+      Typography role body-small
+  [decide] These roles have identical font size and line height (10/16 px), so they are one style under several names. (2)
+      Typography role label-xsmall
+      Typography role body-xsmall
+  [decide] These weight tokens hold a style name instead of a number (CSS font-weight needs 100 to 900). (5)
+      Typography: font-weight/heading (Bold)
+      Typography: font-weight/section-label-base (Bold)
+      Typography: font-weight/label (SemiBold)
+      Typography: font-weight/body (Medium)
+      Typography: font-weight/emphasis (Bold)
+
+density (not in the standard): Compact density keeps the steps apart and never grows. 1 finding.
+  [decide] 3 steps that differ in standard all become 2 in compact, so compact cannot tell them apart. (3)
+      Density: scaled/60 (6 -> 2)
+      Density: scaled/40 (4 -> 2)
+      Density: scaled/20 (2 -> 2)
+
+missing-categories (not in the standard): Token categories that have not been started. 8 findings.
+  [note] Not started: no variable name or collection covers border width. (1)
+      category: border width
+  [note] Not started: no variable name or collection covers elevation or shadow. (1)
+      category: elevation or shadow
+  [note] Not started: no variable name or collection covers opacity. (1)
+      category: opacity
+  [note] Not started: no variable name or collection covers z-index. (1)
+      category: z-index
+  [note] Not started: no variable name or collection covers breakpoint. (1)
+      category: breakpoint
+  [note] Not started: no variable name or collection covers icon size. (1)
+      category: icon size
+  [note] Not started: no variable name or collection covers control height. (1)
+      category: control height
+  [note] Not started: no variable name or collection covers focus ring width and offset. (1)
+      category: focus ring width and offset
+
+Wrote ds-tokens/audit/lint.json.
+18 rules, 53 findings: 16 break the standard, 27 to decide, 10 notes

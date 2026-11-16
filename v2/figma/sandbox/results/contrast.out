@@ -1,0 +1,472 @@
+
+text-on-base  (min 4.5)
+  pair                                                   light        dark
+  text/primary on surface/primary/default             16.49 ok    15.60 ok
+  text/primary on surface/primary/hover               15.53 ok    13.58 ok
+  text/primary on surface/primary/active              14.59 ok    12.37 ok
+  text/primary on surface/secondary/default           15.53 ok    13.58 ok
+  text/primary on surface/secondary/hover             14.59 ok    12.37 ok
+  text/primary on surface/secondary/active            13.45 ok    11.52 ok
+  text/primary on surface/tertiary/default            14.59 ok    12.37 ok
+  text/primary on surface/tertiary/hover              13.45 ok    11.52 ok
+  text/primary on surface/tertiary/active             12.26 ok     9.35 ok
+  text/secondary on surface/primary/default            7.81 ok     7.66 ok
+  text/secondary on surface/primary/hover              7.35 ok     6.66 ok
+  text/secondary on surface/primary/active             6.91 ok     6.07 ok
+  text/secondary on surface/secondary/default          7.35 ok     6.66 ok
+  text/secondary on surface/secondary/hover            6.91 ok     6.07 ok
+  text/secondary on surface/secondary/active           6.37 ok     5.66 ok
+  text/secondary on surface/tertiary/default           6.91 ok     6.07 ok
+  text/secondary on surface/tertiary/hover             6.37 ok     5.66 ok
+  text/secondary on surface/tertiary/active            5.81 ok     4.59 ok
+  text/link/default on surface/primary/default         7.88 ok     9.71 ok
+  text/link/default on surface/primary/hover           7.42 ok     8.45 ok
+  text/link/default on surface/primary/active          6.97 ok     7.70 ok
+  text/link/default on surface/secondary/default       7.42 ok     8.45 ok
+  text/link/default on surface/secondary/hover         6.97 ok     7.70 ok
+  text/link/default on surface/secondary/active        6.43 ok     7.17 ok
+  text/link/default on surface/tertiary/default        6.97 ok     7.70 ok
+  text/link/default on surface/tertiary/hover          6.43 ok     7.17 ok
+  text/link/default on surface/tertiary/active         5.86 ok     5.82 ok
+  text/link/hover on surface/primary/default           9.65 ok    12.74 ok
+  text/link/hover on surface/primary/hover             9.08 ok    11.09 ok
+  text/link/hover on surface/primary/active            8.53 ok    10.10 ok
+  text/link/hover on surface/secondary/default         9.08 ok    11.09 ok
+  text/link/hover on surface/secondary/hover           8.53 ok    10.10 ok
+  text/link/hover on surface/secondary/active          7.87 ok     9.41 ok
+  text/link/hover on surface/tertiary/default          8.53 ok    10.10 ok
+  text/link/hover on surface/tertiary/hover            7.87 ok     9.41 ok
+  text/link/hover on surface/tertiary/active           7.17 ok     7.63 ok
+  text/link/active on surface/primary/default         15.03 ok    14.98 ok
+  text/link/active on surface/primary/hover           14.15 ok    13.04 ok
+  text/link/active on surface/primary/active          13.29 ok    11.88 ok
+  text/link/active on surface/secondary/default       14.15 ok    13.04 ok
+  text/link/active on surface/secondary/hover         13.29 ok    11.88 ok
+  text/link/active on surface/secondary/active        12.26 ok    11.06 ok
+  text/link/active on surface/tertiary/default        13.29 ok    11.88 ok
+  text/link/active on surface/tertiary/hover          12.26 ok    11.06 ok
+  text/link/active on surface/tertiary/active         11.17 ok     8.97 ok
+  text/error on surface/primary/default                6.47 ok     9.28 ok
+  text/error on surface/primary/hover                  6.09 ok     8.07 ok
+  text/error on surface/primary/active                 5.72 ok     7.36 ok
+  text/error on surface/secondary/default              6.09 ok     8.07 ok
+  text/error on surface/secondary/hover                5.72 ok     7.36 ok
+  text/error on surface/secondary/active               5.28 ok     6.85 ok
+  text/error on surface/tertiary/default               5.72 ok     7.36 ok
+  text/error on surface/tertiary/hover                 5.28 ok     6.85 ok
+  text/error on surface/tertiary/active                4.81 ok     5.56 ok
+  text/success on surface/primary/default              7.13 ok    10.10 ok
+  text/success on surface/primary/hover                6.71 ok     8.79 ok
+  text/success on surface/primary/active               6.31 ok     8.01 ok
+  text/success on surface/secondary/default            6.71 ok     8.79 ok
+  text/success on surface/secondary/hover              6.31 ok     8.01 ok
+  text/success on surface/secondary/active             5.82 ok     7.46 ok
+  text/success on surface/tertiary/default             6.31 ok     8.01 ok
+  text/success on surface/tertiary/hover               5.82 ok     7.46 ok
+  text/success on surface/tertiary/active              5.30 ok     6.05 ok
+  text/warning on surface/primary/default              7.09 ok    10.55 ok
+  text/warning on surface/primary/hover                6.68 ok     9.18 ok
+  text/warning on surface/primary/active               6.27 ok     8.36 ok
+  text/warning on surface/secondary/default            6.68 ok     9.18 ok
+  text/warning on surface/secondary/hover              6.27 ok     8.36 ok
+  text/warning on surface/secondary/active             5.78 ok     7.79 ok
+  text/warning on surface/tertiary/default             6.27 ok     8.36 ok
+  text/warning on surface/tertiary/hover               5.78 ok     7.79 ok
+  text/warning on surface/tertiary/active              5.27 ok     6.32 ok
+  text/info on surface/primary/default                 6.70 ok     9.76 ok
+  text/info on surface/primary/hover                   6.31 ok     8.50 ok
+  text/info on surface/primary/active                  5.93 ok     7.74 ok
+  text/info on surface/secondary/default               6.31 ok     8.50 ok
+  text/info on surface/secondary/hover                 5.93 ok     7.74 ok
+  text/info on surface/secondary/active                5.47 ok     7.21 ok
+  text/info on surface/tertiary/default                5.93 ok     7.74 ok
+  text/info on surface/tertiary/hover                  5.47 ok     7.21 ok
+  text/info on surface/tertiary/active                 4.98 ok     5.85 ok
+  text/brand on surface/primary/default                7.88 ok     9.71 ok
+  text/brand on surface/primary/hover                  7.42 ok     8.45 ok
+  text/brand on surface/primary/active                 6.97 ok     7.70 ok
+  text/brand on surface/secondary/default              7.42 ok     8.45 ok
+  text/brand on surface/secondary/hover                6.97 ok     7.70 ok
+  text/brand on surface/secondary/active               6.43 ok     7.17 ok
+  text/brand on surface/tertiary/default               6.97 ok     7.70 ok
+  text/brand on surface/tertiary/hover                 6.43 ok     7.17 ok
+  text/brand on surface/tertiary/active                5.86 ok     5.82 ok
+  light: 90 pairs, 0 fail, worst 4.81; dark: 90 pairs, 0 fail, worst 4.59
+
+placeholder-on-base  (min 4.5)
+  pair                                                  light        dark
+  text/placeholder on surface/primary/default         5.10 ok     6.16 ok
+  text/placeholder on surface/secondary/default       4.80 ok     5.36 ok
+  light: 2 pairs, 0 fail, worst 4.80; dark: 2 pairs, 0 fail, worst 5.36
+
+status-text-on-status-surface  (min 4.5)
+  pair                                      light        dark
+  text/error on surface/error             5.91 ok     8.51 ok
+  text/primary on surface/error          15.08 ok    14.30 ok
+  text/secondary on surface/error         7.14 ok     7.02 ok
+  text/success on surface/success         6.81 ok     8.55 ok
+  text/primary on surface/success        15.76 ok    13.21 ok
+  text/secondary on surface/success       7.46 ok     6.48 ok
+  text/warning on surface/warning         6.84 ok     8.97 ok
+  text/primary on surface/warning        15.91 ok    13.27 ok
+  text/secondary on surface/warning       7.53 ok     6.51 ok
+  text/info on surface/info               6.16 ok     8.15 ok
+  text/primary on surface/info           15.16 ok    13.02 ok
+  text/secondary on surface/info          7.18 ok     6.39 ok
+  light: 12 pairs, 0 fail, worst 5.91; dark: 12 pairs, 0 fail, worst 6.39
+
+accent-text-on-accent-surface  (min 4.5)
+  pair                                                                           light        dark
+  text/accent/teal/default on surface/accent/teal/subtlest/default             7.27 ok     9.78 ok
+  text/accent/teal/default on surface/accent/teal/subtlest/hover               6.73 ok     6.41 ok
+  text/accent/teal/default on surface/accent/teal/subtle/default               6.73 ok     6.41 ok
+  text/accent/teal/default on surface/accent/teal/subtle/hover                 6.02 ok     5.13 ok
+  text/accent/blue/default on surface/accent/blue/subtlest/default             6.16 ok     8.15 ok
+  text/accent/blue/default on surface/accent/blue/subtlest/hover               5.49 ok     5.74 ok
+  text/accent/blue/default on surface/accent/blue/subtle/default               5.49 ok     5.74 ok
+  text/accent/blue/default on surface/accent/blue/subtle/hover                 4.72 ok     4.84 ok
+  text/accent/violet/default on surface/accent/violet/subtlest/default         6.48 ok     8.25 ok
+  text/accent/violet/default on surface/accent/violet/subtlest/hover           5.98 ok     5.93 ok
+  text/accent/violet/default on surface/accent/violet/subtle/default           5.98 ok     5.93 ok
+  text/accent/violet/default on surface/accent/violet/subtle/hover             5.12 ok     4.87 ok
+  text/accent/amber/default on surface/accent/amber/subtlest/default           6.84 ok    10.39 ok
+  text/accent/amber/default on surface/accent/amber/subtlest/hover             6.37 ok     6.29 ok
+  text/accent/amber/default on surface/accent/amber/subtle/default             6.37 ok     6.29 ok
+  text/accent/amber/default on surface/accent/amber/subtle/hover               5.69 ok     4.92 ok
+  text/accent/pink/default on surface/accent/pink/subtlest/default             7.22 ok    10.88 ok
+  text/accent/pink/default on surface/accent/pink/subtlest/hover               6.71 ok     6.98 ok
+  text/accent/pink/default on surface/accent/pink/subtle/default               6.71 ok     6.98 ok
+  text/accent/pink/default on surface/accent/pink/subtle/hover                 5.70 ok     5.70 ok
+  text/accent/green/default on surface/accent/green/subtlest/default           6.81 ok    10.62 ok
+  text/accent/green/default on surface/accent/green/subtlest/hover             6.49 ok     6.49 ok
+  text/accent/green/default on surface/accent/green/subtle/default             6.49 ok     6.49 ok
+  text/accent/green/default on surface/accent/green/subtle/hover               5.88 ok     5.08 ok
+  text/accent/orange/default on surface/accent/orange/subtlest/default         6.88 ok    11.56 ok
+  text/accent/orange/default on surface/accent/orange/subtlest/hover           6.38 ok     6.92 ok
+  text/accent/orange/default on surface/accent/orange/subtle/default           6.38 ok     6.92 ok
+  text/accent/orange/default on surface/accent/orange/subtle/hover             5.40 ok     5.40 ok
+  text/accent/red/default on surface/accent/red/subtlest/default               7.60 ok    11.16 ok
+  text/accent/red/default on surface/accent/red/subtlest/hover                 6.80 ok     6.93 ok
+  text/accent/red/default on surface/accent/red/subtle/default                 6.80 ok     6.93 ok
+  text/accent/red/default on surface/accent/red/subtle/hover                   5.74 ok     5.74 ok
+  text/accent/rose/default on surface/accent/rose/subtlest/default             8.83 ok    10.09 ok
+  text/accent/rose/default on surface/accent/rose/subtlest/hover               7.67 ok     8.35 ok
+  text/accent/rose/default on surface/accent/rose/subtle/default               7.67 ok     8.35 ok
+  text/accent/rose/default on surface/accent/rose/subtle/hover                 6.06 ok     6.06 ok
+  text/accent/neutral/default on surface/accent/neutral/subtlest/default      10.23 ok     9.84 ok
+  text/accent/neutral/default on surface/accent/neutral/subtlest/hover         9.61 ok     8.96 ok
+  text/accent/neutral/default on surface/accent/neutral/subtle/default         8.08 ok     6.77 ok
+  text/accent/neutral/default on surface/accent/neutral/subtle/hover           5.54 ok     5.44 ok
+  light: 40 pairs, 0 fail, worst 4.72; dark: 40 pairs, 0 fail, worst 4.84
+
+accent-text-on-base  (min 4.5)
+  pair                                                             light        dark
+  text/accent/teal/default on surface/primary/default            7.58 ok    11.90 ok
+  text/accent/teal/default on surface/secondary/default          7.14 ok    10.36 ok
+  text/accent/blue/default on surface/primary/default            6.70 ok     9.76 ok
+  text/accent/blue/default on surface/secondary/default          6.31 ok     8.50 ok
+  text/accent/violet/default on surface/primary/default          7.10 ok     9.54 ok
+  text/accent/violet/default on surface/secondary/default        6.69 ok     8.30 ok
+  text/accent/amber/default on surface/primary/default           7.09 ok    12.21 ok
+  text/accent/amber/default on surface/secondary/default         6.68 ok    10.63 ok
+  text/accent/pink/default on surface/primary/default            7.88 ok    12.74 ok
+  text/accent/pink/default on surface/secondary/default          7.42 ok    11.09 ok
+  text/accent/green/default on surface/primary/default           7.13 ok    12.54 ok
+  text/accent/green/default on surface/secondary/default         6.71 ok    10.91 ok
+  text/accent/orange/default on surface/primary/default          7.31 ok    13.01 ok
+  text/accent/orange/default on surface/secondary/default        6.88 ok    11.32 ok
+  text/accent/red/default on surface/primary/default             8.31 ok    12.17 ok
+  text/accent/red/default on surface/secondary/default           7.82 ok    10.59 ok
+  text/accent/rose/default on surface/primary/default            9.74 ok    10.94 ok
+  text/accent/rose/default on surface/secondary/default          9.17 ok     9.53 ok
+  text/accent/neutral/default on surface/primary/default        10.87 ok    11.30 ok
+  text/accent/neutral/default on surface/secondary/default      10.23 ok     9.84 ok
+  light: 20 pairs, 0 fail, worst 6.31; dark: 20 pairs, 0 fail, worst 8.30
+
+accent-bold-text-on-bold-surface  (min 4.5)
+  pair                                                                    light        dark
+  text/accent/teal/bold on surface/accent/teal/bold/default             4.86 ok     4.86 ok
+  text/accent/teal/bold on surface/accent/teal/bold/hover               6.73 ok     6.73 ok
+  text/accent/blue/bold on surface/accent/blue/bold/default             5.49 ok     5.49 ok
+  text/accent/blue/bold on surface/accent/blue/bold/hover               7.15 ok     7.15 ok
+  text/accent/violet/bold on surface/accent/violet/bold/default         5.98 ok     5.98 ok
+  text/accent/violet/bold on surface/accent/violet/bold/hover           4.80 ok     4.80 ok
+  text/accent/amber/bold on surface/accent/amber/bold/default           8.15 ok     8.15 ok
+  text/accent/amber/bold on surface/accent/amber/bold/hover             6.37 ok     6.37 ok
+  text/accent/pink/bold on surface/accent/pink/bold/default             8.21 ok     8.21 ok
+  text/accent/pink/bold on surface/accent/pink/bold/hover               6.71 ok     6.71 ok
+  text/accent/green/bold on surface/accent/green/bold/default           8.30 ok     8.30 ok
+  text/accent/green/bold on surface/accent/green/bold/hover             6.49 ok     6.49 ok
+  text/accent/orange/bold on surface/accent/orange/bold/default         8.18 ok     8.18 ok
+  text/accent/orange/bold on surface/accent/orange/bold/hover           6.38 ok     6.38 ok
+  text/accent/red/bold on surface/accent/red/bold/default               8.20 ok     8.20 ok
+  text/accent/red/bold on surface/accent/red/bold/hover                 6.80 ok     6.80 ok
+  text/accent/rose/bold on surface/accent/rose/bold/default            10.58 ok    10.58 ok
+  text/accent/rose/bold on surface/accent/rose/bold/hover               7.67 ok     7.67 ok
+  text/accent/neutral/bold on surface/accent/neutral/bold/default       8.08 ok     6.98 ok
+  text/accent/neutral/bold on surface/accent/neutral/bold/hover         5.81 ok     5.01 ok
+  light: 20 pairs, 0 fail, worst 4.80; dark: 20 pairs, 0 fail, worst 4.80
+
+label-on-fill  (min 4.5)
+  pair                                           light        dark
+  text/on on interactive/primary/default       7.88 ok     4.60 ok
+  text/on on interactive/primary/hover         9.65 ok     6.04 ok
+  text/on on interactive/primary/active       15.03 ok     7.88 ok
+  text/on on interactive/error/default         4.83 ok     4.83 ok
+  text/on on interactive/error/hover           6.47 ok     6.47 ok
+  text/on on interactive/success/default       5.02 ok     5.02 ok
+  text/on on interactive/success/hover         7.13 ok     7.13 ok
+  text/on on interactive/warning/default       5.02 ok     5.02 ok
+  text/on on interactive/warning/hover         7.09 ok     7.09 ok
+  text/on on surface/brand/bold                7.88 ok     4.60 ok
+  light: 10 pairs, 0 fail, worst 4.83; dark: 10 pairs, 0 fail, worst 4.60
+
+label-on-neutral-fill  (min 4.5)
+  pair                                                light        dark
+  text/inverse on interactive/neutral/default      21.00 ok    17.61 ok
+  text/inverse on interactive/neutral/hover         7.81 ok     9.76 ok
+  text/inverse on interactive/neutral/active        5.10 ok     7.66 ok
+  light: 3 pairs, 0 fail, worst 5.10; dark: 3 pairs, 0 fail, worst 7.66
+
+label-on-secondary-fill  (min 4.5)
+  pair                                                  light        dark
+  text/primary on interactive/secondary/default      15.53 ok    13.58 ok
+  text/primary on interactive/secondary/hover        14.59 ok    12.37 ok
+  text/primary on interactive/secondary/active       12.26 ok     9.35 ok
+  light: 3 pairs, 0 fail, worst 12.26; dark: 3 pairs, 0 fail, worst 9.35
+
+text-on-brand-subtle  (min 4.5)
+  pair                                           light        dark
+  text/brand on surface/brand/subtle           7.22 ok     8.29 ok
+  text/primary on surface/brand/subtle        15.11 ok    13.32 ok
+  text/secondary on surface/brand/subtle       7.15 ok     6.54 ok
+  light: 3 pairs, 0 fail, worst 7.15; dark: 3 pairs, 0 fail, worst 6.54
+
+icon-on-base  (min 3)
+  pair                                                light        dark
+  icon/primary on surface/primary/default          14.34 ok    13.70 ok
+  icon/primary on surface/secondary/default        13.50 ok    11.93 ok
+  icon/primary on surface/tertiary/default         12.68 ok    10.87 ok
+  icon/secondary on surface/primary/default         3.90 ok     6.16 ok
+  icon/secondary on surface/secondary/default       3.68 ok     5.36 ok
+  icon/secondary on surface/tertiary/default        3.45 ok     4.88 ok
+  icon/brand on surface/primary/default             7.88 ok     3.83 ok
+  icon/brand on surface/secondary/default           7.42 ok     3.33 ok
+  icon/brand on surface/tertiary/default            6.97 ok     3.04 ok
+  icon/error on surface/primary/default             4.83 ok     6.36 ok
+  icon/error on surface/secondary/default           4.55 ok     5.54 ok
+  icon/error on surface/tertiary/default            4.27 ok     5.05 ok
+  icon/success on surface/primary/default           5.02 ok    10.10 ok
+  icon/success on surface/secondary/default         4.72 ok     8.79 ok
+  icon/success on surface/tertiary/default          4.44 ok     8.01 ok
+  icon/warning on surface/primary/default           5.02 ok    10.55 ok
+  icon/warning on surface/secondary/default         4.73 ok     9.18 ok
+  icon/warning on surface/tertiary/default          4.44 ok     8.36 ok
+  icon/info on surface/primary/default              5.17 ok     6.92 ok
+  icon/info on surface/secondary/default            4.87 ok     6.03 ok
+  icon/info on surface/tertiary/default             4.57 ok     5.49 ok
+  light: 21 pairs, 0 fail, worst 3.45; dark: 21 pairs, 0 fail, worst 3.04
+
+icon-on-fill  (min 3)
+  pair                                           light        dark
+  icon/on on interactive/primary/default       7.88 ok     4.60 ok
+  icon/on on interactive/primary/hover         9.65 ok     6.04 ok
+  icon/on on interactive/primary/active       15.03 ok     7.88 ok
+  icon/on on interactive/error/default         4.83 ok     4.83 ok
+  icon/on on interactive/error/hover           6.47 ok     6.47 ok
+  icon/on on interactive/success/default       5.02 ok     5.02 ok
+  icon/on on interactive/success/hover         7.13 ok     7.13 ok
+  icon/on on interactive/warning/default       5.02 ok     5.02 ok
+  icon/on on interactive/warning/hover         7.09 ok     7.09 ok
+  icon/on on surface/brand/bold                7.88 ok     4.60 ok
+  light: 10 pairs, 0 fail, worst 4.83; dark: 10 pairs, 0 fail, worst 4.60
+
+icon-on-neutral-fill  (min 3)
+  pair                                                light        dark
+  icon/inverse on interactive/neutral/default      21.00 ok    17.61 ok
+  icon/inverse on interactive/neutral/hover         7.81 ok     9.76 ok
+  icon/inverse on interactive/neutral/active        5.10 ok     7.66 ok
+  light: 3 pairs, 0 fail, worst 5.10; dark: 3 pairs, 0 fail, worst 7.66
+
+accent-icon-on-accent-surface  (min 3)
+  pair                                                                           light        dark
+  icon/accent/teal/default on surface/accent/teal/subtlest/default             3.59 ok     5.81 ok
+  icon/accent/teal/default on surface/accent/teal/subtle/default               3.32 ok     3.81 ok
+  icon/accent/teal/default on surface/primary/default                          3.74 ok     7.07 ok
+  icon/accent/blue/default on surface/accent/blue/subtlest/default             4.75 ok     5.78 ok
+  icon/accent/blue/default on surface/accent/blue/subtle/default               4.24 ok     4.07 ok
+  icon/accent/blue/default on surface/primary/default                          5.17 ok     6.92 ok
+  icon/accent/violet/default on surface/accent/violet/subtlest/default         5.20 ok     5.60 ok
+  icon/accent/violet/default on surface/accent/violet/subtle/default           4.80 ok     4.03 ok
+  icon/accent/violet/default on surface/primary/default                        5.70 ok     6.47 ok
+  icon/accent/amber/default on surface/accent/amber/subtlest/default           4.84 ok     6.97 ok
+  icon/accent/amber/default on surface/accent/amber/subtle/default             4.51 ok     4.22 ok
+  icon/accent/amber/default on surface/primary/default                         5.02 ok     8.20 ok
+  icon/accent/pink/default on surface/accent/pink/subtlest/default             4.21 ok     5.68 ok
+  icon/accent/pink/default on surface/accent/pink/subtle/default               3.91 ok     3.64 ok
+  icon/accent/pink/default on surface/primary/default                          4.60 ok     6.65 ok
+  icon/accent/green/default on surface/accent/green/subtlest/default           3.15 ok     6.54 ok
+  icon/accent/green/default on surface/accent/green/subtle/default             3.00 ok     4.00 ok
+  icon/accent/green/default on surface/primary/default                         3.30 ok     7.73 ok
+  icon/accent/orange/default on surface/accent/orange/subtlest/default         3.35 ok     5.58 ok
+  icon/accent/orange/default on surface/accent/orange/subtle/default           3.11 ok     3.34 ok
+  icon/accent/orange/default on surface/primary/default                        3.56 ok     6.28 ok
+  icon/accent/red/default on surface/accent/red/subtlest/default               4.41 ok     5.84 ok
+  icon/accent/red/default on surface/accent/red/subtle/default                 3.95 ok     3.62 ok
+  icon/accent/red/default on surface/primary/default                           4.83 ok     6.36 ok
+  icon/accent/rose/default on surface/accent/rose/subtlest/default             4.29 ok     4.16 ok
+  icon/accent/rose/default on surface/accent/rose/subtle/default               3.73 ok     3.44 ok
+  icon/accent/rose/default on surface/primary/default                          4.73 ok     4.52 ok
+  icon/accent/neutral/default on surface/accent/neutral/subtlest/default       4.80 ok     8.49 ok
+  icon/accent/neutral/default on surface/accent/neutral/subtle/default         3.79 ok     5.85 ok
+  icon/accent/neutral/default on surface/primary/default                       5.10 ok     9.76 ok
+  light: 30 pairs, 0 fail, worst 3.00; dark: 30 pairs, 0 fail, worst 3.34
+
+accent-bold-icon-on-bold-surface  (min 3)
+  pair                                                                    light        dark
+  icon/accent/teal/bold on surface/accent/teal/bold/default             4.86 ok     4.86 ok
+  icon/accent/teal/bold on surface/accent/teal/bold/hover               6.73 ok     6.73 ok
+  icon/accent/blue/bold on surface/accent/blue/bold/default             5.49 ok     5.49 ok
+  icon/accent/blue/bold on surface/accent/blue/bold/hover               7.15 ok     7.15 ok
+  icon/accent/violet/bold on surface/accent/violet/bold/default         5.98 ok     5.98 ok
+  icon/accent/violet/bold on surface/accent/violet/bold/hover           4.80 ok     4.80 ok
+  icon/accent/amber/bold on surface/accent/amber/bold/default           8.15 ok     8.15 ok
+  icon/accent/amber/bold on surface/accent/amber/bold/hover             6.37 ok     6.37 ok
+  icon/accent/pink/bold on surface/accent/pink/bold/default             8.21 ok     8.21 ok
+  icon/accent/pink/bold on surface/accent/pink/bold/hover               6.71 ok     6.71 ok
+  icon/accent/green/bold on surface/accent/green/bold/default           8.30 ok     8.30 ok
+  icon/accent/green/bold on surface/accent/green/bold/hover             6.49 ok     6.49 ok
+  icon/accent/orange/bold on surface/accent/orange/bold/default         8.18 ok     8.18 ok
+  icon/accent/orange/bold on surface/accent/orange/bold/hover           6.38 ok     6.38 ok
+  icon/accent/red/bold on surface/accent/red/bold/default               8.20 ok     8.20 ok
+  icon/accent/red/bold on surface/accent/red/bold/hover                 6.80 ok     6.80 ok
+  icon/accent/rose/bold on surface/accent/rose/bold/default            10.58 ok    10.58 ok
+  icon/accent/rose/bold on surface/accent/rose/bold/hover               7.67 ok     7.67 ok
+  icon/accent/neutral/bold on surface/accent/neutral/bold/default       8.08 ok     6.98 ok
+  icon/accent/neutral/bold on surface/accent/neutral/bold/hover         5.81 ok     5.01 ok
+  light: 20 pairs, 0 fail, worst 4.80; dark: 20 pairs, 0 fail, worst 4.80
+
+control-boundary  (min 3)
+  pair                                                       light        dark
+  border/strong/default on surface/primary/default         3.24 ok     4.51 ok
+  border/strong/default on surface/secondary/default       3.05 ok     3.93 ok
+  border/strong/hover on surface/primary/default           5.10 ok     7.66 ok
+  border/strong/hover on surface/secondary/default         4.80 ok     6.66 ok
+  light: 4 pairs, 0 fail, worst 3.05; dark: 4 pairs, 0 fail, worst 3.93
+
+focus-ring  (min 3)
+  pair                                              light        dark
+  border/focus on surface/primary/default         5.17 ok     6.92 ok
+  border/focus on surface/secondary/default       4.87 ok     6.03 ok
+  border/focus on surface/tertiary/default        4.57 ok     5.49 ok
+  border/focus on surface/brand/subtle            4.73 ok     5.91 ok
+  light: 4 pairs, 0 fail, worst 4.57; dark: 4 pairs, 0 fail, worst 5.49
+
+status-and-brand-borders  (min 3)
+  pair                                                light        dark
+  border/error on surface/primary/default           4.83 ok     4.68 ok
+  border/error on surface/secondary/default         4.55 ok     4.07 ok
+  border/success on surface/primary/default         3.30 ok     7.73 ok
+  border/success on surface/secondary/default       3.10 ok     6.73 ok
+  border/warning on surface/primary/default         5.02 ok     8.20 ok
+  border/warning on surface/secondary/default       4.73 ok     7.14 ok
+  border/info on surface/primary/default            5.17 ok     4.79 ok
+  border/info on surface/secondary/default          4.87 ok     4.17 ok
+  border/brand on surface/primary/default           7.88 ok     3.83 ok
+  border/brand on surface/secondary/default         7.42 ok     3.33 ok
+  light: 10 pairs, 0 fail, worst 3.10; dark: 10 pairs, 0 fail, worst 3.33
+
+gradient-text  (min 4.5)
+  pair                                     light        dark
+  red/text on red/base-start            13.22 ok    14.76 ok
+  red/text on red/base-end              12.71 ok    14.84 ok
+  red/text on red/glow-warm             11.93 ok     8.57 ok
+  red/text on red/glow                   5.84 ok     5.91 ok
+  orange/text on orange/base-start      13.66 ok    14.74 ok
+  orange/text on orange/base-end        12.81 ok    15.20 ok
+  orange/text on orange/glow-warm       12.57 ok     8.54 ok
+  orange/text on orange/glow             6.92 ok     4.88 ok
+  amber/text on amber/base-start        13.45 ok    14.44 ok
+  amber/text on amber/base-end          13.07 ok    15.09 ok
+  amber/text on amber/glow-warm          9.31 ok    12.95 ok
+  amber/text on amber/glow               8.97 ok     4.84 ok
+  green/text on green/base-start        13.57 ok    14.24 ok
+  green/text on green/base-end          13.23 ok    13.82 ok
+  green/text on green/glow-warm         11.97 ok     8.67 ok
+  green/text on green/glow               8.55 ok     4.79 ok
+  teal/text on teal/base-start          12.84 ok    13.87 ok
+  teal/text on teal/base-end            11.86 ok    14.09 ok
+  teal/text on teal/glow-warm           11.94 ok     8.74 ok
+  teal/text on teal/glow                 7.77 ok     5.25 ok
+  blue/text on blue/base-start          12.04 ok    13.50 ok
+  blue/text on blue/base-end            13.04 ok    13.30 ok
+  blue/text on blue/glow-warm           10.58 ok    10.07 ok
+  blue/text on blue/glow                 5.78 ok     6.16 ok
+  violet/text on violet/base-start      12.83 ok    13.89 ok
+  violet/text on violet/base-end        12.49 ok    13.40 ok
+  violet/text on violet/glow-warm       11.02 ok     8.80 ok
+  violet/text on violet/glow             5.60 ok     6.48 ok
+  pink/text on pink/base-start          12.79 ok    13.77 ok
+  pink/text on pink/base-end            12.66 ok    13.96 ok
+  pink/text on pink/glow-warm            9.35 ok    12.30 ok
+  pink/text on pink/glow                 5.68 ok     5.53 ok
+  rose/text on rose/base-start          12.79 ok    14.71 ok
+  rose/text on rose/base-end            13.81 ok    13.63 ok
+  rose/text on rose/glow-warm           11.99 ok     8.49 ok
+  rose/text on rose/glow                 5.40 ok     6.03 ok
+  light: 36 pairs, 0 fail, worst 5.40; dark: 36 pairs, 0 fail, worst 4.79
+
+disabled (exempt)
+  pair                                                    light        dark
+  text/disabled on surface/primary/disabled             1.85        2.66   
+  text/disabled on surface/secondary/disabled           1.74        2.42   
+  text/disabled on surface/tertiary/disabled            1.46        1.83   
+  text/disabled on interactive/primary/disabled         1.74        2.42   
+  text/disabled on interactive/neutral/disabled         1.46        1.83   
+  text/disabled on interactive/secondary/disabled       1.74        2.42   
+  text/disabled on surface/primary/default              1.96        3.05   
+  icon/disabled on surface/primary/disabled             1.85        2.66   
+  icon/disabled on surface/secondary/disabled           1.74        2.42   
+  icon/disabled on surface/tertiary/disabled            1.46        1.83   
+  icon/disabled on interactive/primary/disabled         1.74        2.42   
+  icon/disabled on interactive/neutral/disabled         1.46        1.83   
+  icon/disabled on interactive/secondary/disabled       1.74        2.42   
+  icon/disabled on surface/primary/default              1.96        3.05   
+  light: 14 pairs, exempt, worst 1.46; dark: 14 pairs, exempt, worst 1.83
+
+dividers (exempt)
+  pair                                                        light        dark
+  border/primary/default on surface/primary/default         1.35        1.67   
+  border/primary/default on surface/secondary/default       1.27        1.45   
+  border/primary/hover on surface/primary/default           1.96        3.05   
+  border/primary/hover on surface/secondary/default         1.85        2.66   
+  border/primary/active on surface/primary/default          3.24        4.51   
+  border/primary/active on surface/secondary/default        3.05        3.93   
+  border/secondary on surface/primary/default               1.96        3.05   
+  border/secondary on surface/secondary/default             1.85        2.66   
+  light: 8 pairs, exempt, worst 1.27; dark: 8 pairs, exempt, worst 1.45
+
+focus-ring-beside-fills (exempt)
+  pair                                                  light        dark
+  border/focus on interactive/primary/default         1.53        1.81   
+  border/focus on interactive/neutral/default         4.06        2.54   
+  border/focus on interactive/secondary/default       4.87        6.03   
+  border/focus on interactive/error/default           1.07        1.90   
+  light: 4 pairs, exempt, worst 1.07; dark: 4 pairs, exempt, worst 1.81
+
+Proposed fixes: 0 (0 with a fix, 0 with no single-step fix)
+
+Distinct pairs: 18 checked, 10 flagged
+  dark   primary-vs-destructive: hard to tell apart under simulation (delta E OK 0.1012)
+  dark   brand-text-vs-error-text: hard to tell apart under simulation (delta E OK 0.0636)
+  dark   link-vs-error-text: hard to tell apart under simulation (delta E OK 0.0636)
+  dark   brand-border-vs-error-border: hard to tell apart under simulation (delta E OK 0.1023)
+  light  focus-vs-info: identical (delta E OK 0.0000)
+  light  primary-hover-vs-default: hard to tell apart (delta E OK 0.0570)
+  light  surface-hover-vs-disabled: identical (delta E OK 0.0000)
+  dark   surface-hover-vs-disabled: identical (delta E OK 0.0000)
+  light  surface-hover-vs-secondary: identical (delta E OK 0.0000)
+  dark   surface-hover-vs-secondary: identical (delta E OK 0.0000)
+
+Wrote ds-tokens/audit/contrast.json, ds-tokens/audit/contrast.html, ds-tokens/audit/proposed-overrides.json
+734 pairs measured, 682 pass, 0 fail, 52 exempt

@@ -1,0 +1,1434 @@
+{
+  "mapped": 238,
+  "unmapped": [],
+  "map": [
+    {
+      "collection": "Themes",
+      "old": "text/primary",
+      "new": "text/primary",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/secondary",
+      "new": "text/secondary",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/placeholder",
+      "new": "text/placeholder",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/disabled",
+      "new": "text/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/inverse",
+      "new": "text/inverse",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/on",
+      "new": "text/on",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/link",
+      "new": "text/link/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/link-hover",
+      "new": "text/link/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/link-active",
+      "new": "text/link/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/error",
+      "new": "text/error",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/success",
+      "new": "text/success",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/warning",
+      "new": "text/warning",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/info",
+      "new": "text/info",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/primary",
+      "new": "icon/primary",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/secondary",
+      "new": "icon/secondary",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/disabled",
+      "new": "icon/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/inverse",
+      "new": "icon/inverse",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/on",
+      "new": "icon/on",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/brand",
+      "new": "icon/brand",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/error",
+      "new": "icon/error",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/success",
+      "new": "icon/success",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/warning",
+      "new": "icon/warning",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/info",
+      "new": "icon/info",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/primary",
+      "new": "surface/primary/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/hover",
+      "new": "surface/primary/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/active",
+      "new": "surface/primary/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/disabled",
+      "new": "surface/primary/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/secondary",
+      "new": "surface/secondary/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/secondary-hover",
+      "new": "surface/secondary/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/secondary-active",
+      "new": "surface/secondary/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/secondary-disabled",
+      "new": "surface/secondary/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/tertiary",
+      "new": "surface/tertiary/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/tertiary-hover",
+      "new": "surface/tertiary/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/tertiary-active",
+      "new": "surface/tertiary/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/tertiary-disabled",
+      "new": "surface/tertiary/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/error",
+      "new": "surface/error",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/success",
+      "new": "surface/success",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/warning",
+      "new": "surface/warning",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/info",
+      "new": "surface/info",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/primary",
+      "new": "interactive/primary/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/primary-hover",
+      "new": "interactive/primary/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/primary-active",
+      "new": "interactive/primary/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/primary-disabled",
+      "new": "interactive/primary/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/neutral",
+      "new": "interactive/neutral/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/neutral-hover",
+      "new": "interactive/neutral/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/neutral-active",
+      "new": "interactive/neutral/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/neutral-disabled",
+      "new": "interactive/neutral/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/secondary",
+      "new": "interactive/secondary/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/secondary-hover",
+      "new": "interactive/secondary/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/secondary-active",
+      "new": "interactive/secondary/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/secondary-disabled",
+      "new": "interactive/secondary/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/error",
+      "new": "interactive/error/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/error-hover",
+      "new": "interactive/error/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/success",
+      "new": "interactive/success/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/success-hover",
+      "new": "interactive/success/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/warning",
+      "new": "interactive/warning/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "interactive/warning-hover",
+      "new": "interactive/warning/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/primary",
+      "new": "border/primary/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/secondary",
+      "new": "border/secondary",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/hover",
+      "new": "border/primary/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/active",
+      "new": "border/primary/active",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/disabled",
+      "new": "border/primary/disabled",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/focus",
+      "new": "border/focus",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/Info",
+      "new": "border/info",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/error",
+      "new": "border/error",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/success",
+      "new": "border/success",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "border/warning",
+      "new": "border/warning",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/teal/default",
+      "new": "text/accent/teal/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/teal/bold",
+      "new": "text/accent/teal/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/teal/default",
+      "new": "icon/accent/teal/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/teal/bold",
+      "new": "icon/accent/teal/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/blue/default",
+      "new": "text/accent/blue/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/blue/bold",
+      "new": "text/accent/blue/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/blue/default",
+      "new": "icon/accent/blue/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/blue/bold",
+      "new": "icon/accent/blue/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/violet/default",
+      "new": "text/accent/violet/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/violet/bold",
+      "new": "text/accent/violet/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/violet/default",
+      "new": "icon/accent/violet/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/violet/bold",
+      "new": "icon/accent/violet/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/amber/default",
+      "new": "text/accent/amber/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/amber/bold",
+      "new": "text/accent/amber/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/amber/default",
+      "new": "icon/accent/amber/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/amber/bold",
+      "new": "icon/accent/amber/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/pink/default",
+      "new": "text/accent/pink/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/pink/bold",
+      "new": "text/accent/pink/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/pink/default",
+      "new": "icon/accent/pink/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/pink/bold",
+      "new": "icon/accent/pink/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/green/default",
+      "new": "text/accent/green/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/green/bold",
+      "new": "text/accent/green/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/green/default",
+      "new": "icon/accent/green/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/green/bold",
+      "new": "icon/accent/green/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/orange/default",
+      "new": "text/accent/orange/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/orange/bold",
+      "new": "text/accent/orange/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/orange/default",
+      "new": "icon/accent/orange/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/orange/bold",
+      "new": "icon/accent/orange/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/red/default",
+      "new": "text/accent/red/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/red/bold",
+      "new": "text/accent/red/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/red/default",
+      "new": "icon/accent/red/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/red/bold",
+      "new": "icon/accent/red/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/rose/default",
+      "new": "text/accent/rose/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/rose/bold",
+      "new": "text/accent/rose/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/rose/default",
+      "new": "icon/accent/rose/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/rose/bold",
+      "new": "icon/accent/rose/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/teal/subtlest/default",
+      "new": "surface/accent/teal/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/teal/subtlest/hover",
+      "new": "surface/accent/teal/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/teal/subtle/default",
+      "new": "surface/accent/teal/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/teal/subtle/hover",
+      "new": "surface/accent/teal/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/teal/bold/default",
+      "new": "surface/accent/teal/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/teal/bold/hover",
+      "new": "surface/accent/teal/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/blue/subtlest/default",
+      "new": "surface/accent/blue/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/blue/subtlest/hover",
+      "new": "surface/accent/blue/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/blue/subtle/default",
+      "new": "surface/accent/blue/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/blue/subtle/hover",
+      "new": "surface/accent/blue/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/blue/bold/default",
+      "new": "surface/accent/blue/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/blue/bold/hover",
+      "new": "surface/accent/blue/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/violet/subtlest/default",
+      "new": "surface/accent/violet/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/violet/subtlest/hover",
+      "new": "surface/accent/violet/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/violet/subtle/default",
+      "new": "surface/accent/violet/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/violet/subtle/hover",
+      "new": "surface/accent/violet/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/violet/bold/default",
+      "new": "surface/accent/violet/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/violet/bold/hover",
+      "new": "surface/accent/violet/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/amber/subtlest/default",
+      "new": "surface/accent/amber/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/amber/subtlest/hover",
+      "new": "surface/accent/amber/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/amber/subtle/default",
+      "new": "surface/accent/amber/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/amber/subtle/hover",
+      "new": "surface/accent/amber/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/amber/bold/default",
+      "new": "surface/accent/amber/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/amber/bold/hover",
+      "new": "surface/accent/amber/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/pink/subtlest/default",
+      "new": "surface/accent/pink/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/pink/subtlest/hover",
+      "new": "surface/accent/pink/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/pink/subtle/default",
+      "new": "surface/accent/pink/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/pink/subtle/hover",
+      "new": "surface/accent/pink/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/pink/bold/default",
+      "new": "surface/accent/pink/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/pink/bold/hover",
+      "new": "surface/accent/pink/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/green/subtlest/default",
+      "new": "surface/accent/green/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/green/subtlest/hover",
+      "new": "surface/accent/green/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/green/subtle/default",
+      "new": "surface/accent/green/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/green/subtle/hover",
+      "new": "surface/accent/green/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/green/bold/default",
+      "new": "surface/accent/green/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/green/bold/hover",
+      "new": "surface/accent/green/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/orange/subtlest/default",
+      "new": "surface/accent/orange/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/orange/subtlest/hover",
+      "new": "surface/accent/orange/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/orange/subtle/default",
+      "new": "surface/accent/orange/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/orange/subtle/hover",
+      "new": "surface/accent/orange/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/orange/bold/default",
+      "new": "surface/accent/orange/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/orange/bold/hover",
+      "new": "surface/accent/orange/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/red/subtlest/default",
+      "new": "surface/accent/red/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/red/subtlest/hover",
+      "new": "surface/accent/red/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/red/subtle/default",
+      "new": "surface/accent/red/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/red/subtle/hover",
+      "new": "surface/accent/red/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/red/bold/default",
+      "new": "surface/accent/red/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/red/bold/hover",
+      "new": "surface/accent/red/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/rose/subtlest/default",
+      "new": "surface/accent/rose/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/rose/subtlest/hover",
+      "new": "surface/accent/rose/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/rose/subtle/default",
+      "new": "surface/accent/rose/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/rose/subtle/hover",
+      "new": "surface/accent/rose/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/rose/bold/default",
+      "new": "surface/accent/rose/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/rose/bold/hover",
+      "new": "surface/accent/rose/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/neutral/subtlest/default",
+      "new": "surface/accent/neutral/subtlest/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/neutral/subtlest/hover",
+      "new": "surface/accent/neutral/subtlest/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/neutral/subtle/default",
+      "new": "surface/accent/neutral/subtle/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/neutral/subtle/hover",
+      "new": "surface/accent/neutral/subtle/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/neutral/bold/default",
+      "new": "surface/accent/neutral/bold/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "surface/accent/neutral/bold/hover",
+      "new": "surface/accent/neutral/bold/hover",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/neutral/default",
+      "new": "text/accent/neutral/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "text/accent/neutral/bold",
+      "new": "text/accent/neutral/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/neutral/default",
+      "new": "icon/accent/neutral/default",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Themes",
+      "old": "icon/accent/neutral/bold",
+      "new": "icon/accent/neutral/bold",
+      "description": "Copied from Product variables Themes, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/heading-1",
+      "new": "font-size/heading-1",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/heading-1",
+      "new": "line-height/heading-1",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/heading-2",
+      "new": "font-size/heading-2",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/heading-2",
+      "new": "line-height/heading-2",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/heading-3",
+      "new": "font-size/heading-3",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/heading-3",
+      "new": "line-height/heading-3",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/heading-4",
+      "new": "font-size/heading-4",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/heading-4",
+      "new": "line-height/heading-4",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/heading-5",
+      "new": "font-size/heading-5",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/heading-5",
+      "new": "line-height/heading-5",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/heading-6",
+      "new": "font-size/heading-6",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/heading-6",
+      "new": "line-height/heading-6",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/section label base",
+      "new": "font-size/section-label-base",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/section label base",
+      "new": "line-height/section-label-base",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/label large",
+      "new": "font-size/label-large",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/label large",
+      "new": "line-height/label-large",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/label base",
+      "new": "font-size/label-base",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/label base",
+      "new": "line-height/label-base",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/label small",
+      "new": "font-size/label-small",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/label small",
+      "new": "line-height/label-small",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/label xsmall",
+      "new": "font-size/label-xsmall",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/label xsmall",
+      "new": "line-height/label-xsmall",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/body large",
+      "new": "font-size/body-large",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/body large",
+      "new": "line-height/body-large",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/body base",
+      "new": "font-size/body-base",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/body base",
+      "new": "line-height/body-base",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/body small",
+      "new": "font-size/body-small",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/body small",
+      "new": "line-height/body-small",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-size/body xsmall",
+      "new": "font-size/body-xsmall",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "line-height/body xsmall",
+      "new": "line-height/body-xsmall",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-weight/heading",
+      "new": "font-weight/heading",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-weight/section label base",
+      "new": "font-weight/section-label-base",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-weight/label",
+      "new": "font-weight/label",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-weight/body",
+      "new": "font-weight/body",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Typography",
+      "old": "font-weight/emphasis",
+      "new": "font-weight/emphasis",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/height/16",
+      "new": "height/16",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/height/20",
+      "new": "height/20",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/height/24",
+      "new": "height/24",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/height/28",
+      "new": "height/28",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/height/36",
+      "new": "height/36",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/height/44",
+      "new": "height/44",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/container/small",
+      "new": "container/small",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/container/medium",
+      "new": "container/medium",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/container/large",
+      "new": "container/large",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Radius",
+      "old": "radius/round/full",
+      "new": "round/full",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/0",
+      "new": "scaled/0",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/0",
+      "new": "static/0",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/20",
+      "new": "scaled/20",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/20",
+      "new": "static/20",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/40",
+      "new": "scaled/40",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/40",
+      "new": "static/40",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/60",
+      "new": "scaled/60",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/60",
+      "new": "static/60",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/80",
+      "new": "scaled/80",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/80",
+      "new": "static/80",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/100",
+      "new": "scaled/100",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/100",
+      "new": "static/100",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/120",
+      "new": "scaled/120",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/120",
+      "new": "static/120",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/160",
+      "new": "scaled/160",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/160",
+      "new": "static/160",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/200",
+      "new": "scaled/200",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/200",
+      "new": "static/200",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/240",
+      "new": "scaled/240",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/240",
+      "new": "static/240",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/280",
+      "new": "scaled/280",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/280",
+      "new": "static/280",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/320",
+      "new": "scaled/320",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/320",
+      "new": "static/320",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "scaled/400",
+      "new": "scaled/400",
+      "description": "Copied from Product variables, Nov 16"
+    },
+    {
+      "collection": "Density",
+      "old": "static/400",
+      "new": "static/400",
+      "description": "Copied from Product variables, Nov 16"
+    }
+  ]
+}
