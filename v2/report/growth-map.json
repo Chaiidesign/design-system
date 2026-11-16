@@ -1,0 +1,101 @@
+{
+  "$description": "What the system can grow into, written by the lead on 16 November 2026. 'now' is on the branch v2-direction and checked by a tool; 'next' has its inputs ready and could start this week; 'later' needs a decision or something that does not exist yet. Sources for the component order: the handoff doc's ranked list (build files per component in the app as of 14 November) and what version 0.2 of this repo already built and tested.",
+  "horizons": ["now", "next", "later"],
+  "lanes": [
+    {
+      "lane": "Tokens",
+      "why": "Every other lane reads from here.",
+      "items": [
+        { "name": "Colour roles, light and dark", "horizon": "now", "detail": "171 roles, snapshot proved exact, 734 pairs audited, none failing with the 77 fixes applied." },
+        { "name": "Type, radius, spacing, density", "horizon": "now", "detail": "74 tokens generated as they stand in Figma; naming breaks the standard and is listed, not renamed." },
+        { "name": "Border width, focus ring, control and icon size, motion, elevation, scrim", "horizon": "now", "detail": "22 tokens proposed in the repo because the five components cannot be built without them. To add in Figma." },
+        { "name": "Descriptions for all 308 tokens", "horizon": "next", "detail": "The standard's rule 9, and what agents read through the Figma connector. A script can draft them from the name; a person confirms." },
+        { "name": "Renames the standard asks for", "horizon": "next", "detail": "Radius by size not height, type roles without 'small' and 'base', collection names, Tailwind's own prefixes for type. One breaking release, with aliases kept for one version." },
+        { "name": "Increased-contrast theme", "horizon": "next", "detail": "A third mode on the colour collection. The audit tool can target 7 to 1 by changing one number." },
+        { "name": "Letter spacing, mono font, layer order, opacity, breakpoints", "horizon": "later", "detail": "Not started anywhere. Each needs one design decision first." },
+        { "name": "Gradients: keep or move to Sandbox", "horizon": "later", "detail": "63 variables no component uses. The standard itself suggests moving them." },
+        { "name": "Prune unused roles", "horizon": "later", "detail": "86 of the 171 colour roles are used by no starred Figma component. Keep only what a screen needs." }
+      ]
+    },
+    {
+      "lane": "Components",
+      "why": "Ordered by how many files in the app use each one.",
+      "items": [
+        { "name": "Button", "horizon": "now", "detail": "235 files in the app." },
+        { "name": "DropdownMenu", "horizon": "now", "detail": "83 files. Covers the model selector's needs: groups, radio and checkbox items." },
+        { "name": "Dialog", "horizon": "now", "detail": "49 files plus about 20 modal wrappers." },
+        { "name": "Input", "horizon": "now", "detail": "26 files plus the password field. Label, description and error are parts of it." },
+        { "name": "Tabs", "horizon": "now", "detail": "24 files." },
+        { "name": "Spinner, Sheet, Avatar, Chip", "horizon": "next", "detail": "19, 16, 15 and 11 files. Their Figma colour is already 76 to 100 percent on semantic tokens." },
+        { "name": "Tooltip, Badge", "horizon": "next", "detail": "87 and 70 files, but half their Figma colour still comes from the old HeroUI theme. Specs can be written now; Figma needs rebinding." },
+        { "name": "Switch, Checkbox, Toast", "horizon": "next", "detail": "13, 9 and 3 files. Checkbox exists in version 0.2 of this repo, tested, without a framework." },
+        { "name": "AlertDialog, Popover, Select, RadioGroup, Textarea", "horizon": "later", "detail": "Each is a Radix primitive with a published keyboard pattern, so a spec is mostly transcription." },
+        { "name": "Table, DatePicker, Combobox, Accordion, Breadcrumbs, Card", "horizon": "later", "detail": "In Figma today, bound to older collections. Decide which stay." }
+      ]
+    },
+    {
+      "lane": "Product patterns",
+      "why": "What the app has and no Figma component covers. A pattern is an arrangement of components, with its own spec.",
+      "items": [
+        { "name": "Composer (chat input)", "horizon": "next", "detail": "Six of the open UI fixes are here. Built from Input, Button and DropdownMenu." },
+        { "name": "Model selector", "horizon": "next", "detail": "Four open fixes. A DropdownMenu with group labels and radio items; the spec's example already has that shape." },
+        { "name": "Chat message, proposal card, status line", "horizon": "next", "detail": "Built and tested in version 0.2 on the old token names. To re-point at the new tokens." },
+        { "name": "Sidebar and its items", "horizon": "later", "detail": "The active state needs design first." },
+        { "name": "Skeleton, Divider", "horizon": "later", "detail": "30 and 13 files, no Figma component." },
+        { "name": "Checkout: cost summary, error summary", "horizon": "later", "detail": "Built and tested in version 0.2. They belong in a commerce layer, apart from the core." }
+      ]
+    },
+    {
+      "lane": "Pipeline",
+      "why": "One name, written once in Figma, generated everywhere else.",
+      "items": [
+        { "name": "Figma snapshot with checksum proof", "horizon": "now", "detail": "An agent runs a read-only script; a checker proves the copy exact." },
+        { "name": "Token build: DTCG files, CSS variables, Tailwind theme, tokens.json", "horizon": "now", "detail": "Deterministic; two runs are identical." },
+        { "name": "Contrast audit, naming lint, Figma-to-code diff", "horizon": "now", "detail": "Each proves itself on planted faults." },
+        { "name": "Specs to stylesheet, typed props, docs and state map", "horizon": "now", "detail": "Generated from the spec with no model in the loop." },
+        { "name": "Gallery and browser tests from the spec", "horizon": "now", "detail": "State map, keyboard, axe, contrast, target size, focus ring, pictures." },
+        { "name": "Storybook", "horizon": "next", "detail": "The handoff asks for it. The examples are plain modules, so stories can be generated from them; not installed here." },
+        { "name": "Code Connect", "horizon": "next", "detail": "Links each Figma component to its React file. Needs the Components file and the Radix renames in Figma." },
+        { "name": "Scheduled snapshot and a pull request when Figma changes", "horizon": "next", "detail": "The diff tool already names every change; an agent opens the pull request and never merges it." },
+        { "name": "Round trip: spec back into Figma, then diff", "horizon": "later", "detail": "Nathan Curtis's test of whether a spec carries everything. Needs write access to a sandbox Figma file." },
+        { "name": "Pictures compared with Figma", "horizon": "later", "detail": "Each example beside its Figma frame. Needs the Components file." },
+        { "name": "Changesets and a generated changelog", "horizon": "later", "detail": "The standard asks for it; needs the package's home to be decided." }
+      ]
+    },
+    {
+      "lane": "For agents",
+      "why": "People and agents build from the same source.",
+      "items": [
+        { "name": "tokens.json with names, values, CSS names and reasons", "horizon": "now", "detail": "JSON, which the standard prefers to prose for agents." },
+        { "name": "Specs as JSON, with every requirement naming its check", "horizon": "now", "detail": "An agent can read what must hold and which test proves it." },
+        { "name": "Short AGENTS.md for the new package", "horizon": "next", "detail": "Under 60 lines, pointing at the standard, the tokens and the specs. The repo's current AGENTS.md describes version 0.2." },
+        { "name": "llms.txt and a docs index", "horizon": "next", "detail": "Generated from the specs and tokens." },
+        { "name": "The four skills: ds-token, ds-component, ds-review, ds-migrate", "horizon": "next", "detail": "Named in the standard. The tools on this branch are their checks." },
+        { "name": "Agent test on the new package", "horizon": "next", "detail": "Version 0.2 was tested by giving a fresh agent only the docs. The same test, on these five components." },
+        { "name": "MCP server over tokens and specs", "horizon": "later", "detail": "So an agent asks for one component's contract and loads nothing else." }
+      ]
+    },
+    {
+      "lane": "Platforms",
+      "why": "The spec is the contract; each platform maps roles to its own controls.",
+      "items": [
+        { "name": "React with Radix", "horizon": "now", "detail": "What the app's engineers ship." },
+        { "name": "Plain CSS on data attributes", "horizon": "now", "detail": "The generated stylesheets need no framework and no Tailwind." },
+        { "name": "Tailwind v4 theme", "horizon": "now", "detail": "Generated; not yet compiled with Tailwind here." },
+        { "name": "Plain HTML without JavaScript", "horizon": "next", "detail": "Version 0.2 proved a checkout that pays with scripts off. Button and Input work as plain HTML with the same stylesheet; Tabs, DropdownMenu and Dialog need native fallbacks." },
+        { "name": "Web components for the other frameworks", "horizon": "later", "detail": "UI SDK was measured in version 0.2: 15 to 63 kilobytes a part. Worth it for a date picker, not for a button." },
+        { "name": "iOS and Android", "horizon": "later", "detail": "The role list says what each control must do; nothing is built." }
+      ]
+    },
+    {
+      "lane": "Proof with people",
+      "why": "Every check on this branch is a machine's. None of it shows the system works for people.",
+      "items": [
+        { "name": "Screen reader pass on the five components", "horizon": "next", "detail": "VoiceOver and NVDA. The tests assert attributes, not what is heard." },
+        { "name": "A real phone", "horizon": "next", "detail": "Touch targets, the on-screen keyboard, iOS zoom." },
+        { "name": "Is pink too close to the error red?", "horizon": "next", "detail": "The measurements say the two are about 25 degrees of hue apart. Five people, one task, would settle it." },
+        { "name": "Engineers build one real screen from the package", "horizon": "next", "detail": "The handoff's own goal for the week." }
+      ]
+    }
+  ]
+}
